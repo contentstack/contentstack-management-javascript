@@ -1,0 +1,28 @@
+{
+  "presets": ["@babel/preset-env"],
+  "env": {
+    "test": {
+      "presets": [
+        ["@babel/env"]
+      ],
+      "plugins": ["rewire"],
+      "sourceMaps": "inline"
+    },
+    "es5": {
+      "presets": [
+        ["@babel/env"]
+      ],
+      "plugins": [
+        "add-module-exports",
+        "transform-es2015-modules-commonjs"
+      ]
+    },
+    "es-modules": {
+      "presets": [
+        ["@babel/env", {
+          "modules": false
+        }]
+      ]
+    }
+  }
+}
