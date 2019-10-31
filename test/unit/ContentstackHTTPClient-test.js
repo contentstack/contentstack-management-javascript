@@ -1,6 +1,6 @@
 import axios from 'axios'
 import httpAdapter from 'axios/lib/adapters/http'
-import ContentstackHTTPClient from '../../lib/core/ContentstackHTTPClient.js'
+import contentstackHTTPClient from '../../lib/core/contentstackHTTPClient.js'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
@@ -11,7 +11,7 @@ axios.defaults.adapter = httpAdapter
 
 describe('Contentstack HTTP Client', () => {
   it('Contentstack Http Client Object successful', done => {
-    var axiosInstance = ContentstackHTTPClient(axios,
+    var axiosInstance = contentstackHTTPClient(axios,
       {
         apiKey: 'apiKey',
         accessToken: 'accessToken',
@@ -25,7 +25,7 @@ describe('Contentstack HTTP Client', () => {
   })
 
   it('Contentstack Http Client Host', done => {
-    var axiosInstance = ContentstackHTTPClient(axios,
+    var axiosInstance = contentstackHTTPClient(axios,
       {
         apiKey: 'apiKey',
         accessToken: 'accessToken',
@@ -39,7 +39,7 @@ describe('Contentstack HTTP Client', () => {
   })
 
   it('Contentstack Http Client Host without port', done => {
-    var axiosInstance = ContentstackHTTPClient(axios,
+    var axiosInstance = contentstackHTTPClient(axios,
       {
         apiKey: 'apiKey',
         accessToken: 'accessToken',
@@ -55,7 +55,7 @@ describe('Contentstack HTTP Client', () => {
 
   it('Contentstack Http Client blank API key', done => {
     try {
-      var axiosInstance = ContentstackHTTPClient(axios,
+      var axiosInstance = contentstackHTTPClient(axios,
         {
           accessToken: 'accessToken',
           defaultHostName: 'defaulthost'
@@ -69,7 +69,7 @@ describe('Contentstack HTTP Client', () => {
 
   it('Contentstack Http Client blank Access Token', done => {
     try {
-      var axiosInstance = ContentstackHTTPClient(axios,
+      var axiosInstance = contentstackHTTPClient(axios,
         {
           apiKey: 'apiKey',
           defaultHostName: 'defaulthost'
