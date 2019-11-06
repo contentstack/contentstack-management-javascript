@@ -3,10 +3,9 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import * as contentstack from '../../lib/contentstack.js'
 import axios from 'axios'
-
 var orgID = 'blt7d93f4fb8e6f74cb'
 var apiKey = 'blt3d0c33bf2d491e73'
-const client = contentstack.client(axios, { authtoken: 'blt7a577b62d8d5a63b' })
+const client = contentstack.client(axios, { authtoken: 'blted986549450e6310' })
 
 describe('Stack api Test', () => {
   const newStack = { stack:
