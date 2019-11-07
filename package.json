@@ -24,10 +24,14 @@
     "precommit": "npm run lint",
     "prepush": "npm run test:unit",
     "generate:docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose",
-    "buildnode": "webpack --config webpack/webpack.node.js"
+    "buildall": "npm run buildnode&npm run buildweb&npm run buildreactnative&npm run buildnativescript",
+    "buildnode": "webpack --config webpack/webpack.node.js",
+    "buildreactnative": "webpack --config webpack/webpack.react-native.js",
+    "buildnativescript": "webpack --config webpack/webpack.nativescript.js",
+    "buildweb": "webpack --config webpack/webpack.web.js"
   },
-  "engines": {
-    "node": ">=6"
+  "engines" : { 
+    "node" : ">=8.0.0 <11.0.0" 
   },
   "author": "Contentstack",
   "license": "MIT",
