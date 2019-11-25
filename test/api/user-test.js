@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import * as contentstack from '../../lib/contentstack.js'
 import axios from 'axios'
-
+import { jsonWrite } from '../utility/fileOperations/readwrite'
 const contentstackClient = contentstack.client(axios, {})
 var authToken = ''
 var loggedinUserID = ''
@@ -28,6 +28,7 @@ describe('Contentstack User Session api Test', () => {
   it('User Login test', done => {
     contentstackClient.login({ email: 'uttam.ukkoji@contentstack.com', password: 'c0ntentst@ck' }).then((response) => {
       loggedinUserID = response.user.uid
+      jsonWrite(response.user, 'loggedinuser.json')
       expect(response.notice).to.be.equal('Login Successful.', 'Login success messsage does not match.')
       done()
     }).catch((error) => {
