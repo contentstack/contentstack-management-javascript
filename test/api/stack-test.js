@@ -1,14 +1,19 @@
 
 import { expect } from 'chai'
-import { describe, it } from 'mocha'
+import { describe, it, setup } from 'mocha'
 import * as contentstack from '../../lib/contentstack.js'
 import axios from 'axios'
 import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 var orgID = 'blt7d93f4fb8e6f74cb'
-const user = jsonReader('loggedinuser.json')
-const client = contentstack.client(axios, { authtoken: user.authtoken })
+var user = {}
+var client = {}
+
 var stacks = {}
 describe('Stack api Test', () => {
+  setup(() => {
+    user = jsonReader('loggedinuser.json')
+    client = contentstack.client(axios, { authtoken: user.authtoken })
+  })
   const newStack = {
     stack:
         {

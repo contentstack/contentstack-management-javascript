@@ -2,6 +2,9 @@ import fs from 'fs'
 import path from 'path'
 const dataFiles = './test/utility/dataFiles/'
 export function jsonReader (fileName) {
+  if (!fs.existsSync(`${dataFiles}${fileName}`)) {
+    return
+  }
   const fileContents = fs.readFileSync(`${dataFiles}${fileName}`, 'utf8')
   try {
     const object = JSON.parse(fileContents)
