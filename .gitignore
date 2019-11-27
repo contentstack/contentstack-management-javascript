@@ -40,7 +40,7 @@ dist/
 jsdocs/
 mochawesome-report/
 coverage/
-
+test/utility/dataFiles/
 
 # TypeScript v1 declaration files
 typings/
