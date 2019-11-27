@@ -16,7 +16,7 @@
     "build": "npm run clean && npm run build:es5 && npm run build:es-modules",
     "build:es5": "BABEL_ENV=es5 babel lib -d dist/es5",
     "build:es-modules": "BABEL_ENV=es-modules babel lib -d dist/es-modules",
-    "test": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/api/tests.js ./test/unit  -t 30000 --reporter mochawesome --require babel-polyfill",
+    "test": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/api/organization-test.js  -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:debug": "BABEL_ENV=test mocha debug --require @babel/register ./test",
     "lint": "eslint lib test",
     "format": "eslint --fix lib test",
