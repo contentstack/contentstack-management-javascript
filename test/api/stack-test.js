@@ -159,61 +159,61 @@ describe('Stack api Test', () => {
       })
   })
 
-  // it('Get all stack', done => {
-  //   client.stack()
-  //     .query()
-  //     .find()
-  //     .then((response) => {
-  //       for (const index in response.items) {
-  //         const stack = response.items[index]
-  //         expect(stack.name).to.not.equal(null)
-  //         expect(stack.uid).to.not.equal(null)
-  //         expect(stack.owner_uid).to.not.equal(null)
-  //       }
-  //       done()
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //       // expect(error).to.be.equal(null)
-  //       done()
-  //     })
-  // })
+  it('Get all stack', done => {
+    client.stack()
+      .query()
+      .find()
+      .then((response) => {
+        for (const index in response.items) {
+          const stack = response.items[index]
+          expect(stack.name).to.not.equal(null)
+          expect(stack.uid).to.not.equal(null)
+          expect(stack.owner_uid).to.not.equal(null)
+        }
+        done()
+      })
+      .catch((error) => {
+        console.log(error)
+        // expect(error).to.be.equal(null)
+        done()
+      })
+  })
 
-  // it('Get query stack', done => {
-  //   client.stack()
-  //     .query({ name: 'Conference Demo' })
-  //     .find()
-  //     .then((response) => {
-  //       expect(response.items.length).to.be.equal(1)
-  //       for (const index in response.items) {
-  //         const stack = response.items[index]
-  //         expect(stack.name).to.be.equal('Conference Demo')
-  //       }
-  //       done()
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //       // expect(error).to.be.equal(null)
-  //       done()
-  //     })
-  // })
+  it('Get query stack', done => {
+    client.stack()
+      .query({ name: 'Conference Demo' })
+      .find()
+      .then((response) => {
+        expect(response.items.length).to.be.equal(1)
+        for (const index in response.items) {
+          const stack = response.items[index]
+          expect(stack.name).to.be.equal('Conference Demo')
+        }
+        done()
+      })
+      .catch((error) => {
+        console.log(error)
+        // expect(error).to.be.equal(null)
+        done()
+      })
+  })
 
-  // it('Find one stack', done => {
-  //   client.stack()
-  //     .query({ name: 'Conference Demo' })
-  //     .findOne()
-  //     .then((response) => {
-  //       const stack = response.items[0]
-  //       expect(response.items.length).to.be.equal(1)
-  //       expect(stack.name).to.be.equal('Conference Demo')
-  //       done()
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //       // expect(error).to.be.equal(null)
-  //       done()
-  //     })
-  // })
+  it('Find one stack', done => {
+    client.stack()
+      .query({ name: 'Conference Demo' })
+      .findOne()
+      .then((response) => {
+        const stack = response.items[0]
+        expect(response.items.length).to.be.equal(1)
+        expect(stack.name).to.be.equal('Conference Demo')
+        done()
+      })
+      .catch((error) => {
+        console.log(error)
+        // expect(error).to.be.equal(null)
+        done()
+      })
+  })
 
   it('Delete Stack', done => {
     client.stack(stacks.api_key)
