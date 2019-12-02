@@ -26,7 +26,7 @@ describe('Contentstack User Session api Test', () => {
   })
 
   it('User Login test', done => {
-    contentstackClient.login({ email: 'uttam.ukkoji@contentstack.com', password: 'c0ntentst@ck' }).then((response) => {
+    contentstackClient.login({ email: 'uttam.ukkoji@contentstack.com', password: 'c0ntentst@ck' }, { include_orgs: true, include_orgs_roles: true, include_stack_roles: true, include_user_settings: true }).then((response) => {
       loggedinUserID = response.user.uid
       jsonWrite(response.user, 'loggedinuser.json')
       expect(response.notice).to.be.equal('Login Successful.', 'Login success messsage does not match.')
@@ -38,9 +38,9 @@ describe('Contentstack User Session api Test', () => {
   })
 
   it('Get Current user info test', done => {
-    contentstackClient.getUser().then((response) => {
-      authToken = response.user.authtoken
-      expect(response.user.uid).to.be.equal(loggedinUserID)
+    contentstackClient.getUser().then((user) => {
+      authToken = user.authtoken
+      expect(user.uid).to.be.equal(loggedinUserID)
       done()
     }).catch((error) => {
       console.log(error)
@@ -52,8 +52,8 @@ describe('Contentstack User Session api Test', () => {
   it('Get user info from authtoken', done => {
     contentstack.client(axios, { authtoken: authToken })
       .getUser()
-      .then((response) => {
-        expect(response.user.uid).to.be.equal(loggedinUserID)
+      .then((user) => {
+        expect(user.uid).to.be.equal(loggedinUserID)
         expect(true).to.be.equal(true)
         done()
       }).catch((error) => {

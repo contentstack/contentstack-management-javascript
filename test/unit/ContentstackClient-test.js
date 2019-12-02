@@ -36,11 +36,15 @@ describe('Contentstack Client', () => {
   it('Contentstack Client get user info', done => {
     nock(host)
       .get('/user')
-      .reply(200, 'test data')
+      .reply(200, {
+        user: {
+          uid: 'test uid'
+        }
+      })
     ContentstackClient({ http: axios })
       .getUser()
-      .then((response) => {
-        expect(response).to.be.equal('test data')
+      .then((user) => {
+        expect(user.uid).to.be.equal('test uid')
         done()
       })
   })

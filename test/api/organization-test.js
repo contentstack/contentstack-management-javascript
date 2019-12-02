@@ -12,16 +12,15 @@ describe('Organization api test', () => {
   setup(() => {
     user = jsonReader('loggedinuser.json')
     client = contentstack.client(axios, { authtoken: user.authtoken })
-    organization = client.organization(orgID)
   })
 
   it('Fetch all organizations', done => {
     client.organization().fetchAll()
       .then((response) => {
         for (const index in response.items) {
-          const organization = response.items[index]
-          expect(organization.name).to.not.equal(null, 'Organization name cannot be null')
-          expect(organization.uid).to.not.equal(null, 'Organization uid cannot be null')
+          const organizations = response.items[index]
+          expect(organizations.name).to.not.equal(null, 'Organization name cannot be null')
+          expect(organizations.uid).to.not.equal(null, 'Organization uid cannot be null')
         }
         done()
       })
@@ -32,11 +31,27 @@ describe('Organization api test', () => {
       })
   })
 
-  it('Find One organizations', done => {
+  it('Get Current user info test', done => {
+    client.getUser({ include_orgs: true, include_orgs_roles: true, include_stack_roles: true, include_user_settings: true }).then((user) => {
+      for (const index in user.organizations) {
+        const organizations = user.organizations[index]
+        if (organizations.org_roles && (organizations.org_roles.filter(function (role) { return role.admin === true }).length > 0)) {
+          organization = organizations
+          break
+        }
+      }
+      done()
+    }).catch((error) => {
+      console.log(error)
+      expect(error).to.be.equal(null)
+      done()
+    })
+  })
+
+  it('Fetch organization', done => {
     organization.fetch()
-      .then((organization) => {
-        console.log(organization)
-        expect(organization.name).to.be.equal('Contentstack Employees', 'Organization name dose not match')
+      .then((organizations) => {
+        expect(organizations.name).to.be.equal('Uttam Ukkoji\'s Personal Organization', 'Organization name dose not match')
         done()
       })
       .catch((error) => {
@@ -53,8 +68,8 @@ describe('Organization api test', () => {
           const stack = response.items[index]
           expect(stack.name).to.not.equal(null, 'Organization name cannot be null')
           expect(stack.uid).to.not.equal(null, 'Organization uid cannot be null')
-          expect(stack.org_uid).to.equal('orgID', 'Organization uid cannot be null')
         }
+        done()
       })
       .catch((error) => {
         console.log(error)
@@ -65,7 +80,10 @@ describe('Organization api test', () => {
 
   it('Transfer Organization Ownership', done => {
     organization.transferOwnership('em@em.com')
-      .then((notice) => expect(notice).to.be.equal('Email has been successfully sent to the user.', 'Message does not match'))
+      .then((notice) => {
+        expect(notice).to.be.equal('Email has been successfully sent to the user.', 'Message does not match')
+        done()
+      })
       .catch((error) => {
         console.log(error)
         expect(error).to.be.equal(null, 'Failed Transfer Organization Ownership')
@@ -79,7 +97,7 @@ describe('Organization api test', () => {
         for (const i in roles.items) {
           expect(roles.items[i].uid).to.not.equal(null, 'Role uid cannot be null')
           expect(roles.items[i].name).to.not.equal(null, 'Role name cannot be null')
-          expect(roles.items[i].org_uid).to.be.equal(orgID, 'Role org_uid not match')
+          expect(roles.items[i].org_uid).to.be.equal(organization.uid, 'Role org_uid not match')
         }
         done()
       })
@@ -108,4 +126,7 @@ describe('Organization api test', () => {
         done()
       })
   })
+
+  // addUser
+  // Resend invitation
 })
