@@ -77,19 +77,19 @@ describe('Organization api test', () => {
         done()
       })
   })
-
-  it('Transfer Organization Ownership', done => {
-    organization.transferOwnership('em@em.com')
-      .then((notice) => {
-        expect(notice).to.be.equal('Email has been successfully sent to the user.', 'Message does not match')
-        done()
-      })
-      .catch((error) => {
-        console.log(error)
-        expect(error).to.be.equal(null, 'Failed Transfer Organization Ownership')
-        done()
-      })
-  })
+  // need to test with transfer ownership
+  // it('Transfer Organization Ownership', done => {
+  //   organization.transferOwnership('em@em.com')
+  //     .then((notice) => {
+  //       expect(notice).to.be.equal('Email has been successfully sent to the user.', 'Message does not match')
+  //       done()
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //       expect(error).to.be.equal(null, 'Failed Transfer Organization Ownership')
+  //       done()
+  //     })
+  // })
 
   it('Get all roles in an organization', done => {
     organization.roles()

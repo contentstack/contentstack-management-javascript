@@ -135,35 +135,6 @@ describe('Stack api Test', () => {
       })
   })
 
-  it('Share stack test', done => {
-    client.stack(stacks.api_key)
-      .share(['test@test.com'], { 'test@test.com': ['bltd5d348c98d9e5ec4'] })
-      .then((response) => {
-        console.log(response)
-        expect(response).to.be.equal('The invitation has been sent successfully.')
-        done()
-      })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
-  })
-
-  it('unshare stack test', done => {
-    client.stack(stacks.api_key)
-      .unShare('test@test.com')
-      .then((response) => {
-        expect(response).to.be.equal('The stack has been successfully unshared.')
-        done()
-      })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
-  })
-
   it('Get all stack', done => {
     client.stack()
       .query()
@@ -219,23 +190,4 @@ describe('Stack api Test', () => {
         done()
       })
   })
-
-  it('Delete Stack', done => {
-    client.stack(stacks.api_key)
-      .delete().then((notice) => {
-        expect(notice).to.be.equal('Stack deleted successfully!')
-        done()
-      }).catch((error) => {
-        expect(error).to.be.equal(null)
-        done()
-      })
-  })
-
-  // it('contentType', done => {
-  //   client.stack(apiKey).contentType('product').fetch().then((response) => {
-  //     console.log(response)
-  //     expect(response).to.not.equal(null, 'dsafdfasf')
-  //     done()
-  //   })
-  // })
 })

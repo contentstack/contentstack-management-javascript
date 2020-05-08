@@ -1,8 +1,8 @@
 {
-  "name": "contentstack-management-api",
+  "name": "contentstack-management",
   "version": "0.0.1",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
-  "main": "Contentstack.js",
+  "main": "lib/contentstack.js",
   "directories": {
     "test": "test"
   },
@@ -11,12 +11,13 @@
       "**/test"
     ]
   },
+  "type": "module",
   "scripts": {
     "clean": "rimraf coverage && rimraf dist",
     "build": "npm run clean && npm run build:es5 && npm run build:es-modules",
     "build:es5": "BABEL_ENV=es5 babel lib -d dist/es5",
     "build:es-modules": "BABEL_ENV=es-modules babel lib -d dist/es-modules",
-    "test": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/test.js ./test/unit -t 30000 --reporter mochawesome --require babel-polyfill",
+    "test": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/test.js -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:debug": "BABEL_ENV=test mocha debug --require @babel/register ./test",
     "lint": "eslint lib test",
     "format": "eslint --fix lib test",
@@ -30,8 +31,8 @@
     "buildnativescript": "webpack --config webpack/webpack.nativescript.js",
     "buildweb": "webpack --config webpack/webpack.web.js"
   },
-  "engines" : { 
-    "node" : ">=8.0.0 <11.0.0" 
+  "engines": {
+    "node": ">=8.0.0 <11.0.0"
   },
   "author": "Contentstack",
   "license": "MIT",
@@ -70,7 +71,7 @@
     "istanbul": "^0.4.5",
     "jsdoc": "^3.6.3",
     "jsdoc-to-markdown": "^5.0.2",
-    "mocha": "^6.2.2",
+    "mocha": "^7.1.2",
     "mochawesome": "^4.1.0",
     "nock": "^10.0.6",
     "nyc": "^14.1.1",
@@ -83,5 +84,5 @@
     "webpack-cli": "^3.3.10",
     "webpack-merge": "4.1.0"
   },
-  "homepage": "https://www.contentstack.com/docs/apis/content-management-api"
+  "homepage": "https://www.contentstack.com/docs/apis/contentstack-management"
 }

@@ -1,0 +1,43 @@
+import { expect } from 'chai'
+import { describe, it, setup } from 'mocha'
+import * as contentstack from '../../lib/contentstack.js'
+import axios from 'axios'
+import { jsonReader } from '../utility/fileOperations/readwrite'
+var stack = {}
+var client = {}
+
+describe('Stack Share/Unshare', () => {
+  setup(() => {
+    const user = jsonReader('loggedinuser.json')
+    stack = jsonReader('stack.json')
+    client = contentstack.client(axios, { authtoken: user.authtoken })
+  })
+  it('Share stack test', done => {
+    const role = jsonReader('role.json')
+    client.stack(stack.api_key)
+      .share(['test@test.com'], { 'test@test.com': [role.uid] })
+      .then((response) => {
+        expect(response).to.be.equal('The invitation has been sent successfully.')
+        done()
+      })
+      .catch((error) => {
+        console.log(error)
+        // expect(error).to.be.equal(null)
+        done()
+      })
+  })
+
+  it('unshare stack test', done => {
+    client.stack(stack.api_key)
+      .unShare('test@test.com')
+      .then((response) => {
+        expect(response).to.be.equal('The stack has been successfully unshared.')
+        done()
+      })
+      .catch((error) => {
+        console.log(error)
+        // expect(error).to.be.equal(null)
+        done()
+      })
+  })
+})
