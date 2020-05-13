@@ -37,8 +37,11 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
+    "@babel/runtime": "^7.9.6",
     "axios": "^0.19.0",
-    "lodash": "^4.17.15"
+    "babel-runtime": "^6.26.0",
+    "lodash": "^4.17.15",
+    "qs": "^6.9.4"
   },
   "keywords": [
     "contentstack management api",
@@ -49,6 +52,7 @@
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",
+    "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-env": "^7.6.3",
     "@babel/register": "^7.6.2",
     "@types/node": "^12.12.5",
