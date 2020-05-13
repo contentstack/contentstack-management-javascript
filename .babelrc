@@ -1,5 +1,10 @@
 {
   "presets": ["@babel/preset-env"],
+  "plugins": [
+    ["@babel/plugin-transform-runtime", {
+      "regenerator": true
+    }]
+  ],
   "env": {
     "test": {
       "presets": [
@@ -13,6 +18,9 @@
         ["@babel/env"]
       ],
       "plugins": [
+        "add-module-exports",
+        "transform-runtime",
+        "transform-es2015-modules-commonjs"
       ]
     },
     "es-modules": {
