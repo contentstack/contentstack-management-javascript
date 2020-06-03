@@ -10,6 +10,7 @@ module.exports = function () {
     resolve: {
       extensions: ['.js']
     },
+    externals: { fs: 'commonjs fs' },
     module: {
       rules: [{
         test: /\.js?$/,
