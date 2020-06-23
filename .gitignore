@@ -44,7 +44,7 @@ test/utility/dataFiles/
 
 # TypeScript v1 declaration files
 typings/
-
+tsconfig.json
 # Optional npm cache directory
 .npm
 

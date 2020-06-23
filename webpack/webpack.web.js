@@ -8,10 +8,10 @@ const commonConfig = require('./webpack.common.js')
 module.exports = function (options) {
   return webpackMerge(commonConfig(), {
     output: {
-      library: 'Contentstack',
+      library: 'contentstack-management',
       libraryTarget: 'umd',
       path: path.join(__dirname, '../dist/web'),
-      filename: 'contentstack.js'
+      filename: 'contentstack-management.js'
     },
     resolve: {
       alias: {
