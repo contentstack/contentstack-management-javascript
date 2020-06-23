@@ -25,11 +25,7 @@ describe('Role api test', () => {
         }
         done()
       })
-      .catch((err) => {
-        console.log(err)
-        expect(err).to.not.equal(null, 'Erro should not be null')
-        done()
-      })
+      .catch(done)
   })
 
   it('Get 1 role in stack with limit', done => {
@@ -39,11 +35,7 @@ describe('Role api test', () => {
         expect(roles.items.lenth).to.not.equal(1, 'Role fetch with limit 1 not work')
         done()
       })
-      .catch((err) => {
-        console.log(err)
-        expect(err).to.not.equal(null, 'Erro should not be null')
-        done()
-      })
+      .catch(done)
   })
 
   it('Get 2 role in stack with skip first', done => {
@@ -53,11 +45,7 @@ describe('Role api test', () => {
         expect(roles.items.lenth).to.not.equal(1, 'Role fetch with limit 1 not work')
         done()
       })
-      .catch((err) => {
-        console.log(err)
-        expect(err).to.not.equal(null, 'Erro should not be null')
-        done()
-      })
+      .catch(done)
   })
 
   it('Create new role in stack', done => {
@@ -70,11 +58,7 @@ describe('Role api test', () => {
         expect(roles.rules.length).to.be.equal(2, 'Role rule length not match')
         done()
       })
-      .catch((err) => {
-        console.log(err)
-        expect(err).to.not.equal(null, 'Erro should not be null')
-        done()
-      })
+      .catch(done)
   })
 
   it('Get role in stack', done => {
@@ -87,11 +71,7 @@ describe('Role api test', () => {
         expect(roles.stack.api_key).to.be.equal(stack.api_key, 'Role stack uid not match')
         done()
       })
-      .catch((err) => {
-        console.log(err)
-        expect(err).to.not.equal(null, 'Erro should not be null')
-        done()
-      })
+      .catch(done)
   })
 
   it('Update role in stack', done => {
@@ -107,11 +87,7 @@ describe('Role api test', () => {
         expect(roles.description).to.be.equal('Update description', 'Role description not match')
         done()
       })
-      .catch((err) => {
-        console.log(err)
-        expect(err).to.not.equal(null, 'Erro should not be null')
-        done()
-      })
+      .catch(done)
   })
 
   it('Get all Roles with query', done => {
@@ -126,11 +102,7 @@ describe('Role api test', () => {
         }
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Get query Role', done => {
@@ -145,11 +117,7 @@ describe('Role api test', () => {
         }
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Find one role', done => {
@@ -162,11 +130,7 @@ describe('Role api test', () => {
         expect(stack.name).to.be.equal('Developer')
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 })
 

@@ -24,11 +24,7 @@ describe('Organization api test', () => {
         }
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        expect(error).to.be.equal(null, 'Failed Organization call find all.')
-        done()
-      })
+      .catch(done)
   })
 
   it('Get Current user info test', done => {
@@ -41,11 +37,8 @@ describe('Organization api test', () => {
         }
       }
       done()
-    }).catch((error) => {
-      console.log(error)
-      expect(error).to.be.equal(null)
-      done()
     })
+      .catch(done)
   })
 
   it('Fetch organization', done => {
@@ -54,11 +47,7 @@ describe('Organization api test', () => {
         expect(organizations.name).to.be.equal('Uttam Ukkoji\'s Personal Organization', 'Organization name dose not match')
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        expect(error).to.be.equal(null, 'Failed Organization call find one.')
-        done()
-      })
+      .catch(done)
   })
 
   it('Get all stacks in an Organization', done => {
@@ -71,11 +60,7 @@ describe('Organization api test', () => {
         }
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        expect(error).to.be.equal(null, 'Failed Organization call find one.')
-        done()
-      })
+      .catch(done)
   })
   // need to test with transfer ownership
   // it('Transfer Organization Ownership', done => {
@@ -101,11 +86,7 @@ describe('Organization api test', () => {
         }
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        expect(error).to.be.equal(null, 'Failed Transfer Organization Ownership')
-        done()
-      })
+      .catch(done)
   })
 
   it('Get all invitations in an organization', done => {
@@ -120,11 +101,7 @@ describe('Organization api test', () => {
         }
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        expect(error).to.be.equal(null, 'Failed Transfer Organization Ownership')
-        done()
-      })
+      .catch(done)
   })
 
   // addUser

@@ -1,0 +1,11 @@
+docs-config.json
+.idea/
+.git/
+test/
+reports/
+contentstack-templates/
+jsdocs/
+examples/
+mocktest.json
+Sample
+coverage/

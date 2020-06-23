@@ -1,36 +1,30 @@
-
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import * as contentstack from '../../lib/contentstack.js'
 import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
+import { multiPageCT } from '../unit/mock/content-type'
+
 var client = {}
 
 var stack = {}
-describe('Delete api Test', () => {
+describe('ContentType api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
     client = contentstack.client(axios, { authtoken: user.authtoken })
   })
 
-  it('Delete role in stack', done => {
-    const role = jsonReader('role.json')
-    client.stack(stack.api_key).role(role.uid)
-      .delete()
-      .then((notice) => {
-        expect(notice).to.be.equal('The role deleted successfully.', 'Role delete notice does not match')
-        done()
-      })
-      .catch(done)
-  })
-
-  it('Delete Stack', done => {
-    client.stack(stack.api_key)
+  it('Content Type delete', done => {
+    makeContentTyoe(multiPageCT.content_type.uid)
       .delete().then((notice) => {
-        expect(notice).to.be.equal('Stack deleted successfully!')
+        expect(notice).to.be.equal('Content Type deleted successfully.')
         done()
       })
       .catch(done)
   })
 })
+
+function makeContentTyoe (uid = null) {
+  return client.stack(stack.api_key).contentType(uid)
+}

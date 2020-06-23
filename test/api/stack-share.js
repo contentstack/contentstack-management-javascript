@@ -20,11 +20,7 @@ describe('Stack Share/Unshare', () => {
         expect(response).to.be.equal('The invitation has been sent successfully.')
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('unshare stack test', done => {
@@ -34,10 +30,6 @@ describe('Stack Share/Unshare', () => {
         expect(response).to.be.equal('The stack has been successfully unshared.')
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 })

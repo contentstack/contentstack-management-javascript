@@ -35,10 +35,7 @@ describe('Stack api Test', () => {
         done()
         stacks = jsonReader('stack.json')
       })
-      .catch((error) => {
-        expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Fetch Stack details', done => {
@@ -51,10 +48,7 @@ describe('Stack api Test', () => {
         expect(stack.description).to.be.equal(newStack.stack.description)
         done()
       })
-      .catch((error) => {
-        expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Update Stack details', done => {
@@ -69,10 +63,8 @@ describe('Stack api Test', () => {
         expect(stack.name).to.be.equal(name)
         expect(stack.description).to.be.equal(description)
         done()
-      }).catch((error) => {
-        expect(error).to.be.equal(null)
-        done()
       })
+      .catch(done)
   })
 
   it('Get all users of stack', done => {
@@ -82,11 +74,7 @@ describe('Stack api Test', () => {
         expect(response[0].uid).to.be.equal('blt4dcb45b4456bb358')
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Get stack settings', done => {
@@ -98,11 +86,7 @@ describe('Stack api Test', () => {
         expect(response.discrete_variables.secret_key).to.not.equal(null, 'Stack variable must not be blank')
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Add stack settings', done => {
@@ -112,11 +96,7 @@ describe('Stack api Test', () => {
         expect(response.stack_variables.samplevariable).to.be.equal('too', 'samplevariable must set to \'too\' ')
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Reset stack settings', done => {
@@ -128,11 +108,7 @@ describe('Stack api Test', () => {
         expect(response.discrete_variables.secret_key).to.not.equal(null, 'Stack variable must not be blank')
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Get all stack', done => {
@@ -148,11 +124,7 @@ describe('Stack api Test', () => {
         }
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Get query stack', done => {
@@ -167,11 +139,7 @@ describe('Stack api Test', () => {
         }
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 
   it('Find one stack', done => {
@@ -184,10 +152,6 @@ describe('Stack api Test', () => {
         expect(stack.name).to.be.equal('Conference Demo')
         done()
       })
-      .catch((error) => {
-        console.log(error)
-        // expect(error).to.be.equal(null)
-        done()
-      })
+      .catch(done)
   })
 })

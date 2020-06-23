@@ -31,10 +31,8 @@ describe('Contentstack User Session api Test', () => {
       jsonWrite(response.user, 'loggedinuser.json')
       expect(response.notice).to.be.equal('Login Successful.', 'Login success messsage does not match.')
       done()
-    }).catch((error) => {
-      console.log(error)
-      done()
     })
+      .catch(done)
   })
 
   it('Get Current user info test', done => {
@@ -42,11 +40,8 @@ describe('Contentstack User Session api Test', () => {
       authToken = user.authtoken
       expect(user.uid).to.be.equal(loggedinUserID)
       done()
-    }).catch((error) => {
-      console.log(error)
-      expect(error).to.be.equal(null)
-      done()
     })
+      .catch(done)
   })
 
   it('Get user info from authtoken', done => {
@@ -56,10 +51,7 @@ describe('Contentstack User Session api Test', () => {
         expect(user.uid).to.be.equal(loggedinUserID)
         expect(true).to.be.equal(true)
         done()
-      }).catch((error) => {
-        console.log(error)
-        expect(error).to.be.equal(null)
-        done()
       })
+      .catch(done)
   })
 })
