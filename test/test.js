@@ -8,5 +8,5 @@
 // require('./api/stack-share')
 // require('./api/asset-test')
 // require('./api/delete-test')
-require('./api/extension-test')
-// require('./api/extension-delete-test')
+// require('./api/extension-test')
+require('./api/entry-test')
