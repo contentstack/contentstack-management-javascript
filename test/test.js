@@ -9,4 +9,5 @@
 // require('./api/asset-test')
 // require('./api/delete-test')
 // require('./api/extension-test')
-require('./api/entry-test')
+// require('./api/entry-test')
+require('./api/webhook-test')
