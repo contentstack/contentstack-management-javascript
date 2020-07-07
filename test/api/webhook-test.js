@@ -131,6 +131,20 @@ describe('ContentType api Test', () => {
           .catch(done)
       })
   })
+
+  it('Get all Webhook', done => {
+    makeWebhook().fetchAll()
+      .then((collection) => {
+        console.log(collection)
+        collection.items.forEach(webhook => {
+          expect(webhook.uid).to.be.not.equal(null)
+          expect(webhook.name).to.be.not.equal(null)
+          expect(webhook.org_uid).to.be.equal(stack.org_uid)
+        })
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeWebhook (uid = null) {

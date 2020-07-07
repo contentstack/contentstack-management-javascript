@@ -1,4 +1,3 @@
-
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import * as contentstack from '../../lib/contentstack.js'
@@ -129,7 +128,7 @@ describe('Stack api Test', () => {
 
   it('Get query stack', done => {
     client.stack()
-      .query({ name: 'Conference Demo' })
+      .query({ query: { name: 'Conference Demo' } })
       .find()
       .then((response) => {
         expect(response.items.length).to.be.equal(1)
@@ -144,7 +143,7 @@ describe('Stack api Test', () => {
 
   it('Find one stack', done => {
     client.stack()
-      .query({ name: 'Conference Demo' })
+      .query({ query: { name: 'Conference Demo' } })
       .findOne()
       .then((response) => {
         const stack = response.items[0]

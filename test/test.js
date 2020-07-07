@@ -10,4 +10,5 @@
 // require('./api/delete-test')
 // require('./api/extension-test')
 // require('./api/entry-test')
-require('./api/webhook-test')
+// require('./api/webhook-test')
+require('./api/globalfield-test')
