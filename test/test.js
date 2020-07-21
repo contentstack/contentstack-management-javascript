@@ -11,4 +11,5 @@
 // require('./api/extension-test')
 // require('./api/entry-test')
 // require('./api/webhook-test')
-require('./api/globalfield-test')
+// require('./api/globalfield-test')
+require('./api/release-test')

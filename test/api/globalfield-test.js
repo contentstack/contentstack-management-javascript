@@ -1,4 +1,4 @@
-// import path from 'path'
+import path from 'path'
 import axios from 'axios'
 import { expect } from 'chai'
 import { cloneDeep } from 'lodash'
