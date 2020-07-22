@@ -4,21 +4,18 @@ import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 
 var client = {}
-// var stack = {}
+var stack = {}
 
 describe('ContentType api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
 
-    // stack = jsonReader('stack.json')
+    stack = jsonReader('stack.json')
     client = contentstack.client(axios, { authtoken: user.authtoken })
   })
 
   it('test asset Upload ', done => {
-    // const asset = {
-    //   upload: '/Users/uttamukkoji/Documents/JS/contentstack/Modular/assets/blt85b501e49352272c/mobile_ad_campaign_0.gif'
-    // }
-    client.stack('blt3b4595778a4aa66e').asset().query({ query: { is_dir: true } }).count()
+    makeAsset().query({ query: { is_dir: true } }).count()
       .then((asset) => {
         console.log(asset)
         done()
@@ -39,3 +36,7 @@ describe('ContentType api Test', () => {
   //     .catch(done)
   // })
 })
+
+function makeAsset (uid = null) {
+  return client.stack(stack.api_key).asset(uid)
+}
