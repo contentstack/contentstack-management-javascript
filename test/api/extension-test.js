@@ -1,9 +1,9 @@
+import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import * as contentstack from '../../lib/contentstack.js'
 import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import path from 'path'
 import { customFieldURL, customFieldSRC, customWidgetURL, customWidgetSRC, customDashboardURL, customDashboardSRC } from '../unit/mock/extension'
 var client = {}
 var stack = {}
