@@ -10,6 +10,7 @@ var stack = {}
 
 var folderUID = ''
 var assetUID = ''
+var publishAssetUID = 'bltec65a7f777312cdb'
 describe('ContentType api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
@@ -59,6 +60,7 @@ describe('ContentType api Test', () => {
     }
     makeAsset().create(asset)
       .then((asset) => {
+        publishAssetUID = asset.uid
         expect(asset.uid).to.be.not.equal(null)
         expect(asset.url).to.be.not.equal(null)
         expect(asset.filename).to.be.equal('customUpload.html')
@@ -101,6 +103,31 @@ describe('ContentType api Test', () => {
       })
       .catch(done)
   })
+
+  it('Publish Asset', done => {
+    makeAsset(publishAssetUID)
+      .publish({ publishDetails: {
+        locales: ['hi-in', 'en-us'],
+        environments: ['development']
+      } })
+      .then((notice) => {
+        expect(notice).to.be.equal('Asset sent for publishing.')
+      })
+      .catch(done)
+  })
+
+  it('Unpublish Asset', done => {
+    makeAsset(publishAssetUID)
+      .unpublish({ publishDetails: {
+        locales: ['hi-in', 'en-us'],
+        environments: ['development']
+      } })
+      .then((notice) => {
+        expect(notice).to.be.equal('Asset sent for publishing.')
+      })
+      .catch(done)
+  })
+
   it('Delete asset', done => {
     makeAsset(assetUID)
       .delete()
