@@ -8,34 +8,35 @@ import { jsonReader } from '../utility/fileOperations/readwrite'
 var client = {}
 var stack = {}
 
-var folderUID = 'bltccb61db5f26e5817'
+var folderUID = ''
+var assetUID = ''
 describe('ContentType api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
-
     stack = jsonReader('stack.json')
     client = contentstack.client(axios, { authtoken: user.authtoken })
   })
 
-  // it('Asset Upload ', done => {
-  //   const asset = {
-  //     upload: path.join(__dirname, '../unit/mock/customUpload.html'),
-  //     title: 'customeasset',
-  //     description: 'Custom Asset Desc'
-  //   }
-  //   makeAsset().create(asset)
-  //     .then((asset) => {
-  //       console.log(asset)
-  //       expect(asset.uid).to.be.not.equal(null)
-  //       expect(asset.url).to.be.not.equal(null)
-  //       expect(asset.filename).to.be.equal('customUpload.html')
-  //       expect(asset.title).to.be.equal('customeasset')
-  //       expect(asset.description).to.be.equal('Custom Asset Desc')
-  //       expect(asset.content_type).to.be.equal('text/html')
-  //       done()
-  //     })
-  //     .catch(done)
-  // })
+  it('Asset Upload ', done => {
+    const asset = {
+      upload: path.join(__dirname, '../unit/mock/customUpload.html'),
+      title: 'customeasset',
+      description: 'Custom Asset Desc'
+    }
+    makeAsset().create(asset)
+      .then((asset) => {
+        assetUID = asset.uid
+        console.log(asset)
+        expect(asset.uid).to.be.not.equal(null)
+        expect(asset.url).to.be.not.equal(null)
+        expect(asset.filename).to.be.equal('customUpload.html')
+        expect(asset.title).to.be.equal('customeasset')
+        expect(asset.description).to.be.equal('Custom Asset Desc')
+        expect(asset.content_type).to.be.equal('text/html')
+        done()
+      })
+      .catch(done)
+  })
 
   it('Create folder ', done => {
     makeAsset().folder().create({ asset: { name: 'Sample Folder' } })
@@ -69,8 +70,48 @@ describe('ContentType api Test', () => {
       })
       .catch(done)
   })
+  it('Replace asset ', done => {
+    const asset = {
+      upload: path.join(__dirname, '../unit/mock/upload.html')
+    }
+    makeAsset(assetUID)
+      .replace(asset)
+      .then((asset) => {
+        expect(asset.uid).to.be.equal(assetUID)
+        expect(asset.filename).to.be.equal('upload.html')
+        expect(asset.content_type).to.be.equal('text/html')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Fetch and Update asset details', done => {
+    makeAsset(assetUID)
+      .fetch()
+      .then((asset) => {
+        asset.title = 'Update title'
+        asset.description = 'Update description'
+        return asset.update()
+      })
+      .then((asset) => {
+        expect(asset.uid).to.be.equal(assetUID)
+        expect(asset.title).to.be.equal('Update title')
+        expect(asset.description).to.be.equal('Update description')
+        done()
+      })
+      .catch(done)
+  })
+  it('Delete asset', done => {
+    makeAsset(assetUID)
+      .delete()
+      .then((notice) => {
+        expect(notice).to.be.equal('Asset deleted successfully.')
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeAsset (uid = null) {
-  return client.stack(stack.api_key, 'managementToken').asset(uid)
+  return client.stack(stack.api_key).asset(uid)
 }
