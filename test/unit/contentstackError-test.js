@@ -9,7 +9,7 @@ describe('Contentstack error test', () => {
     try {
       error(errorMock)
     } catch (err) {
-      const jsonMessage = JSON.parse(err.message)
+      const jsonMessage = err
       expect(jsonMessage.status).to.be.equal(404)
       expect(jsonMessage.statusText).to.be.equal('Not Found')
       expect(jsonMessage.request.url).to.be.equal('requesturl')
@@ -38,7 +38,7 @@ describe('Contentstack error test', () => {
     try {
       error(errorObj)
     } catch (err) {
-      const jsonMessage = JSON.parse(err.message)
+      const jsonMessage = err
       expect(jsonMessage.status).to.be.equal(404)
       expect(jsonMessage.statusText).to.be.equal('Not Found')
       expect(jsonMessage.request.url).to.be.equal('requesturl')
@@ -60,7 +60,7 @@ describe('Contentstack error test', () => {
     try {
       error(errorObj)
     } catch (err) {
-      const jsonMessage = JSON.parse(err.message)
+      const jsonMessage = err
       expect(jsonMessage.status).to.be.equal(404)
       expect(jsonMessage.statusText).to.be.equal('Not Found')
       expect(jsonMessage.request.url).to.be.equal('requesturl')

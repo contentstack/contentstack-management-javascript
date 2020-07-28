@@ -19,7 +19,6 @@
     "build:es-modules": "BABEL_ENV=es-modules babel lib -d dist/es-modules",
     "test": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/test.js -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:debug": "BABEL_ENV=test mocha debug --require @babel/register ./test",
-    "test:ts": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha  ./test/typings/sample.ts",
     "lint": "eslint lib test",
     "format": "eslint --fix lib test",
     "pretest": "rimraf coverage && npm run lint",

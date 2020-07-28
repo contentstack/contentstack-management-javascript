@@ -8,7 +8,7 @@ import { multiPageCT } from '../unit/mock/content-type'
 var client = {}
 
 var stack = {}
-describe('ContentType api Test', () => {
+describe('Content Type delete api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')

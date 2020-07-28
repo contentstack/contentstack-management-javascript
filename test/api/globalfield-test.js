@@ -11,7 +11,7 @@ var client = {}
 
 var stack = {}
 
-describe('ContentType api Test', () => {
+describe('Global Field api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')

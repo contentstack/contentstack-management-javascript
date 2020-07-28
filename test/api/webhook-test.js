@@ -10,7 +10,7 @@ var client = {}
 
 var stack = {}
 var webhookUid = 'bltb0ef6da267d340ea'
-describe('ContentType api Test', () => {
+describe('Webhook api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')

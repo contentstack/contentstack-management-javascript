@@ -12,7 +12,7 @@ var customFieldUID = ''
 var customWidgetUID = ''
 var customDashboardUID = ''
 
-describe('ContentType api Test', () => {
+describe('Extension api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')

@@ -46,7 +46,6 @@ describe('Contentstack retry network call', () => {
         done()
       })
       .catch((error) => {
-        console.log(error)
         expect(error).to.not.equal(null)
         done()
       })

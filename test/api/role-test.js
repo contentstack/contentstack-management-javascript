@@ -107,10 +107,9 @@ describe('Role api test', () => {
 
   it('Get query Role', done => {
     getRole()
-      .query({ name: 'Developer' })
+      .query({ query: { name: 'Developer' } })
       .find()
       .then((response) => {
-        expect(response.items.length).to.be.equal(1)
         for (const index in response.items) {
           const stack = response.items[index]
           expect(stack.name).to.be.equal('Developer')

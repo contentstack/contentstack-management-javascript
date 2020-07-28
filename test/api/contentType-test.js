@@ -8,7 +8,7 @@ import { singlepageCT, multiPageCT, schema } from '../unit/mock/content-type'
 var client = {}
 
 var stack = {}
-describe('ContentType api Test', () => {
+describe('Content Type api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
@@ -73,7 +73,6 @@ describe('ContentType api Test', () => {
     makeContentTyoe(multiPageCT.content_type.uid)
       .fetch()
       .then((contentType) => {
-        console.log(contentType)
         expect(contentType.uid).to.be.equal(multiPageCT.content_type.uid)
         expect(contentType.title).to.be.equal(multiPageCT.content_type.title)
         done()

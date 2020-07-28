@@ -11,7 +11,7 @@ var stack = {}
 var folderUID = ''
 var assetUID = ''
 var publishAssetUID = 'bltec65a7f777312cdb'
-describe('ContentType api Test', () => {
+describe('Assets api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
@@ -27,7 +27,6 @@ describe('ContentType api Test', () => {
     makeAsset().create(asset)
       .then((asset) => {
         assetUID = asset.uid
-        console.log(asset)
         expect(asset.uid).to.be.not.equal(null)
         expect(asset.url).to.be.not.equal(null)
         expect(asset.filename).to.be.equal('customUpload.html')
@@ -112,6 +111,7 @@ describe('ContentType api Test', () => {
       } })
       .then((notice) => {
         expect(notice).to.be.equal('Asset sent for publishing.')
+        done()
       })
       .catch(done)
   })
@@ -124,6 +124,7 @@ describe('ContentType api Test', () => {
       } })
       .then((notice) => {
         expect(notice).to.be.equal('Asset sent for publishing.')
+        done()
       })
       .catch(done)
   })
