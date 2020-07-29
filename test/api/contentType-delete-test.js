@@ -16,7 +16,7 @@ describe('Content Type delete api Test', () => {
   })
 
   it('Content Type delete', done => {
-    makeContentTyoe(multiPageCT.content_type.uid)
+    makeContentType(multiPageCT.content_type.uid)
       .delete().then((notice) => {
         expect(notice).to.be.equal('Content Type deleted successfully.')
         done()
@@ -25,6 +25,6 @@ describe('Content Type delete api Test', () => {
   })
 })
 
-function makeContentTyoe (uid = null) {
+function makeContentType (uid = null) {
   return client.stack(stack.api_key).contentType(uid)
 }

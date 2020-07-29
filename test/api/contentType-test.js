@@ -16,7 +16,7 @@ describe('Content Type api Test', () => {
   })
 
   it('Create Single page ContentType Schema', done => {
-    makeContentTyoe()
+    makeContentType()
       .create(singlepageCT)
       .then((contentType) => {
         expect(contentType.uid).to.be.equal(singlepageCT.content_type.uid)
@@ -27,7 +27,7 @@ describe('Content Type api Test', () => {
   })
 
   it('Create Multi page ContentType Schema', done => {
-    makeContentTyoe()
+    makeContentType()
       .create(multiPageCT)
       .then((contentType) => {
         expect(contentType.uid).to.be.equal(multiPageCT.content_type.uid)
@@ -38,7 +38,7 @@ describe('Content Type api Test', () => {
   })
 
   it('Get all ContentType', done => {
-    makeContentTyoe()
+    makeContentType()
       .query()
       .find()
       .then((response) => {
@@ -53,7 +53,7 @@ describe('Content Type api Test', () => {
   })
 
   it('Query ContentType title', done => {
-    makeContentTyoe()
+    makeContentType()
       .query({ query: { title: singlepageCT.content_type.title } })
       .find()
       .then((response) => {
@@ -70,7 +70,7 @@ describe('Content Type api Test', () => {
   })
 
   it('Fetch ContentType from uid', done => {
-    makeContentTyoe(multiPageCT.content_type.uid)
+    makeContentType(multiPageCT.content_type.uid)
       .fetch()
       .then((contentType) => {
         expect(contentType.uid).to.be.equal(multiPageCT.content_type.uid)
@@ -81,7 +81,7 @@ describe('Content Type api Test', () => {
   })
 
   it('Fetch and Update ContentType schema', done => {
-    makeContentTyoe(multiPageCT.content_type.uid)
+    makeContentType(multiPageCT.content_type.uid)
       .fetch()
       .then((contentType) => {
         contentType.schema = schema
@@ -95,6 +95,6 @@ describe('Content Type api Test', () => {
   })
 })
 
-function makeContentTyoe (uid = null) {
+function makeContentType (uid = null) {
   return client.stack(stack.api_key).contentType(uid)
 }
