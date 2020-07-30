@@ -1,7 +1,3 @@
-
-// // import path from 'path'
-// import webpackMerge from 'webpack-merge'
-// import commonConfig from './webpack.common'
 const path = require('path')
 const webpackMerge = require('webpack-merge')
 const commonConfig = require('./webpack.common')
