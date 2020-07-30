@@ -1,10 +1,9 @@
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { releaseCreate } from '../unit/mock/release.js'
 import { expect } from 'chai'
 import { cloneDeep } from 'lodash'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
 var stack = {}
@@ -15,7 +14,7 @@ describe('Relases api Test', () => {
     const user = jsonReader('loggedinuser.json')
 
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
 
   it('Create a Release', done => {

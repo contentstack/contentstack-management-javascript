@@ -1,9 +1,8 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import role from '../unit/mock/role'
 import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 var stack = {}
 var client = {}
 var roleUID = 'blt0c678bcc2bdfc141'
@@ -12,7 +11,7 @@ describe('Role api test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
 
   it('Get all role in stack', done => {

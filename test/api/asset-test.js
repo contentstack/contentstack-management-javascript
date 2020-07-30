@@ -1,28 +1,28 @@
 import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
 var stack = {}
 
 var folderUID = ''
 var assetUID = ''
-var publishAssetUID = 'bltec65a7f777312cdb'
+var publishAssetUID = ''
 describe('Assets api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
 
   it('Asset Upload ', done => {
     const asset = {
       upload: path.join(__dirname, '../unit/mock/customUpload.html'),
-      title: 'customeasset',
-      description: 'Custom Asset Desc'
+      title: 'customasset',
+      description: 'Custom Asset Desc',
+      tags: ['Custom']
     }
     makeAsset().create(asset)
       .then((asset) => {
@@ -30,7 +30,7 @@ describe('Assets api Test', () => {
         expect(asset.uid).to.be.not.equal(null)
         expect(asset.url).to.be.not.equal(null)
         expect(asset.filename).to.be.equal('customUpload.html')
-        expect(asset.title).to.be.equal('customeasset')
+        expect(asset.title).to.be.equal('customasset')
         expect(asset.description).to.be.equal('Custom Asset Desc')
         expect(asset.content_type).to.be.equal('text/html')
         done()
@@ -53,9 +53,10 @@ describe('Assets api Test', () => {
   it('Asset Upload in folder', done => {
     const asset = {
       upload: path.join(__dirname, '../unit/mock/customUpload.html'),
-      title: 'customeasset in Folder',
+      title: 'customasset in Folder',
       description: 'Custom Asset Desc in Folder',
-      parent_uid: folderUID
+      parent_uid: folderUID,
+      tags: 'folder'
     }
     makeAsset().create(asset)
       .then((asset) => {
@@ -63,7 +64,7 @@ describe('Assets api Test', () => {
         expect(asset.uid).to.be.not.equal(null)
         expect(asset.url).to.be.not.equal(null)
         expect(asset.filename).to.be.equal('customUpload.html')
-        expect(asset.title).to.be.equal('customeasset in Folder')
+        expect(asset.title).to.be.equal('customasset in Folder')
         expect(asset.description).to.be.equal('Custom Asset Desc in Folder')
         expect(asset.content_type).to.be.equal('text/html')
         expect(asset.parent_uid).to.be.equal(folderUID)
@@ -123,7 +124,7 @@ describe('Assets api Test', () => {
         environments: ['development']
       } })
       .then((notice) => {
-        expect(notice).to.be.equal('Asset sent for publishing.')
+        expect(notice).to.be.equal('Asset sent for unpublishing.')
         done()
       })
       .catch(done)
@@ -134,6 +135,36 @@ describe('Assets api Test', () => {
       .delete()
       .then((notice) => {
         expect(notice).to.be.equal('Asset deleted successfully.')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Query to fetch all asset', done => {
+    makeAsset()
+      .query()
+      .find()
+      .then((collection) => {
+        collection.items.forEach((asset) => {
+          expect(asset.uid).to.be.not.equal(null)
+          expect(asset.title).to.be.not.equal(null)
+          expect(asset.description).to.be.not.equal(null)
+        })
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Query to fetch title match asset', done => {
+    makeAsset()
+      .query({ query: { title: 'Update title' } })
+      .find()
+      .then((collection) => {
+        collection.items.forEach((asset) => {
+          expect(asset.uid).to.be.not.equal(null)
+          expect(asset.title).to.be.equal('Update title')
+          expect(asset.description).to.be.equal('Update description')
+        })
         done()
       })
       .catch(done)

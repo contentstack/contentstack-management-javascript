@@ -1,11 +1,10 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import path from 'path'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { webhook, updateWebhook } from '../unit/mock/webhook'
 import { cloneDeep } from 'lodash'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 var client = {}
 
 var stack = {}
@@ -14,7 +13,7 @@ describe('Webhook api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
 
   it('Create Webhook', done => {
@@ -110,7 +109,6 @@ describe('Webhook api Test', () => {
       .then((assetFile) => {
         makeWebhook(webhookUid).executions()
           .then((response) => {
-            console.log(response)
             response.webhooks.forEach(webhook => {
               expect(webhook.uid).to.be.not.equal(null)
               expect(webhook.status).to.be.equal(200)
@@ -135,7 +133,6 @@ describe('Webhook api Test', () => {
   it('Get all Webhook', done => {
     makeWebhook().fetchAll()
       .then((collection) => {
-        console.log(collection)
         collection.items.forEach(webhook => {
           expect(webhook.uid).to.be.not.equal(null)
           expect(webhook.name).to.be.not.equal(null)

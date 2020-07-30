@@ -1,20 +1,19 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { multiPageCT, singlepageCT } from '../unit/mock/content-type.js'
 import { entryFirst, entrySecond } from '../unit/mock/entry.js'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
 
 var stack = {}
-var entryUTD = 'bltc144f14cb4310b7d'
+var entryUTD = ''
 describe('Entry api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
 
   it('Create Entry in Single ', done => {
@@ -25,6 +24,7 @@ describe('Entry api Test', () => {
     makeEntry(singlepageCT.content_type.uid)
       .create({ entry })
       .then((entryResponse) => {
+        entryUTD = entryResponse.uid
         expect(entryResponse.title).to.be.equal(entry.title)
         expect(entryResponse.url).to.be.equal(entry.url)
         expect(entryResponse.uid).to.be.not.equal(null)
@@ -33,11 +33,10 @@ describe('Entry api Test', () => {
       })
       .catch(done)
   })
-  it('Localize entry with title update ', done => {
+  it('Entry fetch with Content Type', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .fetch({ include_content_type: true })
       .then((entryResponse) => {
-        console.log(entryResponse)
         expect(entryResponse.uid).to.be.not.equal(null)
         expect(entryResponse.content_type).to.be.not.equal(null)
         done()

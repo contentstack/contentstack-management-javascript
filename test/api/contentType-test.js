@@ -1,9 +1,8 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { singlepageCT, multiPageCT, schema } from '../unit/mock/content-type'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
 
@@ -12,7 +11,7 @@ describe('Content Type api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
 
   it('Create Single page ContentType Schema', done => {

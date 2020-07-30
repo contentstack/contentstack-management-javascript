@@ -1,10 +1,9 @@
 import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { customFieldURL, customFieldSRC, customWidgetURL, customWidgetSRC, customDashboardURL, customDashboardSRC } from '../unit/mock/extension'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 var client = {}
 var stack = {}
 
@@ -16,7 +15,7 @@ describe('Extension api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
   it('Create Custom field with source URL', done => {
     makeExtension()

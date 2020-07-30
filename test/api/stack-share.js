@@ -1,8 +1,7 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 var stack = {}
 var client = {}
 
@@ -10,7 +9,7 @@ describe('Stack Share/Unshare', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
   it('Share stack test', done => {
     const role = jsonReader('role.json')

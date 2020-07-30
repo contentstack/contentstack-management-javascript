@@ -1,9 +1,8 @@
 
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 var client = {}
 
 var stack = {}
@@ -11,7 +10,7 @@ describe('Delete api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
 
   it('Delete role in stack', done => {
@@ -37,7 +36,6 @@ describe('Delete api Test', () => {
   it('User logout test', done => {
     client.logout()
       .then((response) => {
-        expect(axios.defaults.headers.authtoken).to.be.equal(undefined)
         expect(response.notice).to.be.equal('You\'ve logged out successfully.')
         done()
       })

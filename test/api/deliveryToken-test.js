@@ -1,9 +1,8 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { createDeliveryToken, createDeliveryToken2 } from '../unit/mock/deliveryToken.js'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
 
@@ -13,7 +12,7 @@ describe('Delivery Token api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
 
   it('Add a Delivery Token', done => {

@@ -1,11 +1,10 @@
 import path from 'path'
-import axios from 'axios'
 import { expect } from 'chai'
 import { cloneDeep } from 'lodash'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { createGlobalField } from '../unit/mock/globalfield'
+import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
 
@@ -15,7 +14,7 @@ describe('Global Field api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
 
   it('Create global fields', done => {

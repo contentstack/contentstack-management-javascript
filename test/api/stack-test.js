@@ -1,9 +1,11 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import * as contentstack from '../../lib/contentstack.js'
-import axios from 'axios'
 import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
-var orgID = 'blt7d93f4fb8e6f74cb'
+import dotenv from 'dotenv'
+import { contentstackClient } from '../utility/ContentstackClient.js'
+dotenv.config()
+
+var orgID = process.env.ORGANIZATION
 var user = {}
 var client = {}
 
@@ -11,7 +13,7 @@ var stacks = {}
 describe('Stack api Test', () => {
   setup(() => {
     user = jsonReader('loggedinuser.json')
-    client = contentstack.client(axios, { authtoken: user.authtoken })
+    client = contentstackClient(user.authtoken)
   })
   const newStack = {
     stack:
@@ -70,7 +72,7 @@ describe('Stack api Test', () => {
     client.stack(stacks.api_key)
       .users()
       .then((response) => {
-        expect(response[0].uid).to.be.equal('blt4dcb45b4456bb358')
+        expect(response[0].uid).to.be.not.equal(null)
         done()
       })
       .catch(done)

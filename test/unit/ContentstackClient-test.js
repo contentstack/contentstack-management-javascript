@@ -48,9 +48,4 @@ describe('Contentstack Client', () => {
         done()
       })
   })
-  // it('Contentstack Client get Stack', done => {
-  //   const stack = ContentstackClient({ http: axios })
-  //     .stack()
-  //   stack.create
-  // })
 })
