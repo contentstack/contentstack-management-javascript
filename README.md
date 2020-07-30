@@ -106,7 +106,7 @@ contentstackClient.stack('API_KEY').asset().create({ asset })
 -   [Contentstack Website](https://www.contentstack.com/)
 -   [Official Documentation](https://contentstack.com/docs)
 -   [Content Management API Docs](https://www.contentstack.com/docs/developers/apis/content-management-api)
-- 
+
 ### The MIT License (MIT)
 Copyright © 2012-2020  [Contentstack](https://www.contentstack.com/). All Rights Reserved
 
