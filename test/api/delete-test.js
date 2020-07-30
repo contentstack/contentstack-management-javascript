@@ -33,4 +33,14 @@ describe('Delete api Test', () => {
       })
       .catch(done)
   })
+
+  it('User logout test', done => {
+    client.logout()
+      .then((response) => {
+        expect(axios.defaults.headers.authtoken).to.be.equal(undefined)
+        expect(response.notice).to.be.equal('You\'ve logged out successfully.')
+        done()
+      })
+      .catch(done)
+  })
 })

@@ -35,6 +35,26 @@ describe('Contentstack User Session api Test', () => {
       .catch(done)
   })
 
+  it('User logout test', done => {
+    contentstackClient.logout()
+      .then((response) => {
+        expect(axios.defaults.headers.common.authtoken).to.be.equal(undefined)
+        expect(response.notice).to.be.equal('You\'ve logged out successfully.')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('User login with credentials', done => {
+    contentstackClient.login({ email: 'uttam.ukkoji@contentstack.com', password: 'c0ntentst@ck' }, { include_orgs: true, include_orgs_roles: true, include_stack_roles: true, include_user_settings: true }).then((response) => {
+      loggedinUserID = response.user.uid
+      jsonWrite(response.user, 'loggedinuser.json')
+      expect(response.notice).to.be.equal('Login Successful.', 'Login success messsage does not match.')
+      done()
+    })
+      .catch(done)
+  })
+
   it('Get Current user info test', done => {
     contentstackClient.getUser().then((user) => {
       authToken = user.authtoken
