@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "dist/node/contentstack.js",
+  "browser": "dist/web/contentstack.js",
   "directories": {
     "test": "test"
   },
@@ -58,10 +59,7 @@
     "@types/mocha": "^7.0.2",
     "axios-mock-adapter": "^1.18.2",
     "babel-loader": "^8.1.0",
-    "babel-plugin-add-module-exports": "^1.0.2",
     "babel-plugin-rewire": "^1.2.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
     "docdash": "^1.2.0",
