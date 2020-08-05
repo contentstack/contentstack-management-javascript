@@ -114,8 +114,8 @@ describe('Label api Test', () => {
   it('Delete label from uid', done => {
     makeLabel(deleteLabelUID)
       .delete()
-      .then((notice) => {
-        expect(notice).to.be.equal('Label deleted successfully.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('Label deleted successfully.')
         done()
       })
       .catch(done)

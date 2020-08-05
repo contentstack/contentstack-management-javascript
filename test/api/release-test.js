@@ -115,8 +115,8 @@ describe('Relases api Test', () => {
   it('Delete specific Releases with Uid ', done => {
     makeRelease(releaseUID)
       .delete()
-      .then((notice) => {
-        expect(notice).to.be.equal('Release deleted successfully.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('Release deleted successfully.')
         done()
       })
       .catch(done)

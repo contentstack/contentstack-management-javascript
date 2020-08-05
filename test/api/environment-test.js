@@ -113,8 +113,8 @@ describe('Environment api Test', () => {
   it('delete a Environment', done => {
     makeEnvironment(environmentProdCreate.environment.name)
       .delete()
-      .then((notice) => {
-        expect(notice).to.be.equal('Environment deleted successfully.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('Environment deleted successfully.')
         done()
       })
       .catch(done)

@@ -29,7 +29,7 @@ contentstackClient = contentstack.client(axios, {})
 ```
 
 ### Authentication
-To use this SDK you need to authenticate using the user Authtoken, creadentials, or Management Token (stack-level token).
+To use this SDK you need to authenticate using the user Authtoken, credentials, or Management Token (stack-level token).
 ### Authtoken
 An **Authtoken** is a read-write token used to make authorized CMA requests, and it is a **user-specific** token.
 ```
@@ -40,7 +40,7 @@ contentstackClient = contentstack.client(axios, { authtoken: 'AUTHTOKEN' })
 To Login to Contentstack using credentials:
 ```
 contentstackClient.login({ email: 'EMAIL', password: 'PASSWORD'})
-..then((response) => {
+.then((response) => {
 	console.log(response.notice)
 	console.log(response.user)
 })
@@ -92,7 +92,7 @@ The following code snippet is use to create Asset into Stack using this SDK:
 ```
 var  asset  = {
 	upload: 'path/to/file',
-	tit;e: 'Asset Title'
+	title: 'Asset Title'
 }
 
 contentstackClient.stack('API_KEY').asset().create({ asset })

@@ -116,8 +116,8 @@ describe('Locale api Test', () => {
   it('Get and update a language Hindi - India', done => {
     makeLocale('mr-in')
       .delete()
-      .then((notice) => {
-        expect(notice).to.be.equal('Language removed successfully.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('Language removed successfully.')
         done()
       })
       .catch(done)

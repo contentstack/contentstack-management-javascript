@@ -130,8 +130,8 @@ describe('Delivery Token api Test', () => {
   it('Delete a Delivery Token from uid', done => {
     makeDeliveryToken(tokenUID)
       .delete()
-      .then((notice) => {
-        expect(notice).to.be.equal('Delivery Token deleted successfully.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('Delivery Token deleted successfully.')
         done()
       })
       .catch(done)

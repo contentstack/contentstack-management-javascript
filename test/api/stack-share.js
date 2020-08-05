@@ -16,7 +16,7 @@ describe('Stack Share/Unshare', () => {
     client.stack(stack.api_key)
       .share(['test@test.com'], { 'test@test.com': [role.uid] })
       .then((response) => {
-        expect(response).to.be.equal('The invitation has been sent successfully.')
+        expect(response.notice).to.be.equal('The invitation has been sent successfully.')
         done()
       })
       .catch(done)
@@ -26,7 +26,7 @@ describe('Stack Share/Unshare', () => {
     client.stack(stack.api_key)
       .unShare('test@test.com')
       .then((response) => {
-        expect(response).to.be.equal('The stack has been successfully unshared.')
+        expect(response.notice).to.be.equal('The stack has been successfully unshared.')
         done()
       })
       .catch(done)

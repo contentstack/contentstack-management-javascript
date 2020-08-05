@@ -110,8 +110,8 @@ describe('Assets api Test', () => {
         locales: ['hi-in', 'en-us'],
         environments: ['development']
       } })
-      .then((notice) => {
-        expect(notice).to.be.equal('Asset sent for publishing.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('Asset sent for publishing.')
         done()
       })
       .catch(done)
@@ -123,8 +123,8 @@ describe('Assets api Test', () => {
         locales: ['hi-in', 'en-us'],
         environments: ['development']
       } })
-      .then((notice) => {
-        expect(notice).to.be.equal('Asset sent for unpublishing.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('Asset sent for unpublishing.')
         done()
       })
       .catch(done)
@@ -133,8 +133,8 @@ describe('Assets api Test', () => {
   it('Delete asset', done => {
     makeAsset(assetUID)
       .delete()
-      .then((notice) => {
-        expect(notice).to.be.equal('Asset deleted successfully.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('Asset deleted successfully.')
         done()
       })
       .catch(done)

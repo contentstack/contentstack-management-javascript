@@ -284,8 +284,8 @@ describe('Extension api Test', () => {
   it('Delete Custom dashboard', done => {
     makeExtension(customDashboardUID)
       .delete()
-      .then((notice) => {
-        expect(notice).to.be.equal('Extension deleted successfully.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
       .catch(done)

@@ -64,8 +64,8 @@ describe('Organization api test', () => {
   // need to test with transfer ownership
   // it('Transfer Organization Ownership', done => {
   //   organization.transferOwnership('em@em.com')
-  //     .then((notice) => {
-  //       expect(notice).to.be.equal('Email has been successfully sent to the user.', 'Message does not match')
+  //     .then((data) => {
+  //       expect(data.notice).to.be.equal('Email has been successfully sent to the user.', 'Message does not match')
   //       done()
   //     })
   //     .catch((error) => {

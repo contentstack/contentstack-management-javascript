@@ -125,8 +125,8 @@ describe('Entry api Test', () => {
         locales: ['en-us'],
         environments: ['development']
       } })
-      .then((notice) => {
-        expect(notice).to.be.equal('The requested action has been performed.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('The requested action has been performed.')
         done()
       })
       .catch(done)
@@ -139,8 +139,8 @@ describe('Entry api Test', () => {
         environments: ['development']
       },
       locale: 'en-at' })
-      .then((notice) => {
-        expect(notice).to.be.equal('The requested action has been performed.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('The requested action has been performed.')
         done()
       })
       .catch(done)
@@ -153,8 +153,8 @@ describe('Entry api Test', () => {
         environments: ['development']
       },
       locale: 'en-at' })
-      .then((notice) => {
-        expect(notice).to.be.equal('The requested action has been performed.')
+      .then((data) => {
+        expect(data.notice).to.be.equal('The requested action has been performed.')
         done()
       })
       .catch(done)
