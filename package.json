@@ -2,8 +2,8 @@
   "name": "@contentstack/contentstack-management",
   "version": "0.1.0",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
-  "main": "dist/node/contentstack.js",
-  "browser": "dist/web/contentstack.js",
+  "main": "dist/node/contentstack-management.js",
+  "browser": "dist/web/contentstack-management.js",
   "directories": {
     "test": "test"
   },
