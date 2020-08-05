@@ -22,7 +22,7 @@ export function BulkOperation(http) {
    * The Publish entries and assets in bulk request allows you to publish multiple entries and assets at the same time.
    * @memberof BulkOperation
    * @func publish
-   * @returns {Promise<String>} Success message
+   * @returns {Promise<Object>} Response Object.
    * @param {Boolean} params.details - Set this with details containing 'entries', 'assets', 'locales', and 'environments' to which you want to publish the entries or assets.
    * @param {Boolean} params.skip_workflow_stage_check Set this to 'true' to publish the entries that are at a workflow stage where they satisfy the applied publish rules.
    * @param {Boolean} params.approvals Set this to 'true' to publish the entries that do not require an approval to be published.
@@ -95,7 +95,7 @@ export function BulkOperation(http) {
    * The Unpublish entries and assets in bulk request allows you to unpublish multiple entries and assets at the same time.
    * @memberof BulkOperation
    * @func unpublish
-   * @returns {Promise<String>} Success message
+   * @returns {Promise<Object>} Response Object.
    * @param {Boolean} params.details - Set this with details containing 'entries', 'assets', 'locales', and 'environments' to which you want to unpublish the entries or assets. If you do not specify a source locale, the entries or assets will be unpublished in the master locale automatically.
    * @param {Boolean} params.skip_workflow_stage_check Set this to 'true' to publish the entries that are at a workflow stage where they satisfy the applied publish rules.
    * @param {Boolean} params.approvals Set this to 'true' to publish the entries that do not require an approval to be published.

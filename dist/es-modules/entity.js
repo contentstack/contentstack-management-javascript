@@ -110,7 +110,7 @@ export var publishUnpublish = /*#__PURE__*/function () {
               break;
             }
 
-            return _context3.abrupt("return", response.data.notice);
+            return _context3.abrupt("return", response.data);
 
           case 14:
             throw error(response);
@@ -366,7 +366,7 @@ export var deleteEntity = function deleteEntity(http) {
               break;
             }
 
-            return _context8.abrupt("return", response.data.notice);
+            return _context8.abrupt("return", response.data);
 
           case 10:
             throw error(response);

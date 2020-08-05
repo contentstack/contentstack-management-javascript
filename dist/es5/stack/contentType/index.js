@@ -56,7 +56,7 @@ function ContentType(http) {
      * @description The Delete ContentType call is used to delete an existing ContentType permanently from your Stack.
      * @memberof ContentType
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})

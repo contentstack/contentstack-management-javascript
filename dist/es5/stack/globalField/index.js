@@ -71,7 +71,7 @@ function GlobalField(http) {
      * @description The Delete GlobalField call is used to delete an existing GlobalField permanently from your Stack.
      * @memberof GlobalField
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})

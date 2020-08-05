@@ -38,7 +38,7 @@ export function Entry(http) {
      * @description The Delete an entry call is used to delete a specific entry from a content type.
      * @memberof Entry
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -71,7 +71,7 @@ export function Entry(http) {
      * @description The Publish an asset call is used to publish a specific version of an asset on the desired environment either immediately or at a later date/time.
      * @memberof Asset
      * @func publish
-     * @returns {Promise<String>} Notice for success message.
+     * @returns {Promise<Object>} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -95,7 +95,7 @@ export function Entry(http) {
      * @description The Replace asset call will replace an existing asset with another file on the stack.
      * @memberof Entry
      * @func unpublish
-     * @returns {Promise<String>} Notice for success message.
+     * @returns {Promise<Object>} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})

@@ -52,7 +52,7 @@ function Locale(http) {
        * @description The Delete Locale call is used to delete an existing Locale permanently from your Stack.
        * @memberof Locale
        * @func delete
-       * @returns {String} Success message.
+       * @returns {Object} Response Object.
        * @example
        * import * as contentstack from 'contentstack'
        * const client = contentstack.client({})

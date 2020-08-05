@@ -51,7 +51,7 @@ export function Webhook(http) {
      * @description The Delete Webhook call is used to delete an existing Webhook permanently from your Stack.
      * @memberof Webhook
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})

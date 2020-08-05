@@ -46,7 +46,7 @@ export function Asset(http) {
      * @description The Delete asset call will delete an existing asset from the stack.
      * @memberof Asset
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -145,7 +145,7 @@ export function Asset(http) {
      * @description The Publish an asset call is used to publish a specific version of an asset on the desired environment either immediately or at a later date/time.
      * @memberof Asset
      * @func publish
-     * @returns {Promise<String>} Notice for success message.
+     * @returns {Promise<Object>} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -170,7 +170,7 @@ export function Asset(http) {
      * @description The Replace asset call will replace an existing asset with another file on the stack.
      * @memberof Asset
      * @func unpublish
-     * @returns {Promise<String>} Notice for success message.
+     * @returns {Promise<Object>} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})

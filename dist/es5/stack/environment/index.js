@@ -48,7 +48,7 @@ function Environment(http) {
        * @description The Delete Environment call is used to delete an existing Environment permanently from your Stack.
        * @memberof Environment
        * @func delete
-       * @returns {String} Success message.
+       * @returns {Object} Response Object.
        * @example
        * import * as contentstack from 'contentstack'
        * const client = contentstack.client({})

@@ -40,7 +40,7 @@ export function Extension(http, data) {
      * @description The Delete Extension call is used to delete an existing Extension permanently from your Stack.
      * @memberof Extension
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})

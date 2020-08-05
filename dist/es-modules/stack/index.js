@@ -74,7 +74,7 @@ export function Stack(http, data) {
      * @description The Delete stack call is used to delete an existing stack permanently from your Contentstack account.
      * @memberof Stack
      * @func delete
-     *  @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -500,7 +500,7 @@ export function Stack(http, data) {
      * @memberof Stack
      * @func transferOwnership
      * @param {String} email The email address of the user to whom you wish to transfer the ownership of the stack.
-     * @returns {String} Success message of transfer ownership.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -533,7 +533,7 @@ export function Stack(http, data) {
                   break;
                 }
 
-                return _context2.abrupt("return", response.data.notice);
+                return _context2.abrupt("return", response.data);
 
               case 8:
                 return _context2.abrupt("return", error(response));
@@ -743,7 +743,7 @@ export function Stack(http, data) {
      * @func share
      * @param {Array<String>} emails - Email ID of the user with whom you wish to share the stack
      * @param {Array<String>} roles - The role uid that you wish to assign the user.
-     * @returns {String} Success message of invitition send.
+     * @returns {Object} Response Object.
      *
      * @example
      * import * as contentstack from 'contentstack'
@@ -782,7 +782,7 @@ export function Stack(http, data) {
                 break;
               }
 
-              return _context6.abrupt("return", response.data.notice);
+              return _context6.abrupt("return", response.data);
 
             case 10:
               return _context6.abrupt("return", error(response));
@@ -808,7 +808,7 @@ export function Stack(http, data) {
      * @memberof Stack
      * @func unShare
      * @param {String} email The email ID of the user from whom you wish to unshare the stack.
-     * @returns {String} Success message of unshare stack with user.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -841,7 +841,7 @@ export function Stack(http, data) {
                   break;
                 }
 
-                return _context7.abrupt("return", response.data.notice);
+                return _context7.abrupt("return", response.data);
 
               case 8:
                 return _context7.abrupt("return", error(response));

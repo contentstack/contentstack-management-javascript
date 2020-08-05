@@ -35,7 +35,7 @@ export function Label(http, data) {
      * @description The Delete label call is used to delete a specific label.
      * @memberof Label
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})

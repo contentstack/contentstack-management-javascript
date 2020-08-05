@@ -54,7 +54,7 @@ function User(http, data) {
      * @description The Delete user call deletes the current authenticated user permanently from your Contentstack account.
      * @memberof User
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -71,7 +71,7 @@ function User(http, data) {
      * @description The Request for a password call sends a request for a temporary password to log in to an account in case a user has forgotten the login password.
      * @memberof User
      * @func requestPassword
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -90,14 +90,14 @@ function User(http, data) {
           email: this.email
         }
       }).then(function (response) {
-        return response.data.notice;
+        return response.data;
       }, _contentstackError2["default"]);
     };
     /**
      * @description The Reset password call sends a request for resetting the password of your Contentstack account.
      * @memberof User
      * @func resetPassword
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -122,7 +122,7 @@ function User(http, data) {
           password_confirmation: passwordConfirm
         }
       }).then(function (response) {
-        return response.data.notice;
+        return response.data;
       }, _contentstackError2["default"]);
     };
 

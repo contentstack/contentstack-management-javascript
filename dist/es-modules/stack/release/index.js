@@ -93,7 +93,7 @@ export function Release(http) {
      * @description The Delete Release call is used to delete an existing Release permanently from your Stack.
      * @memberof Release
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})
@@ -125,7 +125,7 @@ export function Release(http) {
      * @description The Deploy a Release request deploys a specific Release to specific environment(s) and locale(s).
      * @memberof Release
      * @func deploy
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @param {Array} environments - environment(s) on which the Release should be deployed.
      * @param {Array} locales -  locale(s) on which the Release should be deployed.
      * @param {String} action -  action on which the Release should be deployed.
@@ -194,7 +194,7 @@ export function Release(http) {
                   break;
                 }
 
-                return _context.abrupt("return", response.data.notice);
+                return _context.abrupt("return", response.data);
 
               case 15:
                 throw error(response);

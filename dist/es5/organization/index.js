@@ -142,7 +142,7 @@ function Organization(http, data) {
        * @memberof Organization
        * @func transferOwnership
        * @param {String} email The email address of the user to whom you wish to transfer the ownership of the organization.
-       * @returns {String} Success message of transfer ownership.
+       * @returns {Object} Response Object.
        * @example
        * import * as contentstack from 'contentstack'
        * const client = contentstack.client({})
@@ -174,7 +174,7 @@ function Organization(http, data) {
                     break;
                   }
 
-                  return _context2.abrupt("return", response.data.notice);
+                  return _context2.abrupt("return", response.data);
 
                 case 8:
                   return _context2.abrupt("return", (0, _contentstackError2["default"])(response));
@@ -330,7 +330,7 @@ function Organization(http, data) {
        * @description The Resend pending organization invitation call allows you to resend Organization invitations to users who have not yet accepted the earlier invitation.
        * @memberof Organization
        * @func resendInvitition
-       * @returns {String} Success message of invitation send.
+       * @returns {Object} Response Object.
        * @example
        * import * as contentstack from 'contentstack'
        * const client = contentstack.client({})
@@ -360,7 +360,7 @@ function Organization(http, data) {
                     break;
                   }
 
-                  return _context5.abrupt("return", response.data.notice);
+                  return _context5.abrupt("return", response.data);
 
                 case 8:
                   return _context5.abrupt("return", (0, _contentstackError2["default"])(response));

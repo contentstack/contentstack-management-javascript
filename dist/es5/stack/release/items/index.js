@@ -59,7 +59,7 @@ function ReleaseItem(http) {
        * @func delete
        * @param {Object} param.items Add multiple items to a Release
        * @param {Object} param.items Add multiple items to a Release
-       * @returns {String} Success message.
+       * @returns {Object} Response Object.
        * @example
        * import * as contentstack from 'contentstack'
        * const client = contentstack.client({})
@@ -92,7 +92,7 @@ function ReleaseItem(http) {
                     break;
                   }
 
-                  return _context.abrupt("return", response.data.notice);
+                  return _context.abrupt("return", response.data);
 
                 case 9:
                   throw (0, _contentstackError2["default"])(response);

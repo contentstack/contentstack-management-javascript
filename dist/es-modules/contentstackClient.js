@@ -148,8 +148,9 @@ export default function contentstackClient(_ref) {
   /**
    * @description The Log out of your account call is used to sign out the user of Contentstack account.
    * @memberof ContentstackClient
+    * @param {String} authtoken - Authtoken to logout from.
    * @func logout
-   * @returns {String} Success message.
+   * @returns {Object} Response object.
    *
    * @example
    * import * as contentstack from 'contentstack'
@@ -159,7 +160,17 @@ export default function contentstackClient(_ref) {
    */
 
 
-  function logout() {
+  function logout(authtoken) {
+    if (authtoken !== undefined) {
+      return http["delete"]('/user-session', {
+        headers: {
+          authtoken: authtoken
+        }
+      }).then(function (response) {
+        return response.data;
+      }, error);
+    }
+
     return http["delete"]('/user-session').then(function (response) {
       if (http.defaults.headers.common) {
         delete http.defaults.headers.common.authtoken;

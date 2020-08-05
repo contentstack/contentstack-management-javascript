@@ -34,7 +34,7 @@ export function DeliveryToken(http) {
      * @description The Delete DeliveryToken call is used to delete an existing DeliveryToken permanently from your Stack.
      * @memberof DeliveryToken
      * @func delete
-     * @returns {String} Success message.
+     * @returns {Object} Response Object.
      * @example
      * import * as contentstack from 'contentstack'
      * const client = contentstack.client({})

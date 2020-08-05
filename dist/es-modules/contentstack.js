@@ -38,7 +38,7 @@ export function client(axios, params) {
   var defaultParameter = {
     defaultHostName: 'api.contentstack.io'
   };
-  var sdkAgent = "contentstack-management-javascript/".concat(packages.version);
+  var sdkAgent = "".concat(packages.name, "-javascript/").concat(packages.version);
   var userAgentHeader = getUserAgent(sdkAgent, params.application, params.integration, params.feature);
   var requiredHeaders = {
     'X-User-Agent': sdkAgent,
