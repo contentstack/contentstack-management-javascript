@@ -12,3 +12,4 @@ coverage/
 mochawesome-report/
 .nyc_output/
 typings
+webpack/
