@@ -10,3 +10,5 @@ mocktest.json
 Sample
 coverage/
 mochawesome-report/
+.nyc_output/
+typings
