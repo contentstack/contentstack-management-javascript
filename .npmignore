@@ -9,3 +9,4 @@ examples/
 mocktest.json
 Sample
 coverage/
+mochawesome-report/
