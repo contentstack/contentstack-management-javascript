@@ -2,15 +2,15 @@
 
 ## Contentstack Management JavaScript SDK
 
-Contentstack is a headless CMS with an API-first approach. It is a CMS that developers can use to build powerful cross-platform applications in their favorite languages. Build your application frontend, and Contentstack will take care of the rest. [Read More](https://www.contentstack.com/).
+Contentstack is a headless CMS with an API-first approach. It is a CMS that developers can use to build powerful cross-platform applications in their favorite languages. All you have to do is build your application frontend, and Contentstack will take care of the rest. [Read More](https://www.contentstack.com/).
 
-This SDK use Content Management API(CMA). The Content Management API (CMA) is used to manage the content of your Contentstack account. This includes creating, updating, deleting, and fetching content of your account. To use the Content Management API, you will need to authenticate yourself with a [Management Token](https://www.contentstack.com/docs/developers/create-tokens/about-management-tokens) or an [Authtoken](https://www.contentstack.com/docs/developers/apis/content-management-api/#how-to-get-authtoken). Read more about it in [Authentication](https://www.contentstack.com/docs/developers/apis/content-management-api/#authentication).
+This SDK uses the [Content Management API](https://www.contentstack.com/docs/developers/apis/content-management-api/) (CMA). The CMA is used to manage the content of your Contentstack account. This includes creating, updating, deleting, and fetching content of your account. To use the CMA, you will need to authenticate your users with a [Management Token](https://www.contentstack.com/docs/developers/create-tokens/about-management-tokens) or an [Authtoken](https://www.contentstack.com/docs/developers/apis/content-management-api/#how-to-get-authtoken). Read more about it in [Authentication](https://www.contentstack.com/docs/developers/apis/content-management-api/#authentication).
 
-Note: The Content Management APIs also include many GET requests. However, it is highly recommended that you always use the [Content Delivery API](https://www.contentstack.com/docs/developers/apis/content-delivery-api/) to deliver content to your web or mobile properties.
+Note: By using CMA, you can execute GET requests for fetching content. However, we strongly recommend that you always use the [Content Delivery API](https://www.contentstack.com/docs/developers/apis/content-delivery-api/) to deliver content to your web or mobile properties.
 
 ### Prerequisite
 
-You need Node.js version 10 or later installed to use the Contentstack JavaScript CMA SDK.
+You need Node.js version 10 or above installed on your machine to use the Contentstack JavaScript CMA SDK.
 
 ### Installation
 #### Node
@@ -20,7 +20,7 @@ npm i contentstack-management
 ```
 To import the SDK, use the following command:
 ```
-import contentstack from ‘@contentstack/contentstack-mangement’
+import contentstack from ‘@contentstack/contentstack-management’
 ```
 To initialize the SDK, you will need to pass ```axios``` instance as follows:
 ```
@@ -29,7 +29,7 @@ contentstackClient = contentstack.client(axios, {})
 ```
 
 ### Authentication
-To use this SDK, you need to authenticate users. You can do this by using the Authtoken, credentials, or Management Token (stack-level token). Let's discuss them in detail.
+To use this SDK, you need to authenticate your users by using the Authtoken, credentials, or Management Token (stack-level token).
 ### Authtoken
 An [Authtoken](https://www.contentstack.com/docs/developers/create-tokens/types-of-tokens/#authentication-tokens-authtokens-) is a read-write token used to make authorized CMA requests, and it is a **user-specific** token.
 ```
@@ -37,7 +37,7 @@ import axios from 'axios'
 contentstackClient = contentstack.client(axios, { authtoken: 'AUTHTOKEN' })
 ```
 ### Login
-To log in to Contentstack, provide your credentials in the following code:
+To Login to Contentstack by using credentials, you can use the following lines of code:
 ```
 contentstackClient.login({ email: 'EMAIL', password: 'PASSWORD'})
 .then((response) => {
@@ -56,16 +56,16 @@ contentstackClient.stack('API_KEY', 'MANAGEMENT_TOKEN')
 })
 ```
 ### Contentstack Management JavaScript SDK: 5-minute Quickstart
-#### Initializing your SDK:
+#### Initializing Your SDK:
 To use the JavaScript CMA SDK, you need to first initialize it. To do this, use the following code:
 ```
-import contentstack from ‘@contentstack/contentstack-mangement’
+import contentstack from ‘@contentstack/contentstack-management’
 import axios from 'axios'
 
 var contentstackClient = contentstack.client(axios, { authtoken: 'AUTHTOKEN' })
 ```
-#### Fetch Stack details
-To fetch your stack details through the SDK, use the following lines of code:
+#### Fetch Stack Detail
+Use the following lines of code to fetch your stack detail using this SDK:
 ```
 contentstackClient.stack('API_KEY')
 .fetch()
@@ -75,7 +75,7 @@ contentstackClient.stack('API_KEY')
 ```
 
 #### Create Entry
-You can use the following lines of code to create an entry in a specific content type of a stack through the SDK:
+To create an entry in a specific content type of a stack, use the following lines of code:
 ```
 var  entry  = {
 	title: 'Sample Entry',
@@ -89,7 +89,7 @@ contentstackClient.stack('API_KEY').contentType('CONTENT_TYPE_UID').entry().crea
 ```
 
 #### Create Asset
-Use the following code snippet to upload assets to your stack through the SDK:
+The following lines of code can be used to upload assets to your stack:
 ```
 var  asset  = {
 	upload: 'path/to/file',
