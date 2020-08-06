@@ -20,24 +20,24 @@ npm i contentstack-management
 ```
 To import the SDK, use the following command:
 ```
-import contentstack from ‘contentstack-mangement’
+import contentstack from ‘@contentstack/contentstack-mangement’
 ```
-To initialize the SDK, you will need to pass ```axios``` instance
+To initialize the SDK, you will need to pass ```axios``` instance as follows:
 ```
 import axios from 'axios'
 contentstackClient = contentstack.client(axios, {})
 ```
 
 ### Authentication
-To use this SDK you need to authenticate using the user Authtoken, credentials, or Management Token (stack-level token).
+To use this SDK, you need to authenticate users. You can do this by using the Authtoken, credentials, or Management Token (stack-level token). Let's discuss them in detail.
 ### Authtoken
-An **Authtoken** is a read-write token used to make authorized CMA requests, and it is a **user-specific** token.
+An [Authtoken](https://www.contentstack.com/docs/developers/create-tokens/types-of-tokens/#authentication-tokens-authtokens-) is a read-write token used to make authorized CMA requests, and it is a **user-specific** token.
 ```
 import axios from 'axios'
 contentstackClient = contentstack.client(axios, { authtoken: 'AUTHTOKEN' })
 ```
 ### Login
-To Login to Contentstack using credentials:
+To log in to Contentstack, provide your credentials in the following code:
 ```
 contentstackClient.login({ email: 'EMAIL', password: 'PASSWORD'})
 .then((response) => {
@@ -47,7 +47,7 @@ contentstackClient.login({ email: 'EMAIL', password: 'PASSWORD'})
 ```
 
 ### Management Token
-**Management Tokens** are **stack-level** tokens, with no users attached to them.
+[Management Tokens](https://www.contentstack.com/docs/developers/create-tokens/about-management-tokens/) are **stack-level** tokens, with no users attached to them.
 ```
 contentstackClient.stack('API_KEY', 'MANAGEMENT_TOKEN')
 .fetch()
@@ -57,14 +57,15 @@ contentstackClient.stack('API_KEY', 'MANAGEMENT_TOKEN')
 ```
 ### Contentstack Management JavaScript SDK: 5-minute Quickstart
 #### Initializing your SDK:
+To use the JavaScript CMA SDK, you need to first initialize it. To do this, use the following code:
 ```
-import contentstack from ‘contentstack-mangement’
+import contentstack from ‘@contentstack/contentstack-mangement’
 import axios from 'axios'
 
 var contentstackClient = contentstack.client(axios, { authtoken: 'AUTHTOKEN' })
 ```
 #### Fetch Stack details
-The following code snippet is use to get Stack details from Contentstack using this SDK:
+To fetch your stack details through the SDK, use the following lines of code:
 ```
 contentstackClient.stack('API_KEY')
 .fetch()
@@ -74,7 +75,7 @@ contentstackClient.stack('API_KEY')
 ```
 
 #### Create Entry
-The following code snippet is use to create Entry of specific Content Type into Stack using this SDK:
+You can use the following lines of code to create an entry in a specific content type of a stack through the SDK:
 ```
 var  entry  = {
 	title: 'Sample Entry',
@@ -88,7 +89,7 @@ contentstackClient.stack('API_KEY').contentType('CONTENT_TYPE_UID').entry().crea
 ```
 
 #### Create Asset
-The following code snippet is use to create Asset into Stack using this SDK:
+Use the following code snippet to upload assets to your stack through the SDK:
 ```
 var  asset  = {
 	upload: 'path/to/file',
