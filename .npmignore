@@ -13,3 +13,5 @@ mochawesome-report/
 .nyc_output/
 typings
 webpack/
+tsconfig.json
+.jsdoc.json
