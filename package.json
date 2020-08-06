@@ -34,7 +34,7 @@
     "generate:docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
   },
   "engines": {
-    "node": ">=8.0.0 <11.0.0"
+    "node": ">=8.0.0"
   },
   "author": "Contentstack",
   "license": "MIT",
