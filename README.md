@@ -16,11 +16,11 @@ You need Node.js version 10 or above installed on your machine to use the Conten
 #### Node
 Install it via npm:
 ```bash
-npm i contentstack-management
+npm i @contentstack/management
 ```
 To import the SDK, use the following command:
 ```
-import contentstack from ‘@contentstack/contentstack-management’
+import contentstack from ‘@contentstack/management’
 ```
 To initialize the SDK, you will need to pass ```axios``` instance as follows:
 ```
@@ -59,7 +59,7 @@ contentstackClient.stack('API_KEY', 'MANAGEMENT_TOKEN')
 #### Initializing Your SDK:
 To use the JavaScript CMA SDK, you need to first initialize it. To do this, use the following code:
 ```
-import contentstack from ‘@contentstack/contentstack-management’
+import contentstack from ‘@contentstack/management’
 import axios from 'axios'
 
 var contentstackClient = contentstack.client(axios, { authtoken: 'AUTHTOKEN' })

@@ -1,5 +1,5 @@
 {
-  "name": "@contentstack/contentstack-management",
+  "name": "@contentstack/management",
   "version": "0.1.0",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "dist/node/contentstack-management.js",
@@ -31,7 +31,7 @@
     "pretest": "rimraf coverage && npm run lint",
     "precommit": "npm run lint",
     "prepush": "npm run test:unit",
-    "generate:docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
+    "generate:docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --readme README.md --verbose"
   },
   "engines": {
     "node": ">=8.0.0"
