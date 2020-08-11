@@ -33,7 +33,7 @@ function Label(http, data) {
      * @func update
      * @returns {Promise<Label.Label>} Promise for Label instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').label('label_uid').fetch()
@@ -52,7 +52,7 @@ function Label(http, data) {
      * @func delete
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').label('label_uid').delete()
@@ -66,7 +66,7 @@ function Label(http, data) {
      * @func fetch
      * @returns {Promise<Label.Label>} Promise for Label instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').label('label_uid').fetch()
@@ -83,10 +83,13 @@ function Label(http, data) {
      * @returns {Promise<Label.Label>} Promise for Label instance
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
-     *
-     * client.stack().contentType().create({ label: {name: 'My New Label'} })
+     * const label = {
+     *  name: 'First label',
+     *  content_types: [singlepageCT.content_type.uid]
+     * }
+     * client.stack().contentType().create({ label })
      * .then((label) => console.log(label))
      */
     this.create = (0, _entity.create)({
@@ -101,7 +104,7 @@ function Label(http, data) {
      * @returns {Array<Label>} Array of Label.
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack().label().query({ query: { name: 'Label Name' } }).find()

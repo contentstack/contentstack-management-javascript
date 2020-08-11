@@ -53,7 +53,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  * @prop {string} params.integration - Integration name and version e.g react/version
  * @returns Contentstack.Client
  * @example
- * import * as contentstack from 'contentstack'
+ * import * as contentstack from '@contentstack/management'
  * const client = contentstack.client({
  *
  * })

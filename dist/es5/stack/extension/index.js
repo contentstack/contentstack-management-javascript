@@ -55,7 +55,7 @@ function Extension(http, data) {
      * @func update
      * @returns {Promise<Extension.Extension>} Promise for Extension instance.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').extension('extension_uid').fetch()
@@ -74,7 +74,7 @@ function Extension(http, data) {
      * @func delete
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').extension('extension_uid').delete()
@@ -88,7 +88,7 @@ function Extension(http, data) {
      * @func fetch
      * @returns {Promise<Extension.Extension>} Promise for Extension instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').extension('extension_uid').fetch()
@@ -105,7 +105,7 @@ function Extension(http, data) {
      * @returns {Promise<Extension.Extension>} Promise for Extension instance
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * const extension = {
@@ -183,9 +183,9 @@ function Extension(http, data) {
      * @returns {Promise<Extension.Extension>} Promise for Extension instance
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
-     * const extensionJson = {
+     * const extension = {
      *  tags: [
      *    'tag1',
      *    'tag2'
@@ -198,7 +198,7 @@ function Extension(http, data) {
      *  type: 'field'
      * }
      *
-     * client.stack().extension().create({ extension: ...extensionJson })
+     * client.stack().extension().create({ extension })
      * .then((extension) => console.log(extension))
      */
 
@@ -214,7 +214,7 @@ function Extension(http, data) {
      * @returns {Array<Extension>} Array of ContentTyoe.
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack().extension().query({ query={"type":"field"}})

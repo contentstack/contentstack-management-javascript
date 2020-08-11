@@ -27,7 +27,7 @@ export function Organization(http, data) {
      * @param {Int} include_plan The include_plan parameter includes the details of the plan that the organization has subscribed to.
      * @returns {Promise<Organization.Organization>} Promise for Organization instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.organization('organization_uid).fetch()
@@ -52,7 +52,7 @@ export function Organization(http, data) {
        * @param {String} typeahead The type head contains value to be included in search.
        * @returns {ContentstackCollection} Instance of ContentstackCollection.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.organization('organization_uid).stacks({ include_count: true })
@@ -113,7 +113,7 @@ export function Organization(http, data) {
        * @param {String} email The email address of the user to whom you wish to transfer the ownership of the organization.
        * @returns {Object} Response Object.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.stack('api_key').transferOwnership('emailId')
@@ -175,7 +175,7 @@ export function Organization(http, data) {
        * @func addUser
        * @returns {ContentstackCollection} ContentstackCollection of instance.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.organization('organization_uid).addUser({ users: { 'abc@test.com': ['org_uid1', 'org_uid2' ]}, stacks: { 'abc@test.com': { 'api_key1': [ 'stack_role_id' ] } } })
@@ -239,7 +239,7 @@ export function Organization(http, data) {
        * @func getInvitations
        * @returns {String} Success message of invitation send.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.organization('organization_uid).getInvitations()
@@ -301,7 +301,7 @@ export function Organization(http, data) {
        * @func resendInvitition
        * @returns {Object} Response Object.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.organization('organization_uid).resendInvitition('invitation_uid')
@@ -367,7 +367,7 @@ export function Organization(http, data) {
        * @param {Boolean} include_stack_roles The Include stack roles will return stack details in roles.
        * @returns {Array<Role>} Array of Role instance
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.organization('organization_uid).roles()
@@ -437,7 +437,7 @@ export function Organization(http, data) {
      * @param {String} typeahead The type head contains value to be included in search.
      * @returns {ContentstackCollection} Result collection of content of specified module.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.organization().fetchAll()

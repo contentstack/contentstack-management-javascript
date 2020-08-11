@@ -35,10 +35,10 @@ function Folder(http) {
     * @returns {Promise<Folder.Folder>} Promise for Folder instance
     *
     * @example
-    * import * as contentstack from 'contentstack'
+    * import * as contentstack from '@contentstack/management'
     * const client = contentstack.client({})
-    *
-    * client.stack().asset().folders().create({name: 'My New contentType'})
+    * const asset = {name: 'My New contentType'}
+    * client.stack().asset().folders().create({ asset })
     * .then((folder) => console.log(folder))
     */
     this.create = (0, _entity.create)({

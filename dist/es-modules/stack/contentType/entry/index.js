@@ -20,7 +20,7 @@ export function Entry(http) {
      * @func update
      * @returns {Promise<Entry.Entry>} Promise for Entry instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').contentType('content_type_uid').entry('uid').fetch()
@@ -40,7 +40,7 @@ export function Entry(http) {
      * @func delete
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').contentType('content_type_uid').entry('uid').delete()
@@ -58,7 +58,7 @@ export function Entry(http) {
      * @param {Int} include_publish_details Enter 'true' to include the publish details of the entry.
      * @returns {Promise<Entry.Entry>} Promise for Entry instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').contentType('content_type_uid').entry('uid').fetch()
@@ -73,7 +73,7 @@ export function Entry(http) {
      * @func publish
      * @returns {Promise<Object>} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * const entry = {
@@ -97,7 +97,7 @@ export function Entry(http) {
      * @func unpublish
      * @returns {Promise<Object>} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * const entry = {
@@ -123,10 +123,13 @@ export function Entry(http) {
      * @returns {Promise<Entry.Entry>} Promise for Entry instance
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
-     *
-     * client.stack().contentType('content_type_uid').entry().create({name: 'My New contentType'})
+     * const entry  = {
+     *  title: 'Sample Entry',
+     *  url: '/sampleEntry
+     * }
+     * client.stack().contentType('content_type_uid').entry().create({ entry })
      * .then((entry) => console.log(entry))
      */
     this.create = create({
@@ -143,7 +146,7 @@ export function Entry(http) {
     * @returns {Array<Entry>} Array of Entry.
     *
     * @example
-    * import * as contentstack from 'contentstack'
+    * import * as contentstack from '@contentstack/management'
     * const client = contentstack.client({})
     *
     * client.stack().contentType().entry().query({ query: { title: 'Entry title' } }).find()

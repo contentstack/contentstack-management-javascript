@@ -32,7 +32,7 @@ export function Role(http, data) {
       * @func update
       * @returns {Promise<Role.Role>} Promise for Role instance
       * @example
-      * import * as contentstack from 'contentstack'
+      * import * as contentstack from '@contentstack/management'
       * const client = contentstack.client({})
       *
       * client.stack('api_key').role('role_uid').fetch({ include_rules: true, include_permissions: true})
@@ -73,7 +73,7 @@ export function Role(http, data) {
        * @func delete
        * @returns {Object} Response Object.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.stack('api_key').role('role_uid').delete()
@@ -89,7 +89,7 @@ export function Role(http, data) {
        * @param {Boolean} include_permissions Set this parameter to 'true' to include the details of the permissions assigned to a particular role.
        * @param {Boolean} include_rules Set this to ‘true’ to include the details of the rules assigned to a role.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.stack('api_key').role('role_uid').fetch()
@@ -107,10 +107,27 @@ export function Role(http, data) {
      * @returns {Promise<Role.Role>} Promise for Role instance
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
-     *
-     * client.stack().role().create({name: 'My New role'})
+     * const role =  {
+     *   name: 'Role Name',
+     *   description: 'From CMA Js',
+     *   rules:
+     *     [
+     *       {
+     *         module: 'environment',
+     *         environments: [],
+     *         acl: { read: true }
+     *       },
+     *       {
+     *         module: 'locale',
+     *         locales: [],
+     *         acl: { read: true }
+     *       }
+     *     ],
+     *   uid: 'uid'
+     * }
+     * client.stack().role().create({ role })
      * .then((role) => console.log(role))
      */
     this.create = create({
@@ -124,7 +141,7 @@ export function Role(http, data) {
      * @param {Boolean} include_rules Set this to ‘true’ to include the details of the rules assigned to a role.
      * @returns {ContentstackCollection} Instance of ContentstackCollection.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack().role().findAll()
@@ -187,7 +204,7 @@ export function Role(http, data) {
      * @returns {ContentstackCollection} Instance of ContentstackCollection.
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').role().query({ query: { filename: 'Asset Name' } }).find()

@@ -19,7 +19,7 @@ export default function contentstackClient(_ref) {
    * @prop {string} paramters.token - token for user to login
    * @returns {Promise}
    * @example
-   * import * as contentstack from 'contentstack'
+   * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client({})
    *
    * client.login({ email: <emailid>, password: <password> })
@@ -48,7 +48,7 @@ export default function contentstackClient(_ref) {
    * @func getUser
    * @returns {Promise}
    * @example
-   * import * as contentstack from 'contentstack'
+   * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client({})
    *
    * client.getUser()
@@ -73,21 +73,21 @@ export default function contentstackClient(_ref) {
    * @returns {Stack} Instance of Stack
    *
    * @example
-   * import * as contentstack from 'contentstack'
+   * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client({})
-   *
-   * client.stack().create({name: 'My New Stack'}, { organization_uid: 'org_uid' })
+   * const stack = {name: 'My New Stack'}
+   * client.stack().create({ stack }, { organization_uid: 'org_uid' })
    * .then((stack) => console.log(stack))
    *
    * @example
-   * import * as contentstack from 'contentstack'
+   * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client({})
    *
    * client.stack('api_key').fetch()
    * .then((stack) => console.log(stack))
    *
    * @example
-   * import * as contentstack from 'contentstack'
+   * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client({})
    *
    * client.stack('api_key', 'management_token').fetch()
@@ -98,15 +98,15 @@ export default function contentstackClient(_ref) {
 
   function stack() {
     var apiKey = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var managmentToken = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var managementToken = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     var stack = {};
 
     if (apiKey && apiKey !== undefined) {
       stack.api_key = apiKey;
     }
 
-    if (managmentToken && managmentToken !== undefined) {
-      stack.authorization = managmentToken;
+    if (managementToken && managementToken !== undefined) {
+      stack.authorization = managementToken;
     }
 
     return new Stack(http, {
@@ -121,14 +121,14 @@ export default function contentstackClient(_ref) {
    * @returns {Organization} Instance of Organization.
    *
    * @example
-   * import * as contentstack from 'contentstack'
+   * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client({})
    *
    * client.organization().query().find()
    * .then((organization) => console.log(organization))
    *
    * @example
-   * import * as contentstack from 'contentstack'
+   * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client({})
    *
    * client.organization('org_uid').fetch()
@@ -153,7 +153,7 @@ export default function contentstackClient(_ref) {
    * @returns {Object} Response object.
    *
    * @example
-   * import * as contentstack from 'contentstack'
+   * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client({})
    * const notice = client.logout()
    *

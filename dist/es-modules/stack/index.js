@@ -55,7 +55,7 @@ export function Stack(http, data) {
      * @func update
      * @returns {Promise<Stack.Stack>} Promise for Stack instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').fetch()
@@ -76,7 +76,7 @@ export function Stack(http, data) {
      * @func delete
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').delete()
@@ -90,7 +90,7 @@ export function Stack(http, data) {
      * @func fetch
      * @returns {Promise<Stack.Stack>} Promise for Stack instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').fetch()
@@ -104,7 +104,7 @@ export function Stack(http, data) {
      * @param {String} uid The UID of the ContentType you want to get details.
      * @returns {ContenType} Instace of ContentType.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').contentType().create()
@@ -133,7 +133,7 @@ export function Stack(http, data) {
      * @param {String} uid The UID of the Locale you want to get details.
      * @returns {Locale} Instace of Locale.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').locale().create()
@@ -163,7 +163,7 @@ export function Stack(http, data) {
      * @param {String} uid The UID of the Asset you want to get details.
      * @returns {Asset} Instace of Asset.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').asset().create()
@@ -193,7 +193,7 @@ export function Stack(http, data) {
      * @param {String} uid The UID of the Global field you want to get details.
      * @returns {ContenType} Instace of Global field.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').globalField().create()
@@ -223,7 +223,7 @@ export function Stack(http, data) {
      * @param {String} uid The UID of the Environment you want to get details.
      * @returns {Environment} Instace of Environment.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').globalField().create()
@@ -253,7 +253,7 @@ export function Stack(http, data) {
      * @param {String} deliveryTokenUid The UID of the Delivery Token field you want to get details.
      * @returns {DeliveryToken} Instace of DeliveryToken.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').deliveryToken().create()
@@ -283,7 +283,7 @@ export function Stack(http, data) {
      * @param {String} extensionUid The UID of the Extension you want to get details.
      * @returns {Extension} Instace of Extension.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').extension().create()
@@ -313,7 +313,7 @@ export function Stack(http, data) {
      * @param {String} webhookUid The UID of the Webhook you want to get details.
      * @returns {Webhook} Instace of Webhook.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').webhook().create()
@@ -343,7 +343,7 @@ export function Stack(http, data) {
      * @param {String} uid The UID of the Label you want to get details.
      * @returns {Label} Instace of Label.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').label().create()
@@ -373,7 +373,7 @@ export function Stack(http, data) {
      * @param {String} releaseUid The UID of the Releases you want to get details.
      * @returns {Release} Instance of Release.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').release().create()
@@ -402,7 +402,7 @@ export function Stack(http, data) {
      * Bulk operations such as Publish, Unpublish, and Delete on multiple entries or assets.
      * @returns {BulkOperation} Instance of BulkOperation.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * const publishDetails = {
@@ -442,7 +442,7 @@ export function Stack(http, data) {
      * @func users
      * @returns {Array<User>} Array of User's including owner of Stack
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').users()
@@ -502,7 +502,7 @@ export function Stack(http, data) {
      * @param {String} email The email address of the user to whom you wish to transfer the ownership of the stack.
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').transferOwnership('emailId')
@@ -565,7 +565,7 @@ export function Stack(http, data) {
      * @func settings
      * @returns {Object} Configuration settings of stack.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').settings()
@@ -621,7 +621,7 @@ export function Stack(http, data) {
      * @func resetSettings
      * @returns {Object} Configuration settings of stack.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').resetSettings()
@@ -681,7 +681,7 @@ export function Stack(http, data) {
      * @func addSettings
      * @returns {Object} Configuration settings of stack.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').addSettings({ key: 'value' })
@@ -746,7 +746,7 @@ export function Stack(http, data) {
      * @returns {Object} Response Object.
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').share([ "manager@example.com" ], { "manager@example.com": [ "abcdefhgi1234567890" ] })
@@ -810,7 +810,7 @@ export function Stack(http, data) {
      * @param {String} email The email ID of the user from whom you wish to unshare the stack.
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').unShare('email@id.com')
@@ -875,7 +875,7 @@ export function Stack(http, data) {
      * @returns {Role} Instance of Role.
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').role().create({
@@ -916,14 +916,14 @@ export function Stack(http, data) {
      * @returns {Promise<Stack.Stack>} Promise for Stack instance
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.organization('org_uid').stack().create({name: 'My New Stack'})
      * .then((stack) => console.log(stack))
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack().create({name: 'My New Stack'}, { organization_uid: 'org_uid' })
@@ -947,7 +947,7 @@ export function Stack(http, data) {
      * @returns {ContentstackCollection} Instance of ContentstackCollection.
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack().query({ query: { name: 'Stack Name' } }).find()

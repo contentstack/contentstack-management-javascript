@@ -58,7 +58,7 @@ function Asset(http) {
      * @func update
      * @returns {Promise<Asset.Asset>} Promise for Asset instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').asset('uid').fetch()
@@ -78,7 +78,7 @@ function Asset(http) {
      * @func delete
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').asset('uid').delete()
@@ -92,7 +92,7 @@ function Asset(http) {
      * @func fetch
      * @returns {Promise<Asset.Asset>} Promise for Asset instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').asset('uid').fetch()
@@ -107,7 +107,7 @@ function Asset(http) {
      * @func fetch
      * @returns {Promise<Asset.Asset>} Promise for Asset instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * const asset = {
@@ -177,7 +177,7 @@ function Asset(http) {
      * @func publish
      * @returns {Promise<Object>} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * const asset = {
@@ -202,7 +202,7 @@ function Asset(http) {
      * @func unpublish
      * @returns {Promise<Object>} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * const asset = {
@@ -228,7 +228,7 @@ function Asset(http) {
     * @returns {Promise<Folder.Folder>} Promise for Entry instance
     *
     * @example
-    * import * as contentstack from 'contentstack'
+    * import * as contentstack from '@contentstack/management'
     * const client = contentstack.client({})
     */
     this.folder = function () {
@@ -244,7 +244,7 @@ function Asset(http) {
      * @returns {Promise<Asset.Asset>} Promise for Asset instance
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * const asset = {
@@ -253,7 +253,7 @@ function Asset(http) {
      *  description: 'Desc'
      * }
      *
-     * client.stack('api_key').asset().create(asset)
+     * client.stack('api_key').asset().create({ asset })
      * .then((asset) => console.log(asset))
      */
 
@@ -318,7 +318,7 @@ function Asset(http) {
     * @returns {Array<Asset>} Array of Asset.
     *
     * @example
-    * import * as contentstack from 'contentstack'
+    * import * as contentstack from '@contentstack/management'
     * const client = contentstack.client({})
     *
     * client.stack().asset().query({ query: { filename: 'Asset Name' } }).find()

@@ -37,7 +37,7 @@ export function Release(http) {
      * @func update
      * @returns {Promise<Release.Release>} Promise for Release instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * const relase = {
@@ -59,7 +59,7 @@ export function Release(http) {
      * .then((release) => console.log(release))
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      *
@@ -80,7 +80,7 @@ export function Release(http) {
      * @func fetch
      * @returns {Promise<Release.Release>} Promise for Release instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').release('release_uid').fetch()
@@ -95,7 +95,7 @@ export function Release(http) {
      * @func delete
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').release('release_uid').delete()
@@ -109,7 +109,7 @@ export function Release(http) {
      * @func item
      * @returns {ReleaseItem} Instance of ReleaseItem.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').release('release_uid').item().fetchAll()
@@ -131,7 +131,7 @@ export function Release(http) {
      * @param {String} action -  action on which the Release should be deployed.
      * @param {String} scheduledAt - scheudle time for the Release to deploy.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').release('release_uid').deploy({
@@ -228,7 +228,7 @@ export function Release(http) {
      * @param {String} name - name of the cloned Release.
      * @param {String} description - description of the cloned Release.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').release('release_uid').clone({ name: 'New Name', description: 'New Description'})
@@ -307,17 +307,15 @@ export function Release(http) {
      * @returns {Promise<Release.Release>} Promise for Release instance
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
-     * const relase = {
-     *    release: {
+     * const release = {
      *        name: "Release Name",
      *        description: "2018-12-12",
      *        locked: false,
      *        archived: false
-     *      }
      * }
-     * client.stack('api_key').release().create(relase)
+     * client.stack('api_key').release().create({ release })
      * .then((release) => console.log(release))
      */
     this.create = create({
@@ -334,7 +332,7 @@ export function Release(http) {
      * @returns {Array<Release>} Array of Release.
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').release().query().find()

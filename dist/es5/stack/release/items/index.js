@@ -61,7 +61,7 @@ function ReleaseItem(http) {
        * @param {Object} param.items Add multiple items to a Release
        * @returns {Object} Response Object.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.stack('api_key').release('release_uid').delete()
@@ -126,27 +126,24 @@ function ReleaseItem(http) {
        * @param {Object} param.items Add multiple items to a Release
        * @returns {Promise<Release.Release>} Promise for Release instance
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * const item = {
-       *        item: {
        *            version: 1,
        *            uid: "entry_or_asset_uid",
        *            content_type_uid: "your_content_type_uid",
        *            action: "publish",
        *            locale: "en-us"
-       *        }
        * }
-       * client.stack('api_key').release('release_uid').item().create(item)
+       * client.stack('api_key').release('release_uid').item().create({ item })
        * .then((release) => console.log(release))
        *
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
-       * const items = {
-       * items: [
+       * const items =  [
        *     {
        *        uid: "entry_or_asset_uid1",
        *        version: 1,
@@ -161,8 +158,8 @@ function ReleaseItem(http) {
        *        content_type_uid: "demo2",
        *        action: "publish"
        *      }
-       * ]}
-       * client.stack('api_key').release('release_uid').item().create(items)
+       * ]
+       * client.stack('api_key').release('release_uid').item().create({ items })
        * .then((release) => console.log(release))
        */
 
@@ -234,7 +231,7 @@ function ReleaseItem(http) {
        * @param {Int} param.limit The ‘limit’ parameter will return a specific number of release items in the output.
        * @param {Int} param.skip The ‘skip’ parameter will skip a specific number of release items in the response.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.stack('api_key').release('release_uid').item().fetchAll()

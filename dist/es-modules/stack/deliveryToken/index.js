@@ -16,7 +16,7 @@ export function DeliveryToken(http) {
      * @func update
      * @returns {Promise<DeliveryToken.DeliveryToken>} Promise for DeliveryToken instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').deliveryToken('delivery_token_uid').fetch()
@@ -36,7 +36,7 @@ export function DeliveryToken(http) {
      * @func delete
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').deliveryToken('delivery_token_uid').delete()
@@ -50,7 +50,7 @@ export function DeliveryToken(http) {
      * @func fetch
      * @returns {Promise<DeliveryToken.DeliveryToken>} Promise for DeliveryToken instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').deliveryToken('delivery_token_uid').fetch()
@@ -67,10 +67,21 @@ export function DeliveryToken(http) {
      * @returns {Promise<DeliveryToken.DeliveryToken>} Promise for DeliveryToken instance
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
+     * const token = {
+     *     name: 'Test',
+     *     description: 'This is a demo token.',
+     *     scope: [{
+     *              module: 'environment',
+     *              environments: ['development'],
+     *              acl: {
+     *                read: true
+     *              }
+     *            }]
+     * }
      *
-     * client.stack().deliveryToken().create({name: 'My New deliveryToken'})
+     * client.stack().deliveryToken().create({ token })
      * .then((deliveryToken) => console.log(deliveryToken))
      */
     this.create = create({
@@ -82,7 +93,7 @@ export function DeliveryToken(http) {
      * @func query
      * @returns {ContentstackCollection} Instance of ContentstackCollection.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack().deliveryToken().query({ query: { name: 'token_name' } })).find()

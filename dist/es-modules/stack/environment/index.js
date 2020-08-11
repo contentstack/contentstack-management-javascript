@@ -14,7 +14,7 @@ export function Environment(http) {
        * @func update
        * @returns {Promise<Environment.Environment>} Promise for Environment instance
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.stack('api_key').environment('uid').fetch()
@@ -34,7 +34,7 @@ export function Environment(http) {
        * @func delete
        * @returns {Object} Response Object.
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.stack('api_key').environment('uid').delete()
@@ -48,7 +48,7 @@ export function Environment(http) {
        * @func fetch
        * @returns {Promise<Environment.Environment>} Promise for Environment instance
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
        *
        * client.stack('api_key').environment('uid').fetch()
@@ -65,10 +65,24 @@ export function Environment(http) {
        * @returns {Promise<Environment.Environment>} Promise for Environment instance
        *
        * @example
-       * import * as contentstack from 'contentstack'
+       * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client({})
-       *
-       * client.stack('api_key').environment().create({name: 'My New environment'})
+       * const environment = {
+       *      name: 'development',
+       *      servers: [
+       *                {
+       *                  name: 'default'
+       *                }
+       *                ],
+       *      urls: [
+       *              {
+       *                  locale: 'en-us',
+       *                  url: 'http://example.com/'
+       *              }
+       *            ],
+       *      deploy_content: true
+       * }
+       * client.stack('api_key').environment().create({ environment })
        * .then((environment) => console.log(environment))
        */
     this.create = create({
@@ -81,7 +95,7 @@ export function Environment(http) {
      * @returns {Array<GlobalField>} Array of GlobalField.
      *
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').environment().query({ query: { name: 'Environment Name' } }).find()

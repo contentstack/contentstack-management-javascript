@@ -37,7 +37,7 @@ function User(http, data) {
      * @func update
      * @returns {Promise<User.User>} Promise for User instance
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').getUser()
@@ -56,7 +56,7 @@ function User(http, data) {
      * @func delete
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').getUser()
@@ -73,7 +73,7 @@ function User(http, data) {
      * @func requestPassword
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').getUser()
@@ -99,7 +99,7 @@ function User(http, data) {
      * @func resetPassword
      * @returns {Object} Response Object.
      * @example
-     * import * as contentstack from 'contentstack'
+     * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client({})
      *
      * client.stack('api_key').getUser()
