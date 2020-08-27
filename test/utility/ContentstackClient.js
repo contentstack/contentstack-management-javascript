@@ -1,4 +1,3 @@
-import axios from 'axios'
 import * as contentstack from '../../lib/contentstack.js'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -7,7 +6,7 @@ function contentstackClient (authtoken = null) {
   if (authtoken) {
     params.authtoken = authtoken
   }
-  return contentstack.client(axios, params)
+  return contentstack.client(params)
 }
 
 export { contentstackClient }

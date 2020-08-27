@@ -103,6 +103,7 @@ function contentstackHttpClient(axios, options) {
     timeout: config.timeout,
     adapter: config.adapter,
     maxContentLength: config.maxContentLength,
+    maxBodyLength: config.maxBodyLength,
     // Contentstack
     logHandler: config.logHandler,
     responseLogger: config.responseLogger,

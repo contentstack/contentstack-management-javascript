@@ -125,5 +125,5 @@ describe('Locale api Test', () => {
 })
 
 function makeLocale (uid = null) {
-  return client.stack(stack.api_key).locale(uid)
+  return client.stack(({ apiKey: stack.api_key })).locale(uid)
 }

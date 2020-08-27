@@ -2,7 +2,7 @@ import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { customFieldURL, customFieldSRC, customWidgetURL, customWidgetSRC, customDashboardURL, customDashboardSRC } from '../unit/mock/extension'
+import { customFieldURL, customFieldSRC, customWidgetURL, customWidgetSRC, customDashboardURL, customDashboardSRC } from './mock/extension'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 var client = {}
 var stack = {}
@@ -223,7 +223,7 @@ describe('Extension api Test', () => {
         type: customFieldURL.extension.type,
         tags: customFieldURL.extension.tags,
         multiple: customFieldURL.extension.multiple,
-        upload: path.join(__dirname, '../unit/mock/customUpload.html')
+        upload: path.join(__dirname, './mock/customUpload.html')
       })
       .then((extension) => {
         expect(extension.uid).to.be.not.equal(null)
@@ -244,7 +244,7 @@ describe('Extension api Test', () => {
         type: customWidgetURL.extension.type,
         scope: customWidgetURL.extension.scope,
         tags: customWidgetURL.extension.tags.join(','),
-        upload: path.join(__dirname, '../unit/mock/customUpload.html')
+        upload: path.join(__dirname, './mock/customUpload.html')
       })
       .then((extension) => {
         expect(extension.uid).to.be.not.equal(null)
@@ -266,7 +266,7 @@ describe('Extension api Test', () => {
         tags: customDashboardURL.extension.tags,
         enable: customDashboardURL.extension.enable,
         default_width: customDashboardURL.extension.default_width,
-        upload: path.join(__dirname, '../unit/mock/customUpload.html')
+        upload: path.join(__dirname, './mock/customUpload.html')
       })
       .then((extension) => {
         expect(extension.uid).to.be.not.equal(null)
@@ -293,5 +293,5 @@ describe('Extension api Test', () => {
 })
 
 function makeExtension (uid = null) {
-  return client.stack(stack.api_key).extension(uid)
+  return client.stack(({ apiKey: stack.api_key })).extension(uid)
 }

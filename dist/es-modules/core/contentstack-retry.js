@@ -21,21 +21,23 @@ export default function contentstckRetry(axios, defaultOptions) {
       return Promise.reject(error);
     }
 
-    var response = error.response;
+    var response = error.response; // console.log(error)
 
     if (!response) {
       retryErrorType = "Server connection";
-      networkError++;
-
-      if (networkError > retryLimit) {
-        return Promise.reject(error);
-      }
+      return Promise.reject(error);
     } else {
       networkError = 0;
     }
 
     if (response && response.status === 429) {
       retryErrorType = 'Rate Limit';
+      networkError++;
+
+      if (networkError > retryLimit) {
+        return Promise.reject(error);
+      }
+
       wait = retryDelay;
     }
 

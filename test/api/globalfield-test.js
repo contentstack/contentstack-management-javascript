@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { cloneDeep } from 'lodash'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { createGlobalField } from '../unit/mock/globalfield'
+import { createGlobalField } from './mock/globalfield'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
@@ -77,7 +77,7 @@ describe('Global Field api Test', () => {
 
   it('Import global Field', done => {
     makeGlobalField().import({
-      global_field: path.join(__dirname, '../unit/mock/globalfield.json')
+      global_field: path.join(__dirname, './mock/globalfield.json')
     })
       .then((response) => {
         expect(response.uid).to.be.not.equal(null)
@@ -115,5 +115,5 @@ describe('Global Field api Test', () => {
 })
 
 function makeGlobalField (uid = null) {
-  return client.stack(stack.api_key).globalField(uid)
+  return client.stack(({ apiKey: stack.api_key })).globalField(uid)
 }

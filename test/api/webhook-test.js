@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import path from 'path'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { webhook, updateWebhook } from '../unit/mock/webhook'
+import { webhook, updateWebhook } from './mock/webhook'
 import { cloneDeep } from 'lodash'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 var client = {}
@@ -92,7 +92,7 @@ describe('Webhook api Test', () => {
 
   it('Import Webhook', done => {
     makeWebhook().import({
-      webhook: path.join(__dirname, '../unit/mock/webhook.json')
+      webhook: path.join(__dirname, './mock/webhook.json')
     })
       .then((response) => {
         expect(response.uid).to.be.not.equal(null)
@@ -103,7 +103,7 @@ describe('Webhook api Test', () => {
 
   it('Get executions of a webhook', done => {
     const asset = {
-      upload: path.join(__dirname, '../unit/mock/webhook.json')
+      upload: path.join(__dirname, './mock/webhook.json')
     }
     client.stack(stack.api_key).asset().create(asset)
       .then((assetFile) => {
@@ -145,5 +145,5 @@ describe('Webhook api Test', () => {
 })
 
 function makeWebhook (uid = null) {
-  return client.stack(stack.api_key).webhook(uid)
+  return client.stack(({ apiKey: stack.api_key })).webhook(uid)
 }

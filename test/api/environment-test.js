@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { environmentCreate, environmentProdCreate } from '../unit/mock/environment.js'
+import { environmentCreate, environmentProdCreate } from './mock/environment.js'
 import { cloneDeep } from 'lodash'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
@@ -134,5 +134,5 @@ describe('Environment api Test', () => {
 })
 
 function makeEnvironment (uid = null) {
-  return client.stack(stack.api_key).environment(uid)
+  return client.stack(({ apiKey: stack.api_key })).environment(uid)
 }

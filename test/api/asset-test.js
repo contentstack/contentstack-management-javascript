@@ -19,7 +19,7 @@ describe('Assets api Test', () => {
 
   it('Asset Upload ', done => {
     const asset = {
-      upload: path.join(__dirname, '../unit/mock/customUpload.html'),
+      upload: path.join(__dirname, './mock/customUpload.html'),
       title: 'customasset',
       description: 'Custom Asset Desc',
       tags: ['Custom']
@@ -52,7 +52,7 @@ describe('Assets api Test', () => {
 
   it('Asset Upload in folder', done => {
     const asset = {
-      upload: path.join(__dirname, '../unit/mock/customUpload.html'),
+      upload: path.join(__dirname, './mock/customUpload.html'),
       title: 'customasset in Folder',
       description: 'Custom Asset Desc in Folder',
       parent_uid: folderUID,
@@ -74,7 +74,7 @@ describe('Assets api Test', () => {
   })
   it('Replace asset ', done => {
     const asset = {
-      upload: path.join(__dirname, '../unit/mock/upload.html')
+      upload: path.join(__dirname, './mock/upload.html')
     }
     makeAsset(assetUID)
       .replace(asset)
@@ -172,5 +172,5 @@ describe('Assets api Test', () => {
 })
 
 function makeAsset (uid = null) {
-  return client.stack(stack.api_key).asset(uid)
+  return client.stack({ apiKey: stack.api_key }).asset(uid)
 }

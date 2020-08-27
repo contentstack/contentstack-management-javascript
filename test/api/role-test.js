@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import role from '../unit/mock/role'
+import role from './mock/role'
 import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 var stack = {}
@@ -134,5 +134,5 @@ describe('Role api test', () => {
 
 // Helper
 function getRole (uid = null) {
-  return client.stack(stack.api_key).role(uid)
+  return client.stack(({ apiKey: stack.api_key })).role(uid)
 }

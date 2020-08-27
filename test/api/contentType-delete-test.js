@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { multiPageCT } from '../unit/mock/content-type'
+import { multiPageCT } from './mock/content-type'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
@@ -25,5 +25,5 @@ describe('Content Type delete api Test', () => {
 })
 
 function makeContentType (uid = null) {
-  return client.stack(stack.api_key).contentType(uid)
+  return client.stack(({ apiKey: stack.api_key })).contentType(uid)
 }

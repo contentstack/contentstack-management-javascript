@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { createDeliveryToken, createDeliveryToken2 } from '../unit/mock/deliveryToken.js'
+import { createDeliveryToken, createDeliveryToken2 } from './mock/deliveryToken.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
@@ -139,5 +139,5 @@ describe('Delivery Token api Test', () => {
 })
 
 function makeDeliveryToken (uid = null) {
-  return client.stack(stack.api_key).deliveryToken(uid)
+  return client.stack(({ apiKey: stack.api_key })).deliveryToken(uid)
 }

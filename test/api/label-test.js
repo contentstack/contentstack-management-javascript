@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { singlepageCT } from '../unit/mock/content-type.js'
+import { singlepageCT } from './mock/content-type.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
@@ -123,5 +123,5 @@ describe('Label api Test', () => {
 })
 
 function makeLabel (uid = null) {
-  return client.stack(stack.api_key).label(uid)
+  return client.stack(({ apiKey: stack.api_key })).label(uid)
 }

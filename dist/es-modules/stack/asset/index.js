@@ -223,7 +223,7 @@ export function Asset(http) {
      *  description: 'Desc'
      * }
      *
-     * client.stack('api_key').asset().create({ asset })
+     * client.stack('api_key').asset().create(asset)
      * .then((asset) => console.log(asset))
      */
 

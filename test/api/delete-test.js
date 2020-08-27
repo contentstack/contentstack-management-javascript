@@ -15,7 +15,7 @@ describe('Delete api Test', () => {
 
   it('Delete role in stack', done => {
     const role = jsonReader('role.json')
-    client.stack(stack.api_key).role(role.uid)
+    client.stack(({ apiKey: stack.api_key })).role(role.uid)
       .delete()
       .then((data) => {
         expect(data.notice).to.be.equal('The role deleted successfully.', 'Role delete notice does not match')

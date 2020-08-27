@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { multiPageCT, singlepageCT } from '../unit/mock/content-type.js'
-import { entryFirst, entrySecond } from '../unit/mock/entry.js'
+import { multiPageCT, singlepageCT } from './mock/content-type.js'
+import { entryFirst, entrySecond } from './mock/entry.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
@@ -162,5 +162,5 @@ describe('Entry api Test', () => {
 })
 
 function makeEntry (contentType, uid = null) {
-  return client.stack(stack.api_key).contentType(contentType).entry(uid)
+  return client.stack(({ apiKey: stack.api_key })).contentType(contentType).entry(uid)
 }

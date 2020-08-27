@@ -24,8 +24,7 @@ import contentstack from ‘@contentstack/management’
 ```
 To initialize the SDK, you will need to pass ```axios``` instance as follows:
 ```
-import axios from 'axios'
-contentstackClient = contentstack.client(axios, {})
+contentstackClient = contentstack.client()
 ```
 
 ### Authentication
@@ -33,8 +32,7 @@ To use this SDK, you need to authenticate your users by using the Authtoken, cre
 ### Authtoken
 An [Authtoken](https://www.contentstack.com/docs/developers/create-tokens/types-of-tokens/#authentication-tokens-authtokens-) is a read-write token used to make authorized CMA requests, and it is a **user-specific** token.
 ```
-import axios from 'axios'
-contentstackClient = contentstack.client(axios, { authtoken: 'AUTHTOKEN' })
+contentstackClient = contentstack.client({ authtoken: 'AUTHTOKEN' })
 ```
 ### Login
 To Login to Contentstack by using credentials, you can use the following lines of code:
@@ -49,7 +47,7 @@ contentstackClient.login({ email: 'EMAIL', password: 'PASSWORD'})
 ### Management Token
 [Management Tokens](https://www.contentstack.com/docs/developers/create-tokens/about-management-tokens/) are **stack-level** tokens, with no users attached to them.
 ```
-contentstackClient.stack('API_KEY', 'MANAGEMENT_TOKEN')
+contentstackClient.stack({ apiKey: 'API_KEY', managementToken: 'MANAGEMENT_TOKEN' })
 .fetch()
 .then((stack) => {
 	console.log(stack)
@@ -60,14 +58,13 @@ contentstackClient.stack('API_KEY', 'MANAGEMENT_TOKEN')
 To use the JavaScript CMA SDK, you need to first initialize it. To do this, use the following code:
 ```
 import contentstack from ‘@contentstack/management’
-import axios from 'axios'
 
-var contentstackClient = contentstack.client(axios, { authtoken: 'AUTHTOKEN' })
+var contentstackClient = contentstack.client({ authtoken: 'AUTHTOKEN' })
 ```
 #### Fetch Stack Detail
 Use the following lines of code to fetch your stack detail using this SDK:
 ```
-contentstackClient.stack('API_KEY')
+contentstackClient.stack({ apiKey: 'API_KEY' })
 .fetch()
 .then((stack) => {
 	console.log(stack)
@@ -82,7 +79,7 @@ var  entry  = {
 	url: '/sampleEntry'
 }
 
-contentstackClient.stack('API_KEY').contentType('CONTENT_TYPE_UID').entry().create({ entry })
+contentstackClient.stack({ apiKey: 'API_KEY' }).contentType('CONTENT_TYPE_UID').entry().create({ entry })
 .then((entry) => {
 	console.log(entry)
 })
@@ -96,7 +93,7 @@ var  asset  = {
 	title: 'Asset Title'
 }
 
-contentstackClient.stack('API_KEY').asset().create({ asset })
+contentstackClient.stack({ apiKey: 'API_KEY' }).asset().create({ asset })
 .then((asset) => {
 	console.log(asset)
 })

@@ -1,6 +1,6 @@
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { releaseCreate } from '../unit/mock/release.js'
+import { releaseCreate } from './mock/release.js'
 import { expect } from 'chai'
 import { cloneDeep } from 'lodash'
 import { contentstackClient } from '../utility/ContentstackClient.js'
@@ -124,5 +124,5 @@ describe('Relases api Test', () => {
 })
 
 function makeRelease (uid = null) {
-  return client.stack(stack.api_key).release(uid)
+  return client.stack(({ apiKey: stack.api_key })).release(uid)
 }
