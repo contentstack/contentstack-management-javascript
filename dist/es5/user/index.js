@@ -38,9 +38,9 @@ function User(http, data) {
      * @returns {Promise<User.User>} Promise for User instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').getUser()
+     * client.stack({ api_key: 'api_key'}).getUser()
      * .then((user) => {
      *  user.first_name = 'FirstName'
      *  user.last_name = 'LastName'
@@ -57,9 +57,9 @@ function User(http, data) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').getUser()
+     * client.stack({ api_key: 'api_key'}).getUser()
      * .then((user) => {
      *  return user.delete()
      * })
@@ -74,9 +74,9 @@ function User(http, data) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').getUser()
+     * client.stack({ api_key: 'api_key'}).getUser()
      * .then((user) => {
      *  return user.requestPassword()
      * })
@@ -100,9 +100,9 @@ function User(http, data) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').getUser()
+     * client.stack({ api_key: 'api_key'}).getUser()
      * .then((user) => {
      *  return user.resetPassword()
      * })

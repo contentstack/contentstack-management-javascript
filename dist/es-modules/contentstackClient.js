@@ -1,9 +1,15 @@
+import _defineProperty from "@babel/runtime/helpers/defineProperty";
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 /**
  * @namespace ContentstackClient
  */
 import { Stack } from './stack/index.js';
-import { Organization } from './organization/index'; // import { create, query } from './entity'
-
+import { Organization } from './organization/index';
+import cloneDeep from 'lodash/cloneDeep';
 import { User } from './user/index';
 import error from './core/contentstackError';
 export default function contentstackClient(_ref) {
@@ -20,7 +26,7 @@ export default function contentstackClient(_ref) {
    * @returns {Promise}
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.login({ email: <emailid>, password: <password> })
    * .then(() => console.log('Logged in successfully'))
@@ -49,7 +55,7 @@ export default function contentstackClient(_ref) {
    * @returns {Promise}
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.getUser()
    * .then((user) => console.log(user))
@@ -70,44 +76,37 @@ export default function contentstackClient(_ref) {
    * @memberof ContentstackClient
    * @func stack
    * @param {String} api_key - Stack API Key
+   * @param {String} management_token - Stack API Key
    * @returns {Stack} Instance of Stack
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    * const stack = {name: 'My New Stack'}
    * client.stack().create({ stack }, { organization_uid: 'org_uid' })
    * .then((stack) => console.log(stack))
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
-   * client.stack('api_key').fetch()
+   * client.stack({ api_key: 'api_key'}).fetch()
    * .then((stack) => console.log(stack))
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
-   * client.stack('api_key', 'management_token').fetch()
+   * client.stack({ api_key: 'api_key', management_token: 'management_token' }).fetch()
    * .then((stack) => console.log(stack))
    *
    */
 
 
   function stack() {
-    var apiKey = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var managementToken = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var stack = {};
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    if (apiKey && apiKey !== undefined) {
-      stack.api_key = apiKey;
-    }
-
-    if (managementToken && managementToken !== undefined) {
-      stack.authorization = managementToken;
-    }
+    var stack = _objectSpread({}, cloneDeep(params));
 
     return new Stack(http, {
       stack: stack
@@ -122,14 +121,14 @@ export default function contentstackClient(_ref) {
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.organization().query().find()
    * .then((organization) => console.log(organization))
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.organization('org_uid').fetch()
    * .then((organization) => console.log(organization))
@@ -154,7 +153,7 @@ export default function contentstackClient(_ref) {
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    * const notice = client.logout()
    *
    */

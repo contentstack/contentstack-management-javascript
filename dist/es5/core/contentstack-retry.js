@@ -10,8 +10,6 @@ function contentstckRetry(axios, defaultOptions) {
   var retryDelay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 2;
   var networkError = 0;
   axios.interceptors.request.use(function (config) {
-    // var currentState = config['contentstack'] || {}
-    // config['contentstack'] = currentState
     if (config.headers.authorization && config.headers.authorization !== undefined) {
       delete config.headers.authtoken;
     }
@@ -28,13 +26,11 @@ function contentstckRetry(axios, defaultOptions) {
       return Promise.reject(error);
     }
 
-    var response = error.response; // console.log(error)
+    var response = error.response;
 
     if (!response) {
       retryErrorType = "Server connection";
       return Promise.reject(error);
-    } else {
-      networkError = 0;
     }
 
     if (response && response.status === 429) {
@@ -42,10 +38,13 @@ function contentstckRetry(axios, defaultOptions) {
       networkError++;
 
       if (networkError > retryLimit) {
+        networkError = 0;
         return Promise.reject(error);
       }
 
       wait = retryDelay;
+    } else {
+      networkError = 0;
     }
 
     if (retryErrorType && error.config !== undefined) {

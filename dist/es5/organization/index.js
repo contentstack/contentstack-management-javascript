@@ -59,7 +59,7 @@ function Organization(http, data) {
      * @returns {Promise<Organization.Organization>} Promise for Organization instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.organization('organization_uid).fetch()
      * .then((organization) => console.log(organization))
@@ -84,7 +84,7 @@ function Organization(http, data) {
        * @returns {ContentstackCollection} Instance of ContentstackCollection.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
        * client.organization('organization_uid).stacks({ include_count: true })
        * .then((organization) => console.log(organization))
@@ -145,9 +145,9 @@ function Organization(http, data) {
        * @returns {Object} Response Object.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').transferOwnership('emailId')
+       * client.stack({ api_key: 'api_key'}).transferOwnership('emailId')
        * .then((notice) => console.log(notice))
        *
        */
@@ -207,7 +207,7 @@ function Organization(http, data) {
        * @returns {ContentstackCollection} ContentstackCollection of instance.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
        * client.organization('organization_uid).addUser({ users: { 'abc@test.com': ['org_uid1', 'org_uid2' ]}, stacks: { 'abc@test.com': { 'api_key1': [ 'stack_role_id' ] } } })
        * .then((response) => console.log(response))
@@ -271,7 +271,7 @@ function Organization(http, data) {
        * @returns {String} Success message of invitation send.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
        * client.organization('organization_uid).getInvitations()
        * .then((notice) => console.log(notice))
@@ -333,7 +333,7 @@ function Organization(http, data) {
        * @returns {Object} Response Object.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
        * client.organization('organization_uid).resendInvitition('invitation_uid')
        * .then((notice) => console.log(notice))
@@ -399,7 +399,7 @@ function Organization(http, data) {
        * @returns {Array<Role>} Array of Role instance
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
        * client.organization('organization_uid).roles()
        * .then((roles) => console.log(roles))
@@ -469,7 +469,7 @@ function Organization(http, data) {
      * @returns {ContentstackCollection} Result collection of content of specified module.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.organization().fetchAll()
      * .then((collection) => console.log(collection))

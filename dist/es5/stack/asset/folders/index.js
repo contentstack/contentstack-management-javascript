@@ -36,7 +36,7 @@ function Folder(http) {
     *
     * @example
     * import * as contentstack from '@contentstack/management'
-    * const client = contentstack.client({})
+    * const client = contentstack.client()
     * const asset = {name: 'My New contentType'}
     * client.stack().asset().folders().create({ asset })
     * .then((folder) => console.log(folder))

@@ -25,9 +25,9 @@ export function GlobalField(http) {
      * @returns {Promise<GlobalField.GlobalField>} Promise for GlobalField instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').globalField('global_field_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).globalField('global_field_uid').fetch()
      * .then((globalField) => {
      *  globalField.title = 'My New Content Type'
      *  globalField.description = 'Content Type description'
@@ -45,9 +45,9 @@ export function GlobalField(http) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').globalField('global_field_uid').delete()
+     * client.stack({ api_key: 'api_key'}).globalField('global_field_uid').delete()
      * .then((notice) => console.log(notice))
      */
 
@@ -59,9 +59,9 @@ export function GlobalField(http) {
      * @returns {Promise<GlobalField.GlobalField>} Promise for GlobalField instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').globalField('global_field_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).globalField('global_field_uid').fetch()
      * .then((globalField) => console.log(globalField))
      *
      */
@@ -76,7 +76,7 @@ export function GlobalField(http) {
      *
      * @example
      * import * as contentstac k from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      * const global_field = {
      *      title: 'First',
      *      uid: 'first',
@@ -100,7 +100,7 @@ export function GlobalField(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.stack().globalField().query({ query: { name: 'Global Field Name' } }).find()
      * .then((globalFields) => console.log(globalFields))
@@ -117,12 +117,12 @@ export function GlobalField(http) {
     * @param {String} data.global_field path to file
     * @example
     * import * as contentstack from '@contentstack/management'
-    * const client = contentstack.client({})
+    * const client = contentstack.client()
     *
     * const data = {
     *  global_field: 'path/to/file.png',
     * }
-    * client.stack('api_key').globalField().import(data)
+    * client.stack({ api_key: 'api_key'}).globalField().import(data)
     * .then((globalField) => console.log(globalField))
     *
     */

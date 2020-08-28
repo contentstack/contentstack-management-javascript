@@ -29,9 +29,9 @@ export function Asset(http) {
      * @returns {Promise<Asset.Asset>} Promise for Asset instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').asset('uid').fetch()
+     * client.stack({ api_key: 'api_key'}).asset('uid').fetch()
      * .then((asset) => {
      *  asset.title = 'My New asset'
      *  asset.description = 'Asset description'
@@ -49,9 +49,9 @@ export function Asset(http) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').asset('uid').delete()
+     * client.stack({ api_key: 'api_key'}).asset('uid').delete()
      * .then((notice) => console.log(notice))
      */
 
@@ -63,9 +63,9 @@ export function Asset(http) {
      * @returns {Promise<Asset.Asset>} Promise for Asset instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').asset('uid').fetch()
+     * client.stack({ api_key: 'api_key'}).asset('uid').fetch()
      * .then((asset) => console.log(asset))
      *
      */
@@ -78,13 +78,13 @@ export function Asset(http) {
      * @returns {Promise<Asset.Asset>} Promise for Asset instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * const asset = {
      *  upload: 'path/to/file.png',
      * }
      *
-     * client.stack('api_key').asset('uid').replace(asset)
+     * client.stack({ api_key: 'api_key'}).asset('uid').replace(asset)
      * .then((asset) => console.log(asset))
      *
      */
@@ -148,7 +148,7 @@ export function Asset(http) {
      * @returns {Promise<Object>} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * const asset = {
      *  "locales": [
@@ -159,7 +159,7 @@ export function Asset(http) {
      *               ]
      * }
      *
-     * client.stack('api_key').asset('uid').publish({ publishDetails: asset, version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
+     * client.stack({ api_key: 'api_key'}).asset('uid').publish({ publishDetails: asset, version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
      * .then((notice) => console.log(notice))
      *
      */
@@ -173,7 +173,7 @@ export function Asset(http) {
      * @returns {Promise<Object>} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * const asset = {
      *  "locales": [
@@ -184,7 +184,7 @@ export function Asset(http) {
      *               ]
      * }
      *
-     * client.stack('api_key').asset('uid').unpublish({ publishDetails: asset, version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
+     * client.stack({ api_key: 'api_key'}).asset('uid').unpublish({ publishDetails: asset, version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
      * .then((notice) => console.log(notice))
      *
      */
@@ -199,7 +199,7 @@ export function Asset(http) {
     *
     * @example
     * import * as contentstack from '@contentstack/management'
-    * const client = contentstack.client({})
+    * const client = contentstack.client()
     */
     this.folder = function () {
       var data = {
@@ -215,7 +215,7 @@ export function Asset(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * const asset = {
      *  upload: 'path/to/file.png',
@@ -223,7 +223,7 @@ export function Asset(http) {
      *  description: 'Desc'
      * }
      *
-     * client.stack('api_key').asset().create(asset)
+     * client.stack({ api_key: 'api_key'}).asset().create(asset)
      * .then((asset) => console.log(asset))
      */
 
@@ -289,7 +289,7 @@ export function Asset(http) {
     *
     * @example
     * import * as contentstack from '@contentstack/management'
-    * const client = contentstack.client({})
+    * const client = contentstack.client()
     *
     * client.stack().asset().query({ query: { filename: 'Asset Name' } }).find()
     * .then((asset) => console.log(asset))

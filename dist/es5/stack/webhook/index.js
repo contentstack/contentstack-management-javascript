@@ -68,9 +68,9 @@ function Webhook(http) {
      * @returns {Promise<Webhook.Webhook>} Promise for Webhook instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').webhook('webhook_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).webhook('webhook_uid').fetch()
      * .then((webhook) => {
      *  webhook.title = 'My New Webhook'
      *  webhook.description = 'Webhook description'
@@ -88,9 +88,9 @@ function Webhook(http) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').webhook('webhook_uid').delete()
+     * client.stack({ api_key: 'api_key'}).webhook('webhook_uid').delete()
      * .then((notice) => console.log(notice))
      */
 
@@ -103,9 +103,9 @@ function Webhook(http) {
      * @param {Int} version Enter the unique ID of the content type of which you want to retrieve the details. The UID is generated based on the title of the content type. The unique ID of a content type is unique across a stack.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').webhook('webhook_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).webhook('webhook_uid').fetch()
      * .then((webhook) => console.log(webhook))
      *
      */
@@ -119,9 +119,9 @@ function Webhook(http) {
      * @param {*} param.skip - to skip number of data
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').webhook('webhook_uid').executions()
+     * client.stack({ api_key: 'api_key'}).webhook('webhook_uid').executions()
      * .then((webhook) => console.log(webhook))
      */
 
@@ -239,7 +239,7 @@ function Webhook(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      * const webhook = {
      * name: 'Test',
      * destinations: [{
@@ -275,9 +275,9 @@ function Webhook(http) {
      * @returns {ContentstackCollection} Result collection of content of specified module.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').webhook().fetchAll()
+     * client.stack({ api_key: 'api_key'}).webhook().fetchAll()
      * .then((collection) => console.log(collection))
      *
      */
@@ -339,17 +339,17 @@ function Webhook(http) {
    * @param {String} data.webhook path to file
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * const data = {
    *  webhook: 'path/to/file.png',
    * }
    * // Import a Webhook
-   * client.stack('api_key').webhook().import(data)
+   * client.stack({ api_key: 'api_key'}).webhook().import(data)
    * .then((webhook) => console.log(webhook))
    *
    * // Import an Existing Webhook
-   * client.stack('api_key').webhook('webhook_uid').import(data)
+   * client.stack({ api_key: 'api_key'}).webhook('webhook_uid').import(data)
    * .then((webhook) => console.log(webhook))
    */
 

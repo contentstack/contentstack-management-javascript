@@ -14,9 +14,9 @@ var _defineProperty3 = (0, _interopRequireDefault2["default"])(_defineProperty2)
 
 exports.client = client;
 
-var _contentstackHTTPClient = require("./core/contentstackHTTPClient.js");
+var _package = require("../package.json");
 
-var _contentstackHTTPClient2 = (0, _interopRequireDefault2["default"])(_contentstackHTTPClient);
+var _package2 = (0, _interopRequireDefault2["default"])(_package);
 
 var _cloneDeep = require("lodash/cloneDeep");
 
@@ -30,9 +30,9 @@ var _contentstackClient = require("./contentstackClient.js");
 
 var _contentstackClient2 = (0, _interopRequireDefault2["default"])(_contentstackClient);
 
-var _package = require("../package.json");
+var _contentstackHTTPClient = require("./core/contentstackHTTPClient.js");
 
-var _package2 = (0, _interopRequireDefault2["default"])(_package);
+var _contentstackHTTPClient2 = (0, _interopRequireDefault2["default"])(_contentstackHTTPClient);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -42,9 +42,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  * Create client instance
  * @name client
  * @memberof Contentstack
- * @param {Object} axios - Axios Object
  * @param {object} params - Client initialization parameters
- * @prop {string} params.host - API host (default: api.contentstack.com)
+ * @param {Object} param.proxy -
+ * @prop {string} params.host - API host (default: api.contentstack.io)
  * @prop {object} params.headers - Optional additional headers
  * @prop {number} params.timeout - Optional number of milliseconds before the request times out. Default is 30000
  * @prop {number} params.retryLimit - Optional number of retries before failure. Default is 5
@@ -54,11 +54,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  * @returns Contentstack.Client
  * @example
  * import * as contentstack from '@contentstack/management'
- * const client = contentstack.client({
- *
- * })
+ * const client = contentstack.client()
  */
-function client(axios, params) {
+function client() {
+  var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var defaultParameter = {
     defaultHostName: 'api.contentstack.io'
   };
@@ -75,7 +74,7 @@ function client(axios, params) {
 
   params = _objectSpread(_objectSpread({}, defaultParameter), (0, _cloneDeep2["default"])(params));
   params.headers = _objectSpread(_objectSpread({}, params.headers), requiredHeaders);
-  var http = (0, _contentstackHTTPClient2["default"])(axios, params);
+  var http = (0, _contentstackHTTPClient2["default"])(params);
   var api = (0, _contentstackClient2["default"])({
     http: http
   });

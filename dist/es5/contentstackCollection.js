@@ -25,20 +25,20 @@ var ContentstackCollection = function ContentstackCollection(response, http) {
 
   this.items = wrapperCollection(http, data);
 
-  if (response.data.schema !== undefined) {
-    this.schema = response.data.schema;
+  if (data.schema !== undefined) {
+    this.schema = data.schema;
   }
 
-  if (response.data.content_type !== undefined) {
-    this.content_type = response.data.content_type;
+  if (data.content_type !== undefined) {
+    this.content_type = data.content_type;
   }
 
-  if (response.data.count !== undefined) {
-    this.count = response.data.count;
+  if (data.count !== undefined) {
+    this.count = data.count;
   }
 
-  if (response.data.notice !== undefined) {
-    this.notice = response.data.notice;
+  if (data.notice !== undefined) {
+    this.notice = data.notice;
   }
 };
 

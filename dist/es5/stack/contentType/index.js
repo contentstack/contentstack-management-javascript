@@ -39,9 +39,9 @@ function ContentType(http) {
      * @returns {Promise<ContentType.ContentType>} Promise for ContentType instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').contentType('content_type_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').fetch()
      * .then((contentType) => {
      *  contentType.title = 'My New Content Type'
      *  contentType.description = 'Content Type description'
@@ -59,9 +59,9 @@ function ContentType(http) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').contentType('content_type_uid').delete()
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').delete()
      * .then((notice) => console.log(notice))
      */
 
@@ -74,9 +74,9 @@ function ContentType(http) {
      * @param {Int} version Enter the unique ID of the content type of which you want to retrieve the details. The UID is generated based on the title of the content type. The unique ID of a content type is unique across a stack.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').contentType('content_type_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').fetch()
      * .then((contentType) => console.log(contentType))
      *
      */
@@ -88,9 +88,9 @@ function ContentType(http) {
      * @returns {ContenType} Instace of ContentType.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').contentType('content_type_uid').entry('entry_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('entry_uid').fetch()
      * .then((contentType) => console.log(contentType))
      */
 
@@ -118,7 +118,7 @@ function ContentType(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      * const content_type = {name: 'My New contentType'}
      * client.stack().contentType().create({ content_type })
      * .then((contentType) => console.log(contentType))
@@ -135,9 +135,9 @@ function ContentType(http) {
     *
     * @example
     * import * as contentstack from '@contentstack/management'
-    * const client = contentstack.client({})
+    * const client = contentstack.client()
     *
-    * client.stack('api_key').contentType().query({ query: { name: 'Content Type Name' } }).find()
+    * client.stack({ api_key: 'api_key'}).contentType().query({ query: { name: 'Content Type Name' } }).find()
     * .then((contentTypes) => console.log(contentTypes))
     */
 

@@ -33,16 +33,30 @@ function Entry(http) {
      * @description The Create an entry call creates a new entry for the selected content type.
      * @memberof Entry
      * @func update
+     * @param locale - Locale code to localized entry
      * @returns {Promise<Entry.Entry>} Promise for Entry instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').contentType('content_type_uid').entry('uid').fetch()
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').fetch()
      * .then((entry) => {
      *  entry.title = 'My New Entry'
      *  entry.description = 'Entry description'
      *  return Entry.update()
+     * })
+     * .then((entry) => console.log(entry))
+     *
+     * @example
+     * // To Localize Entry pass locale in parameter
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').fetch()
+     * .then((entry) => {
+     *  entry.title = 'My New Entry'
+     *  entry.description = 'Entry description'
+     *  return Entry.update({ locale: 'en-at' })
      * })
      * .then((entry) => console.log(entry))
      *
@@ -56,9 +70,9 @@ function Entry(http) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').contentType('content_type_uid').entry('uid').delete()
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').delete()
      * .then((notice) => console.log(notice))
      */
 
@@ -74,9 +88,9 @@ function Entry(http) {
      * @returns {Promise<Entry.Entry>} Promise for Entry instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').contentType('content_type_uid').entry('uid').fetch()
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').fetch()
      * .then((entry) => console.log(entry))
      *
      */
@@ -89,7 +103,7 @@ function Entry(http) {
      * @returns {Promise<Object>} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * const entry = {
      *  "locales": [
@@ -100,7 +114,7 @@ function Entry(http) {
      *               ]
      * }
      *
-     * client.stack('api_key').contentType('content_type_uid').entry('uid').publish({ publishDetails: entry, locale: "en-us", version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').publish({ publishDetails: entry, locale: "en-us", version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
      * .then((notice) => console.log(notice))
      *
      */
@@ -113,7 +127,7 @@ function Entry(http) {
      * @returns {Promise<Object>} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * const entry = {
      *  "locales": [
@@ -124,7 +138,7 @@ function Entry(http) {
      *               ]
      * }
      *
-     * client.stack('api_key').contentType('content_type_uid').entry('uid').unpublish({ publishDetails: entry, locale: "en-us", version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').unpublish({ publishDetails: entry, locale: "en-us", version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
      * .then((notice) => console.log(notice))
      *
      */
@@ -139,7 +153,7 @@ function Entry(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      * const entry  = {
      *  title: 'Sample Entry',
      *  url: '/sampleEntry
@@ -162,7 +176,7 @@ function Entry(http) {
     *
     * @example
     * import * as contentstack from '@contentstack/management'
-    * const client = contentstack.client({})
+    * const client = contentstack.client()
     *
     * client.stack().contentType().entry().query({ query: { title: 'Entry title' } }).find()
     * .then((entries) => console.log(entries))

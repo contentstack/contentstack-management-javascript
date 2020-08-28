@@ -26,14 +26,14 @@ export default function Query(http, urlPath, param) {
    * @returns {ContentstackCollection} Result collection of content of specified module.
    * @example All Stack
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.stack().query().find()
    * .then((collection) => console.log(collection))
    *
    * @example Query on stack
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.stack().query( { query: { name: 'Stack name' } }).find()
    * .then((collection) => console.log(collection))
@@ -91,16 +91,16 @@ export default function Query(http, urlPath, param) {
    * @returns {Object} Result is Object of content of specified module.
    * @example All Stack
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.stack().query().count()
    * .then((response) => console.log(response))
    *
    * @example Query on Asset
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
-   * client.stack('api_key').query({ query: { title: 'Stack name' } }).count()
+   * client.stack({ api_key: 'api_key'}).query({ query: { title: 'Stack name' } }).count()
    * .then((response) => console.log(response))
    *
    */
@@ -159,14 +159,14 @@ export default function Query(http, urlPath, param) {
    * @returns {ContentstackCollection} Result content of specified module.
    * @example Stack
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.stack().query().findOne()
    * .then((collection) => console.log(collection))
    *
    * @example Query on stack
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.stack().query({ query: { title: 'Stack name' } }).findOne()
    * .then((collection) => console.log(collection))

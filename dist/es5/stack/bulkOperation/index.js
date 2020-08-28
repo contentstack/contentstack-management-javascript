@@ -51,7 +51,7 @@ function BulkOperation(http) {
    * @param {Boolean} params.approvals Set this to 'true' to publish the entries that do not require an approval to be published.
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * const publishDetails = {
    *   entries: [
@@ -72,7 +72,7 @@ function BulkOperation(http) {
    *     '{{env_name}}/env_uid}}'
    *   ]
    * }
-   * client.stack('api_key').publish({ details:  publishDetails })
+   * client.stack({ api_key: 'api_key'}).publish({ details:  publishDetails })
    * .then((notice) => {  console.log(notice) })
    *
    */
@@ -124,7 +124,7 @@ function BulkOperation(http) {
    * @param {Boolean} params.approvals Set this to 'true' to publish the entries that do not require an approval to be published.
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * const publishDetails = {
    *   entries: [
@@ -145,7 +145,7 @@ function BulkOperation(http) {
    *     '{{env_name}}/env_uid}}'
    *   ]
    * }
-   * client.stack('api_key').unpublish({ details:  publishDetails })
+   * client.stack({ api_key: 'api_key'}).unpublish({ details:  publishDetails })
    * .then((notice) => {  console.log(notice) })
    *
    */
@@ -195,7 +195,7 @@ function BulkOperation(http) {
    * @param {Boolean} params.details - Set this with details specifing the content type UIDs, entry UIDs or asset UIDs, and locales of which the entries or assets you want to delete.
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * const publishDetails = {
    *   entries: [
@@ -209,7 +209,7 @@ function BulkOperation(http) {
    *     uid: '{{uid}}'
    *   }]
    * }
-   * client.stack('api_key').delete({ details:  publishDetails })
+   * client.stack({ api_key: 'api_key'}).delete({ details:  publishDetails })
    * .then((notice) => {  console.log(notice) })
    *
    */

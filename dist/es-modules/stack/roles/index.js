@@ -33,9 +33,9 @@ export function Role(http, data) {
       * @returns {Promise<Role.Role>} Promise for Role instance
       * @example
       * import * as contentstack from '@contentstack/management'
-      * const client = contentstack.client({})
+      * const client = contentstack.client()
       *
-      * client.stack('api_key').role('role_uid').fetch({ include_rules: true, include_permissions: true})
+      * client.stack({ api_key: 'api_key'}).role('role_uid').fetch({ include_rules: true, include_permissions: true})
       * .then((role) => {
       *  role.name = 'My New Role'
       *  role.description = 'Role description'
@@ -74,9 +74,9 @@ export function Role(http, data) {
        * @returns {Object} Response Object.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').role('role_uid').delete()
+       * client.stack({ api_key: 'api_key'}).role('role_uid').delete()
        * .then((notice) => console.log(notice))
        */
 
@@ -90,9 +90,9 @@ export function Role(http, data) {
        * @param {Boolean} include_rules Set this to ‘true’ to include the details of the rules assigned to a role.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').role('role_uid').fetch()
+       * client.stack({ api_key: 'api_key'}).role('role_uid').fetch()
        * .then((role) => console.log(role))
        *
        */
@@ -108,7 +108,7 @@ export function Role(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      * const role =  {
      *   name: 'Role Name',
      *   description: 'From CMA Js',
@@ -142,7 +142,7 @@ export function Role(http, data) {
      * @returns {ContentstackCollection} Instance of ContentstackCollection.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.stack().role().findAll()
      * .then((collection) => console.log(collection))
@@ -205,9 +205,9 @@ export function Role(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').role().query({ query: { filename: 'Asset Name' } }).find()
+     * client.stack({ api_key: 'api_key'}).role().query({ query: { filename: 'Asset Name' } }).find()
      * .then((role) => console.log(role))
      */
 

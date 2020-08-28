@@ -35,9 +35,9 @@ export function ReleaseItem(http) {
        * @returns {Object} Response Object.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').release('release_uid').delete()
+       * client.stack({ api_key: 'api_key'}).release('release_uid').delete()
        * .then((notice) => console.log(notice))
        */
       this["delete"] = /*#__PURE__*/function () {
@@ -100,7 +100,7 @@ export function ReleaseItem(http) {
        * @returns {Promise<Release.Release>} Promise for Release instance
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
        * const item = {
        *            version: 1,
@@ -109,12 +109,12 @@ export function ReleaseItem(http) {
        *            action: "publish",
        *            locale: "en-us"
        * }
-       * client.stack('api_key').release('release_uid').item().create({ item })
+       * client.stack({ api_key: 'api_key'}).release('release_uid').item().create({ item })
        * .then((release) => console.log(release))
        *
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
        * const items =  [
        *     {
@@ -132,7 +132,7 @@ export function ReleaseItem(http) {
        *        action: "publish"
        *      }
        * ]
-       * client.stack('api_key').release('release_uid').item().create({ items })
+       * client.stack({ api_key: 'api_key'}).release('release_uid').item().create({ items })
        * .then((release) => console.log(release))
        */
 
@@ -205,9 +205,9 @@ export function ReleaseItem(http) {
        * @param {Int} param.skip The ‘skip’ parameter will skip a specific number of release items in the response.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').release('release_uid').item().fetchAll()
+       * client.stack({ api_key: 'api_key'}).release('release_uid').item().fetchAll()
        * .then((items) => console.log(items))
        */
 

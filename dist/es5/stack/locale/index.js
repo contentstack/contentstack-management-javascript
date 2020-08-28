@@ -35,9 +35,9 @@ function Locale(http) {
        * @returns {Promise<Locale.Locale>} Promise for Locale instance
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').locale('locale_code').fetch()
+       * client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
        * .then((locale) => {
        *  locale.title = 'My New Content Type'
        *  locale.description = 'Content Type description'
@@ -55,9 +55,9 @@ function Locale(http) {
        * @returns {Object} Response Object.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').locale('locale_code').delete()
+       * client.stack({ api_key: 'api_key'}).locale('locale_code').delete()
        * .then((notice) => console.log(notice))
        */
 
@@ -70,9 +70,9 @@ function Locale(http) {
        * @param {Int} version Enter the unique ID of the content type of which you want to retrieve the details. The UID is generated based on the title of the content type. The unique ID of a content type is unique across a stack.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').locale('locale_code').fetch()
+       * client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
        * .then((locale) => console.log(locale))
        *
        */
@@ -87,7 +87,7 @@ function Locale(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.stack().locale().create({ locale: { code: 'en-at' } )
      * .then((locale) => console.log(locale))
@@ -104,7 +104,7 @@ function Locale(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.stack(api_key).locale().query({ query: { code: 'locale-code' } }).find()
      * .then((locales) => console.log(locales))

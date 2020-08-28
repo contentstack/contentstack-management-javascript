@@ -15,9 +15,9 @@ export function Environment(http) {
        * @returns {Promise<Environment.Environment>} Promise for Environment instance
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').environment('uid').fetch()
+       * client.stack({ api_key: 'api_key'}).environment('uid').fetch()
        * .then((environment) => {
        *  environment.title = 'My New Content Type'
        *  environment.description = 'Content Type description'
@@ -35,9 +35,9 @@ export function Environment(http) {
        * @returns {Object} Response Object.
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').environment('uid').delete()
+       * client.stack({ api_key: 'api_key'}).environment('uid').delete()
        * .then((notice) => console.log(notice))
        */
 
@@ -49,9 +49,9 @@ export function Environment(http) {
        * @returns {Promise<Environment.Environment>} Promise for Environment instance
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        *
-       * client.stack('api_key').environment('uid').fetch()
+       * client.stack({ api_key: 'api_key'}).environment('uid').fetch()
        * .then((environment) => console.log(environment))
        *
        */
@@ -66,7 +66,7 @@ export function Environment(http) {
        *
        * @example
        * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client({})
+       * const client = contentstack.client()
        * const environment = {
        *      name: 'development',
        *      servers: [
@@ -82,7 +82,7 @@ export function Environment(http) {
        *            ],
        *      deploy_content: true
        * }
-       * client.stack('api_key').environment().create({ environment })
+       * client.stack({ api_key: 'api_key'}).environment().create({ environment })
        * .then((environment) => console.log(environment))
        */
     this.create = create({
@@ -96,9 +96,9 @@ export function Environment(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').environment().query({ query: { name: 'Environment Name' } }).find()
+     * client.stack({ api_key: 'api_key'}).environment().query({ query: { name: 'Environment Name' } }).find()
      * .then((globalFields) => console.log(globalFields))
      */
 

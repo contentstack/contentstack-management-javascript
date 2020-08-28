@@ -26,6 +26,10 @@ var _qs = require("qs");
 
 var _qs2 = (0, _interopRequireDefault2["default"])(_qs);
 
+var _axios = require("axios");
+
+var _axios2 = (0, _interopRequireDefault2["default"])(_axios);
+
 var _contentstackRetry = require("./contentstack-retry");
 
 var _contentstackRetry2 = (0, _interopRequireDefault2["default"])(_contentstackRetry);
@@ -36,7 +40,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var HOST_REGEX = /^(?!\w+:\/\/)([^\s:]+\.[^\s:]+)(?::(\d+))?(?!:)$/;
 
-function contentstackHttpClient(axios, options) {
+function contentstackHttpClient(options) {
   var defaultConfig = {
     insecure: false,
     retryOnError: true,
@@ -124,7 +128,9 @@ function contentstackHttpClient(axios, options) {
       return qs;
     }
   };
-  var instance = axios.create(axiosOptions);
+
+  var instance = _axios2["default"].create(axiosOptions);
+
   instance.httpClientParams = options;
   (0, _contentstackRetry2["default"])(instance, axiosOptions, config.retyLimit, config.retryDelay);
   return instance;

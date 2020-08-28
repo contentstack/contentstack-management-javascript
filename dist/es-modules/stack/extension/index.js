@@ -24,9 +24,9 @@ export function Extension(http, data) {
      * @returns {Promise<Extension.Extension>} Promise for Extension instance.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').extension('extension_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).extension('extension_uid').fetch()
      * .then((extension) => {
      *  extension.title = 'My Extension Type'
      *  return extension.update()
@@ -43,9 +43,9 @@ export function Extension(http, data) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').extension('extension_uid').delete()
+     * client.stack({ api_key: 'api_key'}).extension('extension_uid').delete()
      * .then((notice) => console.log(notice))
      */
 
@@ -57,9 +57,9 @@ export function Extension(http, data) {
      * @returns {Promise<Extension.Extension>} Promise for Extension instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').extension('extension_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).extension('extension_uid').fetch()
      * .then((extension) => console.log(extension))
      *
      */
@@ -74,7 +74,7 @@ export function Extension(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * const extension = {
      *  upload: 'path/to/file',
@@ -90,7 +90,7 @@ export function Extension(http, data) {
      *  type: 'Type of extenstion you want to create widget/dashboard/field'
      * }
      *
-     * client.stack('api_key').extension().upload(extension)
+     * client.stack({ api_key: 'api_key'}).extension().upload(extension)
      * .then((extension) => console.log(extension))
      */
     this.upload = /*#__PURE__*/function () {
@@ -152,7 +152,7 @@ export function Extension(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      * const extension = {
      *  tags: [
      *    'tag1',
@@ -183,7 +183,7 @@ export function Extension(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.stack().extension().query({ query={"type":"field"}})
      * .then((extensions) => console.log(extensions))

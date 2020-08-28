@@ -8,18 +8,18 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  * The Content Management API (CMA) is used to manage the content of your Contentstack account. This includes creating, updating, deleting, and fetching content of your account.
  * @namespace Contentstack
  */
-import httpClient from './core/contentstackHTTPClient.js';
+import packages from '../package.json';
 import clonedeep from 'lodash/cloneDeep';
 import getUserAgent from './core/Util.js';
 import contentstackClient from './contentstackClient.js';
-import packages from '../package.json';
+import httpClient from './core/contentstackHTTPClient.js';
 /**
  * Create client instance
  * @name client
  * @memberof Contentstack
- * @param {Object} axios - Axios Object
  * @param {object} params - Client initialization parameters
- * @prop {string} params.host - API host (default: api.contentstack.com)
+ * @param {Object} param.proxy -
+ * @prop {string} params.host - API host (default: api.contentstack.io)
  * @prop {object} params.headers - Optional additional headers
  * @prop {number} params.timeout - Optional number of milliseconds before the request times out. Default is 30000
  * @prop {number} params.retryLimit - Optional number of retries before failure. Default is 5
@@ -29,12 +29,11 @@ import packages from '../package.json';
  * @returns Contentstack.Client
  * @example
  * import * as contentstack from '@contentstack/management'
- * const client = contentstack.client({
- *
- * })
+ * const client = contentstack.client()
  */
 
-export function client(axios, params) {
+export function client() {
+  var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var defaultParameter = {
     defaultHostName: 'api.contentstack.io'
   };
@@ -51,7 +50,7 @@ export function client(axios, params) {
 
   params = _objectSpread(_objectSpread({}, defaultParameter), clonedeep(params));
   params.headers = _objectSpread(_objectSpread({}, params.headers), requiredHeaders);
-  var http = httpClient(axios, params);
+  var http = httpClient(params);
   var api = contentstackClient({
     http: http
   });

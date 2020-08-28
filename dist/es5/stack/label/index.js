@@ -34,9 +34,9 @@ function Label(http, data) {
      * @returns {Promise<Label.Label>} Promise for Label instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').label('label_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).label('label_uid').fetch()
      * .then((label) => {
      *  label.name = 'My New Content Type'
      *  return label.update()
@@ -53,9 +53,9 @@ function Label(http, data) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').label('label_uid').delete()
+     * client.stack({ api_key: 'api_key'}).label('label_uid').delete()
      * .then((notice) => console.log(notice))
      */
 
@@ -67,9 +67,9 @@ function Label(http, data) {
      * @returns {Promise<Label.Label>} Promise for Label instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').label('label_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).label('label_uid').fetch()
      * .then((label) => console.log(label))
      *
      */
@@ -84,12 +84,12 @@ function Label(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      * const label = {
      *  name: 'First label',
      *  content_types: [singlepageCT.content_type.uid]
      * }
-     * client.stack().contentType().create({ label })
+     * client.stack().label().create({ label })
      * .then((label) => console.log(label))
      */
     this.create = (0, _entity.create)({
@@ -105,7 +105,7 @@ function Label(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.stack().label().query({ query: { name: 'Label Name' } }).find()
      * .then((label) => console.log(label))

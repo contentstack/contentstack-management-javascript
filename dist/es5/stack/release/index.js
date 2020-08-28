@@ -66,7 +66,7 @@ function Release(http) {
      * @returns {Promise<Release.Release>} Promise for Release instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * const relase = {
      *     name: "Release Name",
@@ -75,7 +75,7 @@ function Release(http) {
      *     archived: false
      * }
      *
-     * var release = client.stack('api_key').release('release_uid')
+     * var release = client.stack({ api_key: 'api_key'}).release('release_uid')
      * Object.assign(release, cloneDeep(release))
      *
      * release.update()
@@ -88,10 +88,10 @@ function Release(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      *
-     * client.stack('api_key').release('release_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).release('release_uid').fetch()
      * .then((release) => {
      *  release.title = 'My New release'
      *  release.description = 'Release description'
@@ -109,9 +109,9 @@ function Release(http) {
      * @returns {Promise<Release.Release>} Promise for Release instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').release('release_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).release('release_uid').fetch()
      * .then((release) => console.log(release))
      *
      */
@@ -124,9 +124,9 @@ function Release(http) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').release('release_uid').delete()
+     * client.stack({ api_key: 'api_key'}).release('release_uid').delete()
      * .then((notice) => console.log(notice))
      */
 
@@ -138,9 +138,9 @@ function Release(http) {
      * @returns {ReleaseItem} Instance of ReleaseItem.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').release('release_uid').item().fetchAll()
+     * client.stack({ api_key: 'api_key'}).release('release_uid').item().fetchAll()
      * .then((items) => console.log(items))
      */
 
@@ -160,9 +160,9 @@ function Release(http) {
      * @param {String} scheduledAt - scheudle time for the Release to deploy.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').release('release_uid').deploy({
+     * client.stack({ api_key: 'api_key'}).release('release_uid').deploy({
      *      environments: [
      *                      "production",
      *                      "uat"
@@ -257,9 +257,9 @@ function Release(http) {
      * @param {String} description - description of the cloned Release.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').release('release_uid').clone({ name: 'New Name', description: 'New Description'})
+     * client.stack({ api_key: 'api_key'}).release('release_uid').clone({ name: 'New Name', description: 'New Description'})
      * .then((release) => console.log(release))
      *
      */
@@ -336,14 +336,14 @@ function Release(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      * const release = {
      *        name: "Release Name",
      *        description: "2018-12-12",
      *        locked: false,
      *        archived: false
      * }
-     * client.stack('api_key').release().create({ release })
+     * client.stack({ api_key: 'api_key'}).release().create({ release })
      * .then((release) => console.log(release))
      */
     this.create = (0, _entity.create)({
@@ -361,9 +361,9 @@ function Release(http) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').release().query().find()
+     * client.stack({ api_key: 'api_key'}).release().query().find()
      * .then((release) => console.log(release))
      */
 

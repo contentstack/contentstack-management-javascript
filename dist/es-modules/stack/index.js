@@ -46,9 +46,11 @@ export function Stack(http, data) {
       api_key: this.api_key
     };
 
-    if (this.authorization && this.authorization) {
-      this.stackHeaders.authorization = this.authorization;
+    if (this.management_token && this.management_token) {
+      this.stackHeaders.authorization = this.management_token;
     }
+
+    delete this.management_token;
     /**
      * @description The Update stack call lets you update the name and description of an existing stack.
      * @memberof Stack
@@ -56,9 +58,9 @@ export function Stack(http, data) {
      * @returns {Promise<Stack.Stack>} Promise for Stack instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').fetch()
+     * client.stack({ api_key: 'api_key'}).fetch()
      * .then((stack) => {
      *  stack.name = 'My New Stack'
      *  stack.description = 'My new test stack'
@@ -68,7 +70,6 @@ export function Stack(http, data) {
      *
      */
 
-
     this.update = update(http, 'stack');
     /**
      * @description The Delete stack call is used to delete an existing stack permanently from your Contentstack account.
@@ -77,9 +78,9 @@ export function Stack(http, data) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').delete()
+     * client.stack({ api_key: 'api_key'}).delete()
      * .then((notice) => console.log(notice))
      */
 
@@ -91,9 +92,9 @@ export function Stack(http, data) {
      * @returns {Promise<Stack.Stack>} Promise for Stack instance
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').fetch()
+     * client.stack({ api_key: 'api_key'}).fetch()
      * .then((stack) => console.log(stack))
      *
      */
@@ -105,12 +106,12 @@ export function Stack(http, data) {
      * @returns {ContenType} Instace of ContentType.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').contentType().create()
+     * client.stack({ api_key: 'api_key'}).contentType().create()
      * .then((contentType) => console.log(contentType))
      *
-     * client.stack('api_key').contentType('content_type_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').fetch()
      * .then((contentType) => console.log(contentType))
      */
 
@@ -134,12 +135,12 @@ export function Stack(http, data) {
      * @returns {Locale} Instace of Locale.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').locale().create()
+     * client.stack({ api_key: 'api_key'}).locale().create()
      * .then((locale) => console.log(locale))
      *
-     * client.stack('api_key').locale('locale_code').fetch()
+     * client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
      * .then((locale) => console.log(locale))
      */
 
@@ -164,12 +165,12 @@ export function Stack(http, data) {
      * @returns {Asset} Instace of Asset.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').asset().create()
+     * client.stack({ api_key: 'api_key'}).asset().create()
      * .then((asset) => console.log(asset))
      *
-     * client.stack('api_key').asset('asset_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).asset('asset_uid').fetch()
      * .then((asset) => console.log(asset))
      */
 
@@ -194,12 +195,12 @@ export function Stack(http, data) {
      * @returns {ContenType} Instace of Global field.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').globalField().create()
+     * client.stack({ api_key: 'api_key'}).globalField().create()
      * .then((globalField) => console.log(globalField))
      *
-     * client.stack('api_key').globalField('globalField_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).globalField('globalField_uid').fetch()
      * .then((globalField) => console.log(globalField))
      */
 
@@ -224,12 +225,12 @@ export function Stack(http, data) {
      * @returns {Environment} Instace of Environment.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').globalField().create()
+     * client.stack({ api_key: 'api_key'}).globalField().create()
      * .then((globalField) => console.log(globalField))
      *
-     * client.stack('api_key').globalField('globalField_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).globalField('globalField_uid').fetch()
      * .then((globalField) => console.log(globalField))
      */
 
@@ -254,12 +255,12 @@ export function Stack(http, data) {
      * @returns {DeliveryToken} Instace of DeliveryToken.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').deliveryToken().create()
+     * client.stack({ api_key: 'api_key'}).deliveryToken().create()
      * .then((deliveryToken) => console.log(deliveryToken))
      *
-     * client.stack('api_key').deliveryToken('deliveryToken_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).deliveryToken('deliveryToken_uid').fetch()
      * .then((deliveryToken) => console.log(deliveryToken))
      */
 
@@ -284,12 +285,12 @@ export function Stack(http, data) {
      * @returns {Extension} Instace of Extension.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').extension().create()
+     * client.stack({ api_key: 'api_key'}).extension().create()
      * .then((extension) => console.log(extension))
      *
-     * client.stack('api_key').extension('extension_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).extension('extension_uid').fetch()
      * .then((extension) => console.log(extension))
      */
 
@@ -314,12 +315,12 @@ export function Stack(http, data) {
      * @returns {Webhook} Instace of Webhook.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').webhook().create()
+     * client.stack({ api_key: 'api_key'}).webhook().create()
      * .then((webhook) => console.log(webhook))
      *
-     * client.stack('api_key').webhook('webhook_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).webhook('webhook_uid').fetch()
      * .then((webhook) => console.log(webhook))
      */
 
@@ -344,12 +345,12 @@ export function Stack(http, data) {
      * @returns {Label} Instace of Label.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').label().create()
+     * client.stack({ api_key: 'api_key'}).label().create()
      * .then((label) => console.log(label))
      *
-     * client.stack('api_key').label('label_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).label('label_uid').fetch()
      * .then((label) => console.log(label))
      */
 
@@ -374,12 +375,12 @@ export function Stack(http, data) {
      * @returns {Release} Instance of Release.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').release().create()
+     * client.stack({ api_key: 'api_key'}).release().create()
      * .then((release) => console.log(release))
      *
-     * client.stack('api_key').release('release_uid').fetch()
+     * client.stack({ api_key: 'api_key'}).release('release_uid').fetch()
      * .then((release) => console.log(release))
      */
 
@@ -403,7 +404,7 @@ export function Stack(http, data) {
      * @returns {BulkOperation} Instance of BulkOperation.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * const publishDetails = {
      *   entries: [
@@ -424,7 +425,7 @@ export function Stack(http, data) {
      *     '{{env_name}}/env_uid}}'
      *   ]
      * }
-     * client.stack('api_key').publish({ details:  publishDetails })
+     * client.stack({ api_key: 'api_key'}).publish({ details:  publishDetails })
      * .then((notice) => {  console.log(notice) })
      *
      */
@@ -443,9 +444,9 @@ export function Stack(http, data) {
      * @returns {Array<User>} Array of User's including owner of Stack
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').users()
+     * client.stack({ api_key: 'api_key'}).users()
      * .then((users) => console.log(users))
      *
      */
@@ -503,9 +504,9 @@ export function Stack(http, data) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').transferOwnership('emailId')
+     * client.stack({ api_key: 'api_key'}).transferOwnership('emailId')
      * .then((notice) => console.log(notice))
      *
      */
@@ -566,9 +567,9 @@ export function Stack(http, data) {
      * @returns {Object} Configuration settings of stack.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').settings()
+     * client.stack({ api_key: 'api_key'}).settings()
      * .then((settings) => console.log(settings))
      *
      */
@@ -622,9 +623,9 @@ export function Stack(http, data) {
      * @returns {Object} Configuration settings of stack.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').resetSettings()
+     * client.stack({ api_key: 'api_key'}).resetSettings()
      * .then((settings) => console.log(settings))
      *
      */
@@ -682,9 +683,9 @@ export function Stack(http, data) {
      * @returns {Object} Configuration settings of stack.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').addSettings({ key: 'value' })
+     * client.stack({ api_key: 'api_key'}).addSettings({ key: 'value' })
      * .then((settings) => console.log(settings))
      *
      */
@@ -747,9 +748,9 @@ export function Stack(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').share([ "manager@example.com" ], { "manager@example.com": [ "abcdefhgi1234567890" ] })
+     * client.stack({ api_key: 'api_key'}).share([ "manager@example.com" ], { "manager@example.com": [ "abcdefhgi1234567890" ] })
      * .then((notice) => console.log(notice))
      *
      */
@@ -811,9 +812,9 @@ export function Stack(http, data) {
      * @returns {Object} Response Object.
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').unShare('email@id.com')
+     * client.stack({ api_key: 'api_key'}).unShare('email@id.com')
      * .then((notice) => console.log(notice))
      *
      */
@@ -876,9 +877,9 @@ export function Stack(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
-     * client.stack('api_key').role().create({
+     * client.stack({ api_key: 'api_key'}).role().create({
      * "role":
      *       {
      *        "name":"testRole",
@@ -888,7 +889,7 @@ export function Stack(http, data) {
      * })
      * .then((role) => console.log(role))
      *
-     * client.stack('api_key').role('role_uid').fetch())
+     * client.stack({ api_key: 'api_key'}).role('role_uid').fetch())
      * .then((role) => console.log(role))
      *
      */
@@ -917,14 +918,14 @@ export function Stack(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.organization('org_uid').stack().create({name: 'My New Stack'})
      * .then((stack) => console.log(stack))
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.stack().create({name: 'My New Stack'}, { organization_uid: 'org_uid' })
      * .then((stack) => console.log(stack))
@@ -948,7 +949,7 @@ export function Stack(http, data) {
      *
      * @example
      * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client({})
+     * const client = contentstack.client()
      *
      * client.stack().query({ query: { name: 'Stack Name' } }).find()
      * .then((stack) => console.log(stack))
@@ -963,7 +964,8 @@ export function Stack(http, data) {
   return this;
 }
 export function StackCollection(http, data) {
-  var obj = cloneDeep(data.stacks);
+  var stacks = data.stacks || [];
+  var obj = cloneDeep(stacks);
   var stackCollection = obj.map(function (userdata) {
     return new Stack(http, {
       stack: userdata

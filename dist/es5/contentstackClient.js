@@ -7,11 +7,20 @@ var _interopRequireDefault2 = _interopRequireDefault3(require("@babel/runtime/he
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _defineProperty2 = require("@babel/runtime/helpers/defineProperty");
+
+var _defineProperty3 = (0, _interopRequireDefault2["default"])(_defineProperty2);
+
 exports["default"] = contentstackClient;
 
 var _index = require("./stack/index.js");
 
 var _index2 = require("./organization/index");
+
+var _cloneDeep = require("lodash/cloneDeep");
+
+var _cloneDeep2 = (0, _interopRequireDefault2["default"])(_cloneDeep);
 
 var _index3 = require("./user/index");
 
@@ -19,10 +28,10 @@ var _contentstackError = require("./core/contentstackError");
 
 var _contentstackError2 = (0, _interopRequireDefault2["default"])(_contentstackError);
 
-/**
- * @namespace ContentstackClient
- */
-// import { create, query } from './entity'
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty3["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 function contentstackClient(_ref) {
   var http = _ref.http;
 
@@ -37,7 +46,7 @@ function contentstackClient(_ref) {
    * @returns {Promise}
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.login({ email: <emailid>, password: <password> })
    * .then(() => console.log('Logged in successfully'))
@@ -66,7 +75,7 @@ function contentstackClient(_ref) {
    * @returns {Promise}
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.getUser()
    * .then((user) => console.log(user))
@@ -87,44 +96,37 @@ function contentstackClient(_ref) {
    * @memberof ContentstackClient
    * @func stack
    * @param {String} api_key - Stack API Key
+   * @param {String} management_token - Stack API Key
    * @returns {Stack} Instance of Stack
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    * const stack = {name: 'My New Stack'}
    * client.stack().create({ stack }, { organization_uid: 'org_uid' })
    * .then((stack) => console.log(stack))
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
-   * client.stack('api_key').fetch()
+   * client.stack({ api_key: 'api_key'}).fetch()
    * .then((stack) => console.log(stack))
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
-   * client.stack('api_key', 'management_token').fetch()
+   * client.stack({ api_key: 'api_key', management_token: 'management_token' }).fetch()
    * .then((stack) => console.log(stack))
    *
    */
 
 
   function stack() {
-    var apiKey = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var managementToken = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var stack = {};
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    if (apiKey && apiKey !== undefined) {
-      stack.api_key = apiKey;
-    }
-
-    if (managementToken && managementToken !== undefined) {
-      stack.authorization = managementToken;
-    }
+    var stack = _objectSpread({}, (0, _cloneDeep2["default"])(params));
 
     return new _index.Stack(http, {
       stack: stack
@@ -139,14 +141,14 @@ function contentstackClient(_ref) {
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.organization().query().find()
    * .then((organization) => console.log(organization))
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    *
    * client.organization('org_uid').fetch()
    * .then((organization) => console.log(organization))
@@ -171,7 +173,7 @@ function contentstackClient(_ref) {
    *
    * @example
    * import * as contentstack from '@contentstack/management'
-   * const client = contentstack.client({})
+   * const client = contentstack.client()
    * const notice = client.logout()
    *
    */
