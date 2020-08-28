@@ -161,3 +161,5 @@ function expectTest (user) {
   expect(user.country_code).to.be.equal('country_code')
   expect(user.tfa_status).to.be.equal('verified')
 }
+
+export { expectTest as checkUser }

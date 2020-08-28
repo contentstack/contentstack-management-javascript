@@ -15,11 +15,13 @@ const errorMock = {
 const noticeMock = {
   notice: 'Notice'
 }
-
+const systemUidMock = {
+  uid: 'UID'
+}
 const systemFieldsMock = {
   created_at: 'created_at_date',
   updated_at: 'updated_at_date',
-  uid: 'UID'
+  ...systemUidMock
 }
 
 const stackMock = {
@@ -70,21 +72,12 @@ const stackMock = {
   }
 }
 
-function mockCollection (mockData, type) {
-  var mock = {
-    ...cloneDeep(noticeMock),
-    count: 1
-  }
-  mock[type] = [mockData]
-  return mock
-}
-
 const orgMock = {
   ...cloneDeep(systemFieldsMock),
-  name: 'Sample',
-  plan_id: 'cms_plan',
-  owner_uid: 'blt1f1cddeaefbefdd111b11111',
-  expires_on: '2029-12-31T00:00:00.000Z',
+  name: 'name',
+  plan_id: 'plan_id',
+  owner_uid: 'owner_uid',
+  expires_on: 'expires_on',
   enabled: true,
   is_over_usage_allowed: true
 }
@@ -99,6 +92,31 @@ const userMock = {
   mobile_number: 'mobile_number',
   country_code: 'country_code',
   tfa_status: 'verified'
+}
+
+const adminRoleMock = {
+  ...cloneDeep(systemFieldsMock),
+  name: 'Admin',
+  description: 'Admin Role',
+  org_uid: 'org_uid',
+  admin: true,
+  default: true,
+  users: [
+    'user_uid'
+  ]
+}
+
+const roleMock = {
+  ...adminRoleMock,
+  admin: false
+}
+function mockCollection (mockData, type) {
+  var mock = {
+    ...cloneDeep(noticeMock),
+    count: 1
+  }
+  mock[type] = [mockData]
+  return mock
 }
 
 function entryMockCollection (mockData) {
@@ -118,6 +136,9 @@ export {
   stackMock,
   userMock,
   orgMock,
+  adminRoleMock,
+  roleMock,
+  systemUidMock,
   mockCollection,
   entryMockCollection
 }
