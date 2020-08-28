@@ -25,5 +25,5 @@ describe('Content Type delete api Test', () => {
 })
 
 function makeContentType (uid = null) {
-  return client.stack(({ apiKey: stack.api_key })).contentType(uid)
+  return client.stack({ api_key: stack.api_key }).contentType(uid)
 }

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import error from '../../lib/core/contentstackError'
-import { errorMock } from '../api/mock/objects'
+import { errorMock } from './mock/objects'
 import { describe, it } from 'mocha'
 import cloneDeep from 'lodash/cloneDeep'
 

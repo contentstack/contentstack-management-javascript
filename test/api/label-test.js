@@ -123,5 +123,5 @@ describe('Label api Test', () => {
 })
 
 function makeLabel (uid = null) {
-  return client.stack(({ apiKey: stack.api_key })).label(uid)
+  return client.stack({ api_key: stack.api_key }).label(uid)
 }

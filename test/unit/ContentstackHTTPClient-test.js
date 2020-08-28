@@ -1,16 +1,21 @@
 
 import contentstackHTTPClient from '../../lib/core/contentstackHTTPClient.js'
 import { expect } from 'chai'
-import { describe, it } from 'mocha'
+import { describe, it, beforeEach } from 'mocha'
+import sinon from 'sinon'
+const logHandlerStub = sinon.stub()
 
 describe('Contentstack HTTP Client', () => {
+  beforeEach(() => {
+    logHandlerStub.resetHistory()
+  })
   it('Contentstack Http Client Object successful', done => {
     var axiosInstance = contentstackHTTPClient({
       apiKey: 'apiKey',
       accessToken: 'accessToken',
       defaultHostName: 'defaulthost'
     })
-
+    expect(logHandlerStub.callCount).to.be.equal(0)
     expect(axiosInstance.defaults.headers.apiKey).to.be.equal('apiKey', 'Api not Equal to \'apiKey\'')
     expect(axiosInstance.defaults.headers.accessToken).to.be.equal('accessToken', 'Api not Equal to \'accessToken\'')
     expect(axiosInstance.defaults.baseURL).to.be.equal('https://defaulthost:443/v3', 'Api not Equal to \'https://defaulthost:443/v3\'')

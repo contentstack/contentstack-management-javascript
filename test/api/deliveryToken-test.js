@@ -139,5 +139,5 @@ describe('Delivery Token api Test', () => {
 })
 
 function makeDeliveryToken (uid = null) {
-  return client.stack(({ apiKey: stack.api_key })).deliveryToken(uid)
+  return client.stack({ api_key: stack.api_key }).deliveryToken(uid)
 }

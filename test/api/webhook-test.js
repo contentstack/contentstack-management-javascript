@@ -105,7 +105,7 @@ describe('Webhook api Test', () => {
     const asset = {
       upload: path.join(__dirname, './mock/webhook.json')
     }
-    client.stack(stack.api_key).asset().create(asset)
+    client.stack({ api_key: stack.api_key }).asset().create(asset)
       .then((assetFile) => {
         makeWebhook(webhookUid).executions()
           .then((response) => {
@@ -145,5 +145,5 @@ describe('Webhook api Test', () => {
 })
 
 function makeWebhook (uid = null) {
-  return client.stack(({ apiKey: stack.api_key })).webhook(uid)
+  return client.stack({ api_key: stack.api_key }).webhook(uid)
 }

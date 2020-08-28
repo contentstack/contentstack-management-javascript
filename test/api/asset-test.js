@@ -172,5 +172,5 @@ describe('Assets api Test', () => {
 })
 
 function makeAsset (uid = null) {
-  return client.stack({ apiKey: stack.api_key }).asset(uid)
+  return client.stack({ api_key: stack.api_key }).asset(uid)
 }

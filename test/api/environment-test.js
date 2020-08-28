@@ -134,5 +134,5 @@ describe('Environment api Test', () => {
 })
 
 function makeEnvironment (uid = null) {
-  return client.stack(({ apiKey: stack.api_key })).environment(uid)
+  return client.stack({ api_key: stack.api_key }).environment(uid)
 }

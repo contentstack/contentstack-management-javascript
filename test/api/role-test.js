@@ -134,5 +134,5 @@ describe('Role api test', () => {
 
 // Helper
 function getRole (uid = null) {
-  return client.stack(({ apiKey: stack.api_key })).role(uid)
+  return client.stack({ api_key: stack.api_key }).role(uid)
 }

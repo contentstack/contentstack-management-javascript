@@ -115,5 +115,5 @@ describe('Global Field api Test', () => {
 })
 
 function makeGlobalField (uid = null) {
-  return client.stack(({ apiKey: stack.api_key })).globalField(uid)
+  return client.stack({ api_key: stack.api_key }).globalField(uid)
 }

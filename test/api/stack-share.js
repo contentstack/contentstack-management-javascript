@@ -13,7 +13,7 @@ describe('Stack Share/Unshare', () => {
   })
   it('Share stack test', done => {
     const role = jsonReader('role.json')
-    client.stack(({ apiKey: stack.api_key }))
+    client.stack({ api_key: stack.api_key })
       .share(['test@test.com'], { 'test@test.com': [role.uid] })
       .then((response) => {
         expect(response.notice).to.be.equal('The invitation has been sent successfully.')
@@ -23,7 +23,7 @@ describe('Stack Share/Unshare', () => {
   })
 
   it('unshare stack test', done => {
-    client.stack(({ apiKey: stack.api_key }))
+    client.stack({ api_key: stack.api_key })
       .unShare('test@test.com')
       .then((response) => {
         expect(response.notice).to.be.equal('The stack has been successfully unshared.')

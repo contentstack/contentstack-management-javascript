@@ -24,7 +24,7 @@ function setup (options = {}) {
 function setupNoRetry () {
   const client = axios.create(Object.assign({
     logHandler: logHandlerStub,
-    retryOnError: true
+    retryOnError: false
   }))
   contentstckRetry(client, {
     logHandler: logHandlerStub,
@@ -37,6 +37,7 @@ describe('Contentstack retry network call', () => {
     host = 'http://localhost/'
     axios.defaults.host = host
     axios.defaults.adapter = httpAdapter
+    logHandlerStub.resetHistory()
   })
 
   it('Contentstack retry on 429 rate limit', done => {
@@ -46,6 +47,7 @@ describe('Contentstack retry network call', () => {
     mock.onGet('/user').replyOnce(200, 'test data')
     client.get('/user')
       .then((response) => {
+        expect(logHandlerStub.callCount).to.be.equal(0)
         expect(response.data).to.be.equal('test data')
         done()
       })
@@ -53,6 +55,7 @@ describe('Contentstack retry network call', () => {
         expect(error).to.not.equal(null)
         done()
       })
+      .catch(done)
   })
 
   it('Contentstack retry on network error', done => {
@@ -62,13 +65,16 @@ describe('Contentstack retry network call', () => {
     mock.onGet('/netError').replyOnce(200, 'test data')
     client.get('/netError')
       .then((response) => {
+        expect(logHandlerStub.callCount).to.be.equal(0)
         expect(response.data).to.be.equal('test data')
         done()
       })
       .catch((error) => {
+        expect(logHandlerStub.callCount).to.be.equal(0)
         expect(error).to.not.equal(null)
         done()
       })
+      .catch(done)
   })
 
   it('Contentstack retry on network error With Authorization', done => {
@@ -78,28 +84,34 @@ describe('Contentstack retry network call', () => {
     mock.onGet('/netError').replyOnce(200, 'test data')
     client.get('/netError')
       .then((response) => {
+        expect(logHandlerStub.callCount).to.be.equal(0)
         expect(response.data).to.be.equal('test data')
         done()
       })
       .catch((error) => {
+        expect(logHandlerStub.callCount).to.be.equal(0)
         expect(error).to.not.equal(null)
         done()
       })
+      .catch(done)
   })
-  it('Contentstack retry on error', done => {
+  it('Contentstack no retry on error', done => {
     const { client } = setup()
     mock = new MockAdapter(client)
     mock.onGet('/netErrord').replyOnce(400, 'test errro')
     mock.onGet('/netErrord').replyOnce(200, 'test data')
     client.get('/netErrord')
       .then((response) => {
+        expect(logHandlerStub.callCount).to.be.equal(0)
         expect(response.data).to.be.equal('test data')
         done()
       })
       .catch((error) => {
+        expect(logHandlerStub.callCount).to.be.equal(0)
         expect(error).to.not.equal(null)
         done()
       })
+      .catch(done)
   })
 
   it('Contentstack retry on network error max time', done => {
@@ -114,28 +126,32 @@ describe('Contentstack retry network call', () => {
     mock.onGet('/network-error').replyOnce(200, 'test data')
     client.get('/network-error')
       .then((response) => {
-        expect(response.data).to.be.equal('test data')
+        expect(response.data).to.not.equal('test data')
         done()
       })
       .catch((error) => {
+        expect(logHandlerStub.callCount).to.be.equal(5)
         expect(error).to.not.equal(null)
         done()
       })
+      .catch(done)
   })
 
-  it('Contentstack retry on network error', done => {
+  it('Contentstack no retry on network error', done => {
     const { client } = setupNoRetry()
     mock = new MockAdapter(client)
     mock.onGet('/testnoretry').replyOnce(402, 'test error result')
     mock.onGet('/testnoretry').replyOnce(200, 'test data')
     client.get('/testnoretry')
       .then((response) => {
-        expect(response.data).to.be.equal('test data')
+        expect(response.data).to.not.equal('test data')
         done()
       })
       .catch((error) => {
+        expect(logHandlerStub.callCount).to.be.equal(0)
         expect(error).to.not.equal(null)
         done()
       })
+      .catch(done)
   })
 })

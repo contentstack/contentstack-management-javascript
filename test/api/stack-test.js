@@ -40,7 +40,7 @@ describe('Stack api Test', () => {
   })
 
   it('Fetch Stack details', done => {
-    client.stack(({ apiKey: stacks.api_key }))
+    client.stack({ api_key: stacks.api_key })
       .fetch()
       .then((stack) => {
         expect(stack.org_uid).to.be.equal(orgID)
@@ -55,7 +55,7 @@ describe('Stack api Test', () => {
   it('Update Stack details', done => {
     const name = 'My New Stack Update Name'
     const description = 'My New description stack'
-    client.stack(({ apiKey: stacks.api_key }))
+    client.stack({ api_key: stacks.api_key })
       .fetch().then((stack) => {
         stack.name = name
         stack.description = description
@@ -69,7 +69,7 @@ describe('Stack api Test', () => {
   })
 
   it('Get all users of stack', done => {
-    client.stack(({ apiKey: stacks.api_key }))
+    client.stack({ api_key: stacks.api_key })
       .users()
       .then((response) => {
         expect(response[0].uid).to.be.not.equal(null)
@@ -79,7 +79,7 @@ describe('Stack api Test', () => {
   })
 
   it('Get stack settings', done => {
-    client.stack(({ apiKey: stacks.api_key }))
+    client.stack({ api_key: stacks.api_key })
       .settings()
       .then((response) => {
         expect(response.stack_variable).to.be.equal(undefined, 'Stack variable must be blank')
@@ -91,7 +91,7 @@ describe('Stack api Test', () => {
   })
 
   it('Add stack settings', done => {
-    client.stack(({ apiKey: stacks.api_key }))
+    client.stack({ api_key: stacks.api_key })
       .addSettings({ samplevariable: 'too' })
       .then((response) => {
         expect(response.stack_variables.samplevariable).to.be.equal('too', 'samplevariable must set to \'too\' ')
@@ -101,7 +101,7 @@ describe('Stack api Test', () => {
   })
 
   it('Reset stack settings', done => {
-    client.stack(({ apiKey: stacks.api_key }))
+    client.stack({ api_key: stacks.api_key })
       .resetSettings()
       .then((response) => {
         expect(response.stack_variable).to.be.equal(undefined, 'Stack variable must be blank')

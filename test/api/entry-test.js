@@ -162,5 +162,5 @@ describe('Entry api Test', () => {
 })
 
 function makeEntry (contentType, uid = null) {
-  return client.stack(({ apiKey: stack.api_key })).contentType(contentType).entry(uid)
+  return client.stack({ api_key: stack.api_key }).contentType(contentType).entry(uid)
 }
