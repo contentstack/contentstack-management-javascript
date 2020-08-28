@@ -79,6 +79,28 @@ function mockCollection (mockData, type) {
   return mock
 }
 
+const orgMock = {
+  ...cloneDeep(systemFieldsMock),
+  name: 'Sample',
+  plan_id: 'cms_plan',
+  owner_uid: 'blt1f1cddeaefbefdd111b11111',
+  expires_on: '2029-12-31T00:00:00.000Z',
+  enabled: true,
+  is_over_usage_allowed: true
+}
+
+const userMock = {
+  ...cloneDeep(systemFieldsMock),
+  email: 'sample@email.com',
+  username: 'UserName',
+  first_name: 'first_name',
+  last_name: 'last_name',
+  company: 'company',
+  mobile_number: 'mobile_number',
+  country_code: 'country_code',
+  tfa_status: 'verified'
+}
+
 function entryMockCollection (mockData) {
   var entryMockCollection = mockCollection(mockData, 'entries')
   entryMockCollection.schema = {
@@ -92,7 +114,10 @@ function entryMockCollection (mockData) {
 
 export {
   errorMock,
+  noticeMock,
   stackMock,
+  userMock,
+  orgMock,
   mockCollection,
   entryMockCollection
 }
