@@ -12,6 +12,11 @@ const errorMock = {
     statusText: 'Not Found'
   }
 }
+
+const stackHeadersMock = {
+  api_key: 'api_key'
+}
+
 const noticeMock = {
   notice: 'Notice'
 }
@@ -139,6 +144,7 @@ export {
   adminRoleMock,
   roleMock,
   systemUidMock,
+  stackHeadersMock,
   mockCollection,
   entryMockCollection
 }

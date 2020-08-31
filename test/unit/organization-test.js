@@ -6,6 +6,8 @@ import { roleMock, adminRoleMock, orgMock, mockCollection, systemUidMock, stackM
 import MockAdapter from 'axios-mock-adapter'
 import ContentstackCollection from '../../lib/contentstackCollection'
 import { checkUser } from './user-test'
+import { checkAdminRole, checkRole } from './role-test'
+import { checkStack } from './stack-test'
 
 describe('Organization Test', () => {
   it('Organization without UID', done => {
@@ -131,6 +133,7 @@ describe('Organization Test', () => {
       .stacks()
       .then((response) => {
         expect(response.items.length).to.be.equal(1)
+        checkStack(response.items[0])
         done()
       })
       .catch(done)
@@ -219,6 +222,8 @@ describe('Organization Test', () => {
       .roles()
       .then((response) => {
         expect(response.items.length).to.be.equal(2)
+        checkAdminRole(response.items[0])
+        checkRole(response.items[1])
         done()
       })
       .catch(done)
