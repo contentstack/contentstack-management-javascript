@@ -169,6 +169,21 @@ const releaseMock = {
   items_count: 1
 }
 
+const assetMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  content_type: 'image/png',
+  file_size: '42670',
+  tags: [],
+  filename: 'file.png',
+  url: 'url',
+  ACL: {},
+  is_dir: false,
+  parent_uid: 'parent_uid',
+  _version: 1,
+  title: 'file.png'
+}
+
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -209,6 +224,7 @@ export {
   extensionMock,
   releaseMock,
   releaseItemMock,
+  assetMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
