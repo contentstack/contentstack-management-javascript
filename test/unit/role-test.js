@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import { expect } from 'chai'
-import MockAdapter from 'axios-mock-adapter'
 import { describe, it } from 'mocha'
+import MockAdapter from 'axios-mock-adapter'
 import { Role, RoleCollection } from '../../lib/stack/roles'
 import { systemUidMock, stackHeadersMock, roleMock, noticeMock } from './mock/objects'
 

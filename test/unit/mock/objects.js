@@ -184,6 +184,29 @@ const assetMock = {
   title: 'file.png'
 }
 
+const webhookMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  name: 'Test',
+  retry_policy: 'manual',
+  channels: [
+    'assets.create'
+  ],
+  destinations: [
+    {
+      custom_header: [
+        {
+          header_name: '',
+          value: '',
+          _id: '5c7fcc379b0dfa0a9cfbc5ef'
+        }
+      ],
+      http_basic_password: '',
+      http_basic_auth: '',
+      target_url: 'https://localhost'
+    }
+  ]
+}
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -225,6 +248,7 @@ export {
   releaseMock,
   releaseItemMock,
   assetMock,
+  webhookMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
