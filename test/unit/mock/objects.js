@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 import { singlepageCT } from '../../api/mock/content-type'
+import { expect } from 'chai'
 
 const errorMock = {
   config: {
@@ -27,6 +28,11 @@ const systemFieldsMock = {
   created_at: 'created_at_date',
   updated_at: 'updated_at_date',
   ...systemUidMock
+}
+
+const systemFieldsUserMock = {
+  created_by: 'created_by_date',
+  updated_by: 'updated_by_date'
 }
 
 const stackMock = {
@@ -115,6 +121,18 @@ const roleMock = {
   ...adminRoleMock,
   admin: false
 }
+
+const folderMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  content_type: 'application/vnd.contenstack.folder',
+  tags: [],
+  name: 'Demo Folder',
+  ACL: {},
+  is_dir: true,
+  parent_uid: 'bltd11bd1a1c11111ee',
+  _version: 1
+}
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -135,6 +153,12 @@ function entryMockCollection (mockData) {
   return entryMockCollection
 }
 
+function checkSystemFields(object) {
+  expect(object.created_at).to.be.equal(systemFieldsMock.created_at)
+  expect(object.uid).to.be.equal(systemFieldsMock.uid)
+  expect(object.updated_at).to.be.equal(systemFieldsMock.updated_at)
+}
+
 export {
   errorMock,
   noticeMock,
@@ -145,6 +169,8 @@ export {
   roleMock,
   systemUidMock,
   stackHeadersMock,
+  folderMock,
   mockCollection,
-  entryMockCollection
+  entryMockCollection,
+  checkSystemFields
 }
