@@ -133,6 +133,21 @@ const folderMock = {
   parent_uid: 'bltd11bd1a1c11111ee',
   _version: 1
 }
+
+const extensionMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  tags: [
+    'tag1',
+    'tag2'
+  ],
+  data_type: 'text',
+  title: 'New Custom Field URL',
+  src: 'https://www.sample.com',
+  multiple: false,
+  config: '{}',
+  type: 'field'
+}
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -153,7 +168,7 @@ function entryMockCollection (mockData) {
   return entryMockCollection
 }
 
-function checkSystemFields(object) {
+function checkSystemFields (object) {
   expect(object.created_at).to.be.equal(systemFieldsMock.created_at)
   expect(object.uid).to.be.equal(systemFieldsMock.uid)
   expect(object.updated_at).to.be.equal(systemFieldsMock.updated_at)
@@ -170,6 +185,7 @@ export {
   systemUidMock,
   stackHeadersMock,
   folderMock,
+  extensionMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
