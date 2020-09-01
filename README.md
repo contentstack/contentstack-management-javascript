@@ -47,7 +47,7 @@ contentstackClient.login({ email: 'EMAIL', password: 'PASSWORD'})
 ### Management Token
 [Management Tokens](https://www.contentstack.com/docs/developers/create-tokens/about-management-tokens/) are **stack-level** tokens, with no users attached to them.
 ```
-contentstackClient.stack({ apiKey: 'API_KEY', managementToken: 'MANAGEMENT_TOKEN' })
+contentstackClient.stack({ api_key: 'API_KEY', management_token: 'MANAGEMENT_TOKEN' })
 .fetch()
 .then((stack) => {
 	console.log(stack)
@@ -64,7 +64,7 @@ var contentstackClient = contentstack.client({ authtoken: 'AUTHTOKEN' })
 #### Fetch Stack Detail
 Use the following lines of code to fetch your stack detail using this SDK:
 ```
-contentstackClient.stack({ apiKey: 'API_KEY' })
+contentstackClient.stack({ api_key: 'API_KEY' })
 .fetch()
 .then((stack) => {
 	console.log(stack)
@@ -79,7 +79,7 @@ var  entry  = {
 	url: '/sampleEntry'
 }
 
-contentstackClient.stack({ apiKey: 'API_KEY' }).contentType('CONTENT_TYPE_UID').entry().create({ entry })
+contentstackClient.stack({ api_key: 'API_KEY' }).contentType('CONTENT_TYPE_UID').entry().create({ entry })
 .then((entry) => {
 	console.log(entry)
 })
@@ -93,7 +93,7 @@ var  asset  = {
 	title: 'Asset Title'
 }
 
-contentstackClient.stack({ apiKey: 'API_KEY' }).asset().create({ asset })
+contentstackClient.stack({ api_key: 'API_KEY' }).asset().create({ asset })
 .then((asset) => {
 	console.log(asset)
 })
