@@ -148,6 +148,27 @@ const extensionMock = {
   config: '{}',
   type: 'field'
 }
+
+const releaseItemMock = {
+  version: 1,
+  uid: 'entry_or_asset_uid',
+  content_type_uid: 'your_content_type_uid',
+  action: 'publish',
+  locale: 'en-us'
+}
+const releaseMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  name: 'Name',
+  description: 'Description',
+  locked: false,
+  archived: false,
+  items: [
+    releaseItemMock
+  ],
+  items_count: 1
+}
+
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -186,6 +207,8 @@ export {
   stackHeadersMock,
   folderMock,
   extensionMock,
+  releaseMock,
+  releaseItemMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
