@@ -1,3 +1,4 @@
+import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
@@ -88,6 +89,17 @@ describe('Content Type api Test', () => {
       })
       .then((contentType) => {
         expect(contentType.schema.length).to.be.equal(6)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Import content type', done => {
+    makeContentType().import({
+      content_type: path.join(__dirname, './mock/contentType.json')
+    })
+      .then((response) => {
+        expect(response.uid).to.be.not.equal(null)
         done()
       })
       .catch(done)

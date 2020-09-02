@@ -245,7 +245,35 @@ const contentTypeMock = {
     }
   ]
 }
-
+const globalFieldMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  title: 'title',
+  schema:
+  [
+    {
+      display_name: 'Title',
+      uid: 'title',
+      data_type: 'text',
+      mandatory: true,
+      unique: true,
+      field_metadata:
+          {
+            _default: true
+          }
+    },
+    {
+      display_name: 'URL',
+      uid: 'url',
+      data_type: 'text',
+      mandatory: false,
+      field_metadata:
+          {
+            _default: true
+          }
+    }
+  ]
+}
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -289,6 +317,7 @@ export {
   assetMock,
   webhookMock,
   contentTypeMock,
+  globalFieldMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields

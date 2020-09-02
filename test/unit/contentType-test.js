@@ -1,3 +1,4 @@
+import path from 'path'
 import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
@@ -210,6 +211,22 @@ describe('Contentstack ContentType test', () => {
     expect(entry.stackHeaders).to.not.equal(undefined)
     expect(entry.stackHeaders.api_key).to.be.equal(stackHeadersMock.api_key)
     done()
+  })
+
+  it('Global Field import test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/import').reply(200, {
+      content_type: {
+        ...contentTypeMock
+      }
+    })
+    makeContentType()
+      .import({ content_type: path.join(__dirname, '../api/mock/contentType.json') })
+      .then((webhook) => {
+        checkContentType(webhook)
+        done()
+      })
+      .catch(done)
   })
 })
 
