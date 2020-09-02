@@ -213,6 +213,54 @@ describe('Contentstack Entry test', () => {
       })
       .catch(done)
   })
+
+  it('Entry import test Overwrite False', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/content_type_uid/entries/import?overwrite=false').reply(200, {
+      entry: {
+        ...entryMock
+      }
+    })
+    makeEntry()
+      .import({ entry: path.join(__dirname, '../api/mock/entry.json') })
+      .then((webhook) => {
+        checkEntry(webhook)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry import test Overwrite true', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/content_type_uid/entries/import?overwrite=true').reply(200, {
+      entry: {
+        ...entryMock
+      }
+    })
+    makeEntry()
+      .import({ entry: path.join(__dirname, '../api/mock/entry.json'), overwrite: true })
+      .then((entry) => {
+        checkEntry(entry)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry import test locale en-us', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/content_type_uid/entries/import?overwrite=false&locale=en-us').reply(200, {
+      entry: {
+        ...entryMock
+      }
+    })
+    makeEntry()
+      .import({ entry: path.join(__dirname, '../api/mock/entry.json'), locale: 'en-us' })
+      .then((entry) => {
+        checkEntry(entry)
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeEntry (data) {

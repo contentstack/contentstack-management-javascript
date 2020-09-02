@@ -1,3 +1,4 @@
+import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
@@ -155,6 +156,18 @@ describe('Entry api Test', () => {
       locale: 'en-at' })
       .then((data) => {
         expect(data.notice).to.be.equal('The requested action has been performed.')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Import Entry', done => {
+    makeEntry(multiPageCT.content_type.uid)
+      .import({
+        entry: path.join(__dirname, './mock/entry.json')
+      })
+      .then((response) => {
+        expect(response.uid).to.be.not.equal(null)
         done()
       })
       .catch(done)

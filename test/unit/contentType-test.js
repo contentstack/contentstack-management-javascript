@@ -213,7 +213,7 @@ describe('Contentstack ContentType test', () => {
     done()
   })
 
-  it('Global Field import test', done => {
+  it('ContentType import test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost('/content_types/import').reply(200, {
       content_type: {
@@ -222,8 +222,8 @@ describe('Contentstack ContentType test', () => {
     })
     makeContentType()
       .import({ content_type: path.join(__dirname, '../api/mock/contentType.json') })
-      .then((webhook) => {
-        checkContentType(webhook)
+      .then((contentType) => {
+        checkContentType(contentType)
         done()
       })
       .catch(done)
