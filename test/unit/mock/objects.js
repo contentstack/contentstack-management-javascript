@@ -325,6 +325,31 @@ const environmentMock = {
   _version: 1
 }
 
+const localeMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  code: 'zh-cn',
+  name: 'Chinese - China',
+  _version: 1,
+  fallback_locale: 'en-us'
+}
+
+const deliveryTokenMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  name: 'Test',
+  scope: [{
+    environments: [environmentMock],
+    module: 'environment',
+    acl: {
+      read: true
+    }
+  }],
+  description: 'description',
+  token: 'token',
+  type: 'delivery'
+}
+
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -372,6 +397,8 @@ export {
   entryMock,
   labelMock,
   environmentMock,
+  localeMock,
+  deliveryTokenMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
