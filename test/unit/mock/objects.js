@@ -274,6 +274,18 @@ const globalFieldMock = {
     }
   ]
 }
+
+const entryMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  title: 'title',
+  url: '/url',
+  locale: 'en-us',
+  ACL: {},
+  _version: 1,
+  _in_progress: false,
+  _rules: []
+}
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -318,6 +330,7 @@ export {
   webhookMock,
   contentTypeMock,
   globalFieldMock,
+  entryMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
