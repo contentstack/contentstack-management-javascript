@@ -286,6 +286,22 @@ const entryMock = {
   _in_progress: false,
   _rules: []
 }
+
+const labelMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  name: 'name',
+  parent: [],
+  ACL: [],
+  _version: 1,
+  content_types: [
+    'bank',
+    'brand',
+    'category',
+    'for_synchronization_calls'
+  ]
+}
+
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -331,6 +347,7 @@ export {
   contentTypeMock,
   globalFieldMock,
   entryMock,
+  labelMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields

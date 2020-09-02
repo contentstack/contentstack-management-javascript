@@ -9,6 +9,7 @@ describe('Contentstack Role test', () => {
   it('Role test without uid', done => {
     const role = makeRole()
     expect(role.urlPath).to.be.equal('/roles')
+    expect(role.stackHeaders).to.be.equal(undefined)
     expect(role.update).to.be.equal(undefined)
     expect(role.delete).to.be.equal(undefined)
     expect(role.fetch).to.be.equal(undefined)
@@ -25,6 +26,7 @@ describe('Contentstack Role test', () => {
       }
     })
     expect(role.urlPath).to.be.equal(`/roles/${systemUidMock.uid}`)
+    expect(role.stackHeaders).to.be.equal(undefined)
     expect(role.update).to.be.equal(undefined)
     expect(role.delete).to.be.equal(undefined)
     expect(role.fetch).to.be.equal(undefined)
@@ -42,6 +44,8 @@ describe('Contentstack Role test', () => {
       stackHeaders: stackHeadersMock
     })
     expect(role.urlPath).to.be.equal(`/roles/${systemUidMock.uid}`)
+    expect(role.stackHeaders).to.not.equal(undefined)
+    expect(role.stackHeaders.api_key).to.be.equal(stackHeadersMock.api_key)
     expect(role.update).to.not.equal(undefined)
     expect(role.delete).to.not.equal(undefined)
     expect(role.fetch).to.not.equal(undefined)
