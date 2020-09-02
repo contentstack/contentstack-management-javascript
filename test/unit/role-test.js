@@ -203,8 +203,8 @@ describe('Contentstack Role test', () => {
       stackHeaders: stackHeadersMock
     })
       .delete()
-      .then((role) => {
-        expect(role.notice).to.be.equal(noticeMock.notice)
+      .then((response) => {
+        expect(response.notice).to.be.equal(noticeMock.notice)
         done()
       })
       .catch(done)
