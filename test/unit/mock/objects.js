@@ -302,6 +302,29 @@ const labelMock = {
   ]
 }
 
+const environmentMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  deploy_content: true,
+  servers: [
+    {
+      name: 'Server1'
+    },
+    {
+      name: 'Server2'
+    }
+  ],
+  urls: [
+    {
+      url: 'http://localhost.com',
+      locale: 'en-us'
+    }
+  ],
+  name: 'name',
+  ACL: [],
+  _version: 1
+}
+
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -348,6 +371,7 @@ export {
   globalFieldMock,
   entryMock,
   labelMock,
+  environmentMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
