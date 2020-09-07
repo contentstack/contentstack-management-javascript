@@ -1,4 +1,4 @@
-import getUserAgent, { __RewireAPI__ as getUserAgentRewireApi } from '../../lib/core/Util.js'
+import getUserAgent, { __RewireAPI__ as getUserAgentRewireApi, isHost } from '../../lib/core/Util.js'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 const headerRegEx = /(app|sdk|platform|integration|os) \S+(\/\d+.\d+.\d+(-[\w\d-]+)?)?;/igm
@@ -96,5 +96,15 @@ describe('Get User Agent', () => {
     getUserAgentRewireApi.__ResetDependency__('isNode')
     getUserAgentRewireApi.__ResetDependency__('isReactNative')
     getUserAgentRewireApi.__ResetDependency__('window')
+  })
+
+  it('Contentstack host test', done => {
+    expect(isHost('contentstack.io')).to.be.equal(true, 'contentstack.io not host')
+    expect(isHost('contentstack.io:334')).to.be.equal(true, 'contentstack.io:334 not host')
+    expect(isHost('http://contentstack.io')).to.be.equal(false, 'http://contentstack.io should not host')
+    expect(isHost('contentstack.io:2Sdrd')).to.be.equal(true, 'contentstack.io:2Sdrd not host')
+    expect(isHost('contentstack.io:wedsfa2')).to.be.equal(true, 'contentstack.io:wedsfa2 not host')
+    expect(isHost('contentstack.io/path')).to.be.equal(false, 'contentstack.io/path should not host')
+    done()
   })
 })
