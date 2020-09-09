@@ -21,9 +21,7 @@ npm i @contentstack/management
 To import the SDK, use the following command:
 ```
 import contentstack from ‘@contentstack/management’
-```
-To initialize the SDK, you will need to pass ```axios``` instance as follows:
-```
+
 contentstackClient = contentstack.client()
 ```
 
