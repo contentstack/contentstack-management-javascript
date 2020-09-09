@@ -99,11 +99,12 @@ describe('Get User Agent', () => {
   })
 
   it('Contentstack host test', done => {
-    expect(isHost('contentstack.io')).to.be.equal(true, 'contentstack.io not host')
-    expect(isHost('contentstack.io:334')).to.be.equal(true, 'contentstack.io:334 not host')
+    expect(isHost('contentstack.io')).to.be.equal(true, 'contentstack.io should be host')
+    expect(isHost('contentstack.io:334')).to.be.equal(true, 'contentstack.io:334  should be host')
     expect(isHost('http://contentstack.io')).to.be.equal(false, 'http://contentstack.io should not host')
-    expect(isHost('contentstack.io:2Sdrd')).to.be.equal(true, 'contentstack.io:2Sdrd not host')
-    expect(isHost('contentstack.io:wedsfa2')).to.be.equal(true, 'contentstack.io:wedsfa2 not host')
+    expect(isHost('contentstack.io:2Sdrd')).to.be.equal(true, 'contentstack.io:2Sdrd  should be host')
+    expect(isHost('contentstack.io:wedsfa2')).to.be.equal(true, 'contentstack.io:wedsfa2 should be host')
+    expect(isHost('eu-api.contentstack.com')).to.be.equal(true, 'eu-api.contentstack.com should be host')
     expect(isHost('contentstack.io/path')).to.be.equal(false, 'contentstack.io/path should not host')
     done()
   })
