@@ -17,7 +17,13 @@ function setup (options = {}) {
   }, options))
   contentstckRetry(client, {
     logHandler: logHandlerStub,
-    retryOnError: true
+    retryOnError: true,
+    retryCondition: (error) => {
+      if (error.response && error.response.status === 429) {
+        return true
+      }
+      return false
+    }
   }, options.retryLimit)
   return { client }
 }
@@ -108,6 +114,29 @@ describe('Contentstack retry network call', () => {
       })
       .catch((error) => {
         expect(logHandlerStub.callCount).to.be.equal(0)
+        expect(error).to.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Contentstack retry on network error with limit', done => {
+    const { client } = setup({ retryLimit: 2 })
+    mock = new MockAdapter(client)
+    mock.onGet('/network-error').replyOnce(429, 'retry on 429')
+    mock.onGet('/network-error').replyOnce(429, 'retry on 429')
+    mock.onGet('/network-error').replyOnce(429, 'retry on 429')
+    mock.onGet('/network-error').replyOnce(429, 'retry on 429')
+    mock.onGet('/network-error').replyOnce(429, 'retry on 429')
+    mock.onGet('/network-error').replyOnce(429, 'retry on 429')
+    mock.onGet('/network-error').replyOnce(200, 'test data')
+    client.get('/network-error')
+      .then((response) => {
+        expect(response.data).to.not.equal('test data')
+        done()
+      })
+      .catch((error) => {
+        expect(logHandlerStub.callCount).to.be.equal(2)
         expect(error).to.not.equal(null)
         done()
       })

@@ -109,4 +109,49 @@ describe('Contentstack HTTP Client', () => {
     }
     done()
   })
+
+  it('Contentstack retryDelayOption base test', done => {
+    const client = contentstackHTTPClient({
+      retryDelayOptions: { base: 200 }
+    })
+    expect(client.defaults.retryDelayOptions).to.not.equal(undefined)
+    expect(client.defaults.retryDelayOptions.base).to.be.equal(200)
+    done()
+  })
+
+  it('Contentstack retryDelayOption customBackoff test', done => {
+    const client = contentstackHTTPClient({
+      retryDelayOptions: {
+        customBackoff: (count, error) => {
+          return 300
+        }
+      }
+    })
+    expect(client.defaults.retryDelayOptions).to.not.equal(undefined)
+    expect(client.defaults.retryDelayOptions.customBackoff(2, undefined)).to.be.equal(300)
+    done()
+  })
+
+  it('Contentstack default retryCondition test', done => {
+    const client = contentstackHTTPClient({})
+    expect(client.defaults.retryCondition).to.not.equal(undefined)
+    expect(client.defaults.retryCondition({ response: { status: 400 } })).to.be.equal(false)
+    expect(client.defaults.retryCondition({ response: { status: 429 } })).to.be.equal(true)
+    done()
+  })
+
+  it('Contentstack retryCondition test', done => {
+    const client = contentstackHTTPClient({
+      retryCondition: (error) => {
+        if (error) {
+          return true
+        }
+        return false
+      }
+    })
+    expect(client.defaults.retryCondition).to.not.equal(undefined)
+    expect(client.defaults.retryCondition(undefined)).to.be.equal(false)
+    expect(client.defaults.retryCondition('error')).to.be.equal(true)
+    done()
+  })
 })

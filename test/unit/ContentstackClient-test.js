@@ -40,6 +40,23 @@ describe('Contentstack Client', () => {
       .catch(done)
   })
 
+  it('Contentstack Client login success', done => {
+    nock(host)
+      .post('/user-session', {})
+      .reply(200, {
+        user: {
+          authtoken: 'Test Auth'
+        }
+      })
+    ContentstackClient({ http: axios })
+      .login()
+      .then((response) => {
+        expect(response.user.authtoken).to.be.equal('Test Auth')
+        done()
+      })
+      .catch(done)
+  })
+
   it('Contentstack Client get user info', done => {
     nock(host)
       .get('/user')
