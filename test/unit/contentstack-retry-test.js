@@ -9,13 +9,11 @@ import httpAdapter from 'axios/lib/adapters/http'
 var host = 'http://localhost/'
 const logHandlerStub = sinon.stub()
 var mock = new MockAdapter(axios)
+const retryDelayOptionsStub = sinon.stub()
+const retryConditionStub = sinon.stub()
 
 function setup (options = {}) {
-  const client = axios.create(Object.assign({
-    logHandler: logHandlerStub,
-    retryOnError: true
-  }, options))
-  contentstckRetry(client, {
+  const defaultOption = Object.assign({
     logHandler: logHandlerStub,
     retryOnError: true,
     retryCondition: (error) => {
@@ -24,7 +22,9 @@ function setup (options = {}) {
       }
       return false
     }
-  }, options.retryLimit)
+  }, options)
+  const client = axios.create(defaultOption)
+  contentstckRetry(client, defaultOption, options.retryLimit)
   return { client }
 }
 function setupNoRetry () {
@@ -44,6 +44,8 @@ describe('Contentstack retry network call', () => {
     axios.defaults.host = host
     axios.defaults.adapter = httpAdapter
     logHandlerStub.resetHistory()
+    retryDelayOptionsStub.resetHistory()
+    retryConditionStub.resetHistory()
   })
 
   it('Contentstack retry on 429 rate limit', done => {
@@ -178,6 +180,93 @@ describe('Contentstack retry network call', () => {
       })
       .catch((error) => {
         expect(logHandlerStub.callCount).to.be.equal(0)
+        expect(error).to.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Contentstack no retry on custome backoff with no retry on 402', done => {
+    retryConditionStub.returns(true)
+    retryDelayOptionsStub.onCall(0).returns(200)
+    retryDelayOptionsStub.onCall(1).returns(300)
+    retryDelayOptionsStub.onCall(2).returns(-1)
+
+    const { client } = setup({
+      retryCondition: retryConditionStub,
+      retryDelayOptions: {
+        customBackoff: retryDelayOptionsStub
+      }
+    })
+    mock = new MockAdapter(client)
+    mock.onGet('/testnoretry').replyOnce(400, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(422, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(402, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(200, 'test data')
+    client.get('/testnoretry')
+      .then((response) => {
+        expect(response.data).to.not.equal('test data')
+        done()
+      })
+      .catch((error) => {
+        expect(logHandlerStub.callCount).to.be.equal(2)
+        expect(retryDelayOptionsStub.callCount).to.be.equal(3)
+        expect(retryConditionStub.callCount).to.be.equal(3)
+        expect(error).to.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Contentstack no retry delay with base request', done => {
+    retryConditionStub.returns(true)
+    retryDelayOptionsStub.returns(200)
+    const { client } = setup({
+      retryCondition: retryConditionStub,
+      retryDelayOptions: {
+        base: retryDelayOptionsStub()
+      }
+    })
+    mock = new MockAdapter(client)
+    mock.onGet('/testnoretry').replyOnce(400, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(422, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(402, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(200, 'test data')
+    client.get('/testnoretry')
+      .then((response) => {
+        expect(response.data).to.not.equal('test data')
+        done()
+      })
+      .catch((error) => {
+        expect(logHandlerStub.callCount).to.be.equal(3)
+        expect(retryConditionStub.callCount).to.be.equal(3)
+        expect(retryDelayOptionsStub.callCount).to.be.equal(1)
+        expect(error).to.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Contentstack no retry Condition request', done => {
+    retryConditionStub.onCall(0).returns(true)
+    retryConditionStub.onCall(1).returns(false)
+
+    const { client } = setup({
+      retryCondition: retryConditionStub
+    })
+    mock = new MockAdapter(client)
+    mock.onGet('/testnoretry').replyOnce(400, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(422, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(402, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(200, 'test data')
+    client.get('/testnoretry')
+      .then((response) => {
+        expect(response.data).to.not.equal('test data')
+        done()
+      })
+      .catch((error) => {
+        expect(logHandlerStub.callCount).to.be.equal(1)
+        expect(retryConditionStub.callCount).to.be.equal(2)
         expect(error).to.not.equal(null)
         done()
       })
