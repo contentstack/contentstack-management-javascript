@@ -4,7 +4,7 @@ import error from '../core/contentstackError';
 import { OrganizationCollection } from '../organization';
 /**
  * All accounts registered with Contentstack are known as Users. A stack can have many users with varying permissions and roles. Read Users to learn more.
- * @namespace Role
+ * @namespace User
  */
 
 export function User(http, data) {
@@ -44,7 +44,7 @@ export function User(http, data) {
      * .then((user) => {
      *  return user.delete()
      * })
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = deleteEntity(http);
@@ -61,7 +61,7 @@ export function User(http, data) {
      * .then((user) => {
      *  return user.requestPassword()
      * })
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -85,9 +85,9 @@ export function User(http, data) {
      *
      * client.stack({ api_key: 'api_key'}).getUser()
      * .then((user) => {
-     *  return user.resetPassword()
+     *  return user.resetPassword({ 'resetToken', 'new_password', 'new_password' })
      * })
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -117,7 +117,8 @@ export function User(http, data) {
   return this;
 }
 export function UserCollection(http, data) {
-  var obj = cloneDeep(data.collaborators || data.shares || {});
+  var users = data.collaborators || data.shares || [];
+  var obj = cloneDeep(users);
   var userCollection = obj.map(function (userdata) {
     return new User(http, {
       user: userdata

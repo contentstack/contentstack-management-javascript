@@ -1,4 +1,8 @@
 import { platform, release } from 'os';
+var HOST_REGEX = /^(?!\w+:\/\/)([\w-:]+\.)+([\w-:]+)(?::(\d+))?(?!:)$/;
+export function isHost(host) {
+  return HOST_REGEX.test(host);
+}
 export function isNode() {
   return typeof process !== 'undefined' && !process.browser;
 }

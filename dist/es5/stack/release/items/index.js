@@ -55,7 +55,7 @@ function ReleaseItem(http) {
     } else {
       /**
        * @description The Delete method request deletes one or more items (entries and/or assets) from a specific Release.
-       * @memberof ContentType
+       * @memberof ReleaseItem
        * @func delete
        * @param {Object} param.items Add multiple items to a Release
        * @param {Object} param.items Add multiple items to a Release
@@ -65,7 +65,7 @@ function ReleaseItem(http) {
        * const client = contentstack.client()
        *
        * client.stack({ api_key: 'api_key'}).release('release_uid').delete()
-       * .then((notice) => console.log(notice))
+       * .then((response) => console.log(response.notice))
        */
       this["delete"] = /*#__PURE__*/function () {
         var _ref = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee(param) {
@@ -265,9 +265,7 @@ function ReleaseItem(http) {
                   break;
                 }
 
-                console.log(response.data);
-                _context3.next = 11;
-                break;
+                return _context3.abrupt("return", ReleaseItemCollection(http, response.data, _this.releaseUID));
 
               case 10:
                 throw (0, _contentstackError2["default"])(response);
@@ -294,11 +292,11 @@ function ReleaseItem(http) {
   return this;
 }
 
-function ReleaseItemCollection(http, data, releaseUID) {
-  var obj = (0, _cloneDeep2["default"])(data.items);
+function ReleaseItemCollection(http, data, releaseUid) {
+  var obj = (0, _cloneDeep2["default"])(data.items) || [];
   var contentTypeCollection = obj.map(function (userdata) {
     return new ReleaseItem(http, {
-      releaseUID: releaseUID,
+      releaseUid: releaseUid,
       item: userdata,
       stackHeaders: data.stackHeaders
     });

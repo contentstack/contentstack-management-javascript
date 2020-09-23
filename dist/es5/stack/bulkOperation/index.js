@@ -34,6 +34,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 /**
  * Bulk operations such as Publish, Unpublish, and Delete on multiple entries or assets.
+ * @namespace BulkOperation
  */
 function BulkOperation(http) {
   var _this = this;
@@ -73,7 +74,7 @@ function BulkOperation(http) {
    *   ]
    * }
    * client.stack({ api_key: 'api_key'}).publish({ details:  publishDetails })
-   * .then((notice) => {  console.log(notice) })
+   * .then((response) => {  console.log(response.notice) })
    *
    */
 
@@ -146,7 +147,7 @@ function BulkOperation(http) {
    *   ]
    * }
    * client.stack({ api_key: 'api_key'}).unpublish({ details:  publishDetails })
-   * .then((notice) => {  console.log(notice) })
+   * .then((response) => {  console.log(response.notice) })
    *
    */
 
@@ -210,7 +211,7 @@ function BulkOperation(http) {
    *   }]
    * }
    * client.stack({ api_key: 'api_key'}).delete({ details:  publishDetails })
-   * .then((notice) => {  console.log(notice) })
+   * .then((response) => {  console.log(response.notice) })
    *
    */
 

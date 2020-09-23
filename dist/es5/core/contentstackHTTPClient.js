@@ -34,11 +34,11 @@ var _contentstackRetry = require("./contentstack-retry");
 
 var _contentstackRetry2 = (0, _interopRequireDefault2["default"])(_contentstackRetry);
 
+var _Util = require("./Util");
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty3["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var HOST_REGEX = /^(?!\w+:\/\/)([^\s:]+\.[^\s:]+)(?::(\d+))?(?!:)$/;
 
 function contentstackHttpClient(options) {
   var defaultConfig = {
@@ -54,6 +54,13 @@ function contentstackHttpClient(options) {
       }
 
       console.log("[".concat(level, "] ").concat(data));
+    },
+    retryCondition: function retryCondition(error) {
+      if (error.response && error.response.status === 429) {
+        return true;
+      }
+
+      return false;
     },
     headers: {},
     basePath: '',
@@ -74,12 +81,12 @@ function contentstackHttpClient(options) {
     config.headers['accessToken'] = config.accessToken;
   }
 
-  var protocol = 'https';
+  var protocol = config.insecure ? 'http' : 'https';
   var hostname = config.defaultHostName;
-  var port = 443;
-  var version = 'v3';
+  var port = config.port || 443;
+  var version = config.version || 'v3';
 
-  if (HOST_REGEX.test(config.host)) {
+  if ((0, _Util.isHost)(config.host)) {
     var parsed = config.host.split(':');
 
     if (parsed.length === 2) {
@@ -96,23 +103,12 @@ function contentstackHttpClient(options) {
     config.basePath = "/".concat(config.basePath.split('/').filter(Boolean).join('/'));
   }
 
-  var baseURL = "".concat(protocol, "://").concat(hostname, ":").concat(port).concat(config.basePath, "/").concat(version);
-  var axiosOptions = {
+  var baseURL = config.endpoint || "".concat(protocol, "://").concat(hostname, ":").concat(port).concat(config.basePath, "/").concat(version);
+
+  var axiosOptions = _objectSpread(_objectSpread({
     // Axios
-    baseURL: baseURL,
-    headers: config.headers,
-    httpAgent: config.httpAgent,
-    httpsAgent: config.httpsAgent,
-    proxy: config.proxy,
-    timeout: config.timeout,
-    adapter: config.adapter,
-    maxContentLength: config.maxContentLength,
-    maxBodyLength: config.maxBodyLength,
-    // Contentstack
-    logHandler: config.logHandler,
-    responseLogger: config.responseLogger,
-    requestLogger: config.requestLogger,
-    retryOnError: config.retryOnError,
+    baseURL: baseURL
+  }, config), {}, {
     paramsSerializer: function paramsSerializer(params) {
       var query = params.query;
       delete params.query;
@@ -127,7 +123,7 @@ function contentstackHttpClient(options) {
 
       return qs;
     }
-  };
+  });
 
   var instance = _axios2["default"].create(axiosOptions);
 

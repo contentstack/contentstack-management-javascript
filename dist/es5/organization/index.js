@@ -8,6 +8,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _defineProperty2 = require("@babel/runtime/helpers/defineProperty");
+
+var _defineProperty3 = (0, _interopRequireDefault2["default"])(_defineProperty2);
+
 var _regenerator = require("@babel/runtime/regenerator");
 
 var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
@@ -39,6 +43,10 @@ var _index2 = require("../stack/index");
 
 var _user = require("../user");
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty3["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 /**
  * Organization is the top-level entity in the hierarchy of Contentstack, consisting of stacks and stack resources, and users. Organization allows easy management of projects as well as users within the Organization. Read more about <a href='https://www.contentstack.com/docs/guide/organization'>Organizations.</a>.
  * @namespace Organization
@@ -61,7 +69,7 @@ function Organization(http, data) {
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
      *
-     * client.organization('organization_uid).fetch()
+     * client.organization('organization_uid').fetch()
      * .then((organization) => console.log(organization))
      *
      */
@@ -86,8 +94,8 @@ function Organization(http, data) {
        * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client()
        *
-       * client.organization('organization_uid).stacks({ include_count: true })
-       * .then((organization) => console.log(organization))
+       * client.organization('organization_uid').stacks({ include_count: true })
+       * .then((collection) => console.log(collection))
        *
        */
       this.stacks = /*#__PURE__*/function () {
@@ -148,7 +156,7 @@ function Organization(http, data) {
        * const client = contentstack.client()
        *
        * client.stack({ api_key: 'api_key'}).transferOwnership('emailId')
-       * .then((notice) => console.log(notice))
+       * .then((response) => console.log(response.notice))
        *
        */
 
@@ -201,7 +209,7 @@ function Organization(http, data) {
         };
       }();
       /**
-       * @description The Unshare a stack call unshares a stack with a user and removes the user account from the list of collaborators.
+       * @description The Add users to organization call allows you to send invitations to add users to your organization. Only the owner or the admin of the organization can add users.
        * @memberof Organization
        * @func addUser
        * @returns {ContentstackCollection} ContentstackCollection of instance.
@@ -209,7 +217,7 @@ function Organization(http, data) {
        * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client()
        *
-       * client.organization('organization_uid).addUser({ users: { 'abc@test.com': ['org_uid1', 'org_uid2' ]}, stacks: { 'abc@test.com': { 'api_key1': [ 'stack_role_id' ] } } })
+       * client.organization('organization_uid').addUser({ users: { 'abc@test.com': ['org_uid1', 'org_uid2' ]}, stacks: { 'abc@test.com': { 'api_key1': [ 'stack_role_id' ] } } })
        * .then((response) => console.log(response))
        *
        */
@@ -225,9 +233,7 @@ function Organization(http, data) {
                   _context3.prev = 0;
                   _context3.next = 3;
                   return http.post("".concat(_this.urlPath, "/share"), {
-                    share: {
-                      data: data
-                    }
+                    share: _objectSpread({}, data)
                   });
 
                 case 3:
@@ -273,8 +279,8 @@ function Organization(http, data) {
        * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client()
        *
-       * client.organization('organization_uid).getInvitations()
-       * .then((notice) => console.log(notice))
+       * client.organization('organization_uid').getInvitations()
+       * .then((response) => console.log(response.notice))
        *
        */
 
@@ -335,8 +341,8 @@ function Organization(http, data) {
        * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client()
        *
-       * client.organization('organization_uid).resendInvitition('invitation_uid')
-       * .then((notice) => console.log(notice))
+       * client.organization('organization_uid').resendInvitition('invitation_uid')
+       * .then((response) => console.log(response.notice))
        *
        */
 
@@ -387,7 +393,7 @@ function Organization(http, data) {
         };
       }();
       /**
-       * @description The Unshare a stack call unshares a stack with a user and removes the user account from the list of collaborators.
+       * @description A role is a collection of permissions that will be applicable to all the users who are assigned this role.
        * @memberof Organization
        * @func roles
        * @param {Int} limit The limit parameter will return a specific number of roles in the output.
@@ -401,7 +407,7 @@ function Organization(http, data) {
        * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client()
        *
-       * client.organization('organization_uid).roles()
+       * client.organization('organization_uid').roles()
        * .then((roles) => console.log(roles))
        *
        */
@@ -526,7 +532,7 @@ function Organization(http, data) {
 }
 
 function OrganizationCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.organizations);
+  var obj = (0, _cloneDeep2["default"])(data.organizations || []);
   var organizationCollection = obj.map(function (userdata) {
     return new Organization(http, {
       organization: userdata

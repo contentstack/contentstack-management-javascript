@@ -89,9 +89,8 @@ function Stack(http, data) {
 
     if (this.management_token && this.management_token) {
       this.stackHeaders.authorization = this.management_token;
+      delete this.management_token;
     }
-
-    delete this.management_token;
     /**
      * @description The Update stack call lets you update the name and description of an existing stack.
      * @memberof Stack
@@ -111,6 +110,7 @@ function Stack(http, data) {
      *
      */
 
+
     this.update = (0, _entity.update)(http, 'stack');
     /**
      * @description The Delete stack call is used to delete an existing stack permanently from your Contentstack account.
@@ -122,7 +122,7 @@ function Stack(http, data) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = (0, _entity.deleteEntity)(http);
@@ -466,8 +466,8 @@ function Stack(http, data) {
      *     '{{env_name}}/env_uid}}'
      *   ]
      * }
-     * client.stack({ api_key: 'api_key'}).publish({ details:  publishDetails })
-     * .then((notice) => {  console.log(notice) })
+     * client.stack({ api_key: 'api_key'}).bulkOperation().publish({ details:  publishDetails })
+     * .then((response) => {  console.log(response.notice) })
      *
      */
 
@@ -548,7 +548,7 @@ function Stack(http, data) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).transferOwnership('emailId')
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -792,7 +792,7 @@ function Stack(http, data) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).share([ "manager@example.com" ], { "manager@example.com": [ "abcdefhgi1234567890" ] })
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -856,7 +856,7 @@ function Stack(http, data) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).unShare('email@id.com')
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -913,7 +913,7 @@ function Stack(http, data) {
      * @description A role is a collection of permissions that will be applicable to all the users who are assigned this role.
      * @memberof Stack
      * @func role
-     * @param {String} uid The UID of the role you want to get details.
+     * @param {String=} uid The UID of the role you want to get details.
      * @returns {Role} Instance of Role.
      *
      * @example

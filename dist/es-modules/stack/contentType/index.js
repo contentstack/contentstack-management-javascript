@@ -1,6 +1,11 @@
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
 import cloneDeep from 'lodash/cloneDeep';
-import { create, update, deleteEntity, fetch, query } from '../../entity';
+import { create, update, deleteEntity, fetch, query, upload, parseData } from '../../entity';
 import { Entry } from './entry/index';
+import error from '../../core/contentstackError';
+import FormData from 'form-data';
+import { createReadStream } from 'fs';
 /**
  * Content type defines the structure or schema of a page or a section of your web or mobile property. To create content for your application, you are required to first create a content type, and then create entries using the content type. Read more about <a href='https://www.contentstack.com/docs/guide/content-types'>Content Types</a>.
  * @namespace ContentType
@@ -46,7 +51,7 @@ export function ContentType(http) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = deleteEntity(http);
@@ -95,18 +100,46 @@ export function ContentType(http) {
     };
   } else {
     /**
-     * @description The Create a content type call creates a new content type in a particular stack of your Contentstack account.
-     * @memberof ContentType
-     * @func create
-     * @returns {Promise<ContentType.ContentType>} Promise for ContentType instance
-     *
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     * const content_type = {name: 'My New contentType'}
-     * client.stack().contentType().create({ content_type })
-     * .then((contentType) => console.log(contentType))
-     */
+    * @description The Create a content type call creates a new content type in a particular stack of your Contentstack account.
+    * @memberof ContentType
+    * @func generateUid
+    * @param {*} name Name for content type you want to create.
+    * @example
+    * import * as contentstack from '@contentstack/management'
+    * const client = contentstack.client()
+    * const contentType = client.stack().contentType()
+    * const contentTypeName = 'My New contentType'
+    * const content_type = {
+    *   name: name,
+    *   uid: contentType.generateUid(name)
+    * }
+    * contentType
+    * .create({ content_type })
+    * .then((contenttype) => console.log(contenttype))
+    *
+    */
+    this.generateUid = function (name) {
+      if (!name) {
+        throw new TypeError('Expected parameter name');
+      }
+
+      return name.replace(/[^A-Z0-9]+/gi, '_').toLowerCase();
+    };
+    /**
+    * @description The Create a content type call creates a new content type in a particular stack of your Contentstack account.
+    * @memberof ContentType
+    * @func create
+    * @returns {Promise<ContentType.ContentType>} Promise for ContentType instance
+    *
+    * @example
+    * import * as contentstack from '@contentstack/management'
+    * const client = contentstack.client()
+    * const content_type = {name: 'My New contentType'}
+    * client.stack().contentType().create({ content_type })
+    * .then((contentType) => console.log(contentType))
+    */
+
+
     this.create = create({
       http: http
     });
@@ -129,12 +162,79 @@ export function ContentType(http) {
       http: http,
       wrapperCollection: ContentTypeCollection
     });
+    /**
+    * @description The Import a content type call imports a content type into a stack.
+    * @memberof ContentType
+    * @func import
+    * @param {String} data.content_type path to file
+    * @example
+    * import * as contentstack from '@contentstack/management'
+    * const client = contentstack.client()
+    *
+    * const data = {
+    *  content_type: 'path/to/file.json',
+    * }
+    * client.stack({ api_key: 'api_key'}).contentType().import(data)
+    * .then((contentType) => console.log(contentType))
+    *
+    */
+
+    this["import"] = /*#__PURE__*/function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(data) {
+        var response;
+        return _regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return upload({
+                  http: http,
+                  urlPath: "".concat(this.urlPath, "/import"),
+                  stackHeaders: this.stackHeaders,
+                  formData: createFormData(data)
+                });
+
+              case 3:
+                response = _context.sent;
+
+                if (!response.data) {
+                  _context.next = 8;
+                  break;
+                }
+
+                return _context.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders)));
+
+              case 8:
+                throw error(response);
+
+              case 9:
+                _context.next = 14;
+                break;
+
+              case 11:
+                _context.prev = 11;
+                _context.t0 = _context["catch"](0);
+                throw error(_context.t0);
+
+              case 14:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 11]]);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }();
   }
 
   return this;
 }
 export function ContentTypeCollection(http, data) {
-  var obj = cloneDeep(data.content_types);
+  var obj = cloneDeep(data.content_types) || [];
   var contentTypeCollection = obj.map(function (userdata) {
     return new ContentType(http, {
       content_type: userdata,
@@ -142,4 +242,11 @@ export function ContentTypeCollection(http, data) {
     });
   });
   return contentTypeCollection;
+}
+
+function createFormData(data) {
+  var formData = new FormData();
+  var uploadStream = createReadStream(data.content_type);
+  formData.append('content_type', uploadStream);
+  return formData;
 }

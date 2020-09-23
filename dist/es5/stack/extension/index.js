@@ -41,8 +41,10 @@ var _fs = require("fs");
 
 /**
  * Extensions let you create custom fields and custom widgets that lets you customize Contentstack's default UI and behavior. Read more about <a href='https://www.contentstack.com/docs/developers/about-experience-extensions/'>Extensions</a>.
- */
-function Extension(http, data) {
+ * @namespace Extension
+ *  */
+function Extension(http) {
+  var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   this.stackHeaders = data.stackHeaders;
   this.urlPath = "/extensions";
 
@@ -78,7 +80,7 @@ function Extension(http, data) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).extension('extension_uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = (0, _entity.deleteEntity)(http);
@@ -229,7 +231,7 @@ function Extension(http, data) {
 }
 
 function ExtensionCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.extensions);
+  var obj = (0, _cloneDeep2["default"])(data.extensions) || [];
   var extensionCollection = obj.map(function (extensiondata) {
     return new Extension(http, {
       extension: extensiondata,

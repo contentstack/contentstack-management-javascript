@@ -143,7 +143,7 @@ function contentstackClient(_ref) {
    * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client()
    *
-   * client.organization().query().find()
+   * client.organization().findAll()
    * .then((organization) => console.log(organization))
    *
    * @example
@@ -174,9 +174,15 @@ function contentstackClient(_ref) {
    * @example
    * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client()
-   * const notice = client.logout()
+   * client.logout()
+   * .then((response) => console.log(response))
    *
-   */
+   * @example
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   * client.logout('AUTHTOKEN')
+   * .then((response) => console.log(response))
+   *   */
 
 
   function logout(authtoken) {

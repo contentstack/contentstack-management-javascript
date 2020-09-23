@@ -3,11 +3,18 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.isHost = isHost;
 exports.isNode = isNode;
 exports.getNodeVersion = getNodeVersion;
 exports["default"] = getUserAgent;
 
 var _os = require("os");
+
+var HOST_REGEX = /^(?!\w+:\/\/)([\w-:]+\.)+([\w-:]+)(?::(\d+))?(?!:)$/;
+
+function isHost(host) {
+  return HOST_REGEX.test(host);
+}
 
 function isNode() {
   return typeof process !== 'undefined' && !process.browser;

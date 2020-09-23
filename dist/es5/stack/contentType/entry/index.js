@@ -7,6 +7,15 @@ var _interopRequireDefault2 = _interopRequireDefault3(require("@babel/runtime/he
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _regenerator = require("@babel/runtime/regenerator");
+
+var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
+
+var _asyncToGenerator2 = require("@babel/runtime/helpers/asyncToGenerator");
+
+var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerator2);
+
 exports.Entry = Entry;
 exports.EntryCollection = EntryCollection;
 
@@ -16,19 +25,30 @@ var _cloneDeep2 = (0, _interopRequireDefault2["default"])(_cloneDeep);
 
 var _entity = require("../../../entity");
 
+var _formData = require("form-data");
+
+var _formData2 = (0, _interopRequireDefault2["default"])(_formData);
+
+var _fs = require("fs");
+
+var _contentstackError = require("../../../core/contentstackError");
+
+var _contentstackError2 = (0, _interopRequireDefault2["default"])(_contentstackError);
+
 /**
  * An entry is the actual piece of content created using one of the defined content types. Read more about <a href='https://www.contentstack.com/docs/guide/content-management'>Entries</a>.
  * @namespace Entry
  */
-function Entry(http) {
-  var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+function Entry(http, data) {
+  var _this = this;
+
   this.stackHeaders = data.stackHeaders;
   this.content_type_uid = data.content_type_uid;
-  this.urlPath = "content_types/".concat(this.content_type_uid, "/entries");
+  this.urlPath = "/content_types/".concat(this.content_type_uid, "/entries");
 
   if (data && data.entry) {
     Object.assign(this, (0, _cloneDeep2["default"])(data.entry));
-    this.urlPath = "content_types/".concat(this.content_type_uid, "/entries/").concat(this.uid);
+    this.urlPath = "/content_types/".concat(this.content_type_uid, "/entries/").concat(this.uid);
     /**
      * @description The Create an entry call creates a new entry for the selected content type.
      * @memberof Entry
@@ -73,7 +93,7 @@ function Entry(http) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = (0, _entity.deleteEntity)(http);
@@ -98,7 +118,7 @@ function Entry(http) {
     this.fetch = (0, _entity.fetch)(http, 'entry');
     /**
      * @description The Publish an asset call is used to publish a specific version of an asset on the desired environment either immediately or at a later date/time.
-     * @memberof Asset
+     * @memberof Entry
      * @func publish
      * @returns {Promise<Object>} Response Object.
      * @example
@@ -115,7 +135,7 @@ function Entry(http) {
      * }
      *
      * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').publish({ publishDetails: entry, locale: "en-us", version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -139,7 +159,7 @@ function Entry(http) {
      * }
      *
      * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').unpublish({ publishDetails: entry, locale: "en-us", version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -156,7 +176,7 @@ function Entry(http) {
      * const client = contentstack.client()
      * const entry  = {
      *  title: 'Sample Entry',
-     *  url: '/sampleEntry
+     *  url: '/sampleEntry'
      * }
      * client.stack().contentType('content_type_uid').entry().create({ entry })
      * .then((entry) => console.log(entry))
@@ -178,7 +198,7 @@ function Entry(http) {
     * import * as contentstack from '@contentstack/management'
     * const client = contentstack.client()
     *
-    * client.stack().contentType().entry().query({ query: { title: 'Entry title' } }).find()
+    * client.stack().contentType('content_type_uid').entry().query({ query: { title: 'Entry title' } }).find()
     * .then((entries) => console.log(entries))
     */
 
@@ -187,12 +207,92 @@ function Entry(http) {
       wrapperCollection: EntryCollection
     });
   }
+  /**
+   * @description The Import Entry calls given below help you to import entries by uploading JSON files.
+   * @memberof Entry
+   * @func import
+   * @param {String} entry Select the JSON file of the entry that you wish to import.
+   * @param {String} locale Enter the code of the language to import the entry of that particular language.
+   * @param {Boolean} overwrite Select 'true' to replace an existing entry with the imported entry file.
+   *
+   * @example
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   *
+   * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry()
+   * .import({
+   *  entry: 'path/to/file.json',
+   *  overright: true
+   * })
+   * .then((entry) => console.log(entry))
+   *
+   */
+
+
+  this["import"] = /*#__PURE__*/function () {
+    var _ref2 = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee(_ref) {
+      var entry, _ref$locale, locale, _ref$overwrite, overwrite, importUrl, response;
+
+      return _regenerator2["default"].wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              entry = _ref.entry, _ref$locale = _ref.locale, locale = _ref$locale === void 0 ? null : _ref$locale, _ref$overwrite = _ref.overwrite, overwrite = _ref$overwrite === void 0 ? false : _ref$overwrite;
+              importUrl = "".concat(_this.urlPath, "/import?overwrite=").concat(overwrite);
+
+              if (locale) {
+                importUrl = "".concat(importUrl, "&locale=").concat(locale);
+              }
+
+              _context.prev = 3;
+              _context.next = 6;
+              return (0, _entity.upload)({
+                http: http,
+                urlPath: importUrl,
+                stackHeaders: _this.stackHeaders,
+                formData: createFormData(entry)
+              });
+
+            case 6:
+              response = _context.sent;
+
+              if (!response.data) {
+                _context.next = 11;
+                break;
+              }
+
+              return _context.abrupt("return", new _this.constructor(http, (0, _entity.parseData)(response, _this.stackHeaders)));
+
+            case 11:
+              throw (0, _contentstackError2["default"])(response);
+
+            case 12:
+              _context.next = 17;
+              break;
+
+            case 14:
+              _context.prev = 14;
+              _context.t0 = _context["catch"](3);
+              throw (0, _contentstackError2["default"])(_context.t0);
+
+            case 17:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[3, 14]]);
+    }));
+
+    return function (_x) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
 
   return this;
 }
 
 function EntryCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.entries);
+  var obj = (0, _cloneDeep2["default"])(data.entries) || [];
   var entryCollection = obj.map(function (entry) {
     return new Entry(http, {
       entry: entry,
@@ -201,4 +301,11 @@ function EntryCollection(http, data) {
     });
   });
   return entryCollection;
+}
+
+function createFormData(entry) {
+  var formData = new _formData2["default"]();
+  var uploadStream = (0, _fs.createReadStream)(entry);
+  formData.append('entry', uploadStream);
+  return formData;
 }

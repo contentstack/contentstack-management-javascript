@@ -91,7 +91,7 @@ function Webhook(http) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).webhook('webhook_uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = (0, _entity.deleteEntity)(http);
@@ -126,48 +126,54 @@ function Webhook(http) {
      */
 
     this.executions = /*#__PURE__*/function () {
-      var _ref = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee(param) {
+      var _ref = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee(params) {
         var headers, response;
         return _regenerator2["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                headers = {
-                  headers: _objectSpread({}, (0, _cloneDeep2["default"])(this.stackHeaders)),
-                  params: _objectSpread({}, (0, _cloneDeep2["default"])(param))
-                } || {};
-                _context.prev = 1;
-                _context.next = 4;
-                return http.get("".concat(this.urlPath, "/executions"), headers);
+                headers = {};
 
-              case 4:
+                if (_this.stackHeaders) {
+                  headers.headers = _this.stackHeaders;
+                }
+
+                if (params) {
+                  headers.params = _objectSpread({}, (0, _cloneDeep2["default"])(params));
+                }
+
+                _context.prev = 3;
+                _context.next = 6;
+                return http.get("".concat(_this.urlPath, "/executions"), headers);
+
+              case 6:
                 response = _context.sent;
 
                 if (!response.data) {
-                  _context.next = 9;
+                  _context.next = 11;
                   break;
                 }
 
                 return _context.abrupt("return", response.data);
 
-              case 9:
+              case 11:
                 throw (0, _contentstackError2["default"])(response);
 
-              case 10:
-                _context.next = 15;
+              case 12:
+                _context.next = 17;
                 break;
 
-              case 12:
-                _context.prev = 12;
-                _context.t0 = _context["catch"](1);
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](3);
                 throw (0, _contentstackError2["default"])(_context.t0);
 
-              case 15:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[1, 12]]);
+        }, _callee, null, [[3, 14]]);
       }));
 
       return function (_x) {
@@ -187,43 +193,46 @@ function Webhook(http) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                headers = {
-                  headers: _objectSpread({}, (0, _cloneDeep2["default"])(this.stackHeaders))
-                } || {};
-                _context2.prev = 1;
-                _context2.next = 4;
-                return http.post("".concat(this.urlPath, "/retry"), {
+                headers = {};
+
+                if (_this.stackHeaders) {
+                  headers.headers = _this.stackHeaders;
+                }
+
+                _context2.prev = 2;
+                _context2.next = 5;
+                return http.post("".concat(_this.urlPath, "/retry"), {
                   execution_uid: executionUid
                 }, headers);
 
-              case 4:
+              case 5:
                 response = _context2.sent;
 
                 if (!response.data) {
-                  _context2.next = 9;
+                  _context2.next = 10;
                   break;
                 }
 
                 return _context2.abrupt("return", response.data);
 
-              case 9:
+              case 10:
                 throw (0, _contentstackError2["default"])(response);
 
-              case 10:
-                _context2.next = 15;
+              case 11:
+                _context2.next = 16;
                 break;
 
-              case 12:
-                _context2.prev = 12;
-                _context2.t0 = _context2["catch"](1);
+              case 13:
+                _context2.prev = 13;
+                _context2.t0 = _context2["catch"](2);
                 throw (0, _contentstackError2["default"])(_context2.t0);
 
-              case 15:
+              case 16:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[1, 12]]);
+        }, _callee2, null, [[2, 13]]);
       }));
 
       return function (_x2) {
@@ -283,48 +292,54 @@ function Webhook(http) {
      */
 
     this.fetchAll = /*#__PURE__*/function () {
-      var _ref3 = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee3(parmas) {
+      var _ref3 = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee3(params) {
         var headers, response;
         return _regenerator2["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.prev = 0;
-                headers = {
-                  headers: _objectSpread({}, (0, _cloneDeep2["default"])(_this.stackHeaders)),
-                  params: _objectSpread({}, (0, _cloneDeep2["default"])(parmas))
-                } || {};
-                _context3.next = 4;
+                headers = {};
+
+                if (_this.stackHeaders) {
+                  headers.headers = _this.stackHeaders;
+                }
+
+                if (params) {
+                  headers.params = _objectSpread({}, (0, _cloneDeep2["default"])(params));
+                }
+
+                _context3.prev = 3;
+                _context3.next = 6;
                 return http.get(_this.urlPath, headers);
 
-              case 4:
+              case 6:
                 response = _context3.sent;
 
                 if (!response.data) {
-                  _context3.next = 9;
+                  _context3.next = 11;
                   break;
                 }
 
                 return _context3.abrupt("return", new _contentstackCollection2["default"](response, http, null, WebhookCollection));
 
-              case 9:
+              case 11:
                 throw (0, _contentstackError2["default"])(response);
 
-              case 10:
-                _context3.next = 15;
+              case 12:
+                _context3.next = 17;
                 break;
 
-              case 12:
-                _context3.prev = 12;
-                _context3.t0 = _context3["catch"](0);
+              case 14:
+                _context3.prev = 14;
+                _context3.t0 = _context3["catch"](3);
                 throw (0, _contentstackError2["default"])(_context3.t0);
 
-              case 15:
+              case 17:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[0, 12]]);
+        }, _callee3, null, [[3, 14]]);
       }));
 
       return function (_x3) {
@@ -365,8 +380,8 @@ function Webhook(http) {
               _context4.next = 3;
               return (0, _entity.upload)({
                 http: http,
-                urlPath: "".concat(this.urlPath, "/import"),
-                stackHeaders: this.stackHeaders,
+                urlPath: "".concat(_this.urlPath, "/import"),
+                stackHeaders: _this.stackHeaders,
                 formData: createFormData(data)
               });
 
@@ -378,7 +393,7 @@ function Webhook(http) {
                 break;
               }
 
-              return _context4.abrupt("return", new this.constructor(http, (0, _entity.parseData)(response, this.stackHeaders)));
+              return _context4.abrupt("return", new _this.constructor(http, (0, _entity.parseData)(response, _this.stackHeaders)));
 
             case 8:
               throw (0, _contentstackError2["default"])(response);
@@ -397,7 +412,7 @@ function Webhook(http) {
               return _context4.stop();
           }
         }
-      }, _callee4, this, [[0, 11]]);
+      }, _callee4, null, [[0, 11]]);
     }));
 
     return function (_x4) {
@@ -409,7 +424,7 @@ function Webhook(http) {
 }
 
 function WebhookCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.webhooks);
+  var obj = (0, _cloneDeep2["default"])(data.webhooks) || [];
   var webhookCollection = obj.map(function (userdata) {
     return new Webhook(http, {
       webhook: userdata,

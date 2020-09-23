@@ -58,7 +58,7 @@ function Locale(http) {
        * const client = contentstack.client()
        *
        * client.stack({ api_key: 'api_key'}).locale('locale_code').delete()
-       * .then((notice) => console.log(notice))
+       * .then((response) => console.log(response.notice))
        */
 
     this["delete"] = (0, _entity.deleteEntity)(http);
@@ -120,7 +120,7 @@ function Locale(http) {
 }
 
 function LocaleCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.locales);
+  var obj = (0, _cloneDeep2["default"])(data.locales) || [];
   var localeCollection = obj.map(function (userdata) {
     return new Locale(http, {
       locale: userdata,

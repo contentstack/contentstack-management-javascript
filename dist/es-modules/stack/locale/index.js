@@ -43,7 +43,7 @@ export function Locale(http) {
        * const client = contentstack.client()
        *
        * client.stack({ api_key: 'api_key'}).locale('locale_code').delete()
-       * .then((notice) => console.log(notice))
+       * .then((response) => console.log(response.notice))
        */
 
     this["delete"] = deleteEntity(http);
@@ -104,7 +104,7 @@ export function Locale(http) {
   return this;
 }
 export function LocaleCollection(http, data) {
-  var obj = cloneDeep(data.locales);
+  var obj = cloneDeep(data.locales) || [];
   var localeCollection = obj.map(function (userdata) {
     return new Locale(http, {
       locale: userdata,

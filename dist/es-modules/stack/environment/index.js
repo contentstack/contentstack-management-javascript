@@ -38,7 +38,7 @@ export function Environment(http) {
        * const client = contentstack.client()
        *
        * client.stack({ api_key: 'api_key'}).environment('uid').delete()
-       * .then((notice) => console.log(notice))
+       * .then((response) => console.log(response.notice))
        */
 
     this["delete"] = deleteEntity(http);
@@ -90,9 +90,9 @@ export function Environment(http) {
     });
     /**
      * @description The Query on GlobalField will allow to fetch details of all or specific GlobalField
-     * @memberof GlobalField
+     * @memberof Environment
      * @func query
-     * @returns {Array<GlobalField>} Array of GlobalField.
+     * @returns {Array<Environment>} Array of GlobalField.
      *
      * @example
      * import * as contentstack from '@contentstack/management'
@@ -109,7 +109,7 @@ export function Environment(http) {
   }
 }
 export function EnvironmentCollection(http, data) {
-  var obj = cloneDeep(data.environments);
+  var obj = cloneDeep(data.environments) || [];
   var environmentCollection = obj.map(function (userdata) {
     return new Environment(http, {
       environment: userdata,

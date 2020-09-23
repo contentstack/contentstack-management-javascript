@@ -7,7 +7,7 @@ exports["default"] = contentstckRetry;
 
 function contentstckRetry(axios, defaultOptions) {
   var retryLimit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5;
-  var retryDelay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 2;
+  var retryDelay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 300;
   var networkError = 0;
   axios.interceptors.request.use(function (config) {
     if (config.headers.authorization && config.headers.authorization !== undefined) {
@@ -33,8 +33,8 @@ function contentstckRetry(axios, defaultOptions) {
       return Promise.reject(error);
     }
 
-    if (response && response.status === 429) {
-      retryErrorType = 'Rate Limit';
+    if (defaultOptions.retryCondition && defaultOptions.retryCondition(error)) {
+      retryErrorType = "Error with status: ".concat(error.response.status);
       networkError++;
 
       if (networkError > retryLimit) {
@@ -42,7 +42,20 @@ function contentstckRetry(axios, defaultOptions) {
         return Promise.reject(error);
       }
 
-      wait = retryDelay;
+      if (defaultOptions.retryDelayOptions) {
+        if (defaultOptions.retryDelayOptions.customBackoff) {
+          wait = defaultOptions.retryDelayOptions.customBackoff(networkError, error);
+
+          if (wait && wait <= 0) {
+            networkError = 0;
+            return Promise.reject(error);
+          }
+        } else if (defaultOptions.retryDelayOptions.base) {
+          wait = defaultOptions.retryDelayOptions.base * networkError;
+        }
+      } else {
+        wait = retryDelay;
+      }
     } else {
       networkError = 0;
     }

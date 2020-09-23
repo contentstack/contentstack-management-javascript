@@ -51,7 +51,7 @@ function Asset(http) {
 
   if (data.asset) {
     Object.assign(this, (0, _cloneDeep2["default"])(data.asset));
-    this.urlPath = "assets/".concat(this.uid);
+    this.urlPath = "/assets/".concat(this.uid);
     /**
      * @description The Update Asset call lets you update the name and description of an existing Asset.
      * @memberof Asset
@@ -82,7 +82,7 @@ function Asset(http) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).asset('uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = (0, _entity.deleteEntity)(http);
@@ -104,7 +104,7 @@ function Asset(http) {
     /**
      * @description The Replace asset call will replace an existing asset with another file on the stack.
      * @memberof Asset
-     * @func fetch
+     * @func replace
      * @returns {Promise<Asset.Asset>} Promise for Asset instance
      * @example
      * import * as contentstack from '@contentstack/management'
@@ -190,7 +190,7 @@ function Asset(http) {
      * }
      *
      * client.stack({ api_key: 'api_key'}).asset('uid').publish({ publishDetails: asset, version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -215,26 +215,37 @@ function Asset(http) {
      * }
      *
      * client.stack({ api_key: 'api_key'}).asset('uid').unpublish({ publishDetails: asset, version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
     this.unpublish = (0, _entity.unpublish)(http, 'asset');
   } else {
     /**
-    *  @description The Folder allows to fetch and create folders in assets.
-    * @memberof Folder
-    * @func create
-    * @returns {Promise<Folder.Folder>} Promise for Entry instance
-    *
-    * @example
-    * import * as contentstack from '@contentstack/management'
-    * const client = contentstack.client()
+     *  @description The Folder allows to fetch and create folders in assets.
+     * @memberof Asset
+     * @func folder
+     * @returns {Promise<Folder.Folder>} Promise for Entry instance
+     *
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     * const asset = {name: 'My New contentType'}
+     * client.stack({ api_key: 'api_key'}).asset('uid').folder().create({ asset })
+     * .then((folder) => console.log(folder))
     */
     this.folder = function () {
+      var folderUid = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var data = {
         stackHeaders: _this.stackHeaders
       };
+
+      if (folderUid) {
+        data.asset = {
+          uid: folderUid
+        };
+      }
+
       return new _folders.Folder(http, data);
     };
     /**
@@ -336,7 +347,7 @@ function Asset(http) {
 }
 
 function AssetCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.assets);
+  var obj = (0, _cloneDeep2["default"])(data.assets) || [];
   var assetCollection = obj.map(function (userdata) {
     return new Asset(http, {
       asset: userdata,

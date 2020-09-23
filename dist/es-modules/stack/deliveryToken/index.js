@@ -40,7 +40,7 @@ export function DeliveryToken(http) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).deliveryToken('delivery_token_uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = deleteEntity(http);
@@ -107,7 +107,7 @@ export function DeliveryToken(http) {
   }
 }
 export function DeliveryTokenCollection(http, data) {
-  var obj = cloneDeep(data.tokens);
+  var obj = cloneDeep(data.tokens) || [];
   var deliveryTokenCollection = obj.map(function (userdata) {
     return new DeliveryToken(http, {
       token: userdata,

@@ -26,7 +26,7 @@ function Label(http, data) {
 
   if (data.label) {
     Object.assign(this, (0, _cloneDeep2["default"])(data.label));
-    this.urlPath = "labels/".concat(this.uid);
+    this.urlPath = "/labels/".concat(this.uid);
     /**
      * @description The Update label call is used to update an existing label.
      * @memberof Label
@@ -56,7 +56,7 @@ function Label(http, data) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).label('label_uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = (0, _entity.deleteEntity)(http);
@@ -119,7 +119,7 @@ function Label(http, data) {
 }
 
 function LabelCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.labels);
+  var obj = (0, _cloneDeep2["default"])(data.labels) || [];
   var labelCollection = obj.map(function (userdata) {
     return new Label(http, {
       label: userdata,

@@ -24,7 +24,7 @@ var _organization = require("../organization");
 
 /**
  * All accounts registered with Contentstack are known as Users. A stack can have many users with varying permissions and roles. Read Users to learn more.
- * @namespace Role
+ * @namespace User
  */
 function User(http, data) {
   Object.assign(this, (0, _cloneDeep2["default"])(data.user));
@@ -63,7 +63,7 @@ function User(http, data) {
      * .then((user) => {
      *  return user.delete()
      * })
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = (0, _entity.deleteEntity)(http);
@@ -80,7 +80,7 @@ function User(http, data) {
      * .then((user) => {
      *  return user.requestPassword()
      * })
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -104,9 +104,9 @@ function User(http, data) {
      *
      * client.stack({ api_key: 'api_key'}).getUser()
      * .then((user) => {
-     *  return user.resetPassword()
+     *  return user.resetPassword({ 'resetToken', 'new_password', 'new_password' })
      * })
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      *
      */
 
@@ -137,7 +137,8 @@ function User(http, data) {
 }
 
 function UserCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.collaborators || data.shares || {});
+  var users = data.collaborators || data.shares || [];
+  var obj = (0, _cloneDeep2["default"])(users);
   var userCollection = obj.map(function (userdata) {
     return new User(http, {
       user: userdata

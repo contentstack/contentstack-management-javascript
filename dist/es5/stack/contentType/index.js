@@ -7,6 +7,15 @@ var _interopRequireDefault2 = _interopRequireDefault3(require("@babel/runtime/he
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _regenerator = require("@babel/runtime/regenerator");
+
+var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
+
+var _asyncToGenerator2 = require("@babel/runtime/helpers/asyncToGenerator");
+
+var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerator2);
+
 exports.ContentType = ContentType;
 exports.ContentTypeCollection = ContentTypeCollection;
 
@@ -17,6 +26,16 @@ var _cloneDeep2 = (0, _interopRequireDefault2["default"])(_cloneDeep);
 var _entity = require("../../entity");
 
 var _index = require("./entry/index");
+
+var _contentstackError = require("../../core/contentstackError");
+
+var _contentstackError2 = (0, _interopRequireDefault2["default"])(_contentstackError);
+
+var _formData = require("form-data");
+
+var _formData2 = (0, _interopRequireDefault2["default"])(_formData);
+
+var _fs = require("fs");
 
 /**
  * Content type defines the structure or schema of a page or a section of your web or mobile property. To create content for your application, you are required to first create a content type, and then create entries using the content type. Read more about <a href='https://www.contentstack.com/docs/guide/content-types'>Content Types</a>.
@@ -62,7 +81,7 @@ function ContentType(http) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = (0, _entity.deleteEntity)(http);
@@ -111,18 +130,46 @@ function ContentType(http) {
     };
   } else {
     /**
-     * @description The Create a content type call creates a new content type in a particular stack of your Contentstack account.
-     * @memberof ContentType
-     * @func create
-     * @returns {Promise<ContentType.ContentType>} Promise for ContentType instance
-     *
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     * const content_type = {name: 'My New contentType'}
-     * client.stack().contentType().create({ content_type })
-     * .then((contentType) => console.log(contentType))
-     */
+    * @description The Create a content type call creates a new content type in a particular stack of your Contentstack account.
+    * @memberof ContentType
+    * @func generateUid
+    * @param {*} name Name for content type you want to create.
+    * @example
+    * import * as contentstack from '@contentstack/management'
+    * const client = contentstack.client()
+    * const contentType = client.stack().contentType()
+    * const contentTypeName = 'My New contentType'
+    * const content_type = {
+    *   name: name,
+    *   uid: contentType.generateUid(name)
+    * }
+    * contentType
+    * .create({ content_type })
+    * .then((contenttype) => console.log(contenttype))
+    *
+    */
+    this.generateUid = function (name) {
+      if (!name) {
+        throw new TypeError('Expected parameter name');
+      }
+
+      return name.replace(/[^A-Z0-9]+/gi, '_').toLowerCase();
+    };
+    /**
+    * @description The Create a content type call creates a new content type in a particular stack of your Contentstack account.
+    * @memberof ContentType
+    * @func create
+    * @returns {Promise<ContentType.ContentType>} Promise for ContentType instance
+    *
+    * @example
+    * import * as contentstack from '@contentstack/management'
+    * const client = contentstack.client()
+    * const content_type = {name: 'My New contentType'}
+    * client.stack().contentType().create({ content_type })
+    * .then((contentType) => console.log(contentType))
+    */
+
+
     this.create = (0, _entity.create)({
       http: http
     });
@@ -145,13 +192,80 @@ function ContentType(http) {
       http: http,
       wrapperCollection: ContentTypeCollection
     });
+    /**
+    * @description The Import a content type call imports a content type into a stack.
+    * @memberof ContentType
+    * @func import
+    * @param {String} data.content_type path to file
+    * @example
+    * import * as contentstack from '@contentstack/management'
+    * const client = contentstack.client()
+    *
+    * const data = {
+    *  content_type: 'path/to/file.json',
+    * }
+    * client.stack({ api_key: 'api_key'}).contentType().import(data)
+    * .then((contentType) => console.log(contentType))
+    *
+    */
+
+    this["import"] = /*#__PURE__*/function () {
+      var _ref = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee(data) {
+        var response;
+        return _regenerator2["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return (0, _entity.upload)({
+                  http: http,
+                  urlPath: "".concat(this.urlPath, "/import"),
+                  stackHeaders: this.stackHeaders,
+                  formData: createFormData(data)
+                });
+
+              case 3:
+                response = _context.sent;
+
+                if (!response.data) {
+                  _context.next = 8;
+                  break;
+                }
+
+                return _context.abrupt("return", new this.constructor(http, (0, _entity.parseData)(response, this.stackHeaders)));
+
+              case 8:
+                throw (0, _contentstackError2["default"])(response);
+
+              case 9:
+                _context.next = 14;
+                break;
+
+              case 11:
+                _context.prev = 11;
+                _context.t0 = _context["catch"](0);
+                throw (0, _contentstackError2["default"])(_context.t0);
+
+              case 14:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 11]]);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }();
   }
 
   return this;
 }
 
 function ContentTypeCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.content_types);
+  var obj = (0, _cloneDeep2["default"])(data.content_types) || [];
   var contentTypeCollection = obj.map(function (userdata) {
     return new ContentType(http, {
       content_type: userdata,
@@ -159,4 +273,11 @@ function ContentTypeCollection(http, data) {
     });
   });
   return contentTypeCollection;
+}
+
+function createFormData(data) {
+  var formData = new _formData2["default"]();
+  var uploadStream = (0, _fs.createReadStream)(data.content_type);
+  formData.append('content_type', uploadStream);
+  return formData;
 }

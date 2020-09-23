@@ -27,7 +27,10 @@ export function Release(http) {
     Object.assign(this, cloneDeep(data.release));
 
     if (data.release.items) {
-      this.items = new ReleaseItemCollection(http, data.release, this.uid);
+      this.items = new ReleaseItemCollection(http, {
+        items: data.release.items,
+        stackHeaders: data.stackHeaders
+      }, this.uid);
     }
 
     this.urlPath = "/releases/".concat(this.uid);
@@ -99,7 +102,7 @@ export function Release(http) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).release('release_uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = deleteEntity(http);
@@ -147,7 +150,7 @@ export function Release(http) {
      *      action: 'publish',
      *
      * })
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
 
@@ -159,61 +162,49 @@ export function Release(http) {
             switch (_context.prev = _context.next) {
               case 0:
                 environments = _ref.environments, locales = _ref.locales, scheduledAt = _ref.scheduledAt, action = _ref.action;
-                release = {};
-
-                if (environments) {
-                  release.environments = environments;
-                }
-
-                if (locales) {
-                  release.locales = locales;
-                }
-
-                if (scheduledAt) {
-                  release.scheduled_at = scheduledAt;
-                }
-
-                if (action) {
-                  release.action = action;
-                }
-
+                release = {
+                  environments: environments,
+                  locales: locales,
+                  scheduledAt: scheduledAt,
+                  action: action
+                };
                 headers = {
                   headers: _objectSpread({}, cloneDeep(_this.stackHeaders))
                 } || {};
-                _context.prev = 7;
-                _context.next = 10;
+                _context.prev = 3;
+                _context.next = 6;
                 return http.post("".concat(_this.urlPath, "/deploy"), {
                   release: release
                 }, headers);
 
-              case 10:
+              case 6:
                 response = _context.sent;
 
                 if (!response.data) {
-                  _context.next = 15;
+                  _context.next = 11;
                   break;
                 }
 
                 return _context.abrupt("return", response.data);
 
-              case 15:
+              case 11:
                 throw error(response);
 
-              case 16:
-                _context.next = 21;
+              case 12:
+                _context.next = 17;
                 break;
 
-              case 18:
-                _context.prev = 18;
-                _context.t0 = _context["catch"](7);
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](3);
                 throw error(_context.t0);
 
-              case 21:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[7, 18]]);
+        }, _callee, null, [[3, 14]]);
       }));
 
       return function (_x) {
@@ -223,7 +214,7 @@ export function Release(http) {
     /**
      * @description The Clone a Release request allows you to clone (make a copy of) a specific Release in a stack.
      * @memberof Release
-     * @func fetch
+     * @func clone
      * @returns {Promise<Release.Release>} Promise for Release instance
      * @param {String} name - name of the cloned Release.
      * @param {String} description - description of the cloned Release.
@@ -245,53 +236,47 @@ export function Release(http) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 name = _ref3.name, description = _ref3.description;
-                release = {};
-
-                if (name) {
-                  release.name = name;
-                }
-
-                if (description) {
-                  release.description = description;
-                }
-
+                release = {
+                  name: name,
+                  description: description
+                };
                 headers = {
                   headers: _objectSpread({}, cloneDeep(_this.stackHeaders))
                 } || {};
-                _context2.prev = 5;
-                _context2.next = 8;
+                _context2.prev = 3;
+                _context2.next = 6;
                 return http.post("".concat(_this.urlPath, "/clone"), {
                   release: release
                 }, headers);
 
-              case 8:
+              case 6:
                 response = _context2.sent;
 
                 if (!response.data) {
-                  _context2.next = 13;
+                  _context2.next = 11;
                   break;
                 }
 
                 return _context2.abrupt("return", new Release(http, response.data));
 
-              case 13:
+              case 11:
                 throw error(response);
 
-              case 14:
-                _context2.next = 19;
+              case 12:
+                _context2.next = 17;
                 break;
 
-              case 16:
-                _context2.prev = 16;
-                _context2.t0 = _context2["catch"](5);
+              case 14:
+                _context2.prev = 14;
+                _context2.t0 = _context2["catch"](3);
                 throw error(_context2.t0);
 
-              case 19:
+              case 17:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[5, 16]]);
+        }, _callee2, null, [[3, 14]]);
       }));
 
       return function (_x2) {
@@ -348,7 +333,7 @@ export function Release(http) {
   return this;
 }
 export function ReleaseCollection(http, data) {
-  var obj = cloneDeep(data.releases);
+  var obj = cloneDeep(data.releases) || [];
   var releaseCollection = obj.map(function (userdata) {
     return new Release(http, {
       release: userdata,

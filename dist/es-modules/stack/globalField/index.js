@@ -48,7 +48,7 @@ export function GlobalField(http) {
      * const client = contentstack.client()
      *
      * client.stack({ api_key: 'api_key'}).globalField('global_field_uid').delete()
-     * .then((notice) => console.log(notice))
+     * .then((response) => console.log(response.notice))
      */
 
     this["delete"] = deleteEntity(http);
@@ -120,7 +120,7 @@ export function GlobalField(http) {
     * const client = contentstack.client()
     *
     * const data = {
-    *  global_field: 'path/to/file.png',
+    *  global_field: 'path/to/file.json',
     * }
     * client.stack({ api_key: 'api_key'}).globalField().import(data)
     * .then((globalField) => console.log(globalField))
@@ -182,7 +182,7 @@ export function GlobalField(http) {
   return this;
 }
 export function GlobalFieldCollection(http, data) {
-  var obj = cloneDeep(data.global_fields);
+  var obj = cloneDeep(data.global_fields) || [];
   var globalFieldCollection = obj.map(function (userdata) {
     return new GlobalField(http, {
       global_field: userdata,

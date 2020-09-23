@@ -107,7 +107,7 @@ function Role(http, data) {
        * const client = contentstack.client()
        *
        * client.stack({ api_key: 'api_key'}).role('role_uid').delete()
-       * .then((notice) => console.log(notice))
+       * .then((response) => console.log(response.notice))
        */
 
       this["delete"] = (0, _entity.deleteEntity)(http);
@@ -188,42 +188,48 @@ function Role(http, data) {
           switch (_context.prev = _context.next) {
             case 0:
               params = _args.length > 0 && _args[0] !== undefined ? _args[0] : {};
-              headers = {
-                params: _objectSpread({}, (0, _cloneDeep2["default"])(params)),
-                headers: _objectSpread({}, (0, _cloneDeep2["default"])(_this.stackHeaders))
-              } || {};
-              _context.prev = 2;
-              _context.next = 5;
+              headers = {};
+
+              if (_this.stackHeaders) {
+                headers.headers = _this.stackHeaders;
+              }
+
+              if (params) {
+                headers.params = _objectSpread({}, (0, _cloneDeep2["default"])(params));
+              }
+
+              _context.prev = 4;
+              _context.next = 7;
               return http.get(_this.urlPath, headers);
 
-            case 5:
+            case 7:
               response = _context.sent;
 
               if (!response.data) {
-                _context.next = 10;
+                _context.next = 12;
                 break;
               }
 
               return _context.abrupt("return", new _contentstackCollection2["default"](response, http, _this.stackHeaders, RoleCollection));
 
-            case 10:
+            case 12:
               throw (0, _contentstackError2["default"])(response);
 
-            case 11:
-              _context.next = 16;
+            case 13:
+              _context.next = 18;
               break;
 
-            case 13:
-              _context.prev = 13;
-              _context.t0 = _context["catch"](2);
+            case 15:
+              _context.prev = 15;
+              _context.t0 = _context["catch"](4);
               throw (0, _contentstackError2["default"])(_context.t0);
 
-            case 16:
+            case 18:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[2, 13]]);
+      }, _callee, null, [[4, 15]]);
     }));
     /**
      * @description The Query on Role will allow to fetch details of all or specific role.
@@ -251,7 +257,7 @@ function Role(http, data) {
 }
 
 function RoleCollection(http, data) {
-  var obj = (0, _cloneDeep2["default"])(data.roles);
+  var obj = (0, _cloneDeep2["default"])(data.roles || []);
   var roleCollection = obj.map(function (userdata) {
     return new Role(http, {
       role: userdata,

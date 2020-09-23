@@ -9,7 +9,7 @@ import clonedeep from 'lodash/cloneDeep';
 import Qs from 'qs';
 import axios from 'axios';
 import contentstackRetry from './contentstack-retry';
-var HOST_REGEX = /^(?!\w+:\/\/)([^\s:]+\.[^\s:]+)(?::(\d+))?(?!:)$/;
+import { isHost } from './Util';
 export default function contentstackHttpClient(options) {
   var defaultConfig = {
     insecure: false,
@@ -24,6 +24,13 @@ export default function contentstackHttpClient(options) {
       }
 
       console.log("[".concat(level, "] ").concat(data));
+    },
+    retryCondition: function retryCondition(error) {
+      if (error.response && error.response.status === 429) {
+        return true;
+      }
+
+      return false;
     },
     headers: {},
     basePath: '',
@@ -44,12 +51,12 @@ export default function contentstackHttpClient(options) {
     config.headers['accessToken'] = config.accessToken;
   }
 
-  var protocol = 'https';
+  var protocol = config.insecure ? 'http' : 'https';
   var hostname = config.defaultHostName;
-  var port = 443;
-  var version = 'v3';
+  var port = config.port || 443;
+  var version = config.version || 'v3';
 
-  if (HOST_REGEX.test(config.host)) {
+  if (isHost(config.host)) {
     var parsed = config.host.split(':');
 
     if (parsed.length === 2) {
@@ -66,23 +73,12 @@ export default function contentstackHttpClient(options) {
     config.basePath = "/".concat(config.basePath.split('/').filter(Boolean).join('/'));
   }
 
-  var baseURL = "".concat(protocol, "://").concat(hostname, ":").concat(port).concat(config.basePath, "/").concat(version);
-  var axiosOptions = {
+  var baseURL = config.endpoint || "".concat(protocol, "://").concat(hostname, ":").concat(port).concat(config.basePath, "/").concat(version);
+
+  var axiosOptions = _objectSpread(_objectSpread({
     // Axios
-    baseURL: baseURL,
-    headers: config.headers,
-    httpAgent: config.httpAgent,
-    httpsAgent: config.httpsAgent,
-    proxy: config.proxy,
-    timeout: config.timeout,
-    adapter: config.adapter,
-    maxContentLength: config.maxContentLength,
-    maxBodyLength: config.maxBodyLength,
-    // Contentstack
-    logHandler: config.logHandler,
-    responseLogger: config.responseLogger,
-    requestLogger: config.requestLogger,
-    retryOnError: config.retryOnError,
+    baseURL: baseURL
+  }, config), {}, {
     paramsSerializer: function paramsSerializer(params) {
       var query = params.query;
       delete params.query;
@@ -96,7 +92,8 @@ export default function contentstackHttpClient(options) {
 
       return qs;
     }
-  };
+  });
+
   var instance = axios.create(axiosOptions);
   instance.httpClientParams = options;
   contentstackRetry(instance, axiosOptions, config.retyLimit, config.retryDelay);
