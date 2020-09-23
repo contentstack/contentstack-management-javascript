@@ -7,6 +7,10 @@
   "directories": {
     "test": "test"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/contentstack/contentstack-management-javascript.git"
+  },
   "nyc": {
     "exclude": [
       "**/bulkOperation",
