@@ -1,0 +1,17 @@
+docs-config.json
+.idea/
+.git/
+test/
+reports/
+contentstack-templates/
+jsdocs/
+examples/
+mocktest.json
+Sample
+coverage/
+mochawesome-report/
+.nyc_output/
+typings
+webpack/
+tsconfig.json
+.jsdoc.json
