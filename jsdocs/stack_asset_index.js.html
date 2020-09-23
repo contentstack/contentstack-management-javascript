@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>stack/asset/index.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Contentstack.html">Contentstack</a><ul class='members'><li data-type='member'><a href="Contentstack.html#.client">client</a></li></ul></li><li><a href="ContentstackClient.html">ContentstackClient</a><ul class='methods'><li data-type='method'><a href="ContentstackClient.html#.login">login</a></li><li data-type='method'><a href="ContentstackClient.html#.getUser">getUser</a></li><li data-type='method'><a href="ContentstackClient.html#.stack">stack</a></li><li data-type='method'><a href="ContentstackClient.html#.organization">organization</a></li><li data-type='method'><a href="ContentstackClient.html#.logout">logout</a></li></ul></li><li><a href="User.html">User</a><ul class='methods'><li data-type='method'><a href="User.html#.update">update</a></li><li data-type='method'><a href="User.html#.delete">delete</a></li><li data-type='method'><a href="User.html#.requestPassword">requestPassword</a></li><li data-type='method'><a href="User.html#.resetPassword">resetPassword</a></li></ul></li><li><a href="Organization.html">Organization</a><ul class='methods'><li data-type='method'><a href="Organization.html#.fetch">fetch</a></li><li data-type='method'><a href="Organization.html#.stacks">stacks</a></li><li data-type='method'><a href="Organization.html#.transferOwnership">transferOwnership</a></li><li data-type='method'><a href="Organization.html#.addUser">addUser</a></li><li data-type='method'><a href="Organization.html#.getInvitations">getInvitations</a></li><li data-type='method'><a href="Organization.html#.resendInvitition">resendInvitition</a></li><li data-type='method'><a href="Organization.html#.roles">roles</a></li><li data-type='method'><a href="Organization.html#.fetchAll">fetchAll</a></li></ul></li><li><a href="Stack.html">Stack</a><ul class='methods'><li data-type='method'><a href="Stack.html#.update">update</a></li><li data-type='method'><a href="Stack.html#.delete">delete</a></li><li data-type='method'><a href="Stack.html#.fetch">fetch</a></li><li data-type='method'><a href="Stack.html#contentType">contentType</a></li><li data-type='method'><a href="Stack.html#locale">locale</a></li><li data-type='method'><a href="Stack.html#asset">asset</a></li><li data-type='method'><a href="Stack.html#globalField">globalField</a></li><li data-type='method'><a href="Stack.html#environment">environment</a></li><li data-type='method'><a href="Stack.html#deliveryToken">deliveryToken</a></li><li data-type='method'><a href="Stack.html#extension">extension</a></li><li data-type='method'><a href="Stack.html#webhook">webhook</a></li><li data-type='method'><a href="Stack.html#label">label</a></li><li data-type='method'><a href="Stack.html#release">release</a></li><li data-type='method'><a href="Stack.html#bulkOperation">bulkOperation</a></li><li data-type='method'><a href="Stack.html#.users">users</a></li><li data-type='method'><a href="Stack.html#.transferOwnership">transferOwnership</a></li><li data-type='method'><a href="Stack.html#.settings">settings</a></li><li data-type='method'><a href="Stack.html#.resetSettings">resetSettings</a></li><li data-type='method'><a href="Stack.html#.addSettings">addSettings</a></li><li data-type='method'><a href="Stack.html#.share">share</a></li><li data-type='method'><a href="Stack.html#.unShare">unShare</a></li><li data-type='method'><a href="Stack.html#.role">role</a></li><li data-type='method'><a href="Stack.html#.create">create</a></li><li data-type='method'><a href="Stack.html#.query">query</a></li></ul></li><li><a href="ContentType.html">ContentType</a><ul class='methods'><li data-type='method'><a href="ContentType.html#.update">update</a></li><li data-type='method'><a href="ContentType.html#.delete">delete</a></li><li data-type='method'><a href="ContentType.html#.fetch">fetch</a></li><li data-type='method'><a href="ContentType.html#entry">entry</a></li><li data-type='method'><a href="ContentType.html#.generateUid">generateUid</a></li><li data-type='method'><a href="ContentType.html#.create">create</a></li><li data-type='method'><a href="ContentType.html#.query">query</a></li><li data-type='method'><a href="ContentType.html#.import">import</a></li></ul></li><li><a href="GlobalField.html">GlobalField</a><ul class='methods'><li data-type='method'><a href="GlobalField.html#.update">update</a></li><li data-type='method'><a href="GlobalField.html#.delete">delete</a></li><li data-type='method'><a href="GlobalField.html#.fetch">fetch</a></li><li data-type='method'><a href="GlobalField.html#.create">create</a></li><li data-type='method'><a href="GlobalField.html#.query">query</a></li><li data-type='method'><a href="GlobalField.html#.import">import</a></li></ul></li><li><a href="Entry.html">Entry</a><ul class='methods'><li data-type='method'><a href="Entry.html#.update">update</a></li><li data-type='method'><a href="Entry.html#.delete">delete</a></li><li data-type='method'><a href="Entry.html#.fetch">fetch</a></li><li data-type='method'><a href="Entry.html#.publish">publish</a></li><li data-type='method'><a href="Entry.html#.unpublish">unpublish</a></li><li data-type='method'><a href="Entry.html#.create">create</a></li><li data-type='method'><a href="Entry.html#.query">query</a></li><li data-type='method'><a href="Entry.html#.import">import</a></li></ul></li><li><a href="Asset.html">Asset</a><ul class='methods'><li data-type='method'><a href="Asset.html#.update">update</a></li><li data-type='method'><a href="Asset.html#.delete">delete</a></li><li data-type='method'><a href="Asset.html#.fetch">fetch</a></li><li data-type='method'><a href="Asset.html#.replace">replace</a></li><li data-type='method'><a href="Asset.html#.publish">publish</a></li><li data-type='method'><a href="Asset.html#.unpublish">unpublish</a></li><li data-type='method'><a href="Asset.html#.folder">folder</a></li><li data-type='method'><a href="Asset.html#.create">create</a></li><li data-type='method'><a href="Asset.html#.query">query</a></li></ul></li><li><a href="Folder.html">Folder</a><ul class='methods'><li data-type='method'><a href="Folder.html#.update">update</a></li><li data-type='method'><a href="Folder.html#.delete">delete</a></li><li data-type='method'><a href="Folder.html#.fetch">fetch</a></li><li data-type='method'><a href="Folder.html#.create">create</a></li></ul></li><li><a href="BulkOperation.html">BulkOperation</a><ul class='methods'><li data-type='method'><a href="BulkOperation.html#.publish">publish</a></li><li data-type='method'><a href="BulkOperation.html#.unpublish">unpublish</a></li><li data-type='method'><a href="BulkOperation.html#.delete">delete</a></li></ul></li><li><a href="Extension.html">Extension</a><ul class='methods'><li data-type='method'><a href="Extension.html#.update">update</a></li><li data-type='method'><a href="Extension.html#.delete">delete</a></li><li data-type='method'><a href="Extension.html#.fetch">fetch</a></li><li data-type='method'><a href="Extension.html#.upload">upload</a></li><li data-type='method'><a href="Extension.html#.create">create</a></li><li data-type='method'><a href="Extension.html#.query">query</a></li></ul></li><li><a href="Release.html">Release</a><ul class='methods'><li data-type='method'><a href="Release.html#.update">update</a></li><li data-type='method'><a href="Release.html#.fetch">fetch</a></li><li data-type='method'><a href="Release.html#.delete">delete</a></li><li data-type='method'><a href="Release.html#.item">item</a></li><li data-type='method'><a href="Release.html#.deploy">deploy</a></li><li data-type='method'><a href="Release.html#.clone">clone</a></li><li data-type='method'><a href="Release.html#.create">create</a></li><li data-type='method'><a href="Release.html#.query">query</a></li></ul></li><li><a href="Label.html">Label</a><ul class='methods'><li data-type='method'><a href="Label.html#.update">update</a></li><li data-type='method'><a href="Label.html#.delete">delete</a></li><li data-type='method'><a href="Label.html#.fetch">fetch</a></li><li data-type='method'><a href="Label.html#.create">create</a></li><li data-type='method'><a href="Label.html#.query">query</a></li></ul></li><li><a href="Locale.html">Locale</a><ul class='methods'><li data-type='method'><a href="Locale.html#.update">update</a></li><li data-type='method'><a href="Locale.html#.delete">delete</a></li><li data-type='method'><a href="Locale.html#.fetch">fetch</a></li><li data-type='method'><a href="Locale.html#.create">create</a></li><li data-type='method'><a href="Locale.html#.query">query</a></li></ul></li><li><a href="Role.html">Role</a><ul class='methods'><li data-type='method'><a href="Role.html#.update">update</a></li><li data-type='method'><a href="Role.html#.delete">delete</a></li><li data-type='method'><a href="Role.html#.fetch">fetch</a></li><li data-type='method'><a href="Role.html#.create">create</a></li><li data-type='method'><a href="Role.html#.findAll">findAll</a></li><li data-type='method'><a href="Role.html#.query">query</a></li></ul></li><li><a href="Webhook.html">Webhook</a><ul class='methods'><li data-type='method'><a href="Webhook.html#.update">update</a></li><li data-type='method'><a href="Webhook.html#.delete">delete</a></li><li data-type='method'><a href="Webhook.html#.fetch">fetch</a></li><li data-type='method'><a href="Webhook.html#.executions">executions</a></li><li data-type='method'><a href="Webhook.html#retry">retry</a></li><li data-type='method'><a href="Webhook.html#.create">create</a></li><li data-type='method'><a href="Webhook.html#.fetchAll">fetchAll</a></li><li data-type='method'><a href="Webhook.html#.import">import</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">stack/asset/index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import cloneDeep from 'lodash/cloneDeep'
+import {
+  update,
+  deleteEntity,
+  fetch,
+  query,
+  parseData,
+  upload,
+  publish,
+  unpublish } from '../../entity'
+import { Folder } from './folders'
+import error from '../../core/contentstackError'
+import FormData from 'form-data'
+import { createReadStream } from 'fs'
+
+/**
+ * Assets refer to all the media files (images, videos, PDFs, audio files, and so on) uploaded in your Contentstack repository for future use.
+ * These files can be attached and used in multiple entries. Read more about &lt;a href='https://www.contentstack.com/docs/guide/content-management'>Assets&lt;/a>.
+ * @namespace Asset
+ */
+
+export function Asset (http, data = {}) {
+  this.stackHeaders = data.stackHeaders
+  this.urlPath = `/assets`
+
+  if (data.asset) {
+    Object.assign(this, cloneDeep(data.asset))
+    this.urlPath = `/assets/${this.uid}`
+
+    /**
+     * @description The Update Asset call lets you update the name and description of an existing Asset.
+     * @memberof Asset
+     * @func update
+     * @returns {Promise&lt;Asset.Asset>} Promise for Asset instance
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).asset('uid').fetch()
+     * .then((asset) => {
+     *  asset.title = 'My New asset'
+     *  asset.description = 'Asset description'
+     *  return asset.update()
+     * })
+     * .then((asset) => console.log(asset))
+     *
+     */
+    this.update = update(http, 'asset')
+
+    /**
+     * @description The Delete asset call will delete an existing asset from the stack.
+     * @memberof Asset
+     * @func delete
+     * @returns {Object} Response Object.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).asset('uid').delete()
+     * .then((response) => console.log(response.notice))
+     */
+    this.delete = deleteEntity(http)
+
+    /**
+     * @description The fetch an asset call returns comprehensive information about a specific version of an asset of a stack.
+     * @memberof Asset
+     * @func fetch
+     * @returns {Promise&lt;Asset.Asset>} Promise for Asset instance
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).asset('uid').fetch()
+     * .then((asset) => console.log(asset))
+     *
+     */
+    this.fetch = fetch(http, 'asset')
+
+    /**
+     * @description The Replace asset call will replace an existing asset with another file on the stack.
+     * @memberof Asset
+     * @func replace
+     * @returns {Promise&lt;Asset.Asset>} Promise for Asset instance
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * const asset = {
+     *  upload: 'path/to/file.png',
+     * }
+     *
+     * client.stack({ api_key: 'api_key'}).asset('uid').replace(asset)
+     * .then((asset) => console.log(asset))
+     *
+     */
+    this.replace = async function (data, params) {
+      try {
+        const response = await upload({ http: http, urlPath: this.urlPath, stackHeaders: this.stackHeaders, formData: createFormData(data), params: params, method: 'PUT' })
+        if (response.data) {
+          return new this.constructor(http, parseData(response, this.stackHeaders))
+        } else {
+          throw error(response)
+        }
+      } catch (err) {
+        throw error(err)
+      }
+    }
+    /**
+     * @description The Publish an asset call is used to publish a specific version of an asset on the desired environment either immediately or at a later date/time.
+     * @memberof Asset
+     * @func publish
+     * @returns {Promise&lt;Object>} Response Object.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * const asset = {
+     *  "locales": [
+     *              "en-us"
+     *              ],
+     *   "environments": [
+     *                "development"
+     *               ]
+     * }
+     *
+     * client.stack({ api_key: 'api_key'}).asset('uid').publish({ publishDetails: asset, version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
+     * .then((response) => console.log(response.notice))
+     *
+     */
+    this.publish = publish(http, 'asset')
+
+    /**
+     * @description The Replace asset call will replace an existing asset with another file on the stack.
+     * @memberof Asset
+     * @func unpublish
+     * @returns {Promise&lt;Object>} Response Object.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * const asset = {
+     *  "locales": [
+     *              "en-us"
+     *              ],
+     *   "environments": [
+     *                "development"
+     *               ]
+     * }
+     *
+     * client.stack({ api_key: 'api_key'}).asset('uid').unpublish({ publishDetails: asset, version: 1, scheduledAt: "2019-02-08T18:30:00.000Z"})
+     * .then((response) => console.log(response.notice))
+     *
+     */
+    this.unpublish = unpublish(http, 'asset')
+  } else {
+    /**
+     *  @description The Folder allows to fetch and create folders in assets.
+     * @memberof Asset
+     * @func folder
+     * @returns {Promise&lt;Folder.Folder>} Promise for Entry instance
+     *
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     * const asset = {name: 'My New contentType'}
+     * client.stack({ api_key: 'api_key'}).asset('uid').folder().create({ asset })
+     * .then((folder) => console.log(folder))
+    */
+    this.folder = (folderUid = null) => {
+      const data = { stackHeaders: this.stackHeaders }
+      if (folderUid) {
+        data.asset = { uid: folderUid }
+      }
+      return new Folder(http, data)
+    }
+
+    /**
+     * @description The Create an asset call creates a new asset.
+     * @memberof Asset
+     * @func create
+     * @returns {Promise&lt;Asset.Asset>} Promise for Asset instance
+     *
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * const asset = {
+     *  upload: 'path/to/file.png',
+     *  title: 'Title',
+     *  description: 'Desc'
+     * }
+     *
+     * client.stack({ api_key: 'api_key'}).asset().create(asset)
+     * .then((asset) => console.log(asset))
+     */
+    this.create = async function (data, params) {
+      try {
+        const response = await upload({ http: http, urlPath: this.urlPath, stackHeaders: this.stackHeaders, formData: createFormData(data), params: params })
+        if (response.data) {
+          return new this.constructor(http, parseData(response, this.stackHeaders))
+        } else {
+          throw error(response)
+        }
+      } catch (err) {
+        throw error(err)
+      }
+    }
+    /**
+   * @description The Query on Asset will allow to fetch details of all or specific Asset.
+   * @memberof Asset
+   * @param {Object} params - URI parameters
+   * @prop {Object} params.query - Queries that you can use to fetch filtered results.
+   * @func query
+   * @returns {Array&lt;Asset>} Array of Asset.
+   *
+   * @example
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   *
+   * client.stack().asset().query({ query: { filename: 'Asset Name' } }).find()
+   * .then((asset) => console.log(asset))
+   */
+    this.query = query({ http: http, wrapperCollection: AssetCollection })
+  }
+  return this
+}
+
+export function AssetCollection (http, data) {
+  const obj = cloneDeep(data.assets) || []
+  const assetCollection = obj.map((userdata) => {
+    return new Asset(http, { asset: userdata, stackHeaders: data.stackHeaders })
+  })
+  return assetCollection
+}
+
+function createFormData (data) {
+  const formData = new FormData()
+  if (typeof data['parent_uid'] === 'string') {
+    formData.append('asset[parent_uid]', data['parent_uid'])
+  }
+
+  if (typeof data.description === 'string') {
+    formData.append('asset[description]', data.description)
+  }
+
+  if (data.tags instanceof Array) {
+    formData.append('asset[tags]', data.tags.join(','))
+  } else if (typeof data.tags === 'string') {
+    formData.append('asset[tags]', data.tags)
+  }
+
+  if (typeof data.title === 'string') {
+    formData.append('asset[title]', data.title)
+  }
+
+  const uploadStream = createReadStream(data.upload)
+  formData.append('asset[upload]', uploadStream)
+
+  return formData
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Wed Sep 23 2020 11:06:31 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

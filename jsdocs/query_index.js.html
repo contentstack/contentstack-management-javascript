@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>query/index.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Contentstack.html">Contentstack</a><ul class='members'><li data-type='member'><a href="Contentstack.html#.client">client</a></li></ul></li><li><a href="ContentstackClient.html">ContentstackClient</a><ul class='methods'><li data-type='method'><a href="ContentstackClient.html#.login">login</a></li><li data-type='method'><a href="ContentstackClient.html#.getUser">getUser</a></li><li data-type='method'><a href="ContentstackClient.html#.stack">stack</a></li><li data-type='method'><a href="ContentstackClient.html#.organization">organization</a></li><li data-type='method'><a href="ContentstackClient.html#.logout">logout</a></li></ul></li><li><a href="User.html">User</a><ul class='methods'><li data-type='method'><a href="User.html#.update">update</a></li><li data-type='method'><a href="User.html#.delete">delete</a></li><li data-type='method'><a href="User.html#.requestPassword">requestPassword</a></li><li data-type='method'><a href="User.html#.resetPassword">resetPassword</a></li></ul></li><li><a href="Organization.html">Organization</a><ul class='methods'><li data-type='method'><a href="Organization.html#.fetch">fetch</a></li><li data-type='method'><a href="Organization.html#.stacks">stacks</a></li><li data-type='method'><a href="Organization.html#.transferOwnership">transferOwnership</a></li><li data-type='method'><a href="Organization.html#.addUser">addUser</a></li><li data-type='method'><a href="Organization.html#.getInvitations">getInvitations</a></li><li data-type='method'><a href="Organization.html#.resendInvitition">resendInvitition</a></li><li data-type='method'><a href="Organization.html#.roles">roles</a></li><li data-type='method'><a href="Organization.html#.fetchAll">fetchAll</a></li></ul></li><li><a href="Stack.html">Stack</a><ul class='methods'><li data-type='method'><a href="Stack.html#.update">update</a></li><li data-type='method'><a href="Stack.html#.delete">delete</a></li><li data-type='method'><a href="Stack.html#.fetch">fetch</a></li><li data-type='method'><a href="Stack.html#contentType">contentType</a></li><li data-type='method'><a href="Stack.html#locale">locale</a></li><li data-type='method'><a href="Stack.html#asset">asset</a></li><li data-type='method'><a href="Stack.html#globalField">globalField</a></li><li data-type='method'><a href="Stack.html#environment">environment</a></li><li data-type='method'><a href="Stack.html#deliveryToken">deliveryToken</a></li><li data-type='method'><a href="Stack.html#extension">extension</a></li><li data-type='method'><a href="Stack.html#webhook">webhook</a></li><li data-type='method'><a href="Stack.html#label">label</a></li><li data-type='method'><a href="Stack.html#release">release</a></li><li data-type='method'><a href="Stack.html#bulkOperation">bulkOperation</a></li><li data-type='method'><a href="Stack.html#.users">users</a></li><li data-type='method'><a href="Stack.html#.transferOwnership">transferOwnership</a></li><li data-type='method'><a href="Stack.html#.settings">settings</a></li><li data-type='method'><a href="Stack.html#.resetSettings">resetSettings</a></li><li data-type='method'><a href="Stack.html#.addSettings">addSettings</a></li><li data-type='method'><a href="Stack.html#.share">share</a></li><li data-type='method'><a href="Stack.html#.unShare">unShare</a></li><li data-type='method'><a href="Stack.html#.role">role</a></li><li data-type='method'><a href="Stack.html#.create">create</a></li><li data-type='method'><a href="Stack.html#.query">query</a></li></ul></li><li><a href="ContentType.html">ContentType</a><ul class='methods'><li data-type='method'><a href="ContentType.html#.update">update</a></li><li data-type='method'><a href="ContentType.html#.delete">delete</a></li><li data-type='method'><a href="ContentType.html#.fetch">fetch</a></li><li data-type='method'><a href="ContentType.html#entry">entry</a></li><li data-type='method'><a href="ContentType.html#.generateUid">generateUid</a></li><li data-type='method'><a href="ContentType.html#.create">create</a></li><li data-type='method'><a href="ContentType.html#.query">query</a></li><li data-type='method'><a href="ContentType.html#.import">import</a></li></ul></li><li><a href="GlobalField.html">GlobalField</a><ul class='methods'><li data-type='method'><a href="GlobalField.html#.update">update</a></li><li data-type='method'><a href="GlobalField.html#.delete">delete</a></li><li data-type='method'><a href="GlobalField.html#.fetch">fetch</a></li><li data-type='method'><a href="GlobalField.html#.create">create</a></li><li data-type='method'><a href="GlobalField.html#.query">query</a></li><li data-type='method'><a href="GlobalField.html#.import">import</a></li></ul></li><li><a href="Entry.html">Entry</a><ul class='methods'><li data-type='method'><a href="Entry.html#.update">update</a></li><li data-type='method'><a href="Entry.html#.delete">delete</a></li><li data-type='method'><a href="Entry.html#.fetch">fetch</a></li><li data-type='method'><a href="Entry.html#.publish">publish</a></li><li data-type='method'><a href="Entry.html#.unpublish">unpublish</a></li><li data-type='method'><a href="Entry.html#.create">create</a></li><li data-type='method'><a href="Entry.html#.query">query</a></li><li data-type='method'><a href="Entry.html#.import">import</a></li></ul></li><li><a href="Asset.html">Asset</a><ul class='methods'><li data-type='method'><a href="Asset.html#.update">update</a></li><li data-type='method'><a href="Asset.html#.delete">delete</a></li><li data-type='method'><a href="Asset.html#.fetch">fetch</a></li><li data-type='method'><a href="Asset.html#.replace">replace</a></li><li data-type='method'><a href="Asset.html#.publish">publish</a></li><li data-type='method'><a href="Asset.html#.unpublish">unpublish</a></li><li data-type='method'><a href="Asset.html#.folder">folder</a></li><li data-type='method'><a href="Asset.html#.create">create</a></li><li data-type='method'><a href="Asset.html#.query">query</a></li></ul></li><li><a href="Folder.html">Folder</a><ul class='methods'><li data-type='method'><a href="Folder.html#.update">update</a></li><li data-type='method'><a href="Folder.html#.delete">delete</a></li><li data-type='method'><a href="Folder.html#.fetch">fetch</a></li><li data-type='method'><a href="Folder.html#.create">create</a></li></ul></li><li><a href="BulkOperation.html">BulkOperation</a><ul class='methods'><li data-type='method'><a href="BulkOperation.html#.publish">publish</a></li><li data-type='method'><a href="BulkOperation.html#.unpublish">unpublish</a></li><li data-type='method'><a href="BulkOperation.html#.delete">delete</a></li></ul></li><li><a href="Extension.html">Extension</a><ul class='methods'><li data-type='method'><a href="Extension.html#.update">update</a></li><li data-type='method'><a href="Extension.html#.delete">delete</a></li><li data-type='method'><a href="Extension.html#.fetch">fetch</a></li><li data-type='method'><a href="Extension.html#.upload">upload</a></li><li data-type='method'><a href="Extension.html#.create">create</a></li><li data-type='method'><a href="Extension.html#.query">query</a></li></ul></li><li><a href="Release.html">Release</a><ul class='methods'><li data-type='method'><a href="Release.html#.update">update</a></li><li data-type='method'><a href="Release.html#.fetch">fetch</a></li><li data-type='method'><a href="Release.html#.delete">delete</a></li><li data-type='method'><a href="Release.html#.item">item</a></li><li data-type='method'><a href="Release.html#.deploy">deploy</a></li><li data-type='method'><a href="Release.html#.clone">clone</a></li><li data-type='method'><a href="Release.html#.create">create</a></li><li data-type='method'><a href="Release.html#.query">query</a></li></ul></li><li><a href="Label.html">Label</a><ul class='methods'><li data-type='method'><a href="Label.html#.update">update</a></li><li data-type='method'><a href="Label.html#.delete">delete</a></li><li data-type='method'><a href="Label.html#.fetch">fetch</a></li><li data-type='method'><a href="Label.html#.create">create</a></li><li data-type='method'><a href="Label.html#.query">query</a></li></ul></li><li><a href="Locale.html">Locale</a><ul class='methods'><li data-type='method'><a href="Locale.html#.update">update</a></li><li data-type='method'><a href="Locale.html#.delete">delete</a></li><li data-type='method'><a href="Locale.html#.fetch">fetch</a></li><li data-type='method'><a href="Locale.html#.create">create</a></li><li data-type='method'><a href="Locale.html#.query">query</a></li></ul></li><li><a href="Role.html">Role</a><ul class='methods'><li data-type='method'><a href="Role.html#.update">update</a></li><li data-type='method'><a href="Role.html#.delete">delete</a></li><li data-type='method'><a href="Role.html#.fetch">fetch</a></li><li data-type='method'><a href="Role.html#.create">create</a></li><li data-type='method'><a href="Role.html#.findAll">findAll</a></li><li data-type='method'><a href="Role.html#.query">query</a></li></ul></li><li><a href="Webhook.html">Webhook</a><ul class='methods'><li data-type='method'><a href="Webhook.html#.update">update</a></li><li data-type='method'><a href="Webhook.html#.delete">delete</a></li><li data-type='method'><a href="Webhook.html#.fetch">fetch</a></li><li data-type='method'><a href="Webhook.html#.executions">executions</a></li><li data-type='method'><a href="Webhook.html#retry">retry</a></li><li data-type='method'><a href="Webhook.html#.create">create</a></li><li data-type='method'><a href="Webhook.html#.fetchAll">fetchAll</a></li><li data-type='method'><a href="Webhook.html#.import">import</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">query/index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import error from '../core/contentstackError'
+import cloneDeep from 'lodash/cloneDeep'
+import ContentstackCollection from '../contentstackCollection'
+
+export default function Query (http, urlPath, param, stackHeaders = null, wrapperCollection) {
+  const headers = {}
+  if (stackHeaders) {
+    headers.headers = stackHeaders
+  }
+  if (param) {
+    headers.params = {
+      ...cloneDeep(param)
+    }
+  }
+  /**
+   * @description This method will fetch content of query on specified module.
+   * @returns {ContentstackCollection} Result collection of content of specified module.
+   * @example All Stack
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   *
+   * client.stack().query().find()
+   * .then((collection) => console.log(collection))
+   *
+   * @example Query on stack
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   *
+   * client.stack().query( { query: { name: 'Stack name' } }).find()
+   * .then((collection) => console.log(collection))
+   *
+   */
+  const find = async () => {
+    try {
+      const response = await http.get(urlPath, headers)
+      if (response.data) {
+        return new ContentstackCollection(response, http, stackHeaders, wrapperCollection)
+      } else {
+        throw error(response)
+      }
+    } catch (err) {
+      throw error(err)
+    }
+  }
+  /**
+   * @description This method will fetch count of content for query on specified module.
+   * @returns {Object} Result is Object of content of specified module.
+   * @example All Stack
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   *
+   * client.stack().query().count()
+   * .then((response) => console.log(response))
+   *
+   * @example Query on Asset
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   *
+   * client.stack({ api_key: 'api_key'}).query({ query: { title: 'Stack name' } }).count()
+   * .then((response) => console.log(response))
+   *
+   */
+  const count = async () => {
+    headers.params = {
+      ...headers.params,
+      count: true
+    }
+    try {
+      const response = await http.get(urlPath, headers)
+      if (response.data) {
+        return response.data
+      } else {
+        throw error(response)
+      }
+    } catch (err) {
+      throw error(err)
+    }
+  }
+  /**
+   * @description This method will fetch content of query on specified module.
+   * @returns {ContentstackCollection} Result content of specified module.
+   * @example Stack
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   *
+   * client.stack().query().findOne()
+   * .then((collection) => console.log(collection))
+   *
+   * @example Query on stack
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   *
+   * client.stack().query({ query: { title: 'Stack name' } }).findOne()
+   * .then((collection) => console.log(collection))
+   *
+   */
+  const findOne = async () => {
+    const limitHeader = headers
+    limitHeader.params.limit = 1
+    try {
+      const response = await http.get(urlPath, limitHeader)
+      if (response.data) {
+        return new ContentstackCollection(response, http, stackHeaders, wrapperCollection)
+      } else {
+        throw error(response)
+      }
+    } catch (err) {
+      throw error(err)
+    }
+  }
+
+  return {
+    count: count,
+    find: find,
+    findOne: findOne
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Wed Sep 23 2020 11:06:31 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

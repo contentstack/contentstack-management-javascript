@@ -1,0 +1,3923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Stack - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Contentstack.html">Contentstack</a><ul class='members'><li data-type='member'><a href="Contentstack.html#.client">client</a></li></ul></li><li><a href="ContentstackClient.html">ContentstackClient</a><ul class='methods'><li data-type='method'><a href="ContentstackClient.html#.login">login</a></li><li data-type='method'><a href="ContentstackClient.html#.getUser">getUser</a></li><li data-type='method'><a href="ContentstackClient.html#.stack">stack</a></li><li data-type='method'><a href="ContentstackClient.html#.organization">organization</a></li><li data-type='method'><a href="ContentstackClient.html#.logout">logout</a></li></ul></li><li><a href="User.html">User</a><ul class='methods'><li data-type='method'><a href="User.html#.update">update</a></li><li data-type='method'><a href="User.html#.delete">delete</a></li><li data-type='method'><a href="User.html#.requestPassword">requestPassword</a></li><li data-type='method'><a href="User.html#.resetPassword">resetPassword</a></li></ul></li><li><a href="Organization.html">Organization</a><ul class='methods'><li data-type='method'><a href="Organization.html#.fetch">fetch</a></li><li data-type='method'><a href="Organization.html#.stacks">stacks</a></li><li data-type='method'><a href="Organization.html#.transferOwnership">transferOwnership</a></li><li data-type='method'><a href="Organization.html#.addUser">addUser</a></li><li data-type='method'><a href="Organization.html#.getInvitations">getInvitations</a></li><li data-type='method'><a href="Organization.html#.resendInvitition">resendInvitition</a></li><li data-type='method'><a href="Organization.html#.roles">roles</a></li><li data-type='method'><a href="Organization.html#.fetchAll">fetchAll</a></li></ul></li><li><a href="Stack.html">Stack</a><ul class='methods'><li data-type='method'><a href="Stack.html#.update">update</a></li><li data-type='method'><a href="Stack.html#.delete">delete</a></li><li data-type='method'><a href="Stack.html#.fetch">fetch</a></li><li data-type='method'><a href="Stack.html#contentType">contentType</a></li><li data-type='method'><a href="Stack.html#locale">locale</a></li><li data-type='method'><a href="Stack.html#asset">asset</a></li><li data-type='method'><a href="Stack.html#globalField">globalField</a></li><li data-type='method'><a href="Stack.html#environment">environment</a></li><li data-type='method'><a href="Stack.html#deliveryToken">deliveryToken</a></li><li data-type='method'><a href="Stack.html#extension">extension</a></li><li data-type='method'><a href="Stack.html#webhook">webhook</a></li><li data-type='method'><a href="Stack.html#label">label</a></li><li data-type='method'><a href="Stack.html#release">release</a></li><li data-type='method'><a href="Stack.html#bulkOperation">bulkOperation</a></li><li data-type='method'><a href="Stack.html#.users">users</a></li><li data-type='method'><a href="Stack.html#.transferOwnership">transferOwnership</a></li><li data-type='method'><a href="Stack.html#.settings">settings</a></li><li data-type='method'><a href="Stack.html#.resetSettings">resetSettings</a></li><li data-type='method'><a href="Stack.html#.addSettings">addSettings</a></li><li data-type='method'><a href="Stack.html#.share">share</a></li><li data-type='method'><a href="Stack.html#.unShare">unShare</a></li><li data-type='method'><a href="Stack.html#.role">role</a></li><li data-type='method'><a href="Stack.html#.create">create</a></li><li data-type='method'><a href="Stack.html#.query">query</a></li></ul></li><li><a href="ContentType.html">ContentType</a><ul class='methods'><li data-type='method'><a href="ContentType.html#.update">update</a></li><li data-type='method'><a href="ContentType.html#.delete">delete</a></li><li data-type='method'><a href="ContentType.html#.fetch">fetch</a></li><li data-type='method'><a href="ContentType.html#entry">entry</a></li><li data-type='method'><a href="ContentType.html#.generateUid">generateUid</a></li><li data-type='method'><a href="ContentType.html#.create">create</a></li><li data-type='method'><a href="ContentType.html#.query">query</a></li><li data-type='method'><a href="ContentType.html#.import">import</a></li></ul></li><li><a href="GlobalField.html">GlobalField</a><ul class='methods'><li data-type='method'><a href="GlobalField.html#.update">update</a></li><li data-type='method'><a href="GlobalField.html#.delete">delete</a></li><li data-type='method'><a href="GlobalField.html#.fetch">fetch</a></li><li data-type='method'><a href="GlobalField.html#.create">create</a></li><li data-type='method'><a href="GlobalField.html#.query">query</a></li><li data-type='method'><a href="GlobalField.html#.import">import</a></li></ul></li><li><a href="Entry.html">Entry</a><ul class='methods'><li data-type='method'><a href="Entry.html#.update">update</a></li><li data-type='method'><a href="Entry.html#.delete">delete</a></li><li data-type='method'><a href="Entry.html#.fetch">fetch</a></li><li data-type='method'><a href="Entry.html#.publish">publish</a></li><li data-type='method'><a href="Entry.html#.unpublish">unpublish</a></li><li data-type='method'><a href="Entry.html#.create">create</a></li><li data-type='method'><a href="Entry.html#.query">query</a></li><li data-type='method'><a href="Entry.html#.import">import</a></li></ul></li><li><a href="Asset.html">Asset</a><ul class='methods'><li data-type='method'><a href="Asset.html#.update">update</a></li><li data-type='method'><a href="Asset.html#.delete">delete</a></li><li data-type='method'><a href="Asset.html#.fetch">fetch</a></li><li data-type='method'><a href="Asset.html#.replace">replace</a></li><li data-type='method'><a href="Asset.html#.publish">publish</a></li><li data-type='method'><a href="Asset.html#.unpublish">unpublish</a></li><li data-type='method'><a href="Asset.html#.folder">folder</a></li><li data-type='method'><a href="Asset.html#.create">create</a></li><li data-type='method'><a href="Asset.html#.query">query</a></li></ul></li><li><a href="Folder.html">Folder</a><ul class='methods'><li data-type='method'><a href="Folder.html#.update">update</a></li><li data-type='method'><a href="Folder.html#.delete">delete</a></li><li data-type='method'><a href="Folder.html#.fetch">fetch</a></li><li data-type='method'><a href="Folder.html#.create">create</a></li></ul></li><li><a href="BulkOperation.html">BulkOperation</a><ul class='methods'><li data-type='method'><a href="BulkOperation.html#.publish">publish</a></li><li data-type='method'><a href="BulkOperation.html#.unpublish">unpublish</a></li><li data-type='method'><a href="BulkOperation.html#.delete">delete</a></li></ul></li><li><a href="Extension.html">Extension</a><ul class='methods'><li data-type='method'><a href="Extension.html#.update">update</a></li><li data-type='method'><a href="Extension.html#.delete">delete</a></li><li data-type='method'><a href="Extension.html#.fetch">fetch</a></li><li data-type='method'><a href="Extension.html#.upload">upload</a></li><li data-type='method'><a href="Extension.html#.create">create</a></li><li data-type='method'><a href="Extension.html#.query">query</a></li></ul></li><li><a href="Release.html">Release</a><ul class='methods'><li data-type='method'><a href="Release.html#.update">update</a></li><li data-type='method'><a href="Release.html#.fetch">fetch</a></li><li data-type='method'><a href="Release.html#.delete">delete</a></li><li data-type='method'><a href="Release.html#.item">item</a></li><li data-type='method'><a href="Release.html#.deploy">deploy</a></li><li data-type='method'><a href="Release.html#.clone">clone</a></li><li data-type='method'><a href="Release.html#.create">create</a></li><li data-type='method'><a href="Release.html#.query">query</a></li></ul></li><li><a href="Label.html">Label</a><ul class='methods'><li data-type='method'><a href="Label.html#.update">update</a></li><li data-type='method'><a href="Label.html#.delete">delete</a></li><li data-type='method'><a href="Label.html#.fetch">fetch</a></li><li data-type='method'><a href="Label.html#.create">create</a></li><li data-type='method'><a href="Label.html#.query">query</a></li></ul></li><li><a href="Locale.html">Locale</a><ul class='methods'><li data-type='method'><a href="Locale.html#.update">update</a></li><li data-type='method'><a href="Locale.html#.delete">delete</a></li><li data-type='method'><a href="Locale.html#.fetch">fetch</a></li><li data-type='method'><a href="Locale.html#.create">create</a></li><li data-type='method'><a href="Locale.html#.query">query</a></li></ul></li><li><a href="Role.html">Role</a><ul class='methods'><li data-type='method'><a href="Role.html#.update">update</a></li><li data-type='method'><a href="Role.html#.delete">delete</a></li><li data-type='method'><a href="Role.html#.fetch">fetch</a></li><li data-type='method'><a href="Role.html#.create">create</a></li><li data-type='method'><a href="Role.html#.findAll">findAll</a></li><li data-type='method'><a href="Role.html#.query">query</a></li></ul></li><li><a href="Webhook.html">Webhook</a><ul class='methods'><li data-type='method'><a href="Webhook.html#.update">update</a></li><li data-type='method'><a href="Webhook.html#.delete">delete</a></li><li data-type='method'><a href="Webhook.html#.fetch">fetch</a></li><li data-type='method'><a href="Webhook.html#.executions">executions</a></li><li data-type='method'><a href="Webhook.html#retry">retry</a></li><li data-type='method'><a href="Webhook.html#.create">create</a></li><li data-type='method'><a href="Webhook.html#.fetchAll">fetchAll</a></li><li data-type='method'><a href="Webhook.html#.import">import</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Stack</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        Stack
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">A stack is a space that stores the content of a project (a web or mobile property). Within a stack, you can create content structures, content entries, users, etc. related to the project. Read more about <a href='https://www.contentstack.com/docs/guide/stack'>Stacks</a>.</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Stack.Stack>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line37">line 37</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Update stack call lets you update the name and description of an existing stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).fetch()
+.then((stack) => {
+ stack.name = 'My New Stack'
+ stack.description = 'My new test stack'
+ return stack.update()
+})
+.then((stack) => console.log(stack))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise for Stack instance
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Stack.Stack></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".delete"><span class="type-signature">(static) </span>delete<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line57">line 57</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Delete stack call is used to delete an existing stack permanently from your Contentstack account.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).delete()
+.then((response) => console.log(response.notice))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Response Object.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".fetch"><span class="type-signature">(static) </span>fetch<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Stack.Stack>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line71">line 71</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The fetch stack call fetches stack details.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).fetch()
+.then((stack) => console.log(stack))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise for Stack instance
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Stack.Stack></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="contentType"><span class="type-signature"></span>contentType<span class="signature">(uid)</span><span class="type-signature"> &rarr; {ContenType}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line100">line 100</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Content type defines the structure or schema of a page or a section of your web or mobile property.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).contentType().create()
+.then((contentType) => console.log(contentType))
+
+client.stack({ api_key: 'api_key'}).contentType('content_type_uid').fetch()
+.then((contentType) => console.log(contentType))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the ContentType you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of ContentType.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">ContenType</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="locale"><span class="type-signature"></span>locale<span class="signature">(uid)</span><span class="type-signature"> &rarr; {<a href="Locale.html">Locale</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line122">line 122</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Locale allows you to create and publish entries in any language.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).locale().create()
+.then((locale) => console.log(locale))
+
+client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
+.then((locale) => console.log(locale))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Locale you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of Locale.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Locale.html">Locale</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="asset"><span class="type-signature"></span>asset<span class="signature">(uid)</span><span class="type-signature"> &rarr; {<a href="Asset.html">Asset</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line144">line 144</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Assets refer to all the media files (images, videos, PDFs, audio files, and so on) uploaded in your Contentstack repository for future use.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).asset().create()
+.then((asset) => console.log(asset))
+
+client.stack({ api_key: 'api_key'}).asset('asset_uid').fetch()
+.then((asset) => console.log(asset))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Asset you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of Asset.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Asset.html">Asset</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="globalField"><span class="type-signature"></span>globalField<span class="signature">(uid)</span><span class="type-signature"> &rarr; {ContenType}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line165">line 165</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Global field defines the structure or schema of a page or a section of your web or mobile property.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).globalField().create()
+.then((globalField) => console.log(globalField))
+
+client.stack({ api_key: 'api_key'}).globalField('globalField_uid').fetch()
+.then((globalField) => console.log(globalField))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Global field you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of Global field.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">ContenType</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="environment"><span class="type-signature"></span>environment<span class="signature">(uid)</span><span class="type-signature"> &rarr; {<a href="Environment.html">Environment</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line187">line 187</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Environment corresponds to one or more deployment servers or a content delivery destination where the entries need to be published.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).globalField().create()
+.then((globalField) => console.log(globalField))
+
+client.stack({ api_key: 'api_key'}).globalField('globalField_uid').fetch()
+.then((globalField) => console.log(globalField))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Environment you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of Environment.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Environment.html">Environment</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="deliveryToken"><span class="type-signature"></span>deliveryToken<span class="signature">(deliveryTokenUid)</span><span class="type-signature"> &rarr; {<a href="DeliveryToken.html">DeliveryToken</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line208">line 208</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Delivery Tokens provide read-only access to the associated environments.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).deliveryToken().create()
+.then((deliveryToken) => console.log(deliveryToken))
+
+client.stack({ api_key: 'api_key'}).deliveryToken('deliveryToken_uid').fetch()
+.then((deliveryToken) => console.log(deliveryToken))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>deliveryTokenUid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Delivery Token field you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of DeliveryToken.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="DeliveryToken.html">DeliveryToken</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="extension"><span class="type-signature"></span>extension<span class="signature">(extensionUid)</span><span class="type-signature"> &rarr; {<a href="Extension.html">Extension</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line230">line 230</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Extensions let you create custom fields and custom widgets that lets you customize Contentstack's default UI and behavior.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).extension().create()
+.then((extension) => console.log(extension))
+
+client.stack({ api_key: 'api_key'}).extension('extension_uid').fetch()
+.then((extension) => console.log(extension))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>extensionUid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Extension you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of Extension.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Extension.html">Extension</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="webhook"><span class="type-signature"></span>webhook<span class="signature">(webhookUid)</span><span class="type-signature"> &rarr; {<a href="Webhook.html">Webhook</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line252">line 252</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Webhooks allow you to specify a URL to which you would like Contentstack to post data when an event happens.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).webhook().create()
+.then((webhook) => console.log(webhook))
+
+client.stack({ api_key: 'api_key'}).webhook('webhook_uid').fetch()
+.then((webhook) => console.log(webhook))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>webhookUid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Webhook you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of Webhook.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Webhook.html">Webhook</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="label"><span class="type-signature"></span>label<span class="signature">(uid)</span><span class="type-signature"> &rarr; {<a href="Label.html">Label</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line274">line 274</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Labels allow you to group a collection of content within a stack. Using labels you can group content types that need to work together
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).label().create()
+.then((label) => console.log(label))
+
+client.stack({ api_key: 'api_key'}).label('label_uid').fetch()
+.then((label) => console.log(label))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Label you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of Label.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Label.html">Label</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="release"><span class="type-signature"></span>release<span class="signature">(releaseUid)</span><span class="type-signature"> &rarr; {<a href="Release.html">Release</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line296">line 296</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    You can pin a set of entries and assets (along with the deploy action, i.e., publish/unpublish) to a ‘release’, and then deploy this release to an environment.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).release().create()
+.then((release) => console.log(release))
+
+client.stack({ api_key: 'api_key'}).release('release_uid').fetch()
+.then((release) => console.log(release))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>releaseUid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Releases you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instance of Release.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Release.html">Release</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="bulkOperation"><span class="type-signature"></span>bulkOperation<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="BulkOperation.html">BulkOperation</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line334">line 334</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Bulk operations such as Publish, Unpublish, and Delete on multiple entries or assets.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+const publishDetails = {
+  entries: [
+    {
+      uid: '{{entry_uid}}',
+      content_type: '{{content_type_uid}}',
+      version: '{{version}}',
+      locale: '{{entry_locale}}'
+    }
+  ],
+  assets: [{
+    uid: '{{uid}}'
+  }],
+  locales: [
+    'en'
+  ],
+  environments: [
+    '{{env_name}}/env_uid}}'
+  ]
+}
+client.stack({ api_key: 'api_key'}).bulkOperation().publish({ details:  publishDetails })
+.then((response) => {  console.log(response.notice) })</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instance of BulkOperation.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="BulkOperation.html">BulkOperation</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".users"><span class="type-signature">(static) </span>users<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="User.html">User</a>>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line339">line 339</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Get all users of a stack call fetches the list of all users of a particular stack
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).users()
+.then((users) => console.log(users))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Array of User's including owner of Stack
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="User.html">User</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".transferOwnership"><span class="type-signature">(static) </span>transferOwnership<span class="signature">(email)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line372">line 372</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Transfer stack ownership to other users call sends the specified user an email invitation for accepting the ownership of a particular stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).transferOwnership('emailId')
+.then((response) => console.log(response.notice))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The email address of the user to whom you wish to transfer the ownership of the stack.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Response Object.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".settings"><span class="type-signature">(static) </span>settings<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line404">line 404</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Get stack settings call retrieves the configuration settings of an existing stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).settings()
+.then((settings) => console.log(settings))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Configuration settings of stack.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".resetSettings"><span class="type-signature">(static) </span>resetSettings<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line433">line 433</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Reset stack settings call resets your stack to default settings, and additionally, lets you add parameters to or modify the settings of an existing stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).resetSettings()
+.then((settings) => console.log(settings))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Configuration settings of stack.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".addSettings"><span class="type-signature">(static) </span>addSettings<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line462">line 462</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Add stack settings call lets you add settings for an existing stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).addSettings({ key: 'value' })
+.then((settings) => console.log(settings))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Configuration settings of stack.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".share"><span class="type-signature">(static) </span>share<span class="signature">(emails, roles)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line491">line 491</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Share a stack call shares a stack with the specified user to collaborate on the stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).share([ "manager@example.com" ], { "manager@example.com": [ "abcdefhgi1234567890" ] })
+.then((response) => console.log(response.notice))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>emails</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Email ID of the user with whom you wish to share the stack</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>roles</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The role uid that you wish to assign the user.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Response Object.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".unShare"><span class="type-signature">(static) </span>unShare<span class="signature">(email)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line523">line 523</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Unshare a stack call unshares a stack with a user and removes the user account from the list of collaborators.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).unShare('email@id.com')
+.then((response) => console.log(response.notice))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The email ID of the user from whom you wish to unshare the stack.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Response Object.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".role"><span class="type-signature">(static) </span>role<span class="signature">(uid<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Role.html">Role</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line553">line 553</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    A role is a collection of permissions that will be applicable to all the users who are assigned this role.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).role().create({
+"role":
+      {
+       "name":"testRole",
+       "description":"",
+       "rules":[...],
+      }
+})
+.then((role) => console.log(role))
+
+client.stack({ api_key: 'api_key'}).role('role_uid').fetch())
+.then((role) => console.log(role))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The UID of the role you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instance of Role.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Role.html">Role</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Stack.Stack>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line586">line 586</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Create stack call creates a new stack in your Contentstack account.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.organization('org_uid').stack().create({name: 'My New Stack'})
+.then((stack) => console.log(stack))</code></pre>
+
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack().create({name: 'My New Stack'}, { organization_uid: 'org_uid' })
+.then((stack) => console.log(stack))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise for Stack instance
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Stack.Stack></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".query"><span class="type-signature">(static) </span>query<span class="signature">(include_collaborators, include_stack_variablesSet, include_discrete_variables, include_count, query)</span><span class="type-signature"> &rarr; {ContentstackCollection}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_index.js.html">stack/index.js</a>, <a href="stack_index.js.html#line608">line 608</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Query on Stack will allow to fetch details of all or specific Stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack().query({ query: { name: 'Stack Name' } }).find()
+.then((stack) => console.log(stack))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>include_collaborators</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Set this parameter to 'true' to include the details of the stack collaborators.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>include_stack_variablesSet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">this to 'true' to display the stack variables. Stack variables are extra information about the stack, such as the description, format of date, format of time, and so on. Users can include or exclude stack variables in the response.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>include_discrete_variables</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Set this to 'true' to view the access token of your stack.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>include_count</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Set this to 'true' to include in the response the total count of the stacks owned by or shared with a user account.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Queries that you can use to fetch filtered results.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instance of ContentstackCollection.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">ContentstackCollection</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Wed Sep 23 2020 11:06:32 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

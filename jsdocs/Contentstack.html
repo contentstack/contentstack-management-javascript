@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Contentstack - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Contentstack.html">Contentstack</a><ul class='members'><li data-type='member'><a href="Contentstack.html#.client">client</a></li></ul></li><li><a href="ContentstackClient.html">ContentstackClient</a><ul class='methods'><li data-type='method'><a href="ContentstackClient.html#.login">login</a></li><li data-type='method'><a href="ContentstackClient.html#.getUser">getUser</a></li><li data-type='method'><a href="ContentstackClient.html#.stack">stack</a></li><li data-type='method'><a href="ContentstackClient.html#.organization">organization</a></li><li data-type='method'><a href="ContentstackClient.html#.logout">logout</a></li></ul></li><li><a href="User.html">User</a><ul class='methods'><li data-type='method'><a href="User.html#.update">update</a></li><li data-type='method'><a href="User.html#.delete">delete</a></li><li data-type='method'><a href="User.html#.requestPassword">requestPassword</a></li><li data-type='method'><a href="User.html#.resetPassword">resetPassword</a></li></ul></li><li><a href="Organization.html">Organization</a><ul class='methods'><li data-type='method'><a href="Organization.html#.fetch">fetch</a></li><li data-type='method'><a href="Organization.html#.stacks">stacks</a></li><li data-type='method'><a href="Organization.html#.transferOwnership">transferOwnership</a></li><li data-type='method'><a href="Organization.html#.addUser">addUser</a></li><li data-type='method'><a href="Organization.html#.getInvitations">getInvitations</a></li><li data-type='method'><a href="Organization.html#.resendInvitition">resendInvitition</a></li><li data-type='method'><a href="Organization.html#.roles">roles</a></li><li data-type='method'><a href="Organization.html#.fetchAll">fetchAll</a></li></ul></li><li><a href="Stack.html">Stack</a><ul class='methods'><li data-type='method'><a href="Stack.html#.update">update</a></li><li data-type='method'><a href="Stack.html#.delete">delete</a></li><li data-type='method'><a href="Stack.html#.fetch">fetch</a></li><li data-type='method'><a href="Stack.html#contentType">contentType</a></li><li data-type='method'><a href="Stack.html#locale">locale</a></li><li data-type='method'><a href="Stack.html#asset">asset</a></li><li data-type='method'><a href="Stack.html#globalField">globalField</a></li><li data-type='method'><a href="Stack.html#environment">environment</a></li><li data-type='method'><a href="Stack.html#deliveryToken">deliveryToken</a></li><li data-type='method'><a href="Stack.html#extension">extension</a></li><li data-type='method'><a href="Stack.html#webhook">webhook</a></li><li data-type='method'><a href="Stack.html#label">label</a></li><li data-type='method'><a href="Stack.html#release">release</a></li><li data-type='method'><a href="Stack.html#bulkOperation">bulkOperation</a></li><li data-type='method'><a href="Stack.html#.users">users</a></li><li data-type='method'><a href="Stack.html#.transferOwnership">transferOwnership</a></li><li data-type='method'><a href="Stack.html#.settings">settings</a></li><li data-type='method'><a href="Stack.html#.resetSettings">resetSettings</a></li><li data-type='method'><a href="Stack.html#.addSettings">addSettings</a></li><li data-type='method'><a href="Stack.html#.share">share</a></li><li data-type='method'><a href="Stack.html#.unShare">unShare</a></li><li data-type='method'><a href="Stack.html#.role">role</a></li><li data-type='method'><a href="Stack.html#.create">create</a></li><li data-type='method'><a href="Stack.html#.query">query</a></li></ul></li><li><a href="ContentType.html">ContentType</a><ul class='methods'><li data-type='method'><a href="ContentType.html#.update">update</a></li><li data-type='method'><a href="ContentType.html#.delete">delete</a></li><li data-type='method'><a href="ContentType.html#.fetch">fetch</a></li><li data-type='method'><a href="ContentType.html#entry">entry</a></li><li data-type='method'><a href="ContentType.html#.generateUid">generateUid</a></li><li data-type='method'><a href="ContentType.html#.create">create</a></li><li data-type='method'><a href="ContentType.html#.query">query</a></li><li data-type='method'><a href="ContentType.html#.import">import</a></li></ul></li><li><a href="GlobalField.html">GlobalField</a><ul class='methods'><li data-type='method'><a href="GlobalField.html#.update">update</a></li><li data-type='method'><a href="GlobalField.html#.delete">delete</a></li><li data-type='method'><a href="GlobalField.html#.fetch">fetch</a></li><li data-type='method'><a href="GlobalField.html#.create">create</a></li><li data-type='method'><a href="GlobalField.html#.query">query</a></li><li data-type='method'><a href="GlobalField.html#.import">import</a></li></ul></li><li><a href="Entry.html">Entry</a><ul class='methods'><li data-type='method'><a href="Entry.html#.update">update</a></li><li data-type='method'><a href="Entry.html#.delete">delete</a></li><li data-type='method'><a href="Entry.html#.fetch">fetch</a></li><li data-type='method'><a href="Entry.html#.publish">publish</a></li><li data-type='method'><a href="Entry.html#.unpublish">unpublish</a></li><li data-type='method'><a href="Entry.html#.create">create</a></li><li data-type='method'><a href="Entry.html#.query">query</a></li><li data-type='method'><a href="Entry.html#.import">import</a></li></ul></li><li><a href="Asset.html">Asset</a><ul class='methods'><li data-type='method'><a href="Asset.html#.update">update</a></li><li data-type='method'><a href="Asset.html#.delete">delete</a></li><li data-type='method'><a href="Asset.html#.fetch">fetch</a></li><li data-type='method'><a href="Asset.html#.replace">replace</a></li><li data-type='method'><a href="Asset.html#.publish">publish</a></li><li data-type='method'><a href="Asset.html#.unpublish">unpublish</a></li><li data-type='method'><a href="Asset.html#.folder">folder</a></li><li data-type='method'><a href="Asset.html#.create">create</a></li><li data-type='method'><a href="Asset.html#.query">query</a></li></ul></li><li><a href="Folder.html">Folder</a><ul class='methods'><li data-type='method'><a href="Folder.html#.update">update</a></li><li data-type='method'><a href="Folder.html#.delete">delete</a></li><li data-type='method'><a href="Folder.html#.fetch">fetch</a></li><li data-type='method'><a href="Folder.html#.create">create</a></li></ul></li><li><a href="BulkOperation.html">BulkOperation</a><ul class='methods'><li data-type='method'><a href="BulkOperation.html#.publish">publish</a></li><li data-type='method'><a href="BulkOperation.html#.unpublish">unpublish</a></li><li data-type='method'><a href="BulkOperation.html#.delete">delete</a></li></ul></li><li><a href="Extension.html">Extension</a><ul class='methods'><li data-type='method'><a href="Extension.html#.update">update</a></li><li data-type='method'><a href="Extension.html#.delete">delete</a></li><li data-type='method'><a href="Extension.html#.fetch">fetch</a></li><li data-type='method'><a href="Extension.html#.upload">upload</a></li><li data-type='method'><a href="Extension.html#.create">create</a></li><li data-type='method'><a href="Extension.html#.query">query</a></li></ul></li><li><a href="Release.html">Release</a><ul class='methods'><li data-type='method'><a href="Release.html#.update">update</a></li><li data-type='method'><a href="Release.html#.fetch">fetch</a></li><li data-type='method'><a href="Release.html#.delete">delete</a></li><li data-type='method'><a href="Release.html#.item">item</a></li><li data-type='method'><a href="Release.html#.deploy">deploy</a></li><li data-type='method'><a href="Release.html#.clone">clone</a></li><li data-type='method'><a href="Release.html#.create">create</a></li><li data-type='method'><a href="Release.html#.query">query</a></li></ul></li><li><a href="Label.html">Label</a><ul class='methods'><li data-type='method'><a href="Label.html#.update">update</a></li><li data-type='method'><a href="Label.html#.delete">delete</a></li><li data-type='method'><a href="Label.html#.fetch">fetch</a></li><li data-type='method'><a href="Label.html#.create">create</a></li><li data-type='method'><a href="Label.html#.query">query</a></li></ul></li><li><a href="Locale.html">Locale</a><ul class='methods'><li data-type='method'><a href="Locale.html#.update">update</a></li><li data-type='method'><a href="Locale.html#.delete">delete</a></li><li data-type='method'><a href="Locale.html#.fetch">fetch</a></li><li data-type='method'><a href="Locale.html#.create">create</a></li><li data-type='method'><a href="Locale.html#.query">query</a></li></ul></li><li><a href="Role.html">Role</a><ul class='methods'><li data-type='method'><a href="Role.html#.update">update</a></li><li data-type='method'><a href="Role.html#.delete">delete</a></li><li data-type='method'><a href="Role.html#.fetch">fetch</a></li><li data-type='method'><a href="Role.html#.create">create</a></li><li data-type='method'><a href="Role.html#.findAll">findAll</a></li><li data-type='method'><a href="Role.html#.query">query</a></li></ul></li><li><a href="Webhook.html">Webhook</a><ul class='methods'><li data-type='method'><a href="Webhook.html#.update">update</a></li><li data-type='method'><a href="Webhook.html#.delete">delete</a></li><li data-type='method'><a href="Webhook.html#.fetch">fetch</a></li><li data-type='method'><a href="Webhook.html#.executions">executions</a></li><li data-type='method'><a href="Webhook.html#retry">retry</a></li><li data-type='method'><a href="Webhook.html#.create">create</a></li><li data-type='method'><a href="Webhook.html#.fetchAll">fetchAll</a></li><li data-type='method'><a href="Webhook.html#.import">import</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Contentstack</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        Contentstack
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="contentstack.js.html">contentstack.js</a>, <a href="contentstack.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">The Content Management API (CMA) is used to manage the content of your Contentstack account. This includes creating, updating, deleting, and fetching content of your account.</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".client"><span class="type-signature">(static) </span>client<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="contentstack.js.html">contentstack.js</a>, <a href="contentstack.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params.endpoint</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">API endpoint that a service will talk to</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.host</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">API host (default: api.contentstack.io)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.headers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Optional additional headers</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.timeout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Optional number of milliseconds before the request times out. Default is 30000ms</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.retryOnError</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Optional boolean for retry on failuer. Default is true</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.retryLimit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Optional number of retries before failure. Default is 5</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.retryDelay</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The number of miliseconds to use for operation retries. Default is 300ms</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.retryCondition</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">A function to determine if the error can be retried. Default retry is on status 429.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.retryDelayOptions.base</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The base number of milliseconds to use in the exponential backoff for operation retries.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.retryDelayOptions.customBackoff</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds. (if you want not to retry for specific condition return -1)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.maxContentLength</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Optional maximum content length in bytes (default: 1073741824 i.e. 1 GB)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.maxBodyLength</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Optional maximum body length in bytes (default: 10 MB)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.logHandler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">A log handler function to process given log messages & errors.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.application</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Application name and version e.g myApp/version</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params.integration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Integration name and version e.g react/version</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    Create client instance
+</div>
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `endpoint` to 'https://api.contentstack.io:{port}/{version}'
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ endpoint: 'https://api.contentstack.io:{port}/{version}' })</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `host` to 'api.contentstack.io'
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ host: 'api.contentstack.io' })</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `headers` to { 'headerkey': 'value'}
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ headers: { 'headerkey': 'value'} })</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `timeout` to 50000ms
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ timeout: 50000 })</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `retryOnError` to false
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ retryOnError: false })</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `retryLimit` to 2
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ retryLimit: 2 })</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `retryDelay` to 500ms
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ retryDelay: 500 })</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `retryCondition` on error status 429
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ retryCondition: (error) => {
+     if (error.response &amp;&amp; error.response.status === 429) {
+       return true
+     }
+     return false
+   }
+ })</code></pre>
+
+    <pre class="prettyprint"><code>Set  base retry delay for all services to 300 ms
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({retryDelayOptions: {base: 300}})</code></pre>
+
+    <pre class="prettyprint"><code>Set a custom backoff function to provide delay of 500 ms on retryCount &lt; 3 and -1 for retryCount >= 3values on retries
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({retryDelayOptions: {customBackoff: function(retryCount, err) {
+       if (retryCount &lt; 3) {
+         return 500
+       } else {
+         return -1 //returning -1 will hold next retry for request
+       }
+    }}}
+)</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `maxContentLength` to 1024 ** 3
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ maxContentLength: 1024 ** 3 })</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `maxContentLength` to 1024 ** 2 * 10 // 10 MB
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ maxBodyLength: 1024 ** 2 * 10 })</code></pre>
+
+    <pre class="prettyprint"><code>//Set the `logHandler`
+import * as contentstack from '@contentstack/management'
+const client = contentstack.client({ logHandler: (level, data) => {
+      if (level === 'error' &amp;&amp; data) {
+        const title = [data.name, data.message].filter((a) => a).join(' - ')
+        console.error(`[error] ${title}`)
+        return
+      }
+      console.log(`[${level}] ${data}`)
+    } })</code></pre>
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Wed Sep 23 2020 11:06:31 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
