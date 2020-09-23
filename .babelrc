@@ -1,0 +1,34 @@
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": [
+    ["@babel/plugin-transform-runtime", {
+      "regenerator": true
+    }]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["@babel/env"]
+      ],
+      "plugins": ["rewire"],
+      "sourceMaps": "inline"
+    },
+    "es5": {
+      "presets": [
+        ["@babel/env"]
+      ],
+      "plugins": [
+        "add-module-exports",
+        "@babel/plugin-transform-runtime",
+        "transform-es2015-modules-commonjs"
+      ]
+    },
+    "es-modules": {
+      "presets": [
+        ["@babel/env", {
+          "modules": false
+        }]
+      ]
+    }
+  }
+}
