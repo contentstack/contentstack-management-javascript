@@ -90,5 +90,5 @@
     "webpack-cli": "^3.3.12",
     "webpack-merge": "4.1.0"
   },
-  "homepage": "https://www.contentstack.com/docs/apis/contentstack-management"
+  "homepage": "https://www.contentstack.com"
 }
