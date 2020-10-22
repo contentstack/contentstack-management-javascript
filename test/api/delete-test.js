@@ -24,15 +24,6 @@ describe('Delete api Test', () => {
       .catch(done)
   })
 
-  it('Delete Stack', done => {
-    client.stack({ api_key: stack.api_key })
-      .delete().then((data) => {
-        expect(data.notice).to.be.equal('Stack deleted successfully!')
-        done()
-      })
-      .catch(done)
-  })
-
   it('User logout test', done => {
     client.logout()
       .then((response) => {

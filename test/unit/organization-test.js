@@ -2,7 +2,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import { Organization, OrganizationCollection } from '../../lib/organization'
-import { roleMock, adminRoleMock, orgMock, mockCollection, systemUidMock, stackMock, noticeMock, userMock } from './mock/objects'
+import { roleMock, adminRoleMock, orgMock, mockCollection, systemUidMock, stackMock, noticeMock, userMock, orgOwnerMock } from './mock/objects'
 import MockAdapter from 'axios-mock-adapter'
 import ContentstackCollection from '../../lib/contentstackCollection'
 import { checkUser } from './user-test'
@@ -45,6 +45,15 @@ describe('Organization Test', () => {
       org_roles: [roleMock]
     } })
     checknonAdminFunction(organization)
+    done()
+  })
+
+  it('Organization with owner', done => {
+    const organization = makeOrganization({ organization: {
+      ...orgOwnerMock
+    } })
+    checkOrgMock(organization)
+    checkAdminFunction(organization)
     done()
   })
 

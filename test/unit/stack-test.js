@@ -15,7 +15,6 @@ describe('Contentststack Stack test', () => {
     expect(stack.create).to.not.equal(undefined)
     expect(stack.query).to.not.equal(undefined)
     expect(stack.update).to.be.equal(undefined)
-    expect(stack.delete).to.be.equal(undefined)
     expect(stack.fetch).to.be.equal(undefined)
     expect(stack.contentType).to.be.equal(undefined)
     expect(stack.locale).to.be.equal(undefined)
@@ -48,7 +47,6 @@ describe('Contentststack Stack test', () => {
     expect(stack.create).to.not.equal(undefined)
     expect(stack.query).to.not.equal(undefined)
     expect(stack.update).to.be.equal(undefined)
-    expect(stack.delete).to.be.equal(undefined)
     expect(stack.fetch).to.be.equal(undefined)
     expect(stack.contentType).to.be.equal(undefined)
     expect(stack.locale).to.be.equal(undefined)
@@ -81,7 +79,6 @@ describe('Contentststack Stack test', () => {
     expect(stack.create).to.not.equal(undefined)
     expect(stack.query).to.not.equal(undefined)
     expect(stack.update).to.be.equal(undefined)
-    expect(stack.delete).to.be.equal(undefined)
     expect(stack.fetch).to.be.equal(undefined)
     expect(stack.contentType).to.be.equal(undefined)
     expect(stack.locale).to.be.equal(undefined)
@@ -114,7 +111,6 @@ describe('Contentststack Stack test', () => {
     expect(stack.create).to.not.equal(undefined)
     expect(stack.query).to.not.equal(undefined)
     expect(stack.update).to.be.equal(undefined)
-    expect(stack.delete).to.be.equal(undefined)
     expect(stack.fetch).to.be.equal(undefined)
     expect(stack.contentType).to.be.equal(undefined)
     expect(stack.locale).to.be.equal(undefined)
@@ -149,7 +145,6 @@ describe('Contentststack Stack test', () => {
     expect(stack.create).to.be.equal(undefined)
     expect(stack.query).to.be.equal(undefined)
     expect(stack.update).to.not.equal(undefined)
-    expect(stack.delete).to.not.equal(undefined)
     expect(stack.fetch).to.not.equal(undefined)
     expect(stack.contentType).to.not.equal(undefined)
     expect(stack.locale).to.not.equal(undefined)
@@ -184,7 +179,6 @@ describe('Contentststack Stack test', () => {
     expect(stack.create).to.be.equal(undefined)
     expect(stack.query).to.be.equal(undefined)
     expect(stack.update).to.not.equal(undefined)
-    expect(stack.delete).to.not.equal(undefined)
     expect(stack.fetch).to.not.equal(undefined)
     expect(stack.contentType).to.not.equal(undefined)
     expect(stack.locale).to.not.equal(undefined)
@@ -290,24 +284,6 @@ describe('Contentststack Stack test', () => {
       .fetch()
       .then((stack) => {
         checkStack(stack)
-        done()
-      })
-      .catch(done)
-  })
-
-  it('Stack delete test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onDelete('/stacks').reply(200, {
-      ...noticeMock
-    })
-    makeStack({
-      stack: {
-        api_key: 'stack_api_key'
-      }
-    })
-      .delete()
-      .then((role) => {
-        expect(role.notice).to.be.equal(noticeMock.notice)
         done()
       })
       .catch(done)
