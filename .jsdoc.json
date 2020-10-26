@@ -28,17 +28,25 @@
         ],
         "excludePattern": "(node_modules/|jsdocs)"
     },
-    "templates": {
-        "cleverLinks": false,
-        "monospaceLinks": true
-    },
     "opts": {
+        "template": "docdash-template",
         "destination": "./jsdocs/",
         "encoding": "utf8",
         "private": true,
         "recurse": true,
-        "template": "./node_modules/docdash",
         "sort": false
+    },
+    "templates": 
+    {
+        "cleverLinks": false,
+        "monospaceLinks": true,
+        "default": 
+        {
+            "staticFiles": 
+            {
+                "include": [ "./docdash-template/favicon.ico"]
+            }
+        }
     },
     "docdash": {
         "static": true,
