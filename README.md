@@ -45,10 +45,10 @@ contentstackClient.login({ email: 'EMAIL', password: 'PASSWORD'})
 ### Management Token
 [Management Tokens](https://www.contentstack.com/docs/developers/create-tokens/about-management-tokens/) are **stack-level** tokens, with no users attached to them.
 ```
-contentstackClient.stack({ api_key: 'API_KEY', management_token: 'MANAGEMENT_TOKEN' })
+contentstackClient.stack({ api_key: 'API_KEY', management_token: 'MANAGEMENT_TOKEN' }).contentType('CONTENT_TYPE_UID')
 .fetch()
-.then((stack) => {
-	console.log(stack)
+.then((contenttype) => {
+	console.log(contenttype)
 })
 ```
 ### Contentstack Management JavaScript SDK: 5-minute Quickstart
