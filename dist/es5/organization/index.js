@@ -155,7 +155,7 @@ function Organization(http, data) {
        * import * as contentstack from '@contentstack/management'
        * const client = contentstack.client()
        *
-       * client.stack({ api_key: 'api_key'}).transferOwnership('emailId')
+       * client.organization('organization_uid').transferOwnership('emailId')
        * .then((response) => console.log(response.notice))
        *
        */

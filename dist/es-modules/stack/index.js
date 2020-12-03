@@ -906,13 +906,6 @@ export function Stack(http, data) {
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
      *
-     * client.organization('org_uid').stack().create({name: 'My New Stack'})
-     * .then((stack) => console.log(stack))
-     *
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
      * client.stack().create({name: 'My New Stack'}, { organization_uid: 'org_uid' })
      * .then((stack) => console.log(stack))
      */

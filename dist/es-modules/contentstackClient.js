@@ -97,7 +97,7 @@ export default function contentstackClient(_ref) {
    * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client()
    *
-   * client.stack({ api_key: 'api_key', management_token: 'management_token' }).fetch()
+   * client.stack({ api_key: 'api_key', management_token: 'management_token' }).contentType('content_type_uid').fetch()
    * .then((stack) => console.log(stack))
    *
    */
