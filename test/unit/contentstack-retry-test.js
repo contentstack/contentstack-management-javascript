@@ -38,6 +38,7 @@ function setupNoRetry () {
   })
   return { client }
 }
+
 describe('Contentstack retry network call', () => {
   beforeEach(() => {
     host = 'http://localhost/'
@@ -46,6 +47,21 @@ describe('Contentstack retry network call', () => {
     logHandlerStub.resetHistory()
     retryDelayOptionsStub.resetHistory()
     retryConditionStub.resetHistory()
+  })
+
+  it('Contentstack retry on Axios timeout', done => {
+      const client = axios.create({})
+      contentstckRetry(client, {timeout: 250})
+      client.get('http://localhost:4444/', {
+        timeout: 250
+      }).then(function (res) {
+        expect(success).to.be.equal(null)
+        done();
+      }).catch(function (err) {
+        expect(err.response.status).to.be.equal(408)
+        expect(err.response.statusText).to.be.equal('timeout of 250ms exceeded')
+        done();
+      }).catch(done);
   })
 
   it('Contentstack retry on 429 rate limit', done => {
