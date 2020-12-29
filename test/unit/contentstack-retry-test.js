@@ -218,7 +218,6 @@ describe('Contentstack retry network call', () => {
     retryDelayOptionsStub.onCall(0).returns(200)
     retryDelayOptionsStub.onCall(1).returns(300)
     retryDelayOptionsStub.onCall(2).returns(-1)
-    retryDelayOptionsStub.onCall(3).returns(-1)
 
     const { client } = setup({
       retryCondition: retryConditionStub,
@@ -244,6 +243,47 @@ describe('Contentstack retry network call', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('Contentstack no retry on custome backoff Multiple Calls', done => {
+    retryConditionStub.returns(true)
+
+    var testrety1 = 0
+    var testrety2 = 0
+    const { client } = setup({
+      retryCondition: retryConditionStub,
+      retryDelayOptions: {
+        customBackoff: (retryCount, error) => {
+          if (error.config.url === '/testnoretry') {
+            testrety1++
+            expect(testrety1).to.be.equal(retryCount)
+          }else if (error.config.url === '/testnoretry2') {
+            testrety2++
+            expect(testrety2).to.be.equal(retryCount)
+          }
+          return 1000
+        }
+      }
+    })
+    mock = new MockAdapter(client)
+    mock.onGet('/testnoretry').replyOnce(400, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(422, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(400, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(200, 'test data')
+    mock.onGet('/testnoretry2').replyOnce(400, 'test error result')
+    mock.onGet('/testnoretry2').replyOnce(200, 'test data')
+    client.get('/testnoretry')
+      .then((response) => {
+        expect(response.data).to.be.equal('test data')
+        client.get('/testnoretry2')
+        .then((response) => {
+          expect(response.data).to.be.equal('test data')
+          done()
+        })
+        .catch(done)
+      })
+      .catch(done)
+    
   })
 
   it('Contentstack no retry delay with base request', done => {

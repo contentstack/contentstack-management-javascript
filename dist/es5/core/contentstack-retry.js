@@ -23,6 +23,8 @@ function contentstckRetry(axios, defaultOptions) {
   var retryDelay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 300;
   var networkError = 0;
   axios.interceptors.request.use(function (config) {
+    config.retryCount = config.retryCount || 0;
+
     if (config.headers.authorization && config.headers.authorization !== undefined) {
       delete config.headers.authtoken;
     }
@@ -30,12 +32,13 @@ function contentstckRetry(axios, defaultOptions) {
     return config;
   });
   axios.interceptors.response.use(function (response) {
-    networkError = 0;
+    // networkError = 0
     return response;
   }, function (error) {
     var wait = retryDelay;
     var retryErrorType = null;
     var response = error.response;
+    networkError = error.config.retryCount;
 
     if (!response) {
       if (error.code === 'ECONNABORTED') {
@@ -78,6 +81,8 @@ function contentstckRetry(axios, defaultOptions) {
     } else {
       networkError = 0;
     }
+
+    error.config.retryCount = networkError;
 
     if (retryErrorType && error.config !== undefined) {
       var config = error.config;
