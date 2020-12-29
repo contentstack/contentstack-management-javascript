@@ -13,9 +13,14 @@ export default function contentstckRetry(axios, defaultOptions) {
       delete config.headers.authtoken;
     }
 
+    if (config && config.data && config.data.entry) {
+      console.log(config.data.entry);
+    }
+
     return config;
   });
   axios.interceptors.response.use(function (response) {
+    networkError = 0;
     return response;
   }, function (error) {
     var wait = retryDelay;
@@ -49,8 +54,10 @@ export default function contentstckRetry(axios, defaultOptions) {
       if (defaultOptions.retryDelayOptions) {
         if (defaultOptions.retryDelayOptions.customBackoff) {
           wait = defaultOptions.retryDelayOptions.customBackoff(networkError, error);
+          console.log('wait Log', wait);
 
           if (wait && wait <= 0) {
+            console.log('Custome back off Rejected');
             networkError = 0;
             return Promise.reject(error);
           }

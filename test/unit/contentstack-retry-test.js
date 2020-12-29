@@ -5,13 +5,14 @@ import { expect } from 'chai'
 import { describe, it, beforeEach } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import httpAdapter from 'axios/lib/adapters/http'
+import http from 'http'
 
 var host = 'http://localhost/'
 const logHandlerStub = sinon.stub()
 var mock = new MockAdapter(axios)
 const retryDelayOptionsStub = sinon.stub()
 const retryConditionStub = sinon.stub()
-
+var server
 function setup (options = {}) {
   const defaultOption = Object.assign({
     logHandler: logHandlerStub,
@@ -41,6 +42,10 @@ function setupNoRetry () {
 
 describe('Contentstack retry network call', () => {
   beforeEach(() => {
+    if (server) {
+      server.close();
+      server = null;
+    }
     host = 'http://localhost/'
     axios.defaults.host = host
     axios.defaults.adapter = httpAdapter
@@ -50,6 +55,12 @@ describe('Contentstack retry network call', () => {
   })
 
   it('Contentstack retry on Axios timeout', done => {
+    server = http.createServer(function (req, res) {
+      setTimeout(function () {
+        res.end();
+      }, 1000);
+    }).listen(4444, function () {
+    })
       const client = axios.create({})
       contentstckRetry(client, {timeout: 250})
       client.get('http://localhost:4444/', {
@@ -207,6 +218,7 @@ describe('Contentstack retry network call', () => {
     retryDelayOptionsStub.onCall(0).returns(200)
     retryDelayOptionsStub.onCall(1).returns(300)
     retryDelayOptionsStub.onCall(2).returns(-1)
+    retryDelayOptionsStub.onCall(3).returns(-1)
 
     const { client } = setup({
       retryCondition: retryConditionStub,
