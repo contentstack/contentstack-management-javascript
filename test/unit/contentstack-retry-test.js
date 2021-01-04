@@ -66,7 +66,7 @@ describe('Contentstack retry network call', () => {
       client.get('http://localhost:4444/', {
         timeout: 250
       }).then(function (res) {
-        expect(success).to.be.equal(null)
+        expect(res).to.be.equal(null)
         done();
       }).catch(function (err) {
         expect(err.response.status).to.be.equal(408)
