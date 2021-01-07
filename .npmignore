@@ -16,3 +16,8 @@ webpack/
 tsconfig.json
 .jsdoc.json
 jsdocs/
+docdash-template/
+.env
+.babelrc
+.babel-preset.js
+.eslintrc.js
