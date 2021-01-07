@@ -420,7 +420,7 @@ export var fetch = function fetch(http, type) {
               response.data[type]['schema'] = response.data['schema'];
             }
 
-            return _context9.abrupt("return", Object.assign(this, cloneDeep(response.data[type])));
+            return _context9.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders)));
 
           case 11:
             throw error(response);

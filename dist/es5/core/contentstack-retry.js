@@ -1,15 +1,30 @@
 "use strict";
 
+var _interopRequireDefault3 = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _interopRequireDefault2 = _interopRequireDefault3(require("@babel/runtime/helpers/interopRequireDefault"));
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _defineProperty2 = require("@babel/runtime/helpers/defineProperty");
+
+var _defineProperty3 = (0, _interopRequireDefault2["default"])(_defineProperty2);
+
 exports["default"] = contentstckRetry;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty3["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function contentstckRetry(axios, defaultOptions) {
   var retryLimit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5;
   var retryDelay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 300;
   var networkError = 0;
   axios.interceptors.request.use(function (config) {
+    config.retryCount = config.retryCount || 0;
+
     if (config.headers.authorization && config.headers.authorization !== undefined) {
       delete config.headers.authtoken;
     }
@@ -17,19 +32,26 @@ function contentstckRetry(axios, defaultOptions) {
     return config;
   });
   axios.interceptors.response.use(function (response) {
+    // networkError = 0
     return response;
   }, function (error) {
     var wait = retryDelay;
     var retryErrorType = null;
-
-    if (!defaultOptions.retryOnError) {
-      return Promise.reject(error);
-    }
-
     var response = error.response;
+    networkError = error.config.retryCount;
 
     if (!response) {
-      retryErrorType = "Server connection";
+      if (error.code === 'ECONNABORTED') {
+        error.response = _objectSpread(_objectSpread({}, error.response), {}, {
+          status: 408,
+          statusText: "timeout of ".concat(defaultOptions.timeout, "ms exceeded")
+        });
+      } else {
+        return Promise.reject(error);
+      }
+    }
+
+    if (!defaultOptions.retryOnError) {
       return Promise.reject(error);
     }
 
@@ -59,6 +81,8 @@ function contentstckRetry(axios, defaultOptions) {
     } else {
       networkError = 0;
     }
+
+    error.config.retryCount = networkError;
 
     if (retryErrorType && error.config !== undefined) {
       var config = error.config;

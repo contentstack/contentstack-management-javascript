@@ -36,13 +36,13 @@ function contentstackClient(_ref) {
   var http = _ref.http;
 
   /**
-   * @description The Log in to your account request is used to sign in to your Contentstack account and obtain the authtoken.
+   * @description The login call is used to sign in to your Contentstack account and obtain the authtoken.
    * @memberof ContentstackClient
    * @func login
    * @param {Object} parameters - login parameters
-   * @prop {string} paramters.email - email id for user to login
-   * @prop {string} paramters.password - password for user to login
-   * @prop {string} paramters.token - token for user to login
+   * @prop {string} parameters.email - email id for user to login
+   * @prop {string} parameters.password - password for user to login
+   * @prop {string} parameters.token - token for user to login
    * @returns {Promise}
    * @example
    * import * as contentstack from '@contentstack/management'
@@ -117,7 +117,7 @@ function contentstackClient(_ref) {
    * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client()
    *
-   * client.stack({ api_key: 'api_key', management_token: 'management_token' }).fetch()
+   * client.stack({ api_key: 'api_key', management_token: 'management_token' }).contentType('content_type_uid').fetch()
    * .then((stack) => console.log(stack))
    *
    */

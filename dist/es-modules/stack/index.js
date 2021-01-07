@@ -10,7 +10,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import error from '../core/contentstackError';
 import { UserCollection } from '../user/index';
 import { Role } from './roles/index';
-import { create, query, update, deleteEntity, fetch } from '../entity';
+import { create, query, update, fetch } from '../entity';
 import { ContentType } from './contentType/index';
 import { GlobalField } from './globalField/index';
 import { DeliveryToken } from './deliveryToken/index';
@@ -71,20 +71,6 @@ export function Stack(http, data) {
 
 
     this.update = update(http, 'stack');
-    /**
-     * @description The Delete stack call is used to delete an existing stack permanently from your Contentstack account.
-     * @memberof Stack
-     * @func delete
-     * @returns {Object} Response Object.
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.stack({ api_key: 'api_key'}).delete()
-     * .then((response) => console.log(response.notice))
-     */
-
-    this["delete"] = deleteEntity(http);
     /**
      * @description The fetch stack call fetches stack details.
      * @memberof Stack
@@ -915,13 +901,6 @@ export function Stack(http, data) {
      * @memberof Stack
      * @func create
      * @returns {Promise<Stack.Stack>} Promise for Stack instance
-     *
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.organization('org_uid').stack().create({name: 'My New Stack'})
-     * .then((stack) => console.log(stack))
      *
      * @example
      * import * as contentstack from '@contentstack/management'

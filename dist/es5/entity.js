@@ -459,7 +459,7 @@ var fetch = exports.fetch = function fetch(http, type) {
               response.data[type]['schema'] = response.data['schema'];
             }
 
-            return _context9.abrupt("return", Object.assign(this, (0, _cloneDeep2["default"])(response.data[type])));
+            return _context9.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders)));
 
           case 11:
             throw (0, _contentstackError2["default"])(response);

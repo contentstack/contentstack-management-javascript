@@ -73,7 +73,7 @@ function BulkOperation(http) {
    *     '{{env_name}}/env_uid}}'
    *   ]
    * }
-   * client.stack({ api_key: 'api_key'}).publish({ details:  publishDetails })
+   * client.stack({ api_key: 'api_key'}).bulkOperation().publish({ details:  publishDetails })
    * .then((response) => {  console.log(response.notice) })
    *
    */
@@ -146,7 +146,7 @@ function BulkOperation(http) {
    *     '{{env_name}}/env_uid}}'
    *   ]
    * }
-   * client.stack({ api_key: 'api_key'}).unpublish({ details:  publishDetails })
+   * client.stack({ api_key: 'api_key'}).bulkOperation().unpublish({ details:  publishDetails })
    * .then((response) => {  console.log(response.notice) })
    *
    */
@@ -210,7 +210,7 @@ function BulkOperation(http) {
    *     uid: '{{uid}}'
    *   }]
    * }
-   * client.stack({ api_key: 'api_key'}).delete({ details:  publishDetails })
+   * client.stack({ api_key: 'api_key'}).bulkOperation().delete({ details:  publishDetails })
    * .then((response) => {  console.log(response.notice) })
    *
    */

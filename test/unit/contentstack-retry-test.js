@@ -5,13 +5,14 @@ import { expect } from 'chai'
 import { describe, it, beforeEach } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import httpAdapter from 'axios/lib/adapters/http'
+import http from 'http'
 
 var host = 'http://localhost/'
 const logHandlerStub = sinon.stub()
 var mock = new MockAdapter(axios)
 const retryDelayOptionsStub = sinon.stub()
 const retryConditionStub = sinon.stub()
-
+var server
 function setup (options = {}) {
   const defaultOption = Object.assign({
     logHandler: logHandlerStub,
@@ -38,14 +39,40 @@ function setupNoRetry () {
   })
   return { client }
 }
+
 describe('Contentstack retry network call', () => {
   beforeEach(() => {
+    if (server) {
+      server.close();
+      server = null;
+    }
     host = 'http://localhost/'
     axios.defaults.host = host
     axios.defaults.adapter = httpAdapter
     logHandlerStub.resetHistory()
     retryDelayOptionsStub.resetHistory()
     retryConditionStub.resetHistory()
+  })
+
+  it('Contentstack retry on Axios timeout', done => {
+    server = http.createServer(function (req, res) {
+      setTimeout(function () {
+        res.end();
+      }, 1000);
+    }).listen(4444, function () {
+    })
+      const client = axios.create({})
+      contentstckRetry(client, {timeout: 250})
+      client.get('http://localhost:4444/', {
+        timeout: 250
+      }).then(function (res) {
+        expect(res).to.be.equal(null)
+        done();
+      }).catch(function (err) {
+        expect(err.response.status).to.be.equal(408)
+        expect(err.response.statusText).to.be.equal('timeout of 250ms exceeded')
+        done();
+      }).catch(done);
   })
 
   it('Contentstack retry on 429 rate limit', done => {
@@ -216,6 +243,47 @@ describe('Contentstack retry network call', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('Contentstack no retry on custome backoff Multiple Calls', done => {
+    retryConditionStub.returns(true)
+
+    var testrety1 = 0
+    var testrety2 = 0
+    const { client } = setup({
+      retryCondition: retryConditionStub,
+      retryDelayOptions: {
+        customBackoff: (retryCount, error) => {
+          if (error.config.url === '/testnoretry') {
+            testrety1++
+            expect(testrety1).to.be.equal(retryCount)
+          }else if (error.config.url === '/testnoretry2') {
+            testrety2++
+            expect(testrety2).to.be.equal(retryCount)
+          }
+          return 1000
+        }
+      }
+    })
+    mock = new MockAdapter(client)
+    mock.onGet('/testnoretry').replyOnce(400, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(422, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(400, 'test error result')
+    mock.onGet('/testnoretry').replyOnce(200, 'test data')
+    mock.onGet('/testnoretry2').replyOnce(400, 'test error result')
+    mock.onGet('/testnoretry2').replyOnce(200, 'test data')
+    client.get('/testnoretry')
+      .then((response) => {
+        expect(response.data).to.be.equal('test data')
+        client.get('/testnoretry2')
+        .then((response) => {
+          expect(response.data).to.be.equal('test data')
+          done()
+        })
+        .catch(done)
+      })
+      .catch(done)
+    
   })
 
   it('Contentstack no retry delay with base request', done => {

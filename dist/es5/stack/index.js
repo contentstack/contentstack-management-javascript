@@ -113,20 +113,6 @@ function Stack(http, data) {
 
     this.update = (0, _entity.update)(http, 'stack');
     /**
-     * @description The Delete stack call is used to delete an existing stack permanently from your Contentstack account.
-     * @memberof Stack
-     * @func delete
-     * @returns {Object} Response Object.
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.stack({ api_key: 'api_key'}).delete()
-     * .then((response) => console.log(response.notice))
-     */
-
-    this["delete"] = (0, _entity.deleteEntity)(http);
-    /**
      * @description The fetch stack call fetches stack details.
      * @memberof Stack
      * @func fetch
@@ -956,13 +942,6 @@ function Stack(http, data) {
      * @memberof Stack
      * @func create
      * @returns {Promise<Stack.Stack>} Promise for Stack instance
-     *
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.organization('org_uid').stack().create({name: 'My New Stack'})
-     * .then((stack) => console.log(stack))
      *
      * @example
      * import * as contentstack from '@contentstack/management'
