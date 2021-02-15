@@ -53,6 +53,8 @@ var _extension = require("./extension");
 
 var _webhook = require("./webhook");
 
+var _workflow = require("./workflow");
+
 var _release = require("./release");
 
 var _bulkOperation = require("./bulkOperation");
@@ -335,6 +337,36 @@ function Stack(http, data) {
       }
 
       return new _extension.Extension(http, data);
+    };
+    /**
+     * @description  Workflow is a tool that allows you to streamline the process of content creation and publishing, and lets you manage the content lifecycle of your project smoothly.
+     * @param {String} workflowUid The UID of the Workflow you want to get details.
+     * @returns {Workflow} Instace of Workflow.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).workflow().create()
+     * .then((workflow) => console.log(workflow))
+     *
+     * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').fetch()
+     * .then((workflow) => console.log(workflow))
+     */
+
+
+    this.workflow = function () {
+      var workflowUid = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var data = {
+        stackHeaders: _this.stackHeaders
+      };
+
+      if (workflowUid) {
+        data.workflow = {
+          uid: workflowUid
+        };
+      }
+
+      return new _workflow.Workflow(http, data);
     };
     /**
      * @description  Webhooks allow you to specify a URL to which you would like Contentstack to post data when an event happens.

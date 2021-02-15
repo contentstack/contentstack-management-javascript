@@ -378,6 +378,7 @@ function createFormData(data) {
     formData.append('asset[title]', data.title);
   }
 
+  console.log(data.upload);
   var uploadStream = (0, _fs.createReadStream)(data.upload);
   formData.append('asset[upload]', uploadStream);
   return formData;

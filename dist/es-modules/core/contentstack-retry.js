@@ -18,7 +18,6 @@ export default function contentstckRetry(axios, defaultOptions) {
     return config;
   });
   axios.interceptors.response.use(function (response) {
-    // networkError = 0
     return response;
   }, function (error) {
     var wait = retryDelay;

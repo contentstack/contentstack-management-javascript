@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash'
 import { describe, it } from 'mocha'
 import { User, UserCollection } from '../../lib/user'
 import MockAdapter from 'axios-mock-adapter'
-import { userMock, orgMock, noticeMock, mockCollection } from './mock/objects'
+import { userMock, orgMock, noticeMock, mockCollection, userAssignments, stackHeadersMock } from './mock/objects'
 import ContentstackCollection from '../../lib/contentstackCollection'
 
 describe('Contentstack User test', () => {
@@ -15,6 +15,7 @@ describe('Contentstack User test', () => {
     expect(user.delete).to.be.equal(undefined)
     expect(user.requestPassword).to.be.equal(undefined)
     expect(user.resetPassword).to.be.equal(undefined)
+    expect(user.getTasks).to.be.equal(undefined)
     done()
   })
 
@@ -28,6 +29,7 @@ describe('Contentstack User test', () => {
     expect(user.delete).to.not.equal(undefined)
     expect(user.requestPassword).to.not.equal(undefined)
     expect(user.resetPassword).to.not.equal(undefined)
+    expect(user.getTasks).to.not.equal(undefined)
     done()
   })
 
@@ -145,6 +147,71 @@ describe('Contentstack User test', () => {
     expect(collection.items.length).to.be.equal(1)
     expectTest(collection.items[0])
     done()
+  })
+
+  it('User get task test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/user/assignments').reply(200, {
+      asassignments: {
+        ...userAssignments
+      }
+    })
+    const user = new User(Axios, { user: {
+      authtoken: 'authtoken'
+    }
+    })
+
+    user.getTasks()
+    .then((userTasks) => {
+      const assignment = userTasks.asassignments
+      expect(assignment.api_key).to.be.equal(stackHeadersMock.api_key)
+      expect(assignment.content_type).to.be.equal("CT_UID")
+      expect(assignment.entry_uid).to.be.equal("ETR_UID")
+      expect(assignment.locale).to.be.equal("en-us")
+      expect(assignment.org_uid).to.be.equal("orgUID")
+      expect(assignment.type).to.be.equal("workflow_stage")
+      expect(assignment.entry_locale).to.be.equal("en-us")
+      expect(assignment.version).to.be.equal(1)
+      expect(assignment.assigned_to[0]).to.be.equal("user_UID")
+      expect(assignment.assigned_at).to.be.equal("assign_date")
+      expect(assignment.assigned_by).to.be.equal("assign_by")
+      expect(assignment.due_date).to.be.equal("due_date")
+      done()
+    })
+    .catch(done)
+  })
+
+
+  it('User get task with params test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/user/assignments').reply(200, {
+      asassignments: {
+        ...userAssignments
+      }
+    })
+    const user = new User(Axios, { user: {
+      authtoken: 'authtoken'
+    }
+    })
+
+    user.getTasks({sort: 'sort'})
+    .then((userTasks) => {
+      const assignment = userTasks.asassignments
+      expect(assignment.api_key).to.be.equal(stackHeadersMock.api_key)
+      expect(assignment.content_type).to.be.equal("CT_UID")
+      expect(assignment.entry_uid).to.be.equal("ETR_UID")
+      expect(assignment.locale).to.be.equal("en-us")
+      expect(assignment.org_uid).to.be.equal("orgUID")
+      expect(assignment.type).to.be.equal("workflow_stage")
+      expect(assignment.entry_locale).to.be.equal("en-us")
+      expect(assignment.version).to.be.equal(1)
+      expect(assignment.assigned_to[0]).to.be.equal("user_UID")
+      expect(assignment.assigned_at).to.be.equal("assign_date")
+      expect(assignment.assigned_by).to.be.equal("assign_by")
+      expect(assignment.due_date).to.be.equal("due_date")
+      done()
+    })
+    .catch(done)
   })
 })
 

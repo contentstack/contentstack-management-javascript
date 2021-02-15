@@ -219,6 +219,34 @@ const webhookMock = {
   ]
 }
 
+const workflowMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  ...stackHeadersMock,
+  name: "TEST workflow",
+	description: "Workflow description",
+  org_uid: 'orgUID',
+	content_types: [
+			"author",
+			"article"
+		],
+  enabled: true,
+  admin_users: {
+    users: [],
+    roles: [
+      ""
+    ]
+  },
+}
+
+const publishRulesMock = {
+  ...systemFieldsMock,
+  locale: "en-us",
+	action: "publish",
+	environment: "env",
+	workflow_stage: "stage",
+}
+
 const contentTypeMock = {
   ...systemFieldsMock,
   ...systemFieldsUserMock,
@@ -361,6 +389,35 @@ const deliveryTokenMock = {
   type: 'delivery'
 }
 
+const userAssignments = {
+  ...stackHeadersMock,
+  content_type: "CT_UID",
+  entry_uid: "ETR_UID",
+  locale: "en-us",
+  org_uid: "orgUID",
+  type: "workflow_stage",
+  entry_locale: "en-us",
+  version: 1,
+  assigned_to: [
+    "user_UID"
+  ],
+  assigned_at: "assign_date",
+  assigned_by: "assign_by",
+  due_date: "due_date",
+  job: {
+    org: "sample_org",
+    stack: "demo",
+    content_type: "CT_JOB",
+    entry: "ERT_JOB",
+    locale: "English - United States",
+    workflow_stage: {
+      uid: "review",
+      title: "Review",
+      color: "red"
+    }
+  }
+}
+
 function mockCollection (mockData, type) {
   var mock = {
     ...cloneDeep(noticeMock),
@@ -404,6 +461,8 @@ export {
   releaseItemMock,
   assetMock,
   webhookMock,
+  workflowMock,
+  publishRulesMock,
   contentTypeMock,
   globalFieldMock,
   entryMock,
@@ -411,6 +470,7 @@ export {
   environmentMock,
   localeMock,
   deliveryTokenMock,
+  userAssignments,
   mockCollection,
   entryMockCollection,
   checkSystemFields

@@ -242,11 +242,11 @@ export function Webhook(http) {
      * @description The Get all Webhook call lists all Webhooks from Stack.
      * @memberof Webhook
      * @func fetchAll
-     * @param {Int} limit The limit parameter will return a specific number of roles in the output.
-     * @param {Int} skip The skip parameter will skip a specific number of roles in the output.
-     * @param {String} asc When fetching roles, you can sort them in the ascending order with respect to the value of a specific field in the response body.
-     * @param {String} desc When fetching roles, you can sort them in the decending order with respect to the value of a specific field in the response body.
-     * @param {Boolean}include_count To retrieve the count of roles.
+     * @param {Int} limit The limit parameter will return a specific number of webhooks in the output.
+     * @param {Int} skip The skip parameter will skip a specific number of webhooks in the output.
+     * @param {String} asc When fetching webhooks, you can sort them in the ascending order with respect to the value of a specific field in the response body.
+     * @param {String} desc When fetching webhooks, you can sort them in the decending order with respect to the value of a specific field in the response body.
+     * @param {Boolean}include_count To retrieve the count of webhooks.
      * @returns {ContentstackCollection} Result collection of content of specified module.
      * @example
      * import * as contentstack from '@contentstack/management'

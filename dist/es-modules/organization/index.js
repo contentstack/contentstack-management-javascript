@@ -10,8 +10,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import error from '../core/contentstackError';
 import { fetch } from '../entity';
 import ContentstackCollection from '../contentstackCollection';
-import { RoleCollection } from '../stack/roles/index';
-import { StackCollection } from '../stack/index';
+import { RoleCollection } from '../stack/roles';
+import { StackCollection } from '../stack';
 import { UserCollection } from '../user';
 /**
  * Organization is the top-level entity in the hierarchy of Contentstack, consisting of stacks and stack resources, and users. Organization allows easy management of projects as well as users within the Organization. Read more about <a href='https://www.contentstack.com/docs/guide/organization'>Organizations.</a>.
@@ -50,10 +50,10 @@ export function Organization(http, data) {
        * @description The Get all stacks in an organization call fetches the list of all stacks in an Organization.
        * @memberof Organization
        * @func stacks
-       * @param {Int} limit The limit parameter will return a specific number of roles in the output.
-       * @param {Int} skip The skip parameter will skip a specific number of roles in the output.
-       * @param {String} asc When fetching roles, you can sort them in the ascending order with respect to the value of a specific field in the response body.
-       * @param {String} desc When fetching roles, you can sort them in the decending order with respect to the value of a specific field in the response body.
+       * @param {Int} limit The limit parameter will return a specific number of stacks in the output.
+       * @param {Int} skip The skip parameter will skip a specific number of stacks in the output.
+       * @param {String} asc When fetching stacks, you can sort them in the ascending order with respect to the value of a specific field in the response body.
+       * @param {String} desc When fetching stacks, you can sort them in the decending order with respect to the value of a specific field in the response body.
        * @param {Boolean} include_count To retrieve the count of stack.
        * @param {String} typeahead The type head contains value to be included in search.
        * @returns {ContentstackCollection} Instance of ContentstackCollection.
@@ -433,12 +433,12 @@ export function Organization(http, data) {
      * @description The Get all organizations call lists all organizations related to the system user in the order that they were created.
      * @memberof Organization
      * @func fetchAll
-     * @param {Int} limit The limit parameter will return a specific number of roles in the output.
-     * @param {Int} skip The skip parameter will skip a specific number of roles in the output.
-     * @param {String} asc When fetching roles, you can sort them in the ascending order with respect to the value of a specific field in the response body.
-     * @param {String} desc When fetching roles, you can sort them in the decending order with respect to the value of a specific field in the response body.
-     * @param {Boolean}include_count To retrieve the count of roles.
-     * @param {String} typeahead The type head contains value to be included in search.
+     * @param {Int} limit TThe ‘limit’ parameter will return a specific number of organizations in the output.
+     * @param {Int} skip The ‘skip’ parameter will skip a specific number of organizations in the output.
+     * @param {String} asc The ‘asc’ parameter allows you to sort the list of organizations in the ascending order with respect to the value of a specific field.
+     * @param {String} desc The ‘desc’ parameter allows you to sort the list of Organizations in the descending order with respect to the value of a specific field.
+     * @param {Boolean}include_count The ‘include_count’ parameter returns the total number of organizations related to the user. 
+     * @param {String} typeahead The typeahead parameter is a type of filter that allows you to perform a name-based search on all organizations based on the value provided.
      * @returns {ContentstackCollection} Result collection of content of specified module.
      * @example
      * import * as contentstack from '@contentstack/management'

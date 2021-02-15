@@ -24,6 +24,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
+    expect(stack.workflow).to.be.equal(undefined)
     expect(stack.label).to.be.equal(undefined)
     expect(stack.release).to.be.equal(undefined)
     expect(stack.bulkOperation).to.be.equal(undefined)
@@ -56,6 +57,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
+    expect(stack.workflow).to.be.equal(undefined)
     expect(stack.label).to.be.equal(undefined)
     expect(stack.release).to.be.equal(undefined)
     expect(stack.bulkOperation).to.be.equal(undefined)
@@ -88,6 +90,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
+    expect(stack.workflow).to.be.equal(undefined)
     expect(stack.label).to.be.equal(undefined)
     expect(stack.release).to.be.equal(undefined)
     expect(stack.bulkOperation).to.be.equal(undefined)
@@ -120,6 +123,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
+    expect(stack.workflow).to.be.equal(undefined)
     expect(stack.label).to.be.equal(undefined)
     expect(stack.release).to.be.equal(undefined)
     expect(stack.bulkOperation).to.be.equal(undefined)
@@ -154,6 +158,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.deliveryToken).to.not.equal(undefined)
     expect(stack.extension).to.not.equal(undefined)
     expect(stack.webhook).to.not.equal(undefined)
+    expect(stack.workflow).to.not.equal(undefined)
     expect(stack.label).to.not.equal(undefined)
     expect(stack.release).to.not.equal(undefined)
     expect(stack.bulkOperation).to.not.equal(undefined)
@@ -188,6 +193,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.deliveryToken).to.not.equal(undefined)
     expect(stack.extension).to.not.equal(undefined)
     expect(stack.webhook).to.not.equal(undefined)
+    expect(stack.workflow).to.not.equal(undefined)
     expect(stack.label).to.not.equal(undefined)
     expect(stack.release).to.not.equal(undefined)
     expect(stack.bulkOperation).to.not.equal(undefined)
@@ -494,6 +500,32 @@ describe('Contentststack Stack test', () => {
     expect(webhook.uid).to.be.equal(systemUidMock.uid)
     expect(webhook.stackHeaders).to.not.equal(undefined)
     expect(webhook.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('Workflow initialisation without uid', done => {
+    const workflow = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .workflow()
+    expect(workflow.uid).to.be.equal(undefined)
+    expect(workflow.stackHeaders).to.not.equal(undefined)
+    expect(workflow.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('Workflow initialisation with uid', done => {
+    const workflow = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .workflow(systemUidMock.uid)
+    expect(workflow.uid).to.be.equal(systemUidMock.uid)
+    expect(workflow.stackHeaders).to.not.equal(undefined)
+    expect(workflow.stackHeaders.api_key).to.be.equal('stack_api_key')
     done()
   })
 
