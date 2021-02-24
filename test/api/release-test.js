@@ -42,6 +42,16 @@ describe('Relases api Test', () => {
       .catch(done)
   })
 
+  it('Fetch a Release items from Uid', done => {
+    makeRelease(releaseUID)
+      .item()
+      .findAll()
+      .then((release) => {
+        done()
+      })
+      .catch(done)
+  })
+
   it('Fetch and Update a Release from Uid', done => {
     makeRelease(releaseUID)
       .fetch()

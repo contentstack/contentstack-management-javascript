@@ -149,7 +149,8 @@ function Release(http) {
 
     this.item = function () {
       return new _items.ReleaseItem(http, {
-        releaseUid: _this.uid
+        releaseUid: _this.uid,
+        stackHeaders: _this.stackHeaders
       });
     };
     /**

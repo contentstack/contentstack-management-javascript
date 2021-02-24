@@ -70,7 +70,7 @@ export function Workflow(http) {
             case 0:
               _context.prev = 0;
               _context.next = 3;
-              return http.put("/workflows/".concat(this.uid, "/disable"), {
+              return http.get("/workflows/".concat(this.uid, "/disable"), {
                 headers: _objectSpread({}, cloneDeep(this.stackHeaders))
               });
 
@@ -78,30 +78,30 @@ export function Workflow(http) {
               response = _context.sent;
 
               if (!response.data) {
-                _context.next = 9;
+                _context.next = 8;
                 break;
               }
 
               return _context.abrupt("return", response.data);
 
-            case 9:
+            case 8:
               throw error(response);
 
-            case 10:
-              _context.next = 15;
+            case 9:
+              _context.next = 14;
               break;
 
-            case 12:
-              _context.prev = 12;
+            case 11:
+              _context.prev = 11;
               _context.t0 = _context["catch"](0);
               throw error(_context.t0);
 
-            case 15:
+            case 14:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, this, [[0, 12]]);
+      }, _callee, this, [[0, 11]]);
     }));
     /**
      * @description The Enable Workflow request allows you to enable a workflow.
@@ -125,7 +125,7 @@ export function Workflow(http) {
             case 0:
               _context2.prev = 0;
               _context2.next = 3;
-              return http.put("/workflows/".concat(this.uid, "/enable"), {
+              return http.get("/workflows/".concat(this.uid, "/enable"), {
                 headers: _objectSpread({}, cloneDeep(this.stackHeaders))
               });
 
@@ -133,30 +133,30 @@ export function Workflow(http) {
               response = _context2.sent;
 
               if (!response.data) {
-                _context2.next = 9;
+                _context2.next = 8;
                 break;
               }
 
               return _context2.abrupt("return", response.data);
 
-            case 9:
+            case 8:
               throw error(response);
 
-            case 10:
-              _context2.next = 15;
+            case 9:
+              _context2.next = 14;
               break;
 
-            case 12:
-              _context2.prev = 12;
+            case 11:
+              _context2.prev = 11;
               _context2.t0 = _context2["catch"](0);
               throw error(_context2.t0);
 
-            case 15:
+            case 14:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, this, [[0, 12]]);
+      }, _callee2, this, [[0, 11]]);
     }));
     /**
      * @description The Delete Workflow call is used to delete an existing Workflow permanently from your Stack.
@@ -172,7 +172,22 @@ export function Workflow(http) {
      */
 
     this["delete"] = deleteEntity(http);
+    /**
+     * @description The fetch workflow retrieves the comprehensive details of a specific Workflow of a stack.
+     * @memberof Workflow
+     * @func fetch
+     * @returns {Promise<Workflow.Workflow>} Promise for Workflow instance
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').fetch()
+     * .then((workflow) => console.log(workflow))
+     *
+     */
 
+    this.fetch = fetch(http, 'workflow');
+  } else {
     this.contentType = function (contentTypeUID) {
       if (contentTypeUID) {
         /**
@@ -180,9 +195,9 @@ export function Workflow(http) {
          * @memberof Workflow
          * @func getPublishRules
          * @returns {Object} Returns Object.
-         * @param {string} action The limit parameter will return a specific number of Workflows in the output.
-         * @param {Int} locale Enter the code of the locale where your Publishing Rule will be applicable.
-         * @param {Boolean}environment Enter the UID of the environment where your Publishing Rule will be applicable.
+         * @param {string} action Enter the action that has been set in the Publishing Rule. Example:publish/unpublish
+         * @param {string} locale Enter the code of the locale where your Publishing Rule will be applicable.
+         * @param {string} environment Enter the UID of the environment where your Publishing Rule will be applicable.
          * @returns {ContentstackCollection} Result collection of content of PublishRules.
          * @example
          * import * as contentstack from '@contentstack/management'
@@ -220,7 +235,7 @@ export function Workflow(http) {
                       break;
                     }
 
-                    return _context3.abrupt("return", new ContentstackCollection(response, http, null, PublishRulesCollection));
+                    return _context3.abrupt("return", new ContentstackCollection(response, http, this.stackHeaders, PublishRulesCollection));
 
                   case 11:
                     throw error(response);
@@ -253,23 +268,6 @@ export function Workflow(http) {
         };
       }
     };
-    /**
-     * @description The fetch workflow retrieves the comprehensive details of a specific Workflow of a stack.
-     * @memberof Workflow
-     * @func fetch
-     * @returns {Promise<Workflow.Workflow>} Promise for Workflow instance
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').fetch()
-     * .then((workflow) => console.log(workflow))
-     *
-     */
-
-
-    this.fetch = fetch(http, 'workflow');
-  } else {
     /**
      * @description The Create a Workflow request allows you to create a Workflow.
      * @memberof Workflow
@@ -341,6 +339,8 @@ export function Workflow(http) {
      *  client.stack().workflow().create({ workflow })
      * .then((workflow) => console.log(workflow))    
      */
+
+
     this.create = create({
       http: http
     });

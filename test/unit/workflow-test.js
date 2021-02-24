@@ -8,6 +8,7 @@ import { systemUidMock, stackHeadersMock, workflowMock, checkSystemFields, notic
 describe('Contentstack Workflow test', () => {
   it('Workflow test without uid', done => {
     const workflow = makeWorkflow()
+    console.log(workflow);
     expect(workflow.urlPath).to.be.equal('/workflows')
     expect(workflow.stackHeaders).to.be.equal(undefined)
     expect(workflow.update).to.be.equal(undefined)
@@ -15,7 +16,7 @@ describe('Contentstack Workflow test', () => {
     expect(workflow.fetch).to.be.equal(undefined)
     expect(workflow.disable).to.be.equal(undefined)
     expect(workflow.enable).to.be.equal(undefined)
-    expect(workflow.contentType).to.be.equal(undefined)
+    expect(workflow.contentType).to.not.equal(undefined)
     expect(workflow.create).to.not.equal(undefined)
     expect(workflow.fetchAll).to.not.equal(undefined)
     expect(workflow.publishRule).to.not.equal(undefined)
@@ -32,7 +33,7 @@ describe('Contentstack Workflow test', () => {
     expect(workflow.fetch).to.not.equal(undefined)
     expect(workflow.disable).to.not.equal(undefined)
     expect(workflow.enable).to.not.equal(undefined)
-    expect(workflow.contentType).to.not.equal(undefined)
+    expect(workflow.contentType).to.be.equal(undefined)
     expect(workflow.create).to.be.equal(undefined)
     expect(workflow.fetchAll).to.be.equal(undefined)
     expect(workflow.publishRule).to.be.equal(undefined)
@@ -50,7 +51,7 @@ describe('Contentstack Workflow test', () => {
     expect(workflow.fetch).to.not.equal(undefined)
     expect(workflow.disable).to.not.equal(undefined)
     expect(workflow.enable).to.not.equal(undefined)
-    expect(workflow.contentType).to.not.equal(undefined)
+    expect(workflow.contentType).to.be.equal(undefined)
     expect(workflow.create).to.be.equal(undefined)
     expect(workflow.fetchAll).to.be.equal(undefined)
     expect(workflow.publishRule).to.be.equal(undefined)
@@ -225,7 +226,7 @@ describe('Contentstack Workflow test', () => {
 
   it('Workflow disable test', done => {
     var mock = new MockAdapter(Axios)
-    mock.onPut('/workflows/UID/disable').reply(200, {
+    mock.onGet('/workflows/UID/disable').reply(200, {
       ...noticeMock,
       workflow: {
         ...workflowMock
@@ -248,7 +249,7 @@ describe('Contentstack Workflow test', () => {
 
   it('Workflow enable test', done => {
     var mock = new MockAdapter(Axios)
-    mock.onPut('/workflows/UID/enable').reply(200, {
+    mock.onGet('/workflows/UID/enable').reply(200, {
       ...noticeMock,
       workflow: {
         ...workflowMock
@@ -278,9 +279,6 @@ describe('Contentstack Workflow test', () => {
       ]
     })
     makeWorkflow({
-      workflow: {
-        ...systemUidMock
-      },
       stackHeaders: stackHeadersMock
     }).contentType('ct_UID')
       .getPublishRules()
@@ -299,11 +297,7 @@ describe('Contentstack Workflow test', () => {
         publishRulesMock
       ]
     })
-    makeWorkflow({
-      workflow: {
-        ...systemUidMock
-      },
-    }).contentType('ct_UID')
+    makeWorkflow().contentType('ct_UID')
       .getPublishRules({ action: "publish", locale: "en-us" })
       .then((response) => {
         checkPublishRules(response.items[0])

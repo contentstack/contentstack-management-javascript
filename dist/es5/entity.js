@@ -330,6 +330,7 @@ var update = exports.update = function update(http, type) {
   return /*#__PURE__*/(0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee7() {
     var param,
         updateData,
+        json,
         response,
         _args7 = arguments;
     return _regenerator2["default"].wrap(function _callee7$(_context7) {
@@ -338,42 +339,54 @@ var update = exports.update = function update(http, type) {
           case 0:
             param = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : {};
             updateData = {};
-            updateData[type] = (0, _cloneDeep2["default"])(this);
-            _context7.prev = 3;
-            _context7.next = 6;
+            json = (0, _cloneDeep2["default"])(this);
+            delete json.stackHeaders;
+            delete json.urlPath;
+            delete json.uid;
+            delete json.org_uid;
+            delete json.api_key;
+            delete json.created_at;
+            delete json.created_by;
+            delete json.deleted_at;
+            delete json.updated_at;
+            delete json.updated_by;
+            delete json.updated_at;
+            updateData[type] = json;
+            _context7.prev = 15;
+            _context7.next = 18;
             return http.put(this.urlPath, updateData, {
               headers: _objectSpread({}, (0, _cloneDeep2["default"])(this.stackHeaders)),
               params: _objectSpread({}, (0, _cloneDeep2["default"])(param))
             });
 
-          case 6:
+          case 18:
             response = _context7.sent;
 
             if (!response.data) {
-              _context7.next = 11;
+              _context7.next = 23;
               break;
             }
 
             return _context7.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.contentType_uid)));
 
-          case 11:
+          case 23:
             throw (0, _contentstackError2["default"])(response);
 
-          case 12:
-            _context7.next = 17;
+          case 24:
+            _context7.next = 29;
             break;
 
-          case 14:
-            _context7.prev = 14;
-            _context7.t0 = _context7["catch"](3);
+          case 26:
+            _context7.prev = 26;
+            _context7.t0 = _context7["catch"](15);
             throw (0, _contentstackError2["default"])(_context7.t0);
 
-          case 17:
+          case 29:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, this, [[3, 14]]);
+    }, _callee7, this, [[15, 26]]);
   }));
 };
 

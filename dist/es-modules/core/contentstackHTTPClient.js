@@ -8,8 +8,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 import clonedeep from 'lodash/cloneDeep';
 import Qs from 'qs';
 import axios from 'axios';
-import contentstackRetry from './contentstack-retry';
 import { isHost } from './Util';
+import { ConcurrencyQueue } from './concurrency-queue';
 export default function contentstackHttpClient(options) {
   var defaultConfig = {
     insecure: false,
@@ -96,6 +96,9 @@ export default function contentstackHttpClient(options) {
 
   var instance = axios.create(axiosOptions);
   instance.httpClientParams = options;
-  contentstackRetry(instance, axiosOptions, config.retyLimit, config.retryDelay);
+  instance.concurrencyQueue = new ConcurrencyQueue({
+    axios: instance,
+    config: config
+  });
   return instance;
 }

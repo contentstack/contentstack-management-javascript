@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import { jsonReader } from '../utility/fileOperations/readwrite'
+import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 import { environmentCreate, environmentProdCreate } from './mock/environment.js'
 import { cloneDeep } from 'lodash'
 import { contentstackClient } from '../utility/ContentstackClient.js'
@@ -71,6 +71,7 @@ describe('Environment api Test', () => {
       .query()
       .find()
       .then((environments) => {
+        jsonWrite(environments.items, 'environments.json')
         environments.items.forEach((environment) => {
           expect(environment.name).to.be.not.equal(null)
           expect(environment.deploy_content).to.be.not.equal(null)

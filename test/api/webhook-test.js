@@ -8,7 +8,7 @@ import { contentstackClient } from '../utility/ContentstackClient.js'
 var client = {}
 
 var stack = {}
-var webhookUid = 'bltb0ef6da267d340ea'
+var webhookUid = ''
 describe('Webhook api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
@@ -109,20 +109,20 @@ describe('Webhook api Test', () => {
       .then((assetFile) => {
         makeWebhook(webhookUid).executions()
           .then((response) => {
-            response.webhooks.forEach(webhook => {
-              expect(webhook.uid).to.be.not.equal(null)
-              expect(webhook.status).to.be.equal(200)
-              expect(webhook.event_data.module).to.be.equal('asset')
-              expect(webhook.event_data.api_key).to.be.equal(stack.api_key)
+            response.webhooks.forEach(webhookResponse => {
+              expect(webhookResponse.uid).to.be.not.equal(null)
+              expect(webhookResponse.status).to.be.equal(200)
+              expect(webhookResponse.event_data.module).to.be.equal('asset')
+              expect(webhookResponse.event_data.api_key).to.be.equal(stack.api_key)
 
-              const webhookasset = webhook.event_data.data.asset
+              const webhookasset = webhookResponse.event_data.data.asset
               expect(webhookasset.uid).to.be.equal(assetFile.uid)
               expect(webhookasset.filename).to.be.equal(assetFile.filename)
               expect(webhookasset.url).to.be.equal(assetFile.url)
               expect(webhookasset.title).to.be.equal(assetFile.title)
 
-              expect(webhook.webhooks[0]).to.be.equal(webhookUid)
-              expect(webhook.channel[0]).to.be.equal('assets.create')
+              expect(webhookResponse.webhooks[0]).to.be.equal(webhookUid)
+              expect(webhookResponse.channel[0]).to.be.equal('assets.create')
             })
             done()
           })
@@ -133,10 +133,10 @@ describe('Webhook api Test', () => {
   it('Get all Webhook', done => {
     makeWebhook().fetchAll()
       .then((collection) => {
-        collection.items.forEach(webhook => {
-          expect(webhook.uid).to.be.not.equal(null)
-          expect(webhook.name).to.be.not.equal(null)
-          expect(webhook.org_uid).to.be.equal(stack.org_uid)
+        collection.items.forEach(webhookResponse => {
+          expect(webhookResponse.uid).to.be.not.equal(null)
+          expect(webhookResponse.name).to.be.not.equal(null)
+          expect(webhookResponse.org_uid).to.be.equal(stack.org_uid)
         })
         done()
       })

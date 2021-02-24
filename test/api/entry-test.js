@@ -97,6 +97,7 @@ describe('Entry api Test', () => {
     makeEntry(multiPageCT.content_type.uid)
       .query({ include_count: true, include_content_type: true }).find()
       .then((collection) => {
+        jsonWrite(collection.items, 'entry.json')
         expect(collection.count).to.be.equal(2)
         collection.items.forEach((entry) => {
           expect(entry.uid).to.be.not.equal(null)

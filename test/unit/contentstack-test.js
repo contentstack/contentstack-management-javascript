@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import packages from '../../package.json'
 import sinon from 'sinon'
-const SDK = `${packages.name}-javascript/${packages.version}`
+const SDK = `contentstack-management-javascript/${packages.version}`
 
 describe('Contentstack HTTP Client', () => {
   it('Contentstack Http Client Object successful', done => {
@@ -74,7 +74,7 @@ describe('Contentstack HTTP Client', () => {
     createClientRewireApi.__Rewire__('contentstackClient', sinon.stub().returns({}))
     client()
     const headerParts = createHttpClientStub.args[0][0].headers['User-Agent'].split('; ')
-    expect(headerParts[0]).to.be.match(/^sdk @contentstack\/management-javascript\/.+/, 'User agent sdk does not match')
+    expect(headerParts[0]).to.be.match(/^sdk contentstack-management-javascript\/.+/, 'User agent sdk does not match')
     expect(headerParts[1]).to.be.match(/^platform (.+\/.+|browser)/, 'User agent platform does not match')
     expect(headerParts[2]).to.be.match(/^os .+/, 'User agent os does not match')
     createClientRewireApi.__ResetDependency__('httpClient')
@@ -92,7 +92,7 @@ describe('Contentstack HTTP Client', () => {
     expect(headerParts[0]).to.be.equal('app myApplication/1.0.0', 'User agent app does not match')
     expect(headerParts[1]).to.be.equal('integration myIntegration/1.2.0', 'User agent integration does not match')
     expect(headerParts[2]).to.be.equal('feature feature', 'User agent feature does not match')
-    expect(headerParts[3]).to.be.match(/^sdk @contentstack\/management-javascript\/.+/, 'User agent sdk does not match')
+    expect(headerParts[3]).to.be.match(/^sdk contentstack-management-javascript\/.+/, 'User agent sdk does not match')
     createClientRewireApi.__ResetDependency__('httpClient')
     createClientRewireApi.__ResetDependency__('contentstackClient')
     done()
