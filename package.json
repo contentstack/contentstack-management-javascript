@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.2.0",
+  "version": "1.2.0-beta",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "dist/node/contentstack-management.js",
   "browser": "dist/web/contentstack-management.js",
@@ -14,7 +14,6 @@
   "nyc": {
     "exclude": [
       "**/bulkOperation",
-      "**/items",
       "**/test"
     ]
   },
@@ -34,8 +33,7 @@
     "test:debug": "BABEL_ENV=test mocha debug --require @babel/register ./test",
     "lint": "eslint lib test",
     "format": "eslint --fix lib test",
-    "prepack": "npm run build && npm run generate:docs",
-    "prepublish" : "npm run build && npm run generate:docs",
+    "prepare" : "npm run build && npm run generate:docs",
     "pretest": "rimraf coverage && npm run lint",
     "precommit": "npm run lint",
     "prepush": "npm run test:unit",
