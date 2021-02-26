@@ -69,6 +69,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  * import * as contentstack from '@contentstack/management'
  * const client = contentstack.client({ timeout: 50000 })
  *
+ * @prop {number=} params.maxRequests - Optional maximum number of requests SDK should send concurrently. Default is 10 request.
+ * @example //Set the `maxRequests` to 50000ms
+ * import * as contentstack from '@contentstack/management'
+ * const client = contentstack.client({ maxRequests: 5 })
+ * 
  * @prop {boolean=} params.retryOnError - Optional boolean for retry on failuer. Default is true
  * @example //Set the `retryOnError` to false
  * import * as contentstack from '@contentstack/management'

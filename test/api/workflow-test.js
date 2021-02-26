@@ -1,22 +1,18 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-// import path from 'path'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-// import { webhook, updateWebhook } from './mock/webhook'
-// import { cloneDeep } from 'lodash'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import { firstWorkflow, secondWorkflow, finalWorkflow, firstPublishRules, secondPublishRules } from './mock/workflow'
 import { cloneDeep } from 'lodash'
-import { multiPageCT } from './mock/content-type'
 var client = {}
 var environment = {}
 var entries = {}
 var roles = {}
 var stack = {}
 var user = {}
-var workflowUid = 'blta2a1c691727395ee'
-var publishRuleUid = 'blt41184ac46b19c296'
-var publishRequestUid = 'blt660e009adbcf76ef'
+var workflowUid = ''
+var publishRuleUid = ''
+var publishRequestUid = ''
 
 describe('Workflow api Test', () => {
   setup(async () => {

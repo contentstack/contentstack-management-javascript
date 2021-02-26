@@ -67,54 +67,59 @@ export function ReleaseItem(http) {
      */
 
     this["delete"] = /*#__PURE__*/function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(param) {
-        var headers, response;
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(items) {
+        var param, headers, response;
         return _regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (param === undefined) {
+                param = {};
+
+                if (items === undefined) {
                   param = {
                     all: true
                   };
                 }
 
-                _context.prev = 1;
+                _context.prev = 2;
                 headers = {
                   headers: _objectSpread({}, cloneDeep(_this.stackHeaders)),
+                  data: _objectSpread({}, cloneDeep(items)),
                   params: _objectSpread({}, cloneDeep(param))
                 } || {};
-                _context.next = 5;
+                _context.next = 6;
                 return http["delete"](_this.urlPath, headers);
 
-              case 5:
+              case 6:
                 response = _context.sent;
 
                 if (!response.data) {
-                  _context.next = 10;
+                  _context.next = 11;
                   break;
                 }
 
-                return _context.abrupt("return", response.data);
-
-              case 10:
-                throw error(response);
+                return _context.abrupt("return", new Release(http, _objectSpread(_objectSpread({}, response.data), {}, {
+                  stackHeaders: data.stackHeaders
+                })));
 
               case 11:
-                _context.next = 16;
+                throw error(response);
+
+              case 12:
+                _context.next = 17;
                 break;
 
-              case 13:
-                _context.prev = 13;
-                _context.t0 = _context["catch"](1);
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](2);
                 throw error(_context.t0);
 
-              case 16:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 13]]);
+        }, _callee, null, [[2, 14]]);
       }));
 
       return function (_x) {
@@ -175,12 +180,11 @@ export function ReleaseItem(http) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 headers = {
-                  headers: _objectSpread({}, cloneDeep(_this.stackHeaders)),
-                  params: _objectSpread({}, cloneDeep(param))
+                  headers: _objectSpread({}, cloneDeep(_this.stackHeaders))
                 } || {};
                 _context2.prev = 1;
                 _context2.next = 4;
-                return http.post(param.item ? "releases/".concat(data.releaseUid, "/item") : _this.urlPath, data, headers);
+                return http.post(param.item ? "releases/".concat(data.releaseUid, "/item") : _this.urlPath, param, headers);
 
               case 4:
                 response = _context2.sent;
@@ -195,7 +199,9 @@ export function ReleaseItem(http) {
                   break;
                 }
 
-                return _context2.abrupt("return", new Release(http, response.data));
+                return _context2.abrupt("return", new Release(http, _objectSpread(_objectSpread({}, response.data), {}, {
+                  stackHeaders: data.stackHeaders
+                })));
 
               case 8:
                 _context2.next = 11;

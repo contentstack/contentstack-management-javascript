@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-var orgID = 'blt7d93f4fb8e6f74cb'
+var orgID = ''
 var user = {}
 var client = {}
 var organization = {}
