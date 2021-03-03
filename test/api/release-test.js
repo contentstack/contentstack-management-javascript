@@ -10,12 +10,12 @@ var client = {}
 var stack = {}
 var releaseUID = ''
 let entries = {}
-let itemToDelete = {}
+const itemToDelete = {}
 describe('Relases api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
-    entries =jsonReader('entry.json')
+    entries = jsonReader('entry.json')
     client = contentstackClient(user.authtoken)
   })
 
@@ -49,51 +49,51 @@ describe('Relases api Test', () => {
       version: entries[0]._version,
       uid: entries[0].uid,
       content_type_uid: multiPageCT.content_type.uid,
-      action: "publish",
-      locale: "en-us"
+      action: 'publish',
+      locale: 'en-us'
     }
     makeRelease(releaseUID)
-    .item()
-    .create({item})
-    .then((release) => {
-      expect(release.name).to.be.equal(releaseCreate.release.name)
-      expect(release.description).to.be.equal(releaseCreate.release.description)
-      expect(release.uid).to.be.equal(releaseUID)
-      expect(release.items.length).to.be.equal(1)
-      done()
-    })
-    .catch(done) 
-   })
+      .item()
+      .create({ item })
+      .then((release) => {
+        expect(release.name).to.be.equal(releaseCreate.release.name)
+        expect(release.description).to.be.equal(releaseCreate.release.description)
+        expect(release.uid).to.be.equal(releaseUID)
+        expect(release.items.length).to.be.equal(1)
+        done()
+      })
+      .catch(done)
+  })
 
-   it('Create release items', done => {
+  it('Create release items', done => {
     const items = [
       {
-      version: entries[1]._version,
-      uid: entries[1].uid,
-      content_type_uid: multiPageCT.content_type.uid,
-      action: "publish",
-      locale: "en-us"
-    },
-    {
-      version: entries[2]._version,
-      uid: entries[2].uid,
-      content_type_uid: multiPageCT.content_type.uid,
-      action: "publish",
-      locale: "en-us"
-    }
+        version: entries[1]._version,
+        uid: entries[1].uid,
+        content_type_uid: multiPageCT.content_type.uid,
+        action: 'publish',
+        locale: 'en-us'
+      },
+      {
+        version: entries[2]._version,
+        uid: entries[2].uid,
+        content_type_uid: multiPageCT.content_type.uid,
+        action: 'publish',
+        locale: 'en-us'
+      }
     ]
     makeRelease(releaseUID)
-    .item()
-    .create({items})
-    .then((release) => {
-      expect(release.name).to.be.equal(releaseCreate.release.name)
-      expect(release.description).to.be.equal(releaseCreate.release.description)
-      expect(release.uid).to.be.equal(releaseUID)
-      expect(release.items.length).to.be.equal(3)
-      done()
-    })
-    .catch(done) 
-   })
+      .item()
+      .create({ items })
+      .then((release) => {
+        expect(release.name).to.be.equal(releaseCreate.release.name)
+        expect(release.description).to.be.equal(releaseCreate.release.description)
+        expect(release.uid).to.be.equal(releaseUID)
+        expect(release.items.length).to.be.equal(3)
+        done()
+      })
+      .catch(done)
+  })
 
   it('Fetch a Release items from Uid', done => {
     makeRelease(releaseUID)
@@ -101,7 +101,7 @@ describe('Relases api Test', () => {
       .findAll()
       .then((collection) => {
         const itemdelete = collection.items[0]
-        itemToDelete["version"] = itemdelete.version
+        itemToDelete['version'] = itemdelete.version
         itemToDelete.action = itemdelete.action
         itemToDelete.uid = itemdelete.uid
         itemToDelete.locale = itemdelete.locale
@@ -115,7 +115,7 @@ describe('Relases api Test', () => {
   it('Delete specific item', done => {
     makeRelease(releaseUID)
       .item()
-      .delete({items: [itemToDelete]})
+      .delete({ items: [itemToDelete] })
       .then((release) => {
         expect(release.name).to.be.equal(releaseCreate.release.name)
         expect(release.description).to.be.equal(releaseCreate.release.description)
