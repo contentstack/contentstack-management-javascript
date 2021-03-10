@@ -54,7 +54,6 @@ describe('Workflow api Test', () => {
     makeWorkflow()
       .create({ workflow })
       .then(workflowResponse => {
-        console.log(workflowResponse)
         expect(workflowResponse.name).to.be.equal(finalWorkflow.name)
         expect(workflowResponse.content_types.length).to.be.equal(finalWorkflow.content_types.length)
         expect(workflowResponse.workflow_stages.length).to.be.equal(finalWorkflow.workflow_stages.length)
@@ -167,7 +166,7 @@ describe('Workflow api Test', () => {
     }
     makeWorkflow()
       .publishRule()
-      .create({ publishingRule })
+      .create({ publishing_rule: publishingRule })
       .then(publishRule => {
         publishRuleUid = publishRule.uid
         expect(publishRule.actions.length).to.be.equal(publishingRule.actions.length)
@@ -189,7 +188,7 @@ describe('Workflow api Test', () => {
     }
     makeWorkflow()
       .publishRule()
-      .create({ publishingRule })
+      .create({ publishing_rule: publishingRule })
       .then(publishRule => {
         // publishRequestUid = publishRule.uid
         expect(publishRule.actions.length).to.be.equal(publishingRule.actions.length)
@@ -212,7 +211,7 @@ describe('Workflow api Test', () => {
     }
     makeWorkflow()
       .publishRule()
-      .create({ publishingRule })
+      .create({ publishing_rule: publishingRule })
       .then(publishRule => {
         expect(publishRule.actions.length).to.be.equal(publishingRule.actions.length)
         expect(publishRule.environment).to.be.equal(publishingRule.environment)
@@ -233,7 +232,7 @@ describe('Workflow api Test', () => {
     }
     makeWorkflow()
       .publishRule()
-      .create({ publishingRule })
+      .create({ publishing_rule: publishingRule })
       .then(publishRule => {
         expect(publishRule).to.be.equal(undefined)
         done()
