@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Locale - Documentation</title>
+    <title>Workflow - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Locale</h1>
+    <h1 class="page-title">Workflow</h1>
     
 
     
@@ -56,7 +56,7 @@
 <header>
     
         <h2>
-        Locale
+        Workflow
         </h2>
         
     
@@ -73,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="stack_locale_index.js.html">stack/locale/index.js</a>, <a href="stack_locale_index.js.html#line4">line 4</a>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -112,7 +112,7 @@
 
 
             
-                <div class="description usertext">Contentstack has a sophisticated multilingual capability. It allows you to create and publish entries in any language. This feature allows you to set up multilingual websites and cater to a wide variety of audience by serving content in their local language(s). Read more about <a href='https://www.contentstack.com/docs/developers/multi-language-content'>Locales</a>.</div>
+                <div class="description usertext">Workflow is a tool that allows you to streamline the process of content creation and publishing, and lets you manage the content lifecycle of your project smoothly. Read more about <a href='https://www.contentstack.com/docs/developers/set-up-workflows-and-publish-rules'>Workflows and Publish Rules</a>.</div>
             
 
             
@@ -142,7 +142,7 @@
 
     
 
-    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Locale.Locale>}</span></h4>
+    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Workflow.Workflow>}</span></h4>
 
     
 
@@ -154,7 +154,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="stack_locale_index.js.html">stack/locale/index.js</a>, <a href="stack_locale_index.js.html#line16">line 16</a>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line25">line 25</a>
     </li></ul></dd>
     
 
@@ -194,7 +194,7 @@
 
 
 <div class="description usertext">
-    The Update Locale call lets you update the name and description of an existing Locale.
+    The Update Workflow request allows you to add a workflow stage or update the details of the existing stages of a workflow.
 </div>
 
 
@@ -210,13 +210,13 @@
     <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
 const client = contentstack.client()
 
-client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
-.then((locale) => {
- locale.title = 'My New Content Type'
- locale.description = 'Content Type description'
- return locale.update()
+client.stack({ api_key: 'api_key'}).workflow('workflow_uid').fetch()
+.then((workflow) => {
+ workflow.name = 'My New Workflow'
+ workflow.description = 'Workflow description'
+ return workflow.update()
 })
-.then((locale) => console.log(locale))</code></pre>
+.then((workflow) => console.log(workflow))</code></pre>
 
 
 
@@ -239,7 +239,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
 
         
 <div class="param-desc">
-    Promise for Locale instance
+    Promise for Workflow instance
 </div>
 
 
@@ -250,7 +250,243 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;Locale.Locale></span>
+<span class="param-type">Promise.&lt;Workflow.Workflow></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".disable"><span class="type-signature">(static) </span>disable<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Workflow.Workflow>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line45">line 45</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Disable Workflow request allows you to disable a workflow.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).workflow('workflow_uid').disable()
+.then((workflow) => console.log(workflow))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise for Workflow instance
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Workflow.Workflow></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".enable"><span class="type-signature">(static) </span>enable<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Workflow.Workflow>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line75">line 75</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Enable Workflow request allows you to enable a workflow.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).workflow('workflow_uid').enable()
+.then((workflow) => console.log(workflow))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise for Workflow instance
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Workflow.Workflow></span>
 
 
     </dd>
@@ -277,7 +513,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="stack_locale_index.js.html">stack/locale/index.js</a>, <a href="stack_locale_index.js.html#line36">line 36</a>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -317,7 +553,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
 
 
 <div class="description usertext">
-    The Delete Locale call is used to delete an existing Locale permanently from your Stack.
+    The Delete Workflow call is used to delete an existing Workflow permanently from your Stack.
 </div>
 
 
@@ -333,7 +569,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
     <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
 const client = contentstack.client()
 
-client.stack({ api_key: 'api_key'}).locale('locale_code').delete()
+client.stack({ api_key: 'api_key'}).workflow('workflow_uid').delete()
 .then((response) => console.log(response.notice))</code></pre>
 
 
@@ -383,7 +619,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').delete()
 
     
 
-    <h4 class="name" id=".fetch"><span class="type-signature">(static) </span>fetch<span class="signature">(version)</span><span class="type-signature"> &rarr; {Promise.&lt;Locale.Locale>}</span></h4>
+    <h4 class="name" id=".fetch"><span class="type-signature">(static) </span>fetch<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Workflow.Workflow>}</span></h4>
 
     
 
@@ -395,7 +631,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').delete()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="stack_locale_index.js.html">stack/locale/index.js</a>, <a href="stack_locale_index.js.html#line50">line 50</a>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
@@ -435,7 +671,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').delete()
 
 
 <div class="description usertext">
-    The fetch Locale call fetches Locale details.
+    The fetch workflow retrieves the comprehensive details of a specific Workflow of a stack.
 </div>
 
 
@@ -451,8 +687,126 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').delete()
     <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
 const client = contentstack.client()
 
-client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
-.then((locale) => console.log(locale))</code></pre>
+client.stack({ api_key: 'api_key'}).workflow('workflow_uid').fetch()
+.then((workflow) => console.log(workflow))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise for Workflow instance
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Workflow.Workflow></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getPublishRules"><span class="type-signature">(static) </span>getPublishRules<span class="signature">(action, locale, environment)</span><span class="type-signature"> &rarr; {Object|ContentstackCollection}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line136">line 136</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Delete Workflow call is used to delete an existing Workflow permanently from your Stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).workflow('workflow_uid').contentType('contentType_uid').getPublishRules()
+.then((collection) => console.log(collection))</code></pre>
 
 
 
@@ -482,13 +836,13 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
 
         <tr>
             
-                <td class="name"><code>version</code></td>
+                <td class="name"><code>action</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Int</span>
+<span class="param-type">string</span>
 
 
             
@@ -498,7 +852,53 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
 
             
 
-            <td class="description last">Enter the unique ID of the content type of which you want to retrieve the details. The UID is generated based on the title of the content type. The unique ID of a content type is unique across a stack.</td>
+            <td class="description last">Enter the action that has been set in the Publishing Rule. Example:publish/unpublish</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>locale</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Enter the code of the locale where your Publishing Rule will be applicable.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>environment</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Enter the UID of the environment where your Publishing Rule will be applicable.</td>
         </tr>
 
     
@@ -521,10 +921,10 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
 
 
 <h5>Returns:</h5>
-
-        
+<ul>
+        <li>
 <div class="param-desc">
-    Promise for Locale instance
+    Returns Object.
 </div>
 
 
@@ -535,13 +935,33 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;Locale.Locale></span>
+<span class="param-type">Object</span>
 
 
     </dd>
 </dl>
-
+</li>
     
+        <li>
+<div class="param-desc">
+    Result collection of content of PublishRules.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">ContentstackCollection</span>
+
+
+    </dd>
+</dl>
+</li>
+    </ul>
 
 
 
@@ -550,7 +970,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
 
     
 
-    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Locale.Locale>}</span></h4>
+    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Workflow.Workflow>}</span></h4>
 
     
 
@@ -562,7 +982,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="stack_locale_index.js.html">stack/locale/index.js</a>, <a href="stack_locale_index.js.html#line66">line 66</a>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line179">line 179</a>
     </li></ul></dd>
     
 
@@ -602,7 +1022,7 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
 
 
 <div class="description usertext">
-    The Create a content type call creates a new content type in a particular stack of your Contentstack account.
+    The Create a Workflow request allows you to create a Workflow.
 </div>
 
 
@@ -618,8 +1038,66 @@ client.stack({ api_key: 'api_key'}).locale('locale_code').fetch()
     <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
 const client = contentstack.client()
 
-client.stack().locale().create({ locale: { code: 'en-at' } )
-.then((locale) => console.log(locale))</code></pre>
+const workflow = {
+	"workflow_stages": [
+     {
+			"color": "#2196f3",
+			"SYS_ACL": {
+				"roles": {
+					"uids": []
+				},
+				"users": {
+					"uids": [
+						"$all"
+					]
+				},
+				"others": {}
+			},
+			"next_available_stages": [
+				"$all"
+			],
+			"allStages": true,
+			"allUsers": true,
+			"specificStages": false,
+			"specificUsers": false,
+			"entry_lock": "$none", //assign any one of the assign any one of the ($none/$others/$all)
+			"name": "Review"
+		},
+		{
+			"color": "#74ba76",
+			"SYS_ACL": {
+				"roles": {
+					"uids": []
+				},
+				"users": {
+					"uids": [
+						"$all"
+					]
+				},
+				"others": {}
+			},
+			"allStages": true,
+				"allUsers": true,
+				"specificStages": false,
+				"specificUsers": false,
+				"next_available_stages": [
+					"$all"
+				],
+				"entry_lock": "$none",
+				"name": "Complete"
+			}
+		],
+		"admin_users": {
+			"users": []
+		},
+ 		"name": "Workflow Name",
+		"enabled": true,
+		"content_types": [
+			"$all"
+		]
+	}
+ client.stack().workflow().create({ workflow })
+.then((workflow) => console.log(workflow))</code></pre>
 
 
 
@@ -642,7 +1120,7 @@ client.stack().locale().create({ locale: { code: 'en-at' } )
 
         
 <div class="param-desc">
-    Promise for Locale instance
+    Promise for Workflow instance
 </div>
 
 
@@ -653,7 +1131,7 @@ client.stack().locale().create({ locale: { code: 'en-at' } )
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;Locale.Locale></span>
+<span class="param-type">Promise.&lt;Workflow.Workflow></span>
 
 
     </dd>
@@ -668,7 +1146,7 @@ client.stack().locale().create({ locale: { code: 'en-at' } )
 
     
 
-    <h4 class="name" id=".query"><span class="type-signature">(static) </span>query<span class="signature">(include_count)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Locale.html">Locale</a>>}</span></h4>
+    <h4 class="name" id=".fetchAll"><span class="type-signature">(static) </span>fetchAll<span class="signature">(limit, skip, include_count)</span><span class="type-signature"> &rarr; {ContentstackCollection}</span></h4>
 
     
 
@@ -680,7 +1158,7 @@ client.stack().locale().create({ locale: { code: 'en-at' } )
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="stack_locale_index.js.html">stack/locale/index.js</a>, <a href="stack_locale_index.js.html#line81">line 81</a>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -720,7 +1198,7 @@ client.stack().locale().create({ locale: { code: 'en-at' } )
 
 
 <div class="description usertext">
-    The Query on Content Type will allow to fetch details of all or specific Content Type
+    The Get all Workflows request retrieves the details of all the Workflows of a stack.
 </div>
 
 
@@ -736,8 +1214,8 @@ client.stack().locale().create({ locale: { code: 'en-at' } )
     <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
 const client = contentstack.client()
 
-client.stack(api_key).locale().query({ query: { code: 'locale-code' } }).find()
-.then((locales) => console.log(locales))</code></pre>
+client.stack({ api_key: 'api_key'}).workflow().fetchAll()
+.then((collection) => console.log(collection))</code></pre>
 
 
 
@@ -763,6 +1241,52 @@ client.stack(api_key).locale().query({ query: { code: 'locale-code' } }).find()
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The limit parameter will return a specific number of Workflows in the output.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>skip</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The skip parameter will skip a specific number of Workflows in the output.</td>
+        </tr>
+
     
 
         <tr>
@@ -783,7 +1307,7 @@ client.stack(api_key).locale().query({ query: { code: 'locale-code' } }).find()
 
             
 
-            <td class="description last">Set this to 'true' to include in response the total count of content types available in your stack.</td>
+            <td class="description last">To retrieve the count of Workflows.</td>
         </tr>
 
     
@@ -809,7 +1333,7 @@ client.stack(api_key).locale().query({ query: { code: 'locale-code' } }).find()
 
         
 <div class="param-desc">
-    Array of ContentTyoe.
+    Result collection of content of specified module.
 </div>
 
 
@@ -820,7 +1344,177 @@ client.stack(api_key).locale().query({ query: { code: 'locale-code' } }).find()
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;<a href="Locale.html">Locale</a>></span>
+<span class="param-type">ContentstackCollection</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".publishRule"><span class="type-signature">(static) </span>publishRule<span class="signature">(ruleUid)</span><span class="type-signature"> &rarr; {<a href="PublishRules.html">PublishRules</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_workflow_index.js.html">stack/workflow/index.js</a>, <a href="stack_workflow_index.js.html#line290">line 290</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Publish rule allow you to create, fetch, delete, update the publish rules.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).workflow().publishRule().fetchAll()
+.then((collection) => console.log(collection))
+
+client.stack({ api_key: 'api_key'}).workflow().publishRule('rule_uid').fetch()
+.then((publishrule) => console.log(publishrule))</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ruleUid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The UID of the Publish rules you want to get details.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instace of PublishRules.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="PublishRules.html">PublishRules</a></span>
 
 
     </dd>

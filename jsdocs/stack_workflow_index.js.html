@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>stack/extension/index.js - Documentation</title>
+    <title>stack/workflow/index.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">stack/extension/index.js</h1>
+    <h1 class="page-title">stack/workflow/index.js</h1>
     
 
     
@@ -54,102 +54,71 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import cloneDeep from 'lodash/cloneDeep'
-import { create, update, deleteEntity, fetch, query, upload, parseData } from '../../entity'
+import {
+  create,
+  update,
+  deleteEntity,
+  fetch
+} from '../../entity'
 import error from '../../core/contentstackError'
-import FormData from 'form-data'
-import { createReadStream } from 'fs'
+import ContentstackCollection from '../../contentstackCollection'
+import { PublishRules, PublishRulesCollection } from './publishRules'
 
 /**
- * Extensions let you create custom fields and custom widgets that lets you customize Contentstack's default UI and behavior. Read more about &lt;a href='https://www.contentstack.com/docs/developers/about-experience-extensions/'>Extensions&lt;/a>.
- * @namespace Extension
- *  */
+ * Workflow is a tool that allows you to streamline the process of content creation and publishing, and lets you manage the content lifecycle of your project smoothly. Read more about &lt;a href='https://www.contentstack.com/docs/developers/set-up-workflows-and-publish-rules'>Workflows and Publish Rules&lt;/a>.
+ * @namespace Workflow
+ */
 
-export function Extension (http, data = {}) {
+export function Workflow (http, data = {}) {
   this.stackHeaders = data.stackHeaders
-  this.urlPath = `/extensions`
-  if (data.extension) {
-    Object.assign(this, cloneDeep(data.extension))
-    this.urlPath = `/extensions/${this.uid}`
+  this.urlPath = `/workflows`
+
+  if (data.workflow) {
+    Object.assign(this, cloneDeep(data.workflow))
+    this.urlPath = `/workflows/${this.uid}`
+
     /**
-     * @description The Update Extension call lets you update an existing Extension.
-     * @memberof Extension
+     * @description The Update Workflow request allows you to add a workflow stage or update the details of the existing stages of a workflow.
+     * @memberof Workflow
      * @func update
-     * @returns {Promise&lt;Extension.Extension>} Promise for Extension instance.
+     * @returns {Promise&lt;Workflow.Workflow>} Promise for Workflow instance
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
      *
-     * client.stack({ api_key: 'api_key'}).extension('extension_uid').fetch()
-     * .then((extension) => {
-     *  extension.title = 'My Extension Type'
-     *  return extension.update()
+     * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').fetch()
+     * .then((workflow) => {
+     *  workflow.name = 'My New Workflow'
+     *  workflow.description = 'Workflow description'
+     *  return workflow.update()
      * })
-     * .then((extension) => console.log(extension))
+     * .then((workflow) => console.log(workflow))
      *
      */
-    this.update = update(http, 'extension')
+    this.update = update(http, 'workflow')
 
     /**
-     * @description The Delete Extension call is used to delete an existing Extension permanently from your Stack.
-     * @memberof Extension
-     * @func delete
-     * @returns {Object} Response Object.
+     * @description The Disable Workflow request allows you to disable a workflow.
+     * @memberof Workflow
+     * @func disable
+     * @returns {Promise&lt;Workflow.Workflow>} Promise for Workflow instance
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
      *
-     * client.stack({ api_key: 'api_key'}).extension('extension_uid').delete()
-     * .then((response) => console.log(response.notice))
-     */
-    this.delete = deleteEntity(http)
-
-    /**
-     * @description The fetch Extension call fetches Extension details.
-     * @memberof Extension
-     * @func fetch
-     * @returns {Promise&lt;Extension.Extension>} Promise for Extension instance
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.stack({ api_key: 'api_key'}).extension('extension_uid').fetch()
-     * .then((extension) => console.log(extension))
+     * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').disable()
+     * .then((workflow) => console.log(workflow))
      *
      */
-    this.fetch = fetch(http, 'extension')
-  } else {
-    /**
-     * @description The Upload is used to upload a new custom widget, custom field, dashboard Widget to a stack.
-     * @memberof Extension
-     * @func upload
-     * @returns {Promise&lt;Extension.Extension>} Promise for Extension instance
-     *
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * const extension = {
-     *  upload: 'path/to/file',
-     *  title: 'Title',
-     *  tags: [
-     *    'tag1',
-     *    'tag2'
-     *  ],
-     *  data_type: 'text',
-     *  title: 'Old Extension',
-     *  multiple: false,
-     *  config: {},
-     *  type: 'Type of extenstion you want to create widget/dashboard/field'
-     * }
-     *
-     * client.stack({ api_key: 'api_key'}).extension().upload(extension)
-     * .then((extension) => console.log(extension))
-     */
-    this.upload = async function (data, params) {
+    this.disable = async function () {
       try {
-        const response = await upload({ http: http, urlPath: this.urlPath, stackHeaders: this.stackHeaders, formData: createExtensionFormData(data), params: params })
+        const response = await http.get(`/workflows/${this.uid}/disable`, {
+          headers: {
+            ...cloneDeep(this.stackHeaders)
+          }
+        })
         if (response.data) {
-          return new this.constructor(http, parseData(response, this.stackHeaders))
+          return response.data
         } else {
           throw error(response)
         }
@@ -157,89 +126,255 @@ export function Extension (http, data = {}) {
         throw error(err)
       }
     }
+
     /**
-     * @description The Create a extension call creates a new extension in a particular stack of your Contentstack account.
-     * @memberof Extension
-     * @func create
-     * @returns {Promise&lt;Extension.Extension>} Promise for Extension instance
-     *
+     * @description The Enable Workflow request allows you to enable a workflow.
+     * @memberof Workflow
+     * @func enable
+     * @returns {Promise&lt;Workflow.Workflow>} Promise for Workflow instance
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
-     * const extension = {
-     *  tags: [
-     *    'tag1',
-     *    'tag2'
-     *  ],
-     *  data_type: 'text',
-     *  title: 'Old Extension',
-     *  src: "Enter either the source code (use 'srcdoc') or the external hosting link of the extension depending on the hosting method you selected.",
-     *  multiple: false,
-     *  config: {},
-     *  type: 'field'
-     * }
      *
-     * client.stack().extension().create({ extension })
-     * .then((extension) => console.log(extension))
+     * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').enable()
+     * .then((workflow) => console.log(workflow))
+     *
      */
+    this.enable = async function () {
+      try {
+        const response = await http.get(`/workflows/${this.uid}/enable`, {
+          headers: {
+            ...cloneDeep(this.stackHeaders)
+          }
+        })
+        if (response.data) {
+          return response.data
+        } else {
+          throw error(response)
+        }
+      } catch (err) {
+        throw error(err)
+      }
+    }
+
+    /**
+     * @description The Delete Workflow call is used to delete an existing Workflow permanently from your Stack.
+     * @memberof Workflow
+     * @func delete
+     * @returns {Object} Response Object.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').delete()
+     * .then((response) => console.log(response.notice))
+     */
+    this.delete = deleteEntity(http)
+
+    /**
+     * @description The fetch workflow retrieves the comprehensive details of a specific Workflow of a stack.
+     * @memberof Workflow
+     * @func fetch
+     * @returns {Promise&lt;Workflow.Workflow>} Promise for Workflow instance
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').fetch()
+     * .then((workflow) => console.log(workflow))
+     *
+     */
+    this.fetch = fetch(http, 'workflow')
+  } else {
+    this.contentType = (contentTypeUID) => {
+      if (contentTypeUID) {
+        /**
+             * @description The Delete Workflow call is used to delete an existing Workflow permanently from your Stack.
+             * @memberof Workflow
+             * @func getPublishRules
+             * @returns {Object} Returns Object.
+             * @param {string} action Enter the action that has been set in the Publishing Rule. Example:publish/unpublish
+             * @param {string} locale Enter the code of the locale where your Publishing Rule will be applicable.
+             * @param {string} environment Enter the UID of the environment where your Publishing Rule will be applicable.
+             * @returns {ContentstackCollection} Result collection of content of PublishRules.
+             * @example
+             * import * as contentstack from '@contentstack/management'
+             * const client = contentstack.client()
+             *
+             * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').contentType('contentType_uid').getPublishRules()
+             * .then((collection) => console.log(collection))
+             */
+        async function getPublishRules (params) {
+          const headers = {}
+          if (this.stackHeaders) {
+            headers.headers = this.stackHeaders
+          }
+          if (params) {
+            headers.params = {
+              ...cloneDeep(params)
+            }
+          }
+          try {
+            const response = await http.get(`/workflows/content_type/${contentTypeUID}`, headers)
+            if (response.data) {
+              return new ContentstackCollection(response, http, this.stackHeaders, PublishRulesCollection)
+            } else {
+              throw error(response)
+            }
+          } catch (err) {
+            throw error(err)
+          }
+        }
+        return {
+          getPublishRules,
+          stackHeaders: { ...this.stackHeaders }
+        }
+      }
+    }
+    /**
+         * @description The Create a Workflow request allows you to create a Workflow.
+         * @memberof Workflow
+         * @func create
+         * @returns {Promise&lt;Workflow.Workflow>} Promise for Workflow instance
+         *
+         * @example
+         * import * as contentstack from '@contentstack/management'
+         * const client = contentstack.client()
+         *
+         * const workflow = {
+         *	"workflow_stages": [
+         *      {
+         *			"color": "#2196f3",
+         *			"SYS_ACL": {
+         *				"roles": {
+         *					"uids": []
+         *				},
+         *				"users": {
+         *					"uids": [
+         *						"$all"
+         *					]
+         *				},
+         * 				"others": {}
+         *			},
+         *			"next_available_stages": [
+         *				"$all"
+         *			],
+         *			"allStages": true,
+         *			"allUsers": true,
+         *			"specificStages": false,
+         *			"specificUsers": false,
+         *			"entry_lock": "$none", //assign any one of the assign any one of the ($none/$others/$all)
+         *			"name": "Review"
+         *		},
+         *		{
+         *			"color": "#74ba76",
+         *			"SYS_ACL": {
+         *				"roles": {
+         *					"uids": []
+         *				},
+         *				"users": {
+         *					"uids": [
+         *						"$all"
+         *					]
+         *				},
+         *				"others": {}
+         *			},
+         *			"allStages": true,
+         *				"allUsers": true,
+         *				"specificStages": false,
+         *				"specificUsers": false,
+         *				"next_available_stages": [
+         *					"$all"
+         *				],
+         *				"entry_lock": "$none",
+         *				"name": "Complete"
+         *			}
+         *		],
+         *		"admin_users": {
+         *			"users": []
+         *		},
+         *  		"name": "Workflow Name",
+         *		"enabled": true,
+         *		"content_types": [
+         *			"$all"
+         *		]
+         *	}
+         *  client.stack().workflow().create({ workflow })
+         * .then((workflow) => console.log(workflow))
+         */
     this.create = create({ http: http })
 
     /**
-     * @description The Query on Content Type will allow to fetch details of all or specific Content Type
-     * @memberof Extension
-     * @func query
-     * @param {Boolean} include_count Set this to 'true' to include in response the total count of content types available in your stack.
-     * @returns {Array&lt;Extension>} Array of ContentTyoe.
-     *
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.stack().extension().query({ query={"type":"field"}})
-     * .then((extensions) => console.log(extensions))
-     */
-    this.query = query({ http: http, wrapperCollection: ExtensionCollection })
+         * @description The Get all Workflows request retrieves the details of all the Workflows of a stack.
+         * @memberof Workflow
+         * @func fetchAll
+         * @param {Int} limit The limit parameter will return a specific number of Workflows in the output.
+         * @param {Int} skip The skip parameter will skip a specific number of Workflows in the output.
+         * @param {Boolean}include_count To retrieve the count of Workflows.
+         * @returns {ContentstackCollection} Result collection of content of specified module.
+         * @example
+         * import * as contentstack from '@contentstack/management'
+         * const client = contentstack.client()
+         *
+         * client.stack({ api_key: 'api_key'}).workflow().fetchAll()
+         * .then((collection) => console.log(collection))
+         *
+         */
+    this.fetchAll = async (params) => {
+      const headers = {}
+      if (this.stackHeaders) {
+        headers.headers = this.stackHeaders
+      }
+      if (params) {
+        headers.params = {
+          ...cloneDeep(params)
+        }
+      }
+      try {
+        const response = await http.get(this.urlPath, headers)
+        if (response.data) {
+          return new ContentstackCollection(response, http, null, WorkflowCollection)
+        } else {
+          throw error(response)
+        }
+      } catch (err) {
+        throw error(err)
+      }
+    }
+
+    /**
+         * @description The Publish rule allow you to create, fetch, delete, update the publish rules.
+         * @memberof Workflow
+         * @func publishRule
+         * @param {Int} ruleUid The UID of the Publish rules you want to get details.
+         * @returns {PublishRules} Instace of PublishRules.
+         * @example
+         * import * as contentstack from '@contentstack/management'
+         * const client = contentstack.client()
+         *
+         * client.stack({ api_key: 'api_key'}).workflow().publishRule().fetchAll()
+         * .then((collection) => console.log(collection))
+         *
+         * client.stack({ api_key: 'api_key'}).workflow().publishRule('rule_uid').fetch()
+         * .then((publishrule) => console.log(publishrule))
+         *
+         */
+    this.publishRule = (ruleUid = null) => {
+      const publishInfo = { stackHeaders: this.stackHeaders }
+      if (ruleUid) {
+        publishInfo.publishing_rule = { uid: ruleUid }
+      }
+      return new PublishRules(http, publishInfo)
+    }
   }
 }
 
-export function ExtensionCollection (http, data) {
-  const obj = cloneDeep(data.extensions) || []
-  const extensionCollection = obj.map((extensiondata) => {
-    return new Extension(http, { extension: extensiondata, stackHeaders: data.stackHeaders })
+export function WorkflowCollection (http, data) {
+  const obj = cloneDeep(data.workflows) || []
+  const workflowCollection = obj.map((userdata) => {
+    return new Workflow(http, { workflow: userdata, stackHeaders: data.stackHeaders })
   })
-  return extensionCollection
-}
-
-function createExtensionFormData (data) {
-  const formData = new FormData()
-
-  if (typeof data.title === 'string') {
-    formData.append('extension[title]', data.title)
-  }
-  if (typeof data.scope === 'object') {
-    formData.append('extension[scope]', `${data.scope}`)
-  }
-  if (typeof data['data_type'] === 'string') {
-    formData.append('extension[data_type]', data['data_type'])
-  }
-  if (typeof data.type === 'string') {
-    formData.append('extension[type]', data.type)
-  }
-  if (data.tags instanceof Array) {
-    formData.append('extension[tags]', data.tags.join(','))
-  } else if (typeof data.tags === 'string') {
-    formData.append('extension[tags]', data.tags)
-  }
-  if (typeof data.multiple === 'boolean') {
-    formData.append('extension[multiple]', `${data.multiple}`)
-  }
-  if (typeof data.enable === 'boolean') {
-    formData.append('extension[enable]', `${data.enable}`)
-  }
-
-  const uploadStream = createReadStream(data.upload)
-  formData.append('extension[upload]', uploadStream)
-  return formData
+  return workflowCollection
 }
 </code></pre>
         </article>
