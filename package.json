@@ -34,7 +34,7 @@
     "test:debug": "BABEL_ENV=test mocha debug --require @babel/register ./test",
     "lint": "eslint lib test",
     "format": "eslint --fix lib test",
-    "prepare" : "npm run build && npm run generate:docs",
+    "prepare": "npm run build && npm run generate:docs",
     "pretest": "rimraf coverage && npm run lint",
     "precommit": "npm run lint",
     "prepush": "npm run test:unit",
