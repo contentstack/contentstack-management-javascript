@@ -367,7 +367,7 @@ var update = exports.update = function update(http, type) {
               break;
             }
 
-            return _context7.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.contentType_uid)));
+            return _context7.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.content_type_uid)));
 
           case 23:
             throw (0, _contentstackError2["default"])(response);
@@ -472,7 +472,7 @@ var fetch = exports.fetch = function fetch(http, type) {
               response.data[type]['schema'] = response.data['schema'];
             }
 
-            return _context9.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders)));
+            return _context9.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.content_type_uid)));
 
           case 11:
             throw (0, _contentstackError2["default"])(response);
@@ -503,7 +503,7 @@ function parseData(response, stackHeaders, contentTypeUID) {
   }
 
   if (contentTypeUID) {
-    data.content_type = contentTypeUID;
+    data.content_type_uid = contentTypeUID;
   }
 
   return data;

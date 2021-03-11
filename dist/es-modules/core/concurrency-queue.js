@@ -4,7 +4,6 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-import { set } from "lodash";
 import Axios from 'axios';
 var defaultConfig = {
   maxRequests: 5,
@@ -23,11 +22,11 @@ export function ConcurrencyQueue(_ref) {
 
   if (config) {
     if (config.maxRequests && config.maxRequests <= 0) {
-      throw Error('Concurrency Manager Error: minimun concurrent requests is 1');
+      throw Error('Concurrency Manager Error: minimum concurrent requests is 1');
     } else if (config.retryLimit && config.retryLimit <= 0) {
-      throw Error('Retry Policy Error: minimun retry limit is 1');
+      throw Error('Retry Policy Error: minimum retry limit is 1');
     } else if (config.retryDelay && config.retryDelay < 300) {
-      throw Error('Retry Policy Error: minimun retry delay for requests is 300');
+      throw Error('Retry Policy Error: minimum retry delay for requests is 300');
     }
   }
 
@@ -71,7 +70,7 @@ export function ConcurrencyQueue(_ref) {
     requests.forEach(function (element) {
       element.request.source.cancel();
     });
-  }; // Detach the interceptors 
+  }; // Detach the interceptors
 
 
   this.detach = function () {
@@ -118,7 +117,9 @@ export function ConcurrencyQueue(_ref) {
 
   var delay = function delay(time) {
     if (!_this.paused) {
-      _this.paused = true;
+      _this.paused = true; // Check for current running request.
+      // Wait for running queue to complete.
+      // Wait and prosed the Queued request.
 
       if (_this.running.length > 0) {
         setTimeout(function () {
@@ -136,7 +137,7 @@ export function ConcurrencyQueue(_ref) {
         }, time);
       });
     }
-  }; // Response interceptor used for 
+  }; // Response interceptor used for
 
 
   var responseHandler = function responseHandler(response) {
@@ -148,14 +149,14 @@ export function ConcurrencyQueue(_ref) {
 
   var responseErrorHandler = function responseErrorHandler(error) {
     var networkError = error.config.retryCount;
+    var retryErrorType = null;
 
     if (!_this.config.retryOnError || networkError > _this.config.retryLimit) {
       return Promise.reject(responseHandler(error));
-    } // TODO: Error handling
+    } // Error handling
 
 
     var wait = _this.config.retryDelay;
-    var retryErrorType = null;
     var response = error.response;
 
     if (!response) {
@@ -175,10 +176,11 @@ export function ConcurrencyQueue(_ref) {
         return Promise.reject(responseHandler(error));
       }
 
-      _this.running.shift(); // Cooldown the running requests 
+      _this.running.shift();
 
+      wait = 1000; // Cooldown the running requests
 
-      delay(1000);
+      delay(wait);
       error.config.retryCount = networkError;
       return axios(updateRequestConfig(error, retryErrorType, wait));
     } else if (_this.config.retryCondition && _this.config.retryCondition(error)) {

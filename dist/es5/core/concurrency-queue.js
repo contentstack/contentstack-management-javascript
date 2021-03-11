@@ -14,8 +14,6 @@ var _defineProperty3 = (0, _interopRequireDefault2["default"])(_defineProperty2)
 
 exports.ConcurrencyQueue = ConcurrencyQueue;
 
-var _lodash = require("lodash");
-
 var _axios = require("axios");
 
 var _axios2 = (0, _interopRequireDefault2["default"])(_axios);
@@ -42,11 +40,11 @@ function ConcurrencyQueue(_ref) {
 
   if (config) {
     if (config.maxRequests && config.maxRequests <= 0) {
-      throw Error('Concurrency Manager Error: minimun concurrent requests is 1');
+      throw Error('Concurrency Manager Error: minimum concurrent requests is 1');
     } else if (config.retryLimit && config.retryLimit <= 0) {
-      throw Error('Retry Policy Error: minimun retry limit is 1');
+      throw Error('Retry Policy Error: minimum retry limit is 1');
     } else if (config.retryDelay && config.retryDelay < 300) {
-      throw Error('Retry Policy Error: minimun retry delay for requests is 300');
+      throw Error('Retry Policy Error: minimum retry delay for requests is 300');
     }
   }
 
@@ -90,7 +88,7 @@ function ConcurrencyQueue(_ref) {
     requests.forEach(function (element) {
       element.request.source.cancel();
     });
-  }; // Detach the interceptors 
+  }; // Detach the interceptors
 
 
   this.detach = function () {
@@ -138,7 +136,9 @@ function ConcurrencyQueue(_ref) {
 
   var delay = function delay(time) {
     if (!_this.paused) {
-      _this.paused = true;
+      _this.paused = true; // Check for current running request.
+      // Wait for running queue to complete.
+      // Wait and prosed the Queued request.
 
       if (_this.running.length > 0) {
         setTimeout(function () {
@@ -156,7 +156,7 @@ function ConcurrencyQueue(_ref) {
         }, time);
       });
     }
-  }; // Response interceptor used for 
+  }; // Response interceptor used for
 
 
   var responseHandler = function responseHandler(response) {
@@ -168,14 +168,14 @@ function ConcurrencyQueue(_ref) {
 
   var responseErrorHandler = function responseErrorHandler(error) {
     var networkError = error.config.retryCount;
+    var retryErrorType = null;
 
     if (!_this.config.retryOnError || networkError > _this.config.retryLimit) {
       return Promise.reject(responseHandler(error));
-    } // TODO: Error handling
+    } // Error handling
 
 
     var wait = _this.config.retryDelay;
-    var retryErrorType = null;
     var response = error.response;
 
     if (!response) {
@@ -195,10 +195,11 @@ function ConcurrencyQueue(_ref) {
         return Promise.reject(responseHandler(error));
       }
 
-      _this.running.shift(); // Cooldown the running requests 
+      _this.running.shift();
 
+      wait = 1000; // Cooldown the running requests
 
-      delay(1000);
+      delay(wait);
       error.config.retryCount = networkError;
       return axios(updateRequestConfig(error, retryErrorType, wait));
     } else if (_this.config.retryCondition && _this.config.retryCondition(error)) {

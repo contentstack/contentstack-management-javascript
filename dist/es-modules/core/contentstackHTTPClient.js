@@ -90,6 +90,7 @@ export default function contentstackHttpClient(options) {
         qs = qs + "&query=".concat(encodeURI(JSON.stringify(query)));
       }
 
+      params.query = query;
       return qs;
     }
   });
