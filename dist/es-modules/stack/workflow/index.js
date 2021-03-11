@@ -7,10 +7,8 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 import cloneDeep from 'lodash/cloneDeep';
-import { create, update, deleteEntity, fetch, upload, parseData } from '../../entity';
+import { create, update, deleteEntity, fetch } from '../../entity';
 import error from '../../core/contentstackError';
-import FormData from 'form-data';
-import { createReadStream } from 'fs';
 import ContentstackCollection from '../../contentstackCollection';
 import { PublishRules, PublishRulesCollection } from './publishRules';
 /**
@@ -191,21 +189,21 @@ export function Workflow(http) {
     this.contentType = function (contentTypeUID) {
       if (contentTypeUID) {
         /**
-         * @description The Delete Workflow call is used to delete an existing Workflow permanently from your Stack.
-         * @memberof Workflow
-         * @func getPublishRules
-         * @returns {Object} Returns Object.
-         * @param {string} action Enter the action that has been set in the Publishing Rule. Example:publish/unpublish
-         * @param {string} locale Enter the code of the locale where your Publishing Rule will be applicable.
-         * @param {string} environment Enter the UID of the environment where your Publishing Rule will be applicable.
-         * @returns {ContentstackCollection} Result collection of content of PublishRules.
-         * @example
-         * import * as contentstack from '@contentstack/management'
-         * const client = contentstack.client()
-         *
-         * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').contentType('contentType_uid').getPublishRules()
-         * .then((collection) => console.log(collection))
-         */
+             * @description The Delete Workflow call is used to delete an existing Workflow permanently from your Stack.
+             * @memberof Workflow
+             * @func getPublishRules
+             * @returns {Object} Returns Object.
+             * @param {string} action Enter the action that has been set in the Publishing Rule. Example:publish/unpublish
+             * @param {string} locale Enter the code of the locale where your Publishing Rule will be applicable.
+             * @param {string} environment Enter the UID of the environment where your Publishing Rule will be applicable.
+             * @returns {ContentstackCollection} Result collection of content of PublishRules.
+             * @example
+             * import * as contentstack from '@contentstack/management'
+             * const client = contentstack.client()
+             *
+             * client.stack({ api_key: 'api_key'}).workflow('workflow_uid').contentType('contentType_uid').getPublishRules()
+             * .then((collection) => console.log(collection))
+             */
         var getPublishRules = /*#__PURE__*/function () {
           var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3(params) {
             var headers, response;
@@ -269,97 +267,97 @@ export function Workflow(http) {
       }
     };
     /**
-     * @description The Create a Workflow request allows you to create a Workflow.
-     * @memberof Workflow
-     * @func create
-     * @returns {Promise<Workflow.Workflow>} Promise for Workflow instance
-     *
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     * 
-     * const workflow = {
-     *	"workflow_stages": [
-     *      {
-     *			"color": "#2196f3",
-     *			"SYS_ACL": {
-     *				"roles": {
-     *					"uids": []
-     *				},
-     *				"users": {
-     *					"uids": [
-     *						"$all"
-     *					]
-     *				},
-     * 				"others": {}
-     *			},
-     *			"next_available_stages": [
-     *				"$all"
-     *			],
-     *			"allStages": true,
-     *			"allUsers": true,
-     *			"specificStages": false,
-     *			"specificUsers": false,
-     *			"entry_lock": "$none", //assign any one of the assign any one of the ($none/$others/$all)
-     *			"name": "Review"
-     *		},
-     *		{
-     *			"color": "#74ba76",
-     *			"SYS_ACL": {
-     *				"roles": {
-     *					"uids": []
-     *				},
-     *				"users": {
-     *					"uids": [
-     *						"$all"
-     *					]
-     *				},
-     *				"others": {}
-     *			},
-     *			"allStages": true,
-     *				"allUsers": true,
-     *				"specificStages": false,
-     *				"specificUsers": false,
-     *				"next_available_stages": [
-     *					"$all"
-     *				],
-     *				"entry_lock": "$none",
-     *				"name": "Complete"
-     *			}
-     *		],
-     *		"admin_users": {
-     *			"users": []
-     *		},
-     *  		"name": "Workflow Name",
-     *		"enabled": true,
-     *		"content_types": [
-     *			"$all"
-     *		]
-     *	}
-     *  client.stack().workflow().create({ workflow })
-     * .then((workflow) => console.log(workflow))    
-     */
+         * @description The Create a Workflow request allows you to create a Workflow.
+         * @memberof Workflow
+         * @func create
+         * @returns {Promise<Workflow.Workflow>} Promise for Workflow instance
+         *
+         * @example
+         * import * as contentstack from '@contentstack/management'
+         * const client = contentstack.client()
+         *
+         * const workflow = {
+         *	"workflow_stages": [
+         *      {
+         *			"color": "#2196f3",
+         *			"SYS_ACL": {
+         *				"roles": {
+         *					"uids": []
+         *				},
+         *				"users": {
+         *					"uids": [
+         *						"$all"
+         *					]
+         *				},
+         * 				"others": {}
+         *			},
+         *			"next_available_stages": [
+         *				"$all"
+         *			],
+         *			"allStages": true,
+         *			"allUsers": true,
+         *			"specificStages": false,
+         *			"specificUsers": false,
+         *			"entry_lock": "$none", //assign any one of the assign any one of the ($none/$others/$all)
+         *			"name": "Review"
+         *		},
+         *		{
+         *			"color": "#74ba76",
+         *			"SYS_ACL": {
+         *				"roles": {
+         *					"uids": []
+         *				},
+         *				"users": {
+         *					"uids": [
+         *						"$all"
+         *					]
+         *				},
+         *				"others": {}
+         *			},
+         *			"allStages": true,
+         *				"allUsers": true,
+         *				"specificStages": false,
+         *				"specificUsers": false,
+         *				"next_available_stages": [
+         *					"$all"
+         *				],
+         *				"entry_lock": "$none",
+         *				"name": "Complete"
+         *			}
+         *		],
+         *		"admin_users": {
+         *			"users": []
+         *		},
+         *  		"name": "Workflow Name",
+         *		"enabled": true,
+         *		"content_types": [
+         *			"$all"
+         *		]
+         *	}
+         *  client.stack().workflow().create({ workflow })
+         * .then((workflow) => console.log(workflow))
+         */
 
 
     this.create = create({
       http: http
     });
     /**
-     * @description The Get all Workflows request retrieves the details of all the Workflows of a stack.
-     * @memberof Workflow
-     * @func fetchAll
-     * @param {Int} limit The limit parameter will return a specific number of Workflows in the output.
-     * @param {Int} skip The skip parameter will skip a specific number of Workflows in the output.
-     * @param {Boolean}include_count To retrieve the count of Workflows.
-     * @returns {ContentstackCollection} Result collection of content of specified module.
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.stack({ api_key: 'api_key'}).workflow().fetchAll()
-     * .then((collection) => console.log(collection))
-     *
-     */
+         * @description The Get all Workflows request retrieves the details of all the Workflows of a stack.
+         * @memberof Workflow
+         * @func fetchAll
+         * @param {Int} limit The limit parameter will return a specific number of Workflows in the output.
+         * @param {Int} skip The skip parameter will skip a specific number of Workflows in the output.
+         * @param {Boolean}include_count To retrieve the count of Workflows.
+         * @returns {ContentstackCollection} Result collection of content of specified module.
+         * @example
+         * import * as contentstack from '@contentstack/management'
+         * const client = contentstack.client()
+         *
+         * client.stack({ api_key: 'api_key'}).workflow().fetchAll()
+         * .then((collection) => console.log(collection))
+         *
+         */
 
     this.fetchAll = /*#__PURE__*/function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(params) {
@@ -417,22 +415,22 @@ export function Workflow(http) {
       };
     }();
     /**
-     * @description The Publish rule allow you to create, fetch, delete, update the publish rules.
-     * @memberof Workflow
-     * @func publishRule
-     * @param {Int} ruleUid The UID of the Publish rules you want to get details.
-     * @returns {PublishRules} Instace of PublishRules.
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.stack({ api_key: 'api_key'}).workflow().publishRule().fetchAll()
-     * .then((collection) => console.log(collection))
-     * 
-     * client.stack({ api_key: 'api_key'}).workflow().publishRule('rule_uid').fetch()
-     * .then((publishrule) => console.log(publishrule))
-     *
-     */
+         * @description The Publish rule allow you to create, fetch, delete, update the publish rules.
+         * @memberof Workflow
+         * @func publishRule
+         * @param {Int} ruleUid The UID of the Publish rules you want to get details.
+         * @returns {PublishRules} Instace of PublishRules.
+         * @example
+         * import * as contentstack from '@contentstack/management'
+         * const client = contentstack.client()
+         *
+         * client.stack({ api_key: 'api_key'}).workflow().publishRule().fetchAll()
+         * .then((collection) => console.log(collection))
+         *
+         * client.stack({ api_key: 'api_key'}).workflow().publishRule('rule_uid').fetch()
+         * .then((publishrule) => console.log(publishrule))
+         *
+         */
 
 
     this.publishRule = function () {

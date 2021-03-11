@@ -10,7 +10,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import { create, update, deleteEntity, fetch } from '../../../entity';
 import error from '../../../core/contentstackError';
 import ContentstackCollection from '../../../contentstackCollection';
-import loader from 'string-replace-loader';
 /**
  * PublishRules is a tool that allows you to streamline the process of content creation and publishing, and lets you manage the content lifecycle of your project smoothly. Read more about <a href='https://www.contentstack.com/docs/developers/set-up-publish ruless-and-publish-rules'>PublishRuless and Publish Rules</a>.
  * @namespace PublishRules
@@ -30,7 +29,7 @@ export function PublishRules(http) {
      * @description The Update Publish Rules request allows you to add a publish rules stage or update the details of the existing stages of a publish rules.
      * @memberof Publish Rules
      * @func update
-     * @returns {Promise<Publish Rules.Publish Rules>} Promise for Publish Rules instance
+     * @returns {Promise<PublishRules.PublishRules>} Promise for Publish Rules instance
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -64,7 +63,7 @@ export function PublishRules(http) {
      * @description The fetch publish rules retrieves the comprehensive details of a specific Publish Rules of a stack.
      * @memberof Publish Rules
      * @func fetch
-     * @returns {Promise<Publish Rules.Publish Rules>} Promise for Publish Rules instance
+     * @returns {Promise<PublishRules.PublishRules>} Promise for Publish Rules instance
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
