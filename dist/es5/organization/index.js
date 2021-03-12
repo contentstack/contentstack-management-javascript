@@ -37,9 +37,9 @@ var _contentstackCollection = require("../contentstackCollection");
 
 var _contentstackCollection2 = (0, _interopRequireDefault2["default"])(_contentstackCollection);
 
-var _index = require("../stack/roles/index");
+var _roles = require("../stack/roles");
 
-var _index2 = require("../stack/index");
+var _stack = require("../stack");
 
 var _user = require("../user");
 
@@ -83,10 +83,10 @@ function Organization(http, data) {
        * @description The Get all stacks in an organization call fetches the list of all stacks in an Organization.
        * @memberof Organization
        * @func stacks
-       * @param {Int} limit The limit parameter will return a specific number of roles in the output.
-       * @param {Int} skip The skip parameter will skip a specific number of roles in the output.
-       * @param {String} asc When fetching roles, you can sort them in the ascending order with respect to the value of a specific field in the response body.
-       * @param {String} desc When fetching roles, you can sort them in the decending order with respect to the value of a specific field in the response body.
+       * @param {Int} limit The limit parameter will return a specific number of stacks in the output.
+       * @param {Int} skip The skip parameter will skip a specific number of stacks in the output.
+       * @param {String} asc When fetching stacks, you can sort them in the ascending order with respect to the value of a specific field in the response body.
+       * @param {String} desc When fetching stacks, you can sort them in the decending order with respect to the value of a specific field in the response body.
        * @param {Boolean} include_count To retrieve the count of stack.
        * @param {String} typeahead The type head contains value to be included in search.
        * @returns {ContentstackCollection} Instance of ContentstackCollection.
@@ -119,7 +119,7 @@ function Organization(http, data) {
                     break;
                   }
 
-                  return _context.abrupt("return", new _contentstackCollection2["default"](response, http, null, _index2.StackCollection));
+                  return _context.abrupt("return", new _contentstackCollection2["default"](response, http, null, _stack.StackCollection));
 
                 case 8:
                   return _context.abrupt("return", (0, _contentstackError2["default"])(response));
@@ -434,7 +434,7 @@ function Organization(http, data) {
                     break;
                   }
 
-                  return _context6.abrupt("return", new _contentstackCollection2["default"](response, http, null, _index.RoleCollection));
+                  return _context6.abrupt("return", new _contentstackCollection2["default"](response, http, null, _roles.RoleCollection));
 
                 case 8:
                   return _context6.abrupt("return", (0, _contentstackError2["default"])(response));
@@ -466,12 +466,12 @@ function Organization(http, data) {
      * @description The Get all organizations call lists all organizations related to the system user in the order that they were created.
      * @memberof Organization
      * @func fetchAll
-     * @param {Int} limit The limit parameter will return a specific number of roles in the output.
-     * @param {Int} skip The skip parameter will skip a specific number of roles in the output.
-     * @param {String} asc When fetching roles, you can sort them in the ascending order with respect to the value of a specific field in the response body.
-     * @param {String} desc When fetching roles, you can sort them in the decending order with respect to the value of a specific field in the response body.
-     * @param {Boolean}include_count To retrieve the count of roles.
-     * @param {String} typeahead The type head contains value to be included in search.
+     * @param {Int} limit TThe ‘limit’ parameter will return a specific number of organizations in the output.
+     * @param {Int} skip The ‘skip’ parameter will skip a specific number of organizations in the output.
+     * @param {String} asc The ‘asc’ parameter allows you to sort the list of organizations in the ascending order with respect to the value of a specific field.
+     * @param {String} desc The ‘desc’ parameter allows you to sort the list of Organizations in the descending order with respect to the value of a specific field.
+     * @param {Boolean}include_count The ‘include_count’ parameter returns the total number of organizations related to the user. 
+     * @param {String} typeahead The typeahead parameter is a type of filter that allows you to perform a name-based search on all organizations based on the value provided.
      * @returns {ContentstackCollection} Result collection of content of specified module.
      * @example
      * import * as contentstack from '@contentstack/management'

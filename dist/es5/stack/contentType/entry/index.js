@@ -164,6 +164,88 @@ function Entry(http, data) {
      */
 
     this.unpublish = (0, _entity.unpublish)(http, 'entry');
+    /**
+     * @description This multipurpose request allows you to either send a publish request or accept/reject a received publish request.
+     * @memberof Entry
+     * @func publishRequest
+     * @returns {Promise<Object>} Response Object.
+     * @param {Object} publishing_rule Details for the publish request
+     * @param {String} locale Enter the code of the locale that the entry belongs to.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     * 
+     * const publishing_rule = {
+     *  "uid": "blt9b9253297f117e84",
+    *	"action": "publish", //(‘publish’, ‘unpublish’, or ’both’)
+    *	"status": 1, //(this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
+    *	"notify": false,
+    *	"comment": "Please review this."
+     * }
+     * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').publishRequest({ publishing_rule, locale: 'en-us'})
+     * .then((response) => console.log(response.notice))
+     */
+
+    this.publishRequest = /*#__PURE__*/function () {
+      var _ref2 = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee(_ref) {
+        var publishing_rule, locale, publishDetails, headers, response;
+        return _regenerator2["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                publishing_rule = _ref.publishing_rule, locale = _ref.locale;
+                publishDetails = {
+                  workflow: {
+                    publishing_rule: publishing_rule
+                  }
+                };
+                headers = {};
+
+                if (_this.stackHeaders) {
+                  headers.headers = _this.stackHeaders;
+                }
+
+                headers.params = {
+                  locale: locale
+                };
+                _context.prev = 5;
+                _context.next = 8;
+                return http.post("".concat(_this.urlPath, "/workflow"), publishDetails, headers);
+
+              case 8:
+                response = _context.sent;
+
+                if (!response.data) {
+                  _context.next = 13;
+                  break;
+                }
+
+                return _context.abrupt("return", response.data);
+
+              case 13:
+                throw (0, _contentstackError2["default"])(response);
+
+              case 14:
+                _context.next = 19;
+                break;
+
+              case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](5);
+                throw (0, _contentstackError2["default"])(_context.t0);
+
+              case 19:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[5, 16]]);
+      }));
+
+      return function (_x) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
   } else {
     /**
      * @description The Create an entry call creates a new entry for the selected content type.
@@ -230,22 +312,22 @@ function Entry(http, data) {
 
 
   this["import"] = /*#__PURE__*/function () {
-    var _ref2 = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee(_ref) {
-      var entry, _ref$locale, locale, _ref$overwrite, overwrite, importUrl, response;
+    var _ref4 = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee2(_ref3) {
+      var entry, _ref3$locale, locale, _ref3$overwrite, overwrite, importUrl, response;
 
-      return _regenerator2["default"].wrap(function _callee$(_context) {
+      return _regenerator2["default"].wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
-              entry = _ref.entry, _ref$locale = _ref.locale, locale = _ref$locale === void 0 ? null : _ref$locale, _ref$overwrite = _ref.overwrite, overwrite = _ref$overwrite === void 0 ? false : _ref$overwrite;
+              entry = _ref3.entry, _ref3$locale = _ref3.locale, locale = _ref3$locale === void 0 ? null : _ref3$locale, _ref3$overwrite = _ref3.overwrite, overwrite = _ref3$overwrite === void 0 ? false : _ref3$overwrite;
               importUrl = "".concat(_this.urlPath, "/import?overwrite=").concat(overwrite);
 
               if (locale) {
                 importUrl = "".concat(importUrl, "&locale=").concat(locale);
               }
 
-              _context.prev = 3;
-              _context.next = 6;
+              _context2.prev = 3;
+              _context2.next = 6;
               return (0, _entity.upload)({
                 http: http,
                 urlPath: importUrl,
@@ -254,37 +336,37 @@ function Entry(http, data) {
               });
 
             case 6:
-              response = _context.sent;
+              response = _context2.sent;
 
               if (!response.data) {
-                _context.next = 11;
+                _context2.next = 11;
                 break;
               }
 
-              return _context.abrupt("return", new _this.constructor(http, (0, _entity.parseData)(response, _this.stackHeaders)));
+              return _context2.abrupt("return", new _this.constructor(http, (0, _entity.parseData)(response, _this.stackHeaders)));
 
             case 11:
               throw (0, _contentstackError2["default"])(response);
 
             case 12:
-              _context.next = 17;
+              _context2.next = 17;
               break;
 
             case 14:
-              _context.prev = 14;
-              _context.t0 = _context["catch"](3);
-              throw (0, _contentstackError2["default"])(_context.t0);
+              _context2.prev = 14;
+              _context2.t0 = _context2["catch"](3);
+              throw (0, _contentstackError2["default"])(_context2.t0);
 
             case 17:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
-      }, _callee, null, [[3, 14]]);
+      }, _callee2, null, [[3, 14]]);
     }));
 
-    return function (_x) {
-      return _ref2.apply(this, arguments);
+    return function (_x2) {
+      return _ref4.apply(this, arguments);
     };
   }();
 

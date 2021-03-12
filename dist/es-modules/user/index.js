@@ -1,3 +1,11 @@
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+import _defineProperty from "@babel/runtime/helpers/defineProperty";
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 import cloneDeep from 'lodash/cloneDeep';
 import { update, deleteEntity } from '../entity';
 import error from '../core/contentstackError';
@@ -112,6 +120,79 @@ export function User(http, data) {
         organizations: this.organizations
       });
     }
+    /**
+     * @description The Get all Tasks request retrieves a list of all tasks assigned to you.
+     * @memberof User
+     * @func getTasks
+     * @param {Object} query Enter the actual query that will be executed to retrieve the tasks. This query should be in JSON format.
+     * @param {Object} sort Enter the field UID on the basis of which you want to sort your tasks.
+     * @param {Int} limit Enter the maximum number of tasks that you want to retrieve in the response.
+     * @param {Int} skip Enter the number of tasks to be skipped.
+     * @returns {Object} Response Object.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).getUser()
+     * .then((user) => {
+     *  return user.getTasks()
+     * })
+     * .then((response) => console.log(response.assignments))
+     *
+     */
+
+
+    this.getTasks = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(params) {
+        var headers, response;
+        return _regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                headers = {};
+
+                if (params) {
+                  headers.params = _objectSpread({}, cloneDeep(params));
+                }
+
+                _context.prev = 2;
+                _context.next = 5;
+                return http.get("/user/assignments", headers);
+
+              case 5:
+                response = _context.sent;
+
+                if (!response.data) {
+                  _context.next = 10;
+                  break;
+                }
+
+                return _context.abrupt("return", response.data);
+
+              case 10:
+                throw error(response);
+
+              case 11:
+                _context.next = 16;
+                break;
+
+              case 13:
+                _context.prev = 13;
+                _context.t0 = _context["catch"](2);
+                throw error(_context.t0);
+
+              case 16:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[2, 13]]);
+      }));
+
+      return function (_x) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
   }
 
   return this;

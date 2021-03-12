@@ -213,7 +213,8 @@ function contentstackClient(_ref) {
     logout: logout,
     getUser: getUser,
     stack: stack,
-    organization: organization
+    organization: organization,
+    axiosInstance: http
   };
 }
 

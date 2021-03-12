@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-var orgID = 'blt7d93f4fb8e6f74cb'
+
 var user = {}
 var client = {}
 var organization = {}
@@ -96,7 +96,7 @@ describe('Organization api test', () => {
           expect(response.items[i].uid).to.not.equal(null, 'User uid cannot be null')
           expect(response.items[i].email).to.not.equal(null, 'User name cannot be null')
           expect(response.items[i].user_uid).to.not.equal(null, 'User name cannot be null')
-          expect(response.items[i].org_uid).to.be.equal(orgID, 'User name cannot be null')
+          expect(response.items[i].org_uid).to.not.equal(null, 'User name cannot be null')
         }
         done()
       })

@@ -5,7 +5,7 @@ import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 var stack = {}
 var client = {}
-var roleUID = 'blt0c678bcc2bdfc141'
+var roleUID = ''
 
 describe('Role api test', () => {
   setup(() => {
@@ -18,9 +18,10 @@ describe('Role api test', () => {
     getRole()
       .fetchAll()
       .then((roles) => {
+        jsonWrite(roles.items, 'roles.json')
         for (const index in roles.items) {
-          const role = roles.items[index]
-          expect(role.uid).to.not.equal(null, 'Role uid cannot be null')
+          const role1 = roles.items[index]
+          expect(role1.uid).to.not.equal(null, 'Role uid cannot be null')
         }
         done()
       })
@@ -125,7 +126,7 @@ describe('Role api test', () => {
       .then((response) => {
         const stack = response.items[0]
         expect(response.items.length).to.be.equal(1)
-        expect(stack.name).to.be.equal('Developer')
+        expect(stack.name).to.be.not.equal(null)
         done()
       })
       .catch(done)

@@ -261,6 +261,51 @@ describe('Contentstack Entry test', () => {
       })
       .catch(done)
   })
+
+
+  it('Entry publish request test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/content_type_uid/entries/UID/workflow').reply(200, {
+      ...noticeMock
+    })
+
+    const publishing_rule = {
+        "uid": "blt9b9253297f117e84",
+      	"action": "publish", //(‘publish’, ‘unpublish’, or ’both’)
+      	"status": 1, //(this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
+      	"notify": false,
+      	"comment": "Please review this."
+       }
+    makeEntry({ entry: { ...systemUidMock } })
+      .publishRequest({publishing_rule, locale: 'en-us' })
+      .then((response) => {
+        expect(response.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry publish request test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/content_type_uid/entries/UID/workflow').reply(200, {
+      ...noticeMock
+    })
+
+    const publishing_rule = {
+        "uid": "blt9b9253297f117e84",
+      	"action": "publish", //(‘publish’, ‘unpublish’, or ’both’)
+      	"status": 1, //(this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
+      	"notify": false,
+      	"comment": "Please review this."
+       }
+    makeEntry({ entry: { ...systemUidMock },  stackHeaders: stackHeadersMock })
+      .publishRequest({publishing_rule, locale: 'en-us' })
+      .then((response) => {
+        expect(response.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeEntry (data) {

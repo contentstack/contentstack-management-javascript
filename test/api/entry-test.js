@@ -1,9 +1,9 @@
 import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import { jsonReader } from '../utility/fileOperations/readwrite'
+import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 import { multiPageCT, singlepageCT } from './mock/content-type.js'
-import { entryFirst, entrySecond } from './mock/entry.js'
+import { entryFirst, entrySecond, entryThird } from './mock/entry.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
@@ -45,7 +45,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Localize entry with title update ', done => {
+  it('Localize entry with title update', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .fetch()
       .then((entry) => {
@@ -93,11 +93,28 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
+  it('Create Entries 3 for Multiple page', done => {
+    makeEntry(multiPageCT.content_type.uid)
+      .create({ entry: entryThird })
+      .then((entry) => {
+        expect(entry.uid).to.be.not.equal(null)
+        expect(entry.title).to.be.equal(entryThird.title)
+        expect(entry.url).to.be.equal(`/${entryThird.title.toLowerCase().replace(' ', '-')}`)
+        expect(entry.single_line).to.be.equal(entryThird.single_line)
+        expect(entry.multi_line).to.be.equal(entryThird.multi_line)
+        expect(entry.markdown).to.be.equal(entryThird.markdown)
+        expect(entry.tags[0]).to.be.equal(entryThird.tags[0])
+        done()
+      })
+      .catch(done)
+  })
+
   it('Get all Entry', done => {
     makeEntry(multiPageCT.content_type.uid)
       .query({ include_count: true, include_content_type: true }).find()
       .then((collection) => {
-        expect(collection.count).to.be.equal(2)
+        jsonWrite(collection.items, 'entry.json')
+        expect(collection.count).to.be.equal(3)
         collection.items.forEach((entry) => {
           expect(entry.uid).to.be.not.equal(null)
         })

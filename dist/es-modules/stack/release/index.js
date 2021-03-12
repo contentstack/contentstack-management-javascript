@@ -121,7 +121,8 @@ export function Release(http) {
 
     this.item = function () {
       return new ReleaseItem(http, {
-        releaseUid: _this.uid
+        releaseUid: _this.uid,
+        stackHeaders: _this.stackHeaders
       });
     };
     /**

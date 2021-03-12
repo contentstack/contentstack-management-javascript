@@ -76,7 +76,7 @@ export function Folder(http) {
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
      * const asset = {name: 'My New contentType'}
-     * client.stack().asset().folders().create({ asset })
+     * client.stack().asset().folder().create({ asset })
      * .then((folder) => console.log(folder))
      */
     this.create = create({

@@ -30,11 +30,9 @@ var _axios = require("axios");
 
 var _axios2 = (0, _interopRequireDefault2["default"])(_axios);
 
-var _contentstackRetry = require("./contentstack-retry");
-
-var _contentstackRetry2 = (0, _interopRequireDefault2["default"])(_contentstackRetry);
-
 var _Util = require("./Util");
+
+var _concurrencyQueue = require("./concurrency-queue");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -121,6 +119,7 @@ function contentstackHttpClient(options) {
         qs = qs + "&query=".concat(encodeURI(JSON.stringify(query)));
       }
 
+      params.query = query;
       return qs;
     }
   });
@@ -128,7 +127,10 @@ function contentstackHttpClient(options) {
   var instance = _axios2["default"].create(axiosOptions);
 
   instance.httpClientParams = options;
-  (0, _contentstackRetry2["default"])(instance, axiosOptions, config.retyLimit, config.retryDelay);
+  instance.concurrencyQueue = new _concurrencyQueue.ConcurrencyQueue({
+    axios: instance,
+    config: config
+  });
   return instance;
 }
 

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import { jsonReader } from '../utility/fileOperations/readwrite'
+import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 import { environmentCreate, environmentProdCreate } from './mock/environment.js'
 import { cloneDeep } from 'lodash'
 import { contentstackClient } from '../utility/ContentstackClient.js'
@@ -66,21 +66,6 @@ describe('Environment api Test', () => {
       .catch(done)
   })
 
-  it('Query all Environments', done => {
-    makeEnvironment()
-      .query()
-      .find()
-      .then((environments) => {
-        environments.items.forEach((environment) => {
-          expect(environment.name).to.be.not.equal(null)
-          expect(environment.deploy_content).to.be.not.equal(null)
-          expect(environment.uid).to.be.not.equal(null)
-        })
-        done()
-      })
-      .catch(done)
-  })
-
   it('Fetch and Update a Environment', done => {
     makeEnvironment(environmentCreate.environment.name)
       .fetch()
@@ -127,6 +112,22 @@ describe('Environment api Test', () => {
         expect(environment.name).to.be.equal(environmentProdCreate.environment.name)
         expect(environment.deploy_content).to.be.equal(environmentProdCreate.environment.deploy_content)
         expect(environment.uid).to.be.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Query all Environments', done => {
+    makeEnvironment()
+      .query()
+      .find()
+      .then((environments) => {
+        jsonWrite(environments.items, 'environments.json')
+        environments.items.forEach((environment) => {
+          expect(environment.name).to.be.not.equal(null)
+          expect(environment.deploy_content).to.be.not.equal(null)
+          expect(environment.uid).to.be.not.equal(null)
+        })
         done()
       })
       .catch(done)

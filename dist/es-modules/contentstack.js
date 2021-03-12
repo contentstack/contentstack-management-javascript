@@ -44,6 +44,11 @@ import httpClient from './core/contentstackHTTPClient.js';
  * import * as contentstack from '@contentstack/management'
  * const client = contentstack.client({ timeout: 50000 })
  *
+ * @prop {number=} params.maxRequests - Optional maximum number of requests SDK should send concurrently. Default is 5 concurrent request.
+ * @example //Set the `maxRequests` to 5
+ * import * as contentstack from '@contentstack/management'
+ * const client = contentstack.client({ maxRequests: 5 })
+ *
  * @prop {boolean=} params.retryOnError - Optional boolean for retry on failuer. Default is true
  * @example //Set the `retryOnError` to false
  * import * as contentstack from '@contentstack/management'
@@ -119,7 +124,7 @@ export function client() {
   var defaultParameter = {
     defaultHostName: 'api.contentstack.io'
   };
-  var sdkAgent = "".concat(packages.name, "-javascript/").concat(packages.version);
+  var sdkAgent = "contentstack-management-javascript/".concat(packages.version);
   var userAgentHeader = getUserAgent(sdkAgent, params.application, params.integration, params.feature);
   var requiredHeaders = {
     'X-User-Agent': sdkAgent,
