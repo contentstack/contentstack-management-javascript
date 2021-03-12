@@ -22,7 +22,8 @@ export function ContentType(http) {
     Object.assign(this, cloneDeep(data.content_type));
     this.urlPath = "/content_types/".concat(this.uid);
     /**
-     * @description The Update ContentType call lets you update the name and description of an existing ContentType.
+     * @description The Update ContentType call lets you update the name and description of an existing ContentType. 
+     * You can also update the JSON schema of a content type, including fields and different features associated with the content type.
      * @memberof ContentType
      * @func update
      * @returns {Promise<ContentType.ContentType>} Promise for ContentType instance
