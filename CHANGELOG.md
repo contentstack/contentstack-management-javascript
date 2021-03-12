@@ -1,6 +1,6 @@
 # Changelog
 
-## [v1.2.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.0) (.....)
+## [v1.2.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.0) (2021-03-12)
  - Bug Fix
    - Release Items issue for API key resolved
  - Enhanchment 
