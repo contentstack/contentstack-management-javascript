@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.2.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.0) (.....)
+ - Bug Fix
+   - Release Items issue for API key resolved
+ - Enhanchment 
+   - Request concurrency added in SDK
+ - New Feature
+   - Workflow module support added
 ## [v1.1.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.1.2) (2021-01-07)
  - Bug Fix
    - Retry count on multiple request failuer
