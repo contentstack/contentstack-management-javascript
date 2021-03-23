@@ -78,7 +78,7 @@ function Organization(http, data) {
 
     if (this.org_roles && this.org_roles.filter(function (role) {
       return role.admin === true;
-    }).length > 0 || this.owner && this.owner === true) {
+    }).length > 0 || this.owner && this.owner === true || this.is_owner && this.is_owner === true) {
       /**
        * @description The Get all stacks in an organization call fetches the list of all stacks in an Organization.
        * @memberof Organization

@@ -94,6 +94,17 @@ const orgOwnerMock = {
   owner: true
 }
 
+const orgISOwnerMock = {
+  ...cloneDeep(systemFieldsMock),
+  name: 'name',
+  plan_id: 'plan_id',
+  owner_uid: 'owner_uid',
+  expires_on: 'expires_on',
+  enabled: true,
+  is_over_usage_allowed: true,
+  is_owner: true
+}
+
 const orgMock = {
   ...cloneDeep(systemFieldsMock),
   name: 'name',
@@ -451,6 +462,7 @@ export {
   userMock,
   orgMock,
   orgOwnerMock,
+  orgISOwnerMock,
   adminRoleMock,
   roleMock,
   systemUidMock,

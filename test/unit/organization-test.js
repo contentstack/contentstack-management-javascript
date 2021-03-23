@@ -2,7 +2,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import { Organization, OrganizationCollection } from '../../lib/organization'
-import { roleMock, adminRoleMock, orgMock, mockCollection, systemUidMock, stackMock, noticeMock, userMock, orgOwnerMock } from './mock/objects'
+import { roleMock, adminRoleMock, orgMock, mockCollection, systemUidMock, stackMock, noticeMock, userMock, orgOwnerMock, orgISOwnerMock } from './mock/objects'
 import MockAdapter from 'axios-mock-adapter'
 import ContentstackCollection from '../../lib/contentstackCollection'
 import { checkUser } from './user-test'
@@ -10,52 +10,61 @@ import { checkAdminRole, checkRole } from './role-test'
 import { checkStack } from './stack-test'
 
 describe('Organization Test', () => {
-  // it('Organization without UID', done => {
-  //   const organization = makeOrganization()
-  //   expect(organization.urlPath).to.be.equal('/organizations')
-  //   expect(organization.fetchAll).to.not.equal(undefined)
-  //   expect(organization.fetch).to.be.equal(undefined)
-  //   expect(organization.stacks).to.be.equal(undefined)
-  //   expect(organization.transferOwnership).to.be.equal(undefined)
-  //   expect(organization.addUser).to.be.equal(undefined)
-  //   expect(organization.getInvitations).to.be.equal(undefined)
-  //   expect(organization.resendInvitation).to.be.equal(undefined)
-  //   expect(organization.roles).to.be.equal(undefined)
-  //   done()
-  // })
+  it('Organization without UID', done => {
+    const organization = makeOrganization()
+    expect(organization.urlPath).to.be.equal('/organizations')
+    expect(organization.fetchAll).to.not.equal(undefined)
+    expect(organization.fetch).to.be.equal(undefined)
+    expect(organization.stacks).to.be.equal(undefined)
+    expect(organization.transferOwnership).to.be.equal(undefined)
+    expect(organization.addUser).to.be.equal(undefined)
+    expect(organization.getInvitations).to.be.equal(undefined)
+    expect(organization.resendInvitation).to.be.equal(undefined)
+    expect(organization.roles).to.be.equal(undefined)
+    done()
+  })
 
-  // it('Organization with UID', done => {
-  //   const organization = makeOrganization({ organization: {
-  //     ...systemUidMock
-  //   } })
-  //   expect(organization.fetchAll).to.be.equal(undefined)
-  //   expect(organization.fetch).to.not.equal(undefined)
-  //   expect(organization.stacks).to.be.equal(undefined)
-  //   expect(organization.transferOwnership).to.be.equal(undefined)
-  //   expect(organization.addUser).to.be.equal(undefined)
-  //   expect(organization.getInvitations).to.be.equal(undefined)
-  //   expect(organization.resendInvitation).to.be.equal(undefined)
-  //   expect(organization.roles).to.be.equal(undefined)
-  //   done()
-  // })
+  it('Organization with UID', done => {
+    const organization = makeOrganization({ organization: {
+      ...systemUidMock
+    } })
+    expect(organization.fetchAll).to.be.equal(undefined)
+    expect(organization.fetch).to.not.equal(undefined)
+    expect(organization.stacks).to.be.equal(undefined)
+    expect(organization.transferOwnership).to.be.equal(undefined)
+    expect(organization.addUser).to.be.equal(undefined)
+    expect(organization.getInvitations).to.be.equal(undefined)
+    expect(organization.resendInvitation).to.be.equal(undefined)
+    expect(organization.roles).to.be.equal(undefined)
+    done()
+  })
 
-  // it('Organization with non admin role', done => {
-  //   const organization = makeOrganization({ organization: {
-  //     ...systemUidMock,
-  //     org_roles: [roleMock]
-  //   } })
-  //   checknonAdminFunction(organization)
-  //   done()
-  // })
+  it('Organization with non admin role', done => {
+    const organization = makeOrganization({ organization: {
+      ...systemUidMock,
+      org_roles: [roleMock]
+    } })
+    checknonAdminFunction(organization)
+    done()
+  })
 
-  // it('Organization with owner', done => {
-  //   const organization = makeOrganization({ organization: {
-  //     ...orgOwnerMock
-  //   } })
-  //   checkOrgMock(organization)
-  //   checkAdminFunction(organization)
-  //   done()
-  // })
+  it('Organization with owner', done => {
+    const organization = makeOrganization({ organization: {
+      ...orgOwnerMock
+    } })
+    checkOrgMock(organization)
+    checkAdminFunction(organization)
+    done()
+  })
+
+  it('Organization with owner', done => {
+    const organization = makeOrganization({ organization: {
+      ...orgISOwnerMock
+    } })
+    checkOrgMock(organization)
+    checkAdminFunction(organization)
+    done()
+  })
 
   it('Organization with admin role', done => {
     const organization = makeOrganization({ organization: {
