@@ -2,6 +2,7 @@
 ## [v1.2.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.1) (2021-03-19)
  - Bug Fix
    - User get details: Include organization functions for `is_owner` of the organization
+
 ## [v1.2.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.0) (2021-03-12)
  - Bug Fix
    - Release Items issue for API key resolved
