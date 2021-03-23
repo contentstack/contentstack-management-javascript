@@ -1,15 +1,17 @@
 # Changelog
-
-## [v1.2.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.0) (.....)
+## [v1.2.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.1) (2021-03-19)
+ - Bug Fix
+   - User get details: Include organization functions for `is_owner` of the organization
+## [v1.2.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.0) (2021-03-12)
  - Bug Fix
    - Release Items issue for API key resolved
- - Enhanchment 
+ - Enhancement 
    - Request concurrency added in SDK
  - New Feature
    - Workflow module support added
 ## [v1.1.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.1.2) (2021-01-07)
  - Bug Fix
-   - Retry count on multiple request failuer
+   - Retry count on multiple request failure
 ## [v1.1.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.1.1) (2020-10-23)
  - Bug Fix
    - Stack initialization issue
