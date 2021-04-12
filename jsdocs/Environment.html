@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Contentstack - Documentation</title>
+    <title>Environment - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Contentstack</h1>
+    <h1 class="page-title">Environment</h1>
     
 
     
@@ -56,7 +56,7 @@
 <header>
     
         <h2>
-        Contentstack
+        Environment
         </h2>
         
     
@@ -73,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="contentstack.js.html">contentstack.js</a>, <a href="contentstack.js.html#line1">line 1</a>
+        <a href="stack_environment_index.js.html">stack/environment/index.js</a>, <a href="stack_environment_index.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
@@ -112,7 +112,7 @@
 
 
             
-                <div class="description usertext">The Content Management API (CMA) is used to manage the content of your Contentstack account. This includes creating, updating, deleting, and fetching content of your account.</div>
+                <div class="description usertext">A publishing environment corresponds to one or more deployment servers or a content delivery destination where the entries need to be published. Read more about <a href='https://www.contentstack.com/docs/developers/set-up-environments'>Environment</a>.</div>
             
 
             
@@ -133,12 +133,18 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         
             
-<h4 class="name" id=".client"><span class="type-signature">(static) </span>client<span class="type-signature"></span></h4>
 
+    
+
+    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Environment.Environment>}</span></h4>
+
+    
 
 
 
@@ -148,7 +154,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="contentstack.js.html">contentstack.js</a>, <a href="contentstack.js.html#line11">line 11</a>
+        <a href="stack_environment_index.js.html">stack/environment/index.js</a>, <a href="stack_environment_index.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -185,537 +191,10 @@
 
 
 
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>params.endpoint</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">API endpoint that a service will talk to</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.host</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">API host (default: api.contentstack.io)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.headers</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Optional additional headers</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.timeout</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Optional number of milliseconds before the request times out. Default is 30000ms</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.maxRequests</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Optional maximum number of requests SDK should send concurrently. Default is 5 concurrent request.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.retryOnError</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Optional boolean for retry on failuer. Default is true</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.retryLimit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Optional number of retries before failure. Default is 5</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.retryDelay</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The number of miliseconds to use for operation retries. Default is 300ms</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.retryCondition</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">A function to determine if the error can be retried. Default retry is on status 429.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.retryDelayOptions.base</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The base number of milliseconds to use in the exponential backoff for operation retries.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.retryDelayOptions.customBackoff</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds. (if you want not to retry for specific condition return -1)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.maxContentLength</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Optional maximum content length in bytes (default: 1073741824 i.e. 1 GB)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.maxBodyLength</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Optional maximum body length in bytes (default: 10 MB)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.logHandler</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">A log handler function to process given log messages & errors.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.application</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Application name and version e.g myApp/version</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.integration</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Integration name and version e.g react/version</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
 
 
 <div class="description usertext">
-    Create client instance
+    The Update Environment call lets you update the name and description of an existing Environment.
 </div>
 
 
@@ -724,92 +203,550 @@
 
 
 
-    <h5>Examples</h5>
+
+
+    <h5>Example</h5>
     
     <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
-const client = contentstack.client()</code></pre>
+const client = contentstack.client()
 
-    <pre class="prettyprint"><code>//Set the `endpoint` to 'https://api.contentstack.io:{port}/{version}'
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ endpoint: 'https://api.contentstack.io:{port}/{version}' })</code></pre>
+client.stack({ api_key: 'api_key'}).environment('uid').fetch()
+.then((environment) => {
+ environment.title = 'My New Content Type'
+ environment.description = 'Content Type description'
+ return environment.update()
+})
+.then((environment) => console.log(environment))</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `host` to 'api.contentstack.io'
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ host: 'api.contentstack.io' })</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `headers` to { 'headerkey': 'value'}
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ headers: { 'headerkey': 'value'} })</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `timeout` to 50000ms
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ timeout: 50000 })</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `maxRequests` to 5
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ maxRequests: 5 })</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `retryOnError` to false
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ retryOnError: false })</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `retryLimit` to 2
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ retryLimit: 2 })</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `retryDelay` to 500ms
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ retryDelay: 500 })</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `retryCondition` on error status 429
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ retryCondition: (error) => {
-     if (error.response &amp;&amp; error.response.status === 429) {
-       return true
-     }
-     return false
-   }
- })</code></pre>
 
-    <pre class="prettyprint"><code>Set  base retry delay for all services to 300 ms
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({retryDelayOptions: {base: 300}})</code></pre>
 
-    <pre class="prettyprint"><code>Set a custom backoff function to provide delay of 500 ms on retryCount &lt; 3 and -1 for retryCount >= 3values on retries
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({retryDelayOptions: {customBackoff: function(retryCount, err) {
-       if (retryCount &lt; 3) {
-         return 500
-       } else {
-         return -1 //returning -1 will hold next retry for request
-       }
-    }}}
-)</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `maxContentLength` to 1024 ** 3
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ maxContentLength: 1024 ** 3 })</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `maxContentLength` to 1024 ** 2 * 10 // 10 MB
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ maxBodyLength: 1024 ** 2 * 10 })</code></pre>
 
-    <pre class="prettyprint"><code>//Set the `logHandler`
-import * as contentstack from '@contentstack/management'
-const client = contentstack.client({ logHandler: (level, data) => {
-      if (level === 'error' &amp;&amp; data) {
-        const title = [data.name, data.message].filter((a) => a).join(' - ')
-        console.error(`[error] ${title}`)
-        return
-      }
-      console.log(`[${level}] ${data}`)
-    } })</code></pre>
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise for Environment instance
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Environment.Environment></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
         
+            
+
     
 
+    <h4 class="name" id=".delete"><span class="type-signature">(static) </span>delete<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_environment_index.js.html">stack/environment/index.js</a>, <a href="stack_environment_index.js.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Delete Environment call is used to delete an existing Environment permanently from your Stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).environment('uid').delete()
+.then((response) => console.log(response.notice))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Response Object.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".fetch"><span class="type-signature">(static) </span>fetch<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Environment.Environment>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_environment_index.js.html">stack/environment/index.js</a>, <a href="stack_environment_index.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The fetch Environment call fetches Environment details.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).environment('uid').fetch()
+.then((environment) => console.log(environment))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise for Environment instance
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Environment.Environment></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Environment.Environment>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_environment_index.js.html">stack/environment/index.js</a>, <a href="stack_environment_index.js.html#line64">line 64</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Create a Environment call creates a new environment in a particular stack of your Contentstack account.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+const environment = {
+     name: 'development',
+     servers: [
+               {
+                 name: 'default'
+               }
+               ],
+     urls: [
+             {
+                 locale: 'en-us',
+                 url: 'http://example.com/'
+             }
+           ],
+     deploy_content: true
+}
+client.stack({ api_key: 'api_key'}).environment().create({ environment })
+.then((environment) => console.log(environment))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise for Environment instance
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Environment.Environment></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".query"><span class="type-signature">(static) </span>query<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Environment.html">Environment</a>>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stack_environment_index.js.html">stack/environment/index.js</a>, <a href="stack_environment_index.js.html#line93">line 93</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    The Query on GlobalField will allow to fetch details of all or specific GlobalField
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>import * as contentstack from '@contentstack/management'
+const client = contentstack.client()
+
+client.stack({ api_key: 'api_key'}).environment().query({ query: { name: 'Environment Name' } }).find()
+.then((globalFields) => console.log(globalFields))</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Array of GlobalField.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="Environment.html">Environment</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
     
 
     
