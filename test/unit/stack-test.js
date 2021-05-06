@@ -238,6 +238,23 @@ describe('Contentststack Stack test', () => {
       .catch(done)
   })
 
+  it('Organization Stack Query test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('/stacks').reply(200, {
+      stacks: [
+        stackMock
+      ]
+    })
+    makeStack({ organization_uid: 'org_uid' })
+      .query()
+      .find()
+      .then((stacks) => {
+        checkStack(stacks.items[0])
+        done()
+      })
+      .catch(done)
+  })
+
   it('Stack Query test', done => {
     const mock = new MockAdapter(Axios)
     mock.onGet('/stacks').reply(200, {
