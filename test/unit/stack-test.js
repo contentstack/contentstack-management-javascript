@@ -5,7 +5,7 @@ import { expect } from 'chai'
 import { stackMock, noticeMock, systemUidMock } from './mock/objects'
 import MockAdapter from 'axios-mock-adapter'
 
-describe('Contentststack Stack test', () => {
+describe('Contentstack Stack test', () => {
   it('Stack without API key', done => {
     const stack = makeStack({})
     expect(stack.urlPath).to.be.equal('/stacks')
@@ -21,6 +21,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.asset).to.be.equal(undefined)
     expect(stack.globalField).to.be.equal(undefined)
     expect(stack.environment).to.be.equal(undefined)
+    expect(stack.branch).to.be.equal(undefined)
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
@@ -54,6 +55,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.asset).to.be.equal(undefined)
     expect(stack.globalField).to.be.equal(undefined)
     expect(stack.environment).to.be.equal(undefined)
+    expect(stack.branch).to.be.equal(undefined)
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
@@ -87,6 +89,41 @@ describe('Contentststack Stack test', () => {
     expect(stack.asset).to.be.equal(undefined)
     expect(stack.globalField).to.be.equal(undefined)
     expect(stack.environment).to.be.equal(undefined)
+    expect(stack.branch).to.be.equal(undefined)
+    expect(stack.deliveryToken).to.be.equal(undefined)
+    expect(stack.extension).to.be.equal(undefined)
+    expect(stack.webhook).to.be.equal(undefined)
+    expect(stack.workflow).to.be.equal(undefined)
+    expect(stack.label).to.be.equal(undefined)
+    expect(stack.release).to.be.equal(undefined)
+    expect(stack.bulkOperation).to.be.equal(undefined)
+    expect(stack.users).to.be.equal(undefined)
+    expect(stack.transferOwnership).to.be.equal(undefined)
+    expect(stack.settings).to.be.equal(undefined)
+    expect(stack.resetSettings).to.be.equal(undefined)
+    expect(stack.addSettings).to.be.equal(undefined)
+    expect(stack.share).to.be.equal(undefined)
+    expect(stack.unShare).to.be.equal(undefined)
+    expect(stack.role).to.be.equal(undefined)
+    done()
+  })
+
+  it('Stack without API key, with Branch', done => {
+    const stack = makeStack({ stack: { branch_name: 'branch' } })
+    expect(stack.urlPath).to.be.equal('/stacks')
+    expect(stack.organization_uid).to.be.equal(undefined)
+    expect(stack.stackHeaders).to.be.equal(undefined)
+    expect(stack.api_key).to.be.equal(undefined)
+    expect(stack.create).to.not.equal(undefined)
+    expect(stack.query).to.not.equal(undefined)
+    expect(stack.update).to.be.equal(undefined)
+    expect(stack.fetch).to.be.equal(undefined)
+    expect(stack.contentType).to.be.equal(undefined)
+    expect(stack.locale).to.be.equal(undefined)
+    expect(stack.asset).to.be.equal(undefined)
+    expect(stack.globalField).to.be.equal(undefined)
+    expect(stack.environment).to.be.equal(undefined)
+    expect(stack.branch).to.be.equal(undefined)
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
@@ -120,6 +157,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.asset).to.be.equal(undefined)
     expect(stack.globalField).to.be.equal(undefined)
     expect(stack.environment).to.be.equal(undefined)
+    expect(stack.branch).to.be.equal(undefined)
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
@@ -155,6 +193,7 @@ describe('Contentststack Stack test', () => {
     expect(stack.asset).to.not.equal(undefined)
     expect(stack.globalField).to.not.equal(undefined)
     expect(stack.environment).to.not.equal(undefined)
+    expect(stack.branch).to.not.equal(undefined)
     expect(stack.deliveryToken).to.not.equal(undefined)
     expect(stack.extension).to.not.equal(undefined)
     expect(stack.webhook).to.not.equal(undefined)
@@ -190,6 +229,80 @@ describe('Contentststack Stack test', () => {
     expect(stack.asset).to.not.equal(undefined)
     expect(stack.globalField).to.not.equal(undefined)
     expect(stack.environment).to.not.equal(undefined)
+    expect(stack.branch).to.not.equal(undefined)
+    expect(stack.deliveryToken).to.not.equal(undefined)
+    expect(stack.extension).to.not.equal(undefined)
+    expect(stack.webhook).to.not.equal(undefined)
+    expect(stack.workflow).to.not.equal(undefined)
+    expect(stack.label).to.not.equal(undefined)
+    expect(stack.release).to.not.equal(undefined)
+    expect(stack.bulkOperation).to.not.equal(undefined)
+    expect(stack.users).to.not.equal(undefined)
+    expect(stack.transferOwnership).to.not.equal(undefined)
+    expect(stack.settings).to.not.equal(undefined)
+    expect(stack.resetSettings).to.not.equal(undefined)
+    expect(stack.addSettings).to.not.equal(undefined)
+    expect(stack.share).to.not.equal(undefined)
+    expect(stack.unShare).to.not.equal(undefined)
+    expect(stack.role).to.not.equal(undefined)
+    done()
+  })
+
+  it('Stack with API key and Management token', done => {
+    const stack = makeStack({ stack: { api_key: 'API_KEY', branch_name: 'branch' } })
+    expect(stack.urlPath).to.be.equal('/stacks')
+    expect(stack.organization_uid).to.be.equal(undefined)
+    expect(stack.stackHeaders).to.not.equal(undefined)
+    expect(stack.stackHeaders.api_key).to.be.equal('API_KEY')
+    expect(stack.branch_name).to.be.equal('branch')
+    expect(stack.api_key).to.be.equal('API_KEY')
+    expect(stack.create).to.be.equal(undefined)
+    expect(stack.query).to.be.equal(undefined)
+    expect(stack.update).to.not.equal(undefined)
+    expect(stack.fetch).to.not.equal(undefined)
+    expect(stack.contentType).to.not.equal(undefined)
+    expect(stack.locale).to.not.equal(undefined)
+    expect(stack.asset).to.not.equal(undefined)
+    expect(stack.globalField).to.not.equal(undefined)
+    expect(stack.environment).to.not.equal(undefined)
+    expect(stack.branch).to.not.equal(undefined)
+    expect(stack.deliveryToken).to.not.equal(undefined)
+    expect(stack.extension).to.not.equal(undefined)
+    expect(stack.webhook).to.not.equal(undefined)
+    expect(stack.workflow).to.not.equal(undefined)
+    expect(stack.label).to.not.equal(undefined)
+    expect(stack.release).to.not.equal(undefined)
+    expect(stack.bulkOperation).to.not.equal(undefined)
+    expect(stack.users).to.not.equal(undefined)
+    expect(stack.transferOwnership).to.not.equal(undefined)
+    expect(stack.settings).to.not.equal(undefined)
+    expect(stack.resetSettings).to.not.equal(undefined)
+    expect(stack.addSettings).to.not.equal(undefined)
+    expect(stack.share).to.not.equal(undefined)
+    expect(stack.unShare).to.not.equal(undefined)
+    expect(stack.role).to.not.equal(undefined)
+    done()
+  })
+
+  it('Stack with API key and Management token', done => {
+    const stack = makeStack({ stack: { api_key: 'API_KEY', management_token: 'Management_Token', branch_name: 'branch' } })
+    expect(stack.urlPath).to.be.equal('/stacks')
+    expect(stack.organization_uid).to.be.equal(undefined)
+    expect(stack.stackHeaders).to.not.equal(undefined)
+    expect(stack.stackHeaders.api_key).to.be.equal('API_KEY')
+    expect(stack.stackHeaders.authorization).to.be.equal('Management_Token')
+    expect(stack.branch_name).to.be.equal('branch')
+    expect(stack.api_key).to.be.equal('API_KEY')
+    expect(stack.create).to.be.equal(undefined)
+    expect(stack.query).to.be.equal(undefined)
+    expect(stack.update).to.not.equal(undefined)
+    expect(stack.fetch).to.not.equal(undefined)
+    expect(stack.contentType).to.not.equal(undefined)
+    expect(stack.locale).to.not.equal(undefined)
+    expect(stack.asset).to.not.equal(undefined)
+    expect(stack.globalField).to.not.equal(undefined)
+    expect(stack.environment).to.not.equal(undefined)
+    expect(stack.branch).to.not.equal(undefined)
     expect(stack.deliveryToken).to.not.equal(undefined)
     expect(stack.extension).to.not.equal(undefined)
     expect(stack.webhook).to.not.equal(undefined)
@@ -312,7 +425,7 @@ describe('Contentststack Stack test', () => {
       .catch(done)
   })
 
-  it('Content Type initialisation without content type uid', done => {
+  it('Content Type initialization without content type uid', done => {
     const contentType = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -325,7 +438,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Content Type initialisation with content type uid', done => {
+  it('Content Type initialization with content type uid', done => {
     const contentType = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -338,7 +451,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Local initialisation without code', done => {
+  it('Local initialization without code', done => {
     const locale = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -351,7 +464,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Local initialisation with code', done => {
+  it('Local initialization with code', done => {
     const locale = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -364,7 +477,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Asset initialisation without uid', done => {
+  it('Asset initialization without uid', done => {
     const asset = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -377,7 +490,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Asset initialisation with uid', done => {
+  it('Asset initialization with uid', done => {
     const asset = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -390,7 +503,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Global Field initialisation without uid', done => {
+  it('Global Field initialization without uid', done => {
     const globalField = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -403,7 +516,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Global Field initialisation with uid', done => {
+  it('Global Field initialization with uid', done => {
     const globalField = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -416,7 +529,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Environment initialisation without uid', done => {
+  it('Environment initialization without uid', done => {
     const environment = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -429,7 +542,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Environment initialisation with uid', done => {
+  it('Environment initialization with uid', done => {
     const environment = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -442,7 +555,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Delivery Token initialisation without uid', done => {
+  it('Delivery Token initialization without uid', done => {
     const deliveryToken = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -455,7 +568,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Delivery Token initialisation with uid', done => {
+  it('Delivery Token initialization with uid', done => {
     const deliveryToken = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -468,7 +581,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Extensions initialisation without uid', done => {
+  it('Extensions initialization without uid', done => {
     const extension = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -481,7 +594,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Extensions initialisation with uid', done => {
+  it('Extensions initialization with uid', done => {
     const extension = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -494,7 +607,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Webhooks initialisation without uid', done => {
+  it('Webhooks initialization without uid', done => {
     const webhook = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -507,7 +620,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Webhooks initialisation with uid', done => {
+  it('Webhooks initialization with uid', done => {
     const webhook = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -520,7 +633,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Workflow initialisation without uid', done => {
+  it('Workflow initialization without uid', done => {
     const workflow = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -533,7 +646,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Workflow initialisation with uid', done => {
+  it('Workflow initialization with uid', done => {
     const workflow = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -546,7 +659,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Labels initialisation without uid', done => {
+  it('Labels initialization without uid', done => {
     const label = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -559,7 +672,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Labels initialisation with uid', done => {
+  it('Labels initialization with uid', done => {
     const label = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -572,7 +685,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Release initialisation without uid', done => {
+  it('Release initialization without uid', done => {
     const release = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -585,7 +698,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Release initialisation with uid', done => {
+  it('Release initialization with uid', done => {
     const release = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -598,7 +711,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Bulk operations initialisation without uid', done => {
+  it('Bulk operations initialization without uid', done => {
     const bulkOperation = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -612,7 +725,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Role initialisation without uid', done => {
+  it('Role initialization without uid', done => {
     const role = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -625,7 +738,7 @@ describe('Contentststack Stack test', () => {
     done()
   })
 
-  it('Role initialisation with uid', done => {
+  it('Role initialization with uid', done => {
     const role = makeStack({
       stack: {
         api_key: 'stack_api_key'
@@ -635,6 +748,46 @@ describe('Contentststack Stack test', () => {
     expect(role.uid).to.be.equal(systemUidMock.uid)
     expect(role.stackHeaders).to.not.equal(undefined)
     expect(role.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('Branch initialization without branch', done => {
+    const branch = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .branch()
+    expect(branch.name).to.be.equal(undefined)
+    expect(branch.stackHeaders).to.not.equal(undefined)
+    expect(branch.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('Branch initialization with branch', done => {
+    const branch = makeStack({
+      stack: {
+        api_key: 'stack_api_key',
+        branch_name: 'branch'
+      }
+    })
+      .branch()
+    expect(branch.name).to.be.equal('branch')
+    expect(branch.stackHeaders).to.not.equal(undefined)
+    expect(branch.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('Branch initialization with branch', done => {
+    const branch = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .branch('branch')
+    expect(branch.name).to.be.equal('branch')
+    expect(branch.stackHeaders).to.not.equal(undefined)
+    expect(branch.stackHeaders.api_key).to.be.equal('stack_api_key')
     done()
   })
 
