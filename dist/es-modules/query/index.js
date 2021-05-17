@@ -18,7 +18,14 @@ export default function Query(http, urlPath, param) {
     headers.headers = stackHeaders;
   }
 
+  var contentTypeUid = null;
+
   if (param) {
+    if (param.content_type_uid) {
+      contentTypeUid = param.content_type_uid;
+      delete param.content_type_uid;
+    }
+
     headers.params = _objectSpread({}, cloneDeep(param));
   }
   /**
@@ -56,30 +63,34 @@ export default function Query(http, urlPath, param) {
               response = _context.sent;
 
               if (!response.data) {
-                _context.next = 8;
+                _context.next = 9;
                 break;
+              }
+
+              if (contentTypeUid) {
+                response.data.content_type_uid = contentTypeUid;
               }
 
               return _context.abrupt("return", new ContentstackCollection(response, http, stackHeaders, wrapperCollection));
 
-            case 8:
+            case 9:
               throw error(response);
 
-            case 9:
-              _context.next = 14;
+            case 10:
+              _context.next = 15;
               break;
 
-            case 11:
-              _context.prev = 11;
+            case 12:
+              _context.prev = 12;
               _context.t0 = _context["catch"](0);
               throw error(_context.t0);
 
-            case 14:
+            case 15:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 11]]);
+      }, _callee, null, [[0, 12]]);
     }));
 
     return function find() {
@@ -191,30 +202,34 @@ export default function Query(http, urlPath, param) {
               response = _context3.sent;
 
               if (!response.data) {
-                _context3.next = 10;
+                _context3.next = 11;
                 break;
+              }
+
+              if (contentTypeUid) {
+                response.data.content_type_uid = contentTypeUid;
               }
 
               return _context3.abrupt("return", new ContentstackCollection(response, http, stackHeaders, wrapperCollection));
 
-            case 10:
+            case 11:
               throw error(response);
 
-            case 11:
-              _context3.next = 16;
+            case 12:
+              _context3.next = 17;
               break;
 
-            case 13:
-              _context3.prev = 13;
+            case 14:
+              _context3.prev = 14;
               _context3.t0 = _context3["catch"](2);
               throw error(_context3.t0);
 
-            case 16:
+            case 17:
             case "end":
               return _context3.stop();
           }
         }
-      }, _callee3, null, [[2, 13]]);
+      }, _callee3, null, [[2, 14]]);
     }));
 
     return function findOne() {

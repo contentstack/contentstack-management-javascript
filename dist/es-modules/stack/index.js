@@ -90,7 +90,7 @@ export function Stack(http, data) {
     /**
      * @description Content type defines the structure or schema of a page or a section of your web or mobile property.
      * @param {String} uid The UID of the ContentType you want to get details.
-     * @returns {ContenType} Instace of ContentType.
+     * @returns {ContentType} Instance of ContentType.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -119,7 +119,7 @@ export function Stack(http, data) {
     /**
      * @description Locale allows you to create and publish entries in any language.
      * @param {String} uid The UID of the Locale you want to get details.
-     * @returns {Locale} Instace of Locale.
+     * @returns {Locale} Instance of Locale.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -149,7 +149,7 @@ export function Stack(http, data) {
     /**
      * @description Assets refer to all the media files (images, videos, PDFs, audio files, and so on) uploaded in your Contentstack repository for future use.
      * @param {String} uid The UID of the Asset you want to get details.
-     * @returns {Asset} Instace of Asset.
+     * @returns {Asset} Instance of Asset.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -179,7 +179,7 @@ export function Stack(http, data) {
     /**
      * @description Global field defines the structure or schema of a page or a section of your web or mobile property.
      * @param {String} uid The UID of the Global field you want to get details.
-     * @returns {ContenType} Instace of Global field.
+     * @returns {GlobalField} Instance of Global field.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -209,16 +209,16 @@ export function Stack(http, data) {
     /**
      * @description Environment corresponds to one or more deployment servers or a content delivery destination where the entries need to be published.
      * @param {String} uid The UID of the Environment you want to get details.
-     * @returns {Environment} Instace of Environment.
+     * @returns {Environment} Instance of Environment.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
      *
-     * client.stack({ api_key: 'api_key'}).globalField().create()
-     * .then((globalField) => console.log(globalField))
+     * client.stack({ api_key: 'api_key'}).environment().create()
+     * .then((environment) => console.log(environment))
      *
-     * client.stack({ api_key: 'api_key'}).globalField('globalField_uid').fetch()
-     * .then((globalField) => console.log(globalField))
+     * client.stack({ api_key: 'api_key'}).environment('environment_uid').fetch()
+     * .then((environment) => console.log(environment))
      */
 
 
@@ -239,7 +239,7 @@ export function Stack(http, data) {
     /**
      * @description Delivery Tokens provide read-only access to the associated environments.
      * @param {String} deliveryTokenUid The UID of the Delivery Token field you want to get details.
-     * @returns {DeliveryToken} Instace of DeliveryToken.
+     * @returns {DeliveryToken} Instance of DeliveryToken.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -269,7 +269,7 @@ export function Stack(http, data) {
     /**
      * @description Extensions let you create custom fields and custom widgets that lets you customize Contentstack's default UI and behavior.
      * @param {String} extensionUid The UID of the Extension you want to get details.
-     * @returns {Extension} Instace of Extension.
+     * @returns {Extension} Instance of Extension.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -299,7 +299,7 @@ export function Stack(http, data) {
     /**
      * @description  Workflow is a tool that allows you to streamline the process of content creation and publishing, and lets you manage the content lifecycle of your project smoothly.
      * @param {String} workflowUid The UID of the Workflow you want to get details.
-     * @returns {Workflow} Instace of Workflow.
+     * @returns {Workflow} Instance of Workflow.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -329,7 +329,7 @@ export function Stack(http, data) {
     /**
      * @description  Webhooks allow you to specify a URL to which you would like Contentstack to post data when an event happens.
      * @param {String} webhookUid The UID of the Webhook you want to get details.
-     * @returns {Webhook} Instace of Webhook.
+     * @returns {Webhook} Instance of Webhook.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -359,7 +359,7 @@ export function Stack(http, data) {
     /**
      * @description Labels allow you to group a collection of content within a stack. Using labels you can group content types that need to work together
      * @param {String} uid The UID of the Label you want to get details.
-     * @returns {Label} Instace of Label.
+     * @returns {Label} Instance of Label.
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()

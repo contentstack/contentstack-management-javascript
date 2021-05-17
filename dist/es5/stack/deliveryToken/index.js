@@ -16,8 +16,10 @@ var _cloneDeep2 = (0, _interopRequireDefault2["default"])(_cloneDeep);
 
 var _entity = require("../../entity");
 
-// import ContentstackCollection from '../../contentstackCollection'
-// import error from '../../core/contentstackError'
+/**
+ * Delivery tokens provide read-only access to the associated environments. Read more about <a href='https://www.contentstack.com/docs/developers/create-tokens/about-delivery-tokens'>DeliveryToken</a>.
+ * @namespace DeliveryToken
+ */
 function DeliveryToken(http) {
   var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   this.stackHeaders = data.stackHeaders;

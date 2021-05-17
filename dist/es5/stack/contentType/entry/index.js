@@ -63,7 +63,7 @@ function Entry(http, data) {
      * .then((entry) => {
      *  entry.title = 'My New Entry'
      *  entry.description = 'Entry description'
-     *  return Entry.update()
+     *  return entry.update()
      * })
      * .then((entry) => console.log(entry))
      *
@@ -174,13 +174,13 @@ function Entry(http, data) {
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
-     * 
+     *
      * const publishing_rule = {
-     *  "uid": "blt9b9253297f117e84",
-    *	"action": "publish", //(‘publish’, ‘unpublish’, or ’both’)
-    *	"status": 1, //(this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
-    *	"notify": false,
-    *	"comment": "Please review this."
+     * "uid": "blt9b9253297f117e84",
+     * "action": "publish" //(‘publish’, ‘unpublish’, or ’both’)
+     * "status": 1, //(this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
+     * "notify": false,
+     * comment": "Please review this."
      * }
      * client.stack({ api_key: 'api_key'}).contentType('content_type_uid').entry('uid').publishRequest({ publishing_rule, locale: 'en-us'})
      * .then((response) => console.log(response.notice))
@@ -378,7 +378,7 @@ function EntryCollection(http, data) {
   var entryCollection = obj.map(function (entry) {
     return new Entry(http, {
       entry: entry,
-      content_type_uid: 'uid',
+      content_type_uid: data.content_type_uid,
       stackHeaders: data.stackHeaders
     });
   });

@@ -390,61 +390,7 @@ function Workflow(http) {
          *
          */
 
-    this.fetchAll = /*#__PURE__*/function () {
-      var _ref4 = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee4(params) {
-        var headers, response;
-        return _regenerator2["default"].wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                headers = {};
-
-                if (_this.stackHeaders) {
-                  headers.headers = _this.stackHeaders;
-                }
-
-                if (params) {
-                  headers.params = _objectSpread({}, (0, _cloneDeep2["default"])(params));
-                }
-
-                _context4.prev = 3;
-                _context4.next = 6;
-                return http.get(_this.urlPath, headers);
-
-              case 6:
-                response = _context4.sent;
-
-                if (!response.data) {
-                  _context4.next = 11;
-                  break;
-                }
-
-                return _context4.abrupt("return", new _contentstackCollection2["default"](response, http, null, WorkflowCollection));
-
-              case 11:
-                throw (0, _contentstackError2["default"])(response);
-
-              case 12:
-                _context4.next = 17;
-                break;
-
-              case 14:
-                _context4.prev = 14;
-                _context4.t0 = _context4["catch"](3);
-                throw (0, _contentstackError2["default"])(_context4.t0);
-
-              case 17:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4, null, [[3, 14]]);
-      }));
-
-      return function (_x2) {
-        return _ref4.apply(this, arguments);
-      };
-    }();
+    this.fetchAll = (0, _entity.fetchAll)(http, WorkflowCollection);
     /**
          * @description The Publish rule allow you to create, fetch, delete, update the publish rules.
          * @memberof Workflow
@@ -462,7 +408,6 @@ function Workflow(http) {
          * .then((publishrule) => console.log(publishrule))
          *
          */
-
 
     this.publishRule = function () {
       var ruleUid = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
