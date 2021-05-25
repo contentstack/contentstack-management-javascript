@@ -16,6 +16,8 @@
             "lib/stack/contentType/entry/index.js",
             "lib/stack/asset/index.js",
             "lib/stack/asset/folders/index.js",
+            "lib/stack/branch/index.js",
+            "lib/stack/branchAlias/index.js",
             "lib/stack/bulkOperation/index.js",
             "lib/stack/extension/index.js",
             "lib/stack/release/index.js",
