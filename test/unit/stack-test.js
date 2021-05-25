@@ -22,6 +22,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.globalField).to.be.equal(undefined)
     expect(stack.environment).to.be.equal(undefined)
     expect(stack.branch).to.be.equal(undefined)
+    expect(stack.branchAlias).to.be.equal(undefined)
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
@@ -56,6 +57,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.globalField).to.be.equal(undefined)
     expect(stack.environment).to.be.equal(undefined)
     expect(stack.branch).to.be.equal(undefined)
+    expect(stack.branchAlias).to.be.equal(undefined)
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
@@ -90,6 +92,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.globalField).to.be.equal(undefined)
     expect(stack.environment).to.be.equal(undefined)
     expect(stack.branch).to.be.equal(undefined)
+    expect(stack.branchAlias).to.be.equal(undefined)
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
@@ -124,6 +127,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.globalField).to.be.equal(undefined)
     expect(stack.environment).to.be.equal(undefined)
     expect(stack.branch).to.be.equal(undefined)
+    expect(stack.branchAlias).to.be.equal(undefined)
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
@@ -158,6 +162,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.globalField).to.be.equal(undefined)
     expect(stack.environment).to.be.equal(undefined)
     expect(stack.branch).to.be.equal(undefined)
+    expect(stack.branchAlias).to.be.equal(undefined)
     expect(stack.deliveryToken).to.be.equal(undefined)
     expect(stack.extension).to.be.equal(undefined)
     expect(stack.webhook).to.be.equal(undefined)
@@ -194,6 +199,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.globalField).to.not.equal(undefined)
     expect(stack.environment).to.not.equal(undefined)
     expect(stack.branch).to.not.equal(undefined)
+    expect(stack.branchAlias).to.not.equal(undefined)
     expect(stack.deliveryToken).to.not.equal(undefined)
     expect(stack.extension).to.not.equal(undefined)
     expect(stack.webhook).to.not.equal(undefined)
@@ -230,6 +236,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.globalField).to.not.equal(undefined)
     expect(stack.environment).to.not.equal(undefined)
     expect(stack.branch).to.not.equal(undefined)
+    expect(stack.branchAlias).to.not.equal(undefined)
     expect(stack.deliveryToken).to.not.equal(undefined)
     expect(stack.extension).to.not.equal(undefined)
     expect(stack.webhook).to.not.equal(undefined)
@@ -266,6 +273,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.globalField).to.not.equal(undefined)
     expect(stack.environment).to.not.equal(undefined)
     expect(stack.branch).to.not.equal(undefined)
+    expect(stack.branchAlias).to.not.equal(undefined)
     expect(stack.deliveryToken).to.not.equal(undefined)
     expect(stack.extension).to.not.equal(undefined)
     expect(stack.webhook).to.not.equal(undefined)
@@ -303,6 +311,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.globalField).to.not.equal(undefined)
     expect(stack.environment).to.not.equal(undefined)
     expect(stack.branch).to.not.equal(undefined)
+    expect(stack.branchAlias).to.not.equal(undefined)
     expect(stack.deliveryToken).to.not.equal(undefined)
     expect(stack.extension).to.not.equal(undefined)
     expect(stack.webhook).to.not.equal(undefined)
@@ -758,21 +767,7 @@ describe('Contentstack Stack test', () => {
       }
     })
       .branch()
-    expect(branch.name).to.be.equal(undefined)
-    expect(branch.stackHeaders).to.not.equal(undefined)
-    expect(branch.stackHeaders.api_key).to.be.equal('stack_api_key')
-    done()
-  })
-
-  it('Branch initialization with branch', done => {
-    const branch = makeStack({
-      stack: {
-        api_key: 'stack_api_key',
-        branch_name: 'branch'
-      }
-    })
-      .branch()
-    expect(branch.name).to.be.equal('branch')
+    expect(branch.uid).to.be.equal(undefined)
     expect(branch.stackHeaders).to.not.equal(undefined)
     expect(branch.stackHeaders.api_key).to.be.equal('stack_api_key')
     done()
@@ -785,9 +780,35 @@ describe('Contentstack Stack test', () => {
       }
     })
       .branch('branch')
-    expect(branch.name).to.be.equal('branch')
+    expect(branch.uid).to.be.equal('branch')
     expect(branch.stackHeaders).to.not.equal(undefined)
     expect(branch.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('BranchAlias initialization without branch', done => {
+    const branchAlias = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .branchAlias()
+    expect(branchAlias.uid).to.be.equal(undefined)
+    expect(branchAlias.stackHeaders).to.not.equal(undefined)
+    expect(branchAlias.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('BranchAlias initialization with branch', done => {
+    const branchAlias = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .branchAlias('branch')
+    expect(branchAlias.uid).to.be.equal('branch')
+    expect(branchAlias.stackHeaders).to.not.equal(undefined)
+    expect(branchAlias.stackHeaders.api_key).to.be.equal('stack_api_key')
     done()
   })
 
