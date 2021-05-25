@@ -403,6 +403,7 @@ var update = exports.update = function update(http, type) {
 };
 
 var deleteEntity = exports.deleteEntity = function deleteEntity(http) {
+  var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   return /*#__PURE__*/(0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee8() {
     var param,
         headers,
@@ -418,37 +419,53 @@ var deleteEntity = exports.deleteEntity = function deleteEntity(http) {
               headers: _objectSpread({}, (0, _cloneDeep2["default"])(this.stackHeaders)),
               params: _objectSpread({}, (0, _cloneDeep2["default"])(param))
             } || {};
-            _context8.next = 5;
+
+            if (force === true) {
+              headers.params.force = true;
+            }
+
+            _context8.next = 6;
             return http["delete"](this.urlPath, headers);
 
-          case 5:
+          case 6:
             response = _context8.sent;
 
             if (!response.data) {
-              _context8.next = 10;
+              _context8.next = 11;
               break;
             }
 
             return _context8.abrupt("return", response.data);
 
-          case 10:
+          case 11:
+            if (!(response.status >= 200 && response.status < 300)) {
+              _context8.next = 15;
+              break;
+            }
+
+            return _context8.abrupt("return", {
+              status: response.status,
+              statusText: response.statusText
+            });
+
+          case 15:
             throw (0, _contentstackError2["default"])(response);
 
-          case 11:
-            _context8.next = 16;
+          case 16:
+            _context8.next = 21;
             break;
 
-          case 13:
-            _context8.prev = 13;
+          case 18:
+            _context8.prev = 18;
             _context8.t0 = _context8["catch"](1);
             throw (0, _contentstackError2["default"])(_context8.t0);
 
-          case 16:
+          case 21:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, this, [[1, 13]]);
+    }, _callee8, this, [[1, 18]]);
   }));
 };
 

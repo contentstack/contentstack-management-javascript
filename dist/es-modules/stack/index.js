@@ -22,7 +22,9 @@ import { Webhook } from './webhook';
 import { Workflow } from './workflow';
 import { Release } from './release';
 import { BulkOperation } from './bulkOperation';
-import { Label } from './label'; // import { format } from 'util'
+import { Label } from './label';
+import { Branch } from './branch';
+import { BranchAlias } from './branchAlias'; // import { format } from 'util'
 
 /**
  * A stack is a space that stores the content of a project (a web or mobile property). Within a stack, you can create content structures, content entries, users, etc. related to the project. Read more about <a href='https://www.contentstack.com/docs/guide/stack'>Stacks</a>.
@@ -47,7 +49,7 @@ export function Stack(http, data) {
       api_key: this.api_key
     };
 
-    if (this.management_token && this.management_token) {
+    if (this.management_token && this.management_token !== undefined) {
       this.stackHeaders.authorization = this.management_token;
       delete this.management_token;
     }
@@ -235,6 +237,70 @@ export function Stack(http, data) {
       }
 
       return new Environment(http, data);
+    };
+    /**
+     * @description
+     * @param {String}
+     * @returns {Branch}
+     *
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).branch().create()
+     * .then((branch) => console.log(branch))
+     *
+     * client.stack({ api_key: 'api_key' }).branch('branch').fetch()
+     * .then((branch) => console.log(branch))
+     *
+     */
+
+
+    this.branch = function () {
+      var branchUid = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var data = {
+        stackHeaders: _this.stackHeaders
+      };
+
+      if (branchUid) {
+        data.branch = {
+          uid: branchUid
+        };
+      }
+
+      return new Branch(http, data);
+    };
+    /**
+     * @description
+     * @param {String}
+     * @returns {BranchAlias}
+     *
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).branchAlias().create()
+     * .then((branch) => console.log(branch))
+     *
+     * client.stack({ api_key: 'api_key' }).branchAlias('branch_uid').fetch()
+     * .then((branch) => console.log(branch))
+     *
+     */
+
+
+    this.branchAlias = function () {
+      var branchUid = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var data = {
+        stackHeaders: _this.stackHeaders
+      };
+
+      if (branchUid) {
+        data.branch_alias = {
+          uid: branchUid
+        };
+      }
+
+      return new BranchAlias(http, data);
     };
     /**
      * @description Delivery Tokens provide read-only access to the associated environments.

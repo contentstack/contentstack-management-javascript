@@ -96,7 +96,8 @@ function contentstackClient(_ref) {
    * @memberof ContentstackClient
    * @func stack
    * @param {String} api_key - Stack API Key
-   * @param {String} management_token - Stack API Key
+   * @param {String} management_token - Management token for Stack.
+   * @param {String} branch_name - Branch name or alias to access specific branch. Default is master.
    * @returns {Stack} Instance of Stack
    *
    * @example
@@ -120,6 +121,12 @@ function contentstackClient(_ref) {
    * client.stack({ api_key: 'api_key', management_token: 'management_token' }).contentType('content_type_uid').fetch()
    * .then((stack) => console.log(stack))
    *
+   * @example
+   * import * as contentstack from '@contentstack/management'
+   * const client = contentstack.client()
+   *
+   * client.stack({ api_key: 'api_key', management_token: 'management_token', branch_name: 'branch' }).contentType('content_type_uid').fetch()
+   * .then((stack) => console.log(stack))
    */
 
 

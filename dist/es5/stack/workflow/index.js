@@ -308,63 +308,63 @@ function Workflow(http) {
          * const client = contentstack.client()
          *
          * const workflow = {
-         *	"workflow_stages": [
+         *"workflow_stages": [
          *      {
-         *			"color": "#2196f3",
-         *			"SYS_ACL": {
-         *				"roles": {
-         *					"uids": []
-         *				},
-         *				"users": {
-         *					"uids": [
-         *						"$all"
-         *					]
-         *				},
-         * 				"others": {}
-         *			},
-         *			"next_available_stages": [
-         *				"$all"
-         *			],
-         *			"allStages": true,
-         *			"allUsers": true,
-         *			"specificStages": false,
-         *			"specificUsers": false,
-         *			"entry_lock": "$none", //assign any one of the assign any one of the ($none/$others/$all)
-         *			"name": "Review"
-         *		},
-         *		{
-         *			"color": "#74ba76",
-         *			"SYS_ACL": {
-         *				"roles": {
-         *					"uids": []
-         *				},
-         *				"users": {
-         *					"uids": [
-         *						"$all"
-         *					]
-         *				},
-         *				"others": {}
-         *			},
-         *			"allStages": true,
-         *				"allUsers": true,
-         *				"specificStages": false,
-         *				"specificUsers": false,
-         *				"next_available_stages": [
-         *					"$all"
-         *				],
-         *				"entry_lock": "$none",
-         *				"name": "Complete"
-         *			}
-         *		],
-         *		"admin_users": {
-         *			"users": []
-         *		},
-         *  		"name": "Workflow Name",
-         *		"enabled": true,
-         *		"content_types": [
-         *			"$all"
-         *		]
-         *	}
+         *        "color": "#2196f3",
+         *        "SYS_ACL": {
+         *          "roles": {
+         *            "uids": []
+         *          },
+         *          "users": {
+         *          "uids": [
+         *            "$all"
+         *          ]
+         *        },
+         *        "others": {}
+         *      },
+         *      "next_available_stages": [
+         *        "$all"
+         *      ],
+         *      "allStages": true,
+         *      "allUsers": true,
+         *      "specificStages": false,
+         *      "specificUsers": false,
+         *      "entry_lock": "$none", //assign any one of the assign any one of the ($none/$others/$all)
+         *      "name": "Review"
+         *    },
+         *    {
+         *      "color": "#74ba76",
+         *      "SYS_ACL": {
+         *        "roles": {
+         *          "uids": []
+         *        },
+         *        "users": {
+         *          "uids": [
+         *            "$all"
+         *          ]
+         *        },
+         *        "others": {}
+         *      },
+         *      "allStages": true,
+         *      "allUsers": true,
+         *      "specificStages": false,
+         *      "specificUsers": false,
+         *      "next_available_stages": [
+         *          "$all"
+         *        ],
+         *        "entry_lock": "$none",
+         *        "name": "Complete"
+         *      }
+         *    ],
+         *    "admin_users": {
+         *      "users": []
+         *    },
+         *      "name": "Workflow Name",
+         *      "enabled": true,
+         *      "content_types": [
+         *        "$all"
+         *      ]
+         *  }
          *  client.stack().workflow().create({ workflow })
          * .then((workflow) => console.log(workflow))
          */

@@ -162,8 +162,7 @@ function client() {
   params = _objectSpread(_objectSpread({}, defaultParameter), (0, _cloneDeep2["default"])(params));
   params.headers = _objectSpread(_objectSpread({}, params.headers), requiredHeaders);
   var http = (0, _contentstackHTTPClient2["default"])(params);
-  var api = (0, _contentstackClient2["default"])({
+  return (0, _contentstackClient2["default"])({
     http: http
   });
-  return api;
 }

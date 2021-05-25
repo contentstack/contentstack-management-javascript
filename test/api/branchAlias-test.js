@@ -14,21 +14,19 @@ describe('Branch api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  // it('Branch query should return master branch', done => {
-  //   makeBranchAlias()
-  //     .query({ query: { uid: 'development' } })
-  //     .find()
-  //     .then((response) => {
-  //       console.log(response)
-  //       // expect(response.items.length).to.be.equal(1)
-  //       // var item = response.items[0]
-  //       // expect(item.urlPath).to.be.equal(`/stacks/branch_aliases/${item.uid}`)
-  //       // expect(item.delete).to.not.equal(undefined)
-  //       // expect(item.fetch).to.not.equal(undefined)
-  //       done()
-  //     })
-  //     .catch(done)
-  // })
+  it('Branch query should return master branch', done => {
+    makeBranchAlias()
+      .fetchAll({ query: { uid: 'master' } })
+      .then((response) => {
+        expect(response.items.length).to.be.equal(1)
+        var item = response.items[0]
+        expect(item.urlPath).to.be.equal(`/stacks/branches/master`)
+        expect(item.delete).to.not.equal(undefined)
+        expect(item.fetch).to.not.equal(undefined)
+        done()
+      })
+      .catch(done)
+  })
 
   it('Should create Branch Alias', done => {
     makeBranchAlias(`${branch.uid}_alias`)
@@ -38,6 +36,7 @@ describe('Branch api Test', () => {
         expect(response.urlPath).to.be.equal(`/stacks/branches/${branch.uid}`)
         expect(response.source).to.be.equal(branch.source)
         expect(response.alias.length).to.be.equal(1)
+        expect(response.alias[0].uid).to.be.equal(`${branch.uid}_alias`)
         expect(response.delete).to.not.equal(undefined)
         expect(response.fetch).to.not.equal(undefined)
         done()

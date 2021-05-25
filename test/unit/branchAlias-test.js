@@ -28,73 +28,53 @@ describe('Contentstack BranchAlias test', () => {
     done()
   })
 
-  it('BranchAlias Collection test with blank data', done => {
-    const branchAlias = new BranchAliasCollection(Axios, {})
-    expect(branchAlias.length).to.be.equal(0)
-    done()
-  })
-
-  it('BranchAlias Collection test with data', done => {
-    const branchAlias = new BranchAliasCollection(Axios, {
+  it('BranchAlias Fetch all without Stack Headers test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/stacks/branch_aliases').reply(200, {
       branch_aliases: [
         branchAliasMock
       ]
     })
-    expect(branchAlias.length).to.be.equal(1)
-    checkBranchAlias(branchAlias[0])
-    done()
+    makeBranchAlias()
+      .fetchAll()
+      .then((workflows) => {
+        checkBranchAlias(workflows.items[0])
+        done()
+      })
+      .catch(done)
   })
 
-  // it('BranchAlias Fetch all without Stack Headers test', done => {
-  //   var mock = new MockAdapter(Axios)
-  //   mock.onGet('/stacks/branch_aliases').reply(200, {
-  //     branch_aliases: [
-  //       branchAliasMock
-  //     ]
-  //   })
-  //   makeBranchAlias()
-  //     .query()
-  //     .find()
-  //     .then((workflows) => {
-  //       checkBranchAlias(workflows.items[0])
-  //       done()
-  //     })
-  //     .catch(done)
-  // })
+  it('BranchAlias Fetch all with params test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/stacks/branch_aliases').reply(200, {
+      branch_aliases: [
+        branchAliasMock
+      ]
+    })
+    makeBranchAlias({ stackHeaders: stackHeadersMock })
+      .fetchAll({})
+      .then((workflows) => {
+        checkBranchAlias(workflows.items[0])
+        done()
+      })
+      .catch(done)
+  })
 
-  // it('BranchAlias Fetch all with params test', done => {
-  //   var mock = new MockAdapter(Axios)
-  //   mock.onGet('/stacks/branch_aliases').reply(200, {
-  //     branch_aliases: [
-  //       branchAliasMock
-  //     ]
-  //   })
-  //   makeBranchAlias({ stackHeaders: stackHeadersMock })
-  //     .query()
-  //     .find({})
-  //     .then((workflows) => {
-  //       checkBranchAlias(workflows.items[0])
-  //       done()
-  //     })
-  //     .catch(done)
-  // })
-
-  // it('BranchAlias Fetch all without params test', done => {
-  //   var mock = new MockAdapter(Axios)
-  //   mock.onGet('/stacks/branch_aliases').reply(200, {
-  //     branch_aliases: [
-  //       branchAliasMock
-  //     ]
-  //   })
-  //   makeBranchAlias({ stackHeaders: stackHeadersMock })
-  //     .query()
-  //     .find(null)
-  //     .then((workflows) => {
-  //       checkBranchAlias(workflows.items[0])
-  //       done()
-  //     })
-  //     .catch(done)
-  // })
+  it('BranchAlias Fetch all without params test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/stacks/branch_aliases').reply(200, {
+      branch_aliases: [
+        branchAliasMock
+      ]
+    })
+    makeBranchAlias({ stackHeaders: stackHeadersMock })
+      .fetchAll(null)
+      .then((workflows) => {
+        checkBranchAlias(workflows.items[0])
+        done()
+      })
+      .catch(done)
+  })
 
   it('BranchAlias update test', done => {
     var mock = new MockAdapter(Axios)
