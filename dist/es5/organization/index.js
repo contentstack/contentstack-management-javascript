@@ -481,62 +481,15 @@ function Organization(http, data) {
      * .then((collection) => console.log(collection))
      *
      */
-    this.fetchAll = /*#__PURE__*/function () {
-      var _ref7 = (0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee7(parmas) {
-        var response;
-        return _regenerator2["default"].wrap(function _callee7$(_context7) {
-          while (1) {
-            switch (_context7.prev = _context7.next) {
-              case 0:
-                _context7.prev = 0;
-                _context7.next = 3;
-                return http.get(_this.urlPath, {
-                  params: parmas
-                });
-
-              case 3:
-                response = _context7.sent;
-
-                if (!response.data) {
-                  _context7.next = 8;
-                  break;
-                }
-
-                return _context7.abrupt("return", new _contentstackCollection2["default"](response, http, null, OrganizationCollection));
-
-              case 8:
-                throw (0, _contentstackError2["default"])(response);
-
-              case 9:
-                _context7.next = 14;
-                break;
-
-              case 11:
-                _context7.prev = 11;
-                _context7.t0 = _context7["catch"](0);
-                throw (0, _contentstackError2["default"])(_context7.t0);
-
-              case 14:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7, null, [[0, 11]]);
-      }));
-
-      return function (_x7) {
-        return _ref7.apply(this, arguments);
-      };
-    }();
+    this.fetchAll = (0, _entity.fetchAll)(http, OrganizationCollection);
   }
 }
 
 function OrganizationCollection(http, data) {
   var obj = (0, _cloneDeep2["default"])(data.organizations || []);
-  var organizationCollection = obj.map(function (userdata) {
+  return obj.map(function (userdata) {
     return new Organization(http, {
       organization: userdata
     });
   });
-  return organizationCollection;
 }

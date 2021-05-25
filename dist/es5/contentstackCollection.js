@@ -13,6 +13,9 @@ var _classCallCheck2 = require("@babel/runtime/helpers/classCallCheck");
 
 var _classCallCheck3 = (0, _interopRequireDefault2["default"])(_classCallCheck2);
 
+/**
+ * @namespace ContentstackCollection
+ */
 var ContentstackCollection = function ContentstackCollection(response, http) {
   var stackHeaders = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
   var wrapperCollection = arguments.length > 3 ? arguments[3] : undefined;

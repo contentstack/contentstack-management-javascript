@@ -7,7 +7,7 @@ var _interopRequireDefault2 = _interopRequireDefault3(require("@babel/runtime/he
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetch = exports.deleteEntity = exports.update = exports.query = exports.exportObject = exports.create = exports.upload = exports.publishUnpublish = exports.unpublish = exports.publish = undefined;
+exports.fetchAll = exports.fetch = exports.deleteEntity = exports.update = exports.query = exports.exportObject = exports.create = exports.upload = exports.publishUnpublish = exports.unpublish = exports.publish = undefined;
 
 var _regenerator = require("@babel/runtime/regenerator");
 
@@ -34,6 +34,10 @@ var _cloneDeep2 = (0, _interopRequireDefault2["default"])(_cloneDeep);
 var _index = require("./query/index");
 
 var _index2 = (0, _interopRequireDefault2["default"])(_index);
+
+var _contentstackCollection = require("./contentstackCollection");
+
+var _contentstackCollection2 = (0, _interopRequireDefault2["default"])(_contentstackCollection);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -231,7 +235,7 @@ var create = exports.create = function create(_ref8) {
                 break;
               }
 
-              return _context5.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders)));
+              return _context5.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.content_type_uid)));
 
             case 9:
               throw (0, _contentstackError2["default"])(response);
@@ -284,7 +288,7 @@ var exportObject = exports.exportObject = function exportObject(_ref10) {
                 break;
               }
 
-              return _context6.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders)));
+              return _context6.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.content_type_uid)));
 
             case 9:
               throw (0, _contentstackError2["default"])(response);
@@ -319,7 +323,15 @@ var query = exports.query = function query(_ref12) {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     if (this.organization_uid) {
+      if (!params.query) {
+        params.query = {};
+      }
+
       params.query['org_uid'] = this.organization_uid;
+    }
+
+    if (this.content_type_uid) {
+      params.content_type_uid = this.content_type_uid;
     }
 
     return (0, _index2["default"])(http, this.urlPath, params, this.stackHeaders, wrapperCollection);
@@ -492,6 +504,62 @@ var fetch = exports.fetch = function fetch(http, type) {
         }
       }
     }, _callee9, this, [[1, 14]]);
+  }));
+};
+
+var fetchAll = exports.fetchAll = function fetchAll(http, wrapperCollection) {
+  return /*#__PURE__*/(0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee10() {
+    var params,
+        headers,
+        response,
+        _args10 = arguments;
+    return _regenerator2["default"].wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            params = _args10.length > 0 && _args10[0] !== undefined ? _args10[0] : {};
+            headers = {};
+
+            if (this.stackHeaders) {
+              headers.headers = this.stackHeaders;
+            }
+
+            if (params) {
+              headers.params = _objectSpread({}, (0, _cloneDeep2["default"])(params));
+            }
+
+            _context10.prev = 4;
+            _context10.next = 7;
+            return http.get(this.urlPath, headers);
+
+          case 7:
+            response = _context10.sent;
+
+            if (!response.data) {
+              _context10.next = 12;
+              break;
+            }
+
+            return _context10.abrupt("return", new _contentstackCollection2["default"](response, http, this.stackHeaders, wrapperCollection));
+
+          case 12:
+            throw (0, _contentstackError2["default"])(response);
+
+          case 13:
+            _context10.next = 18;
+            break;
+
+          case 15:
+            _context10.prev = 15;
+            _context10.t0 = _context10["catch"](4);
+            throw (0, _contentstackError2["default"])(_context10.t0);
+
+          case 18:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10, this, [[4, 15]]);
   }));
 };
 

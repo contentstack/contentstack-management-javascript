@@ -7,7 +7,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 import cloneDeep from 'lodash/cloneDeep';
-import { create, update, deleteEntity, fetch } from '../../entity';
+import { create, update, deleteEntity, fetch, fetchAll } from '../../entity';
 import error from '../../core/contentstackError';
 import ContentstackCollection from '../../contentstackCollection';
 import { PublishRules, PublishRulesCollection } from './publishRules';
@@ -359,61 +359,7 @@ export function Workflow(http) {
          *
          */
 
-    this.fetchAll = /*#__PURE__*/function () {
-      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(params) {
-        var headers, response;
-        return _regeneratorRuntime.wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                headers = {};
-
-                if (_this.stackHeaders) {
-                  headers.headers = _this.stackHeaders;
-                }
-
-                if (params) {
-                  headers.params = _objectSpread({}, cloneDeep(params));
-                }
-
-                _context4.prev = 3;
-                _context4.next = 6;
-                return http.get(_this.urlPath, headers);
-
-              case 6:
-                response = _context4.sent;
-
-                if (!response.data) {
-                  _context4.next = 11;
-                  break;
-                }
-
-                return _context4.abrupt("return", new ContentstackCollection(response, http, null, WorkflowCollection));
-
-              case 11:
-                throw error(response);
-
-              case 12:
-                _context4.next = 17;
-                break;
-
-              case 14:
-                _context4.prev = 14;
-                _context4.t0 = _context4["catch"](3);
-                throw error(_context4.t0);
-
-              case 17:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4, null, [[3, 14]]);
-      }));
-
-      return function (_x2) {
-        return _ref4.apply(this, arguments);
-      };
-    }();
+    this.fetchAll = fetchAll(http, WorkflowCollection);
     /**
          * @description The Publish rule allow you to create, fetch, delete, update the publish rules.
          * @memberof Workflow
@@ -431,7 +377,6 @@ export function Workflow(http) {
          * .then((publishrule) => console.log(publishrule))
          *
          */
-
 
     this.publishRule = function () {
       var ruleUid = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;

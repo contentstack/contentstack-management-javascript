@@ -7,19 +7,6 @@ var _interopRequireDefault2 = _interopRequireDefault3(require("@babel/runtime/he
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _regenerator = require("@babel/runtime/regenerator");
-
-var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
-
-var _defineProperty2 = require("@babel/runtime/helpers/defineProperty");
-
-var _defineProperty3 = (0, _interopRequireDefault2["default"])(_defineProperty2);
-
-var _asyncToGenerator2 = require("@babel/runtime/helpers/asyncToGenerator");
-
-var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerator2);
-
 exports.Role = Role;
 exports.RoleCollection = RoleCollection;
 
@@ -37,17 +24,11 @@ var _contentstackError = require("../../core/contentstackError");
 
 var _contentstackError2 = (0, _interopRequireDefault2["default"])(_contentstackError);
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty3["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
 /**
  * A role is a collection of permissions that will be applicable to all the users who are assigned this role. Read more about <a href= 'https://www.contentstack.com/docs/guide/users-and-roles#roles'>Roles</a>.
  * @namespace Role
  */
 function Role(http, data) {
-  var _this = this;
-
   this.urlPath = "/roles";
   this.stackHeaders = data.stackHeaders;
 
@@ -178,59 +159,7 @@ function Role(http, data) {
      * .then((collection) => console.log(collection))
      */
 
-    this.fetchAll = /*#__PURE__*/(0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee() {
-      var params,
-          headers,
-          response,
-          _args = arguments;
-      return _regenerator2["default"].wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              params = _args.length > 0 && _args[0] !== undefined ? _args[0] : {};
-              headers = {};
-
-              if (_this.stackHeaders) {
-                headers.headers = _this.stackHeaders;
-              }
-
-              if (params) {
-                headers.params = _objectSpread({}, (0, _cloneDeep2["default"])(params));
-              }
-
-              _context.prev = 4;
-              _context.next = 7;
-              return http.get(_this.urlPath, headers);
-
-            case 7:
-              response = _context.sent;
-
-              if (!response.data) {
-                _context.next = 12;
-                break;
-              }
-
-              return _context.abrupt("return", new _contentstackCollection2["default"](response, http, _this.stackHeaders, RoleCollection));
-
-            case 12:
-              throw (0, _contentstackError2["default"])(response);
-
-            case 13:
-              _context.next = 18;
-              break;
-
-            case 15:
-              _context.prev = 15;
-              _context.t0 = _context["catch"](4);
-              throw (0, _contentstackError2["default"])(_context.t0);
-
-            case 18:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[4, 15]]);
-    }));
+    this.fetchAll = (0, _entity.fetchAll)(http, RoleCollection);
     /**
      * @description The Query on Role will allow to fetch details of all or specific role.
      * @memberof Role

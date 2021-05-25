@@ -74,7 +74,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  * import * as contentstack from '@contentstack/management'
  * const client = contentstack.client({ maxRequests: 5 })
  *
- * @prop {boolean=} params.retryOnError - Optional boolean for retry on failuer. Default is true
+ * @prop {boolean=} params.retryOnError - Optional boolean for retry on failure. Default is true
  * @example //Set the `retryOnError` to false
  * import * as contentstack from '@contentstack/management'
  * const client = contentstack.client({ retryOnError: false })
@@ -84,7 +84,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  * import * as contentstack from '@contentstack/management'
  * const client = contentstack.client({ retryLimit: 2 })
  *
- * @prop {number=} params.retryDelay - The number of miliseconds to use for operation retries. Default is 300ms
+ * @prop {number=} params.retryDelay - The number of milliseconds to use for operation retries. Default is 300ms
  * @example //Set the `retryDelay` to 500ms
  * import * as contentstack from '@contentstack/management'
  * const client = contentstack.client({ retryDelay: 500 })
@@ -123,7 +123,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  * const client = contentstack.client({ maxContentLength: 1024 ** 3 })
  *
  * @prop {number=} params.maxBodyLength - Optional maximum body length in bytes (default: 10 MB)
- * @example //Set the `maxContentLength` to 1024 ** 2 * 10 // 10 MB
+ * @example //Set the `maxBodyLength` to 1024 ** 2 * 10 // 10 MB
  * import * as contentstack from '@contentstack/management'
  * const client = contentstack.client({ maxBodyLength: 1024 ** 2 * 10 })
  *

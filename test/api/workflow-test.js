@@ -117,6 +117,21 @@ describe('Workflow api Test', () => {
       .catch(done)
   })
 
+  it('Fetch all workflow and update', done => {
+    makeWorkflow()
+      .fetchAll()
+      .then(collection => {
+        const updatedWorkflow = collection.items[0]
+        updatedWorkflow.name = 'Updated name'
+        return updatedWorkflow.update()
+      })
+      .then((update) => {
+        expect(update.name).to.be.equal('Updated name')
+        done()
+      })
+      .catch(done)
+  })
+
   it('Fetch all workflow include count', done => {
     makeWorkflow()
       .fetchAll({ include_count: true })
