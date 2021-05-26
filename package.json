@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "dist/node/contentstack-management.js",
   "browser": "dist/web/contentstack-management.js",
@@ -48,7 +48,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "form-data": "^3.0.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "qs": "^6.9.4"
   },
   "keywords": [
@@ -79,7 +79,7 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
-    "jsdoc": "^3.6.5",
+    "jsdoc": "^3.6.7",
     "mocha": "^7.2.0",
     "mochawesome": "^4.1.0",
     "nock": "^10.0.6",
