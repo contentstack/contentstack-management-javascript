@@ -117,6 +117,7 @@ describe('Entry api Test', () => {
         expect(collection.count).to.be.equal(3)
         collection.items.forEach((entry) => {
           expect(entry.uid).to.be.not.equal(null)
+          expect(entry.content_type_uid).to.be.equal(multiPageCT.content_type.uid)
         })
         done()
       })

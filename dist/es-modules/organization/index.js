@@ -8,7 +8,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 import cloneDeep from 'lodash/cloneDeep';
 import error from '../core/contentstackError';
-import { fetch } from '../entity';
+import { fetch, fetchAll } from '../entity';
 import ContentstackCollection from '../contentstackCollection';
 import { RoleCollection } from '../stack/roles';
 import { StackCollection } from '../stack';
@@ -448,61 +448,14 @@ export function Organization(http, data) {
      * .then((collection) => console.log(collection))
      *
      */
-    this.fetchAll = /*#__PURE__*/function () {
-      var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee7(parmas) {
-        var response;
-        return _regeneratorRuntime.wrap(function _callee7$(_context7) {
-          while (1) {
-            switch (_context7.prev = _context7.next) {
-              case 0:
-                _context7.prev = 0;
-                _context7.next = 3;
-                return http.get(_this.urlPath, {
-                  params: parmas
-                });
-
-              case 3:
-                response = _context7.sent;
-
-                if (!response.data) {
-                  _context7.next = 8;
-                  break;
-                }
-
-                return _context7.abrupt("return", new ContentstackCollection(response, http, null, OrganizationCollection));
-
-              case 8:
-                throw error(response);
-
-              case 9:
-                _context7.next = 14;
-                break;
-
-              case 11:
-                _context7.prev = 11;
-                _context7.t0 = _context7["catch"](0);
-                throw error(_context7.t0);
-
-              case 14:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7, null, [[0, 11]]);
-      }));
-
-      return function (_x7) {
-        return _ref7.apply(this, arguments);
-      };
-    }();
+    this.fetchAll = fetchAll(http, OrganizationCollection);
   }
 }
 export function OrganizationCollection(http, data) {
   var obj = cloneDeep(data.organizations || []);
-  var organizationCollection = obj.map(function (userdata) {
+  return obj.map(function (userdata) {
     return new Organization(http, {
       organization: userdata
     });
   });
-  return organizationCollection;
 }

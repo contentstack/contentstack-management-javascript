@@ -9,6 +9,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 import error from './core/contentstackError';
 import cloneDeep from 'lodash/cloneDeep';
 import Query from './query/index';
+import ContentstackCollection from './contentstackCollection';
 export var publish = function publish(http, type) {
   return /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(_ref) {
@@ -197,7 +198,7 @@ export var create = function create(_ref8) {
                 break;
               }
 
-              return _context5.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders)));
+              return _context5.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.content_type_uid)));
 
             case 9:
               throw error(response);
@@ -249,7 +250,7 @@ export var exportObject = function exportObject(_ref10) {
                 break;
               }
 
-              return _context6.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders)));
+              return _context6.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.content_type_uid)));
 
             case 9:
               throw error(response);
@@ -283,7 +284,15 @@ export var query = function query(_ref12) {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     if (this.organization_uid) {
+      if (!params.query) {
+        params.query = {};
+      }
+
       params.query['org_uid'] = this.organization_uid;
+    }
+
+    if (this.content_type_uid) {
+      params.content_type_uid = this.content_type_uid;
     }
 
     return Query(http, this.urlPath, params, this.stackHeaders, wrapperCollection);
@@ -453,6 +462,61 @@ export var fetch = function fetch(http, type) {
         }
       }
     }, _callee9, this, [[1, 14]]);
+  }));
+};
+export var fetchAll = function fetchAll(http, wrapperCollection) {
+  return /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee10() {
+    var params,
+        headers,
+        response,
+        _args10 = arguments;
+    return _regeneratorRuntime.wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            params = _args10.length > 0 && _args10[0] !== undefined ? _args10[0] : {};
+            headers = {};
+
+            if (this.stackHeaders) {
+              headers.headers = this.stackHeaders;
+            }
+
+            if (params) {
+              headers.params = _objectSpread({}, cloneDeep(params));
+            }
+
+            _context10.prev = 4;
+            _context10.next = 7;
+            return http.get(this.urlPath, headers);
+
+          case 7:
+            response = _context10.sent;
+
+            if (!response.data) {
+              _context10.next = 12;
+              break;
+            }
+
+            return _context10.abrupt("return", new ContentstackCollection(response, http, this.stackHeaders, wrapperCollection));
+
+          case 12:
+            throw error(response);
+
+          case 13:
+            _context10.next = 18;
+            break;
+
+          case 15:
+            _context10.prev = 15;
+            _context10.t0 = _context10["catch"](4);
+            throw error(_context10.t0);
+
+          case 18:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10, this, [[4, 15]]);
   }));
 };
 export function parseData(response, stackHeaders, contentTypeUID) {
