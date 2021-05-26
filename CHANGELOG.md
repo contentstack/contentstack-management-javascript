@@ -1,4 +1,13 @@
 # Changelog
+
+## [v1.2.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.2) (2021-05-26)
+ - Bug Fix
+   - Organization Specific get all Stack: Get Stack for specific organization from org_uid
+   - Resolved: Entry Publish and Update not work after find function
+   - Resolved: Workflow update issue on fetchAll function
+ - Document Update
+   - `update` Entry example code update
+
 ## [v1.2.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.1) (2021-03-19)
  - Bug Fix
    - User get details: Include organization functions for `is_owner` of the organization
