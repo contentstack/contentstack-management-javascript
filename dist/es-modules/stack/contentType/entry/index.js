@@ -47,7 +47,7 @@ export function Entry(http, data) {
      * .then((entry) => {
      *  entry.title = 'My New Entry'
      *  entry.description = 'Entry description'
-     *  return Entry.update({ locale: 'en-at' })
+     *  return entry.update({ locale: 'en-at' })
      * })
      * .then((entry) => console.log(entry))
      *
