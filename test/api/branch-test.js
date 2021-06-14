@@ -111,7 +111,6 @@ describe('Branch api Test', () => {
     makeBranch(devBranch.uid)
       .delete()
       .then((response) => {
-        console.log(response)
         expect(response.notice).to.be.equal('Branch deleted successfully.')
         done()
       })

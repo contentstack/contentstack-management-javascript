@@ -64,8 +64,7 @@ describe('Branch api Test', () => {
       makeBranchAlias(`${branch.uid}_alias`)
         .delete()
         .then((response) => {
-          expect(response.status).to.be.equal(204)
-          expect(response.statusText).to.be.equal('No Content')
+          expect(response.notice).to.be.equal('BranchAlias deleted successfully.')
           done()
         })
         .catch(done)
