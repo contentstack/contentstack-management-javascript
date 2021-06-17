@@ -8,7 +8,6 @@ import { systemUidMock, stackHeadersMock, workflowMock, checkSystemFields, notic
 describe('Contentstack Workflow test', () => {
   it('Workflow test without uid', done => {
     const workflow = makeWorkflow()
-    console.log(workflow);
     expect(workflow.urlPath).to.be.equal('/workflows')
     expect(workflow.stackHeaders).to.be.equal(undefined)
     expect(workflow.update).to.be.equal(undefined)

@@ -207,6 +207,35 @@ describe('Concurrency queue test', () => {
       done()
     }).catch(done)
   })
+  it('Concurrency with 10 timeout requests retry', done => {
+    retryDelayOptionsStub.returns(5000)
+    const client = Axios.create({
+      baseURL: `${host}:${port}`
+    })
+    const concurrency = new ConcurrencyQueue({ axios: client, config: { retryCondition: (error) => {
+      if (error.response.status === 408) {
+        return true
+      }
+      return false
+    },
+    logHandler: logHandlerStub,
+    retryDelayOptions: {
+      base: retryDelayOptionsStub()
+    },
+    retryLimit: 2,
+    retryOnError: true, timeout: 250 } })
+    client.get('http://localhost:4444/timeout', {
+      timeout: 250
+    }).then(function (res) {
+      expect(res).to.be.equal(null)
+      done()
+    }).catch(function (err) {
+      concurrency.detach()
+      expect(err.response.status).to.be.equal(408)
+      expect(err.response.statusText).to.be.equal('timeout of 250ms exceeded')
+      done()
+    }).catch(done)
+  })
 
   it('Concurrency with 100 failing requests retry on error with no retry condition tests', done => {
     reconfigureQueue({ retryCondition: (error) => false })
