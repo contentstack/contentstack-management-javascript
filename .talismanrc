@@ -1,13 +1,5 @@
 fileignoreconfig:
 - filename: jsdocs/stack_environment_index.js.html
-  checksum: e70125d5038c16be4c974b75780b252d2ba680f63a791dc788941996d6e2b2bc
-- filename: .talisman
-  checksum: ef29fbb058801114e565011d7b292a00e86dd385ff2e77a06ddf62b253339d99
-- filename: dist/node/contentstack-management.js
-  checksum: d0a2881a9f533cb24cd909792548617f70aea637d6f7ca0ff932ede72e5e57ee
-- filename: dist/react-native/contentstack-management.js
-  checksum: 3f611ee5cc82bf3cf4135de830208ce448184c99364538435f35c6c67aaf2d9e
-- filename: dist/web/contentstack-management.js
-  checksum: 8bf55c1cf4b9f59d2c47ae16e7b6b6476eab8b7aefb817a560a41f9c3c76b337
-- filename: dist/nativescript/contentstack-management.js
-  checksum: b514e4144664db6b107c412655a36028e102e25b901ede0ee782be03e2380d14
+  checksum: 7ab5e2eb2894defcd1188b3225667ae6e7779bbcb452fd9240134445d4c069f9
+- filename: package-lock.json
+  checksum: a9af87cc2a4a886e87ffbf9909bf9610e8727eaf2d1a4c0a3722ac8abe1f46d4

@@ -57,7 +57,7 @@
     "management api"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
+    "@babel/cli": "^7.14.5",
     "@babel/core": "^7.11.0",
     "@babel/plugin-transform-runtime": "^7.11.0",
     "@babel/preset-env": "^7.11.0",
@@ -87,7 +87,7 @@
     "rimraf": "^2.7.1",
     "sinon": "^7.3.2",
     "string-replace-loader": "^2.3.0",
-    "webpack": "^4.44.1",
+    "webpack": "^5.39.1",
     "webpack-cli": "^3.3.12",
     "webpack-merge": "4.1.0"
   },
