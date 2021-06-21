@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.2.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.3) (2021-06-21)
+ - Bug Fix
+   - Request Timeout retry support added
 ## [v1.2.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.2) (2021-05-26)
  - Bug Fix
    - Organization Specific get all Stack: Get Stack for specific organization from org_uid
