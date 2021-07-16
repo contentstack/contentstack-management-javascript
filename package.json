@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "dist/node/contentstack-management.js",
   "browser": "dist/web/contentstack-management.js",
@@ -82,12 +82,13 @@
     "jsdoc": "^3.6.7",
     "mocha": "^7.2.0",
     "mochawesome": "^4.1.0",
+    "multiparty": "^4.2.2",
     "nock": "^10.0.6",
     "nyc": "^14.1.1",
     "rimraf": "^2.7.1",
     "sinon": "^7.3.2",
     "string-replace-loader": "^2.3.0",
-    "webpack": "^5.39.1",
+    "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-merge": "4.1.0"
   },
