@@ -3,7 +3,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { Entry, EntryCollection } from '../../lib/stack/contentType/entry'
+import { Entry, EntryCollection, createFormData } from '../../lib/stack/contentType/entry'
 import { systemUidMock, stackHeadersMock, entryMock, noticeMock, checkSystemFields } from './mock/objects'
 
 describe('Contentstack Entry test', () => {
@@ -221,8 +221,14 @@ describe('Contentstack Entry test', () => {
         ...entryMock
       }
     })
+    const entryUpload = { entry: path.join(__dirname, '../api/mock/entry.json') }
+    const form = createFormData(entryUpload.entry)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
     makeEntry()
-      .import({ entry: path.join(__dirname, '../api/mock/entry.json') })
+      .import(entryUpload)
       .then((webhook) => {
         checkEntry(webhook)
         done()
@@ -262,7 +268,6 @@ describe('Contentstack Entry test', () => {
       .catch(done)
   })
 
-
   it('Entry publish request test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost('/content_types/content_type_uid/entries/UID/workflow').reply(200, {
@@ -270,14 +275,14 @@ describe('Contentstack Entry test', () => {
     })
 
     const publishing_rule = {
-        "uid": "blt9b9253297f117e84",
-      	"action": "publish", //(‘publish’, ‘unpublish’, or ’both’)
-      	"status": 1, //(this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
-      	"notify": false,
-      	"comment": "Please review this."
-       }
+      uid: 'blt9b9253297f117e84',
+      action: 'publish', // (‘publish’, ‘unpublish’, or ’both’)
+      status: 1, // (this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
+      notify: false,
+      comment: 'Please review this.'
+    }
     makeEntry({ entry: { ...systemUidMock } })
-      .publishRequest({publishing_rule, locale: 'en-us' })
+      .publishRequest({ publishing_rule, locale: 'en-us' })
       .then((response) => {
         expect(response.notice).to.be.equal(noticeMock.notice)
         done()
@@ -292,14 +297,14 @@ describe('Contentstack Entry test', () => {
     })
 
     const publishing_rule = {
-        "uid": "blt9b9253297f117e84",
-      	"action": "publish", //(‘publish’, ‘unpublish’, or ’both’)
-      	"status": 1, //(this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
-      	"notify": false,
-      	"comment": "Please review this."
-       }
-    makeEntry({ entry: { ...systemUidMock },  stackHeaders: stackHeadersMock })
-      .publishRequest({publishing_rule, locale: 'en-us' })
+      uid: 'blt9b9253297f117e84',
+      action: 'publish', // (‘publish’, ‘unpublish’, or ’both’)
+      status: 1, // (this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
+      notify: false,
+      comment: 'Please review this.'
+    }
+    makeEntry({ entry: { ...systemUidMock }, stackHeaders: stackHeadersMock })
+      .publishRequest({ publishing_rule, locale: 'en-us' })
       .then((response) => {
         expect(response.notice).to.be.equal(noticeMock.notice)
         done()

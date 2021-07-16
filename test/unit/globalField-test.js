@@ -2,7 +2,7 @@ import path from 'path'
 import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
-import { GlobalField, GlobalFieldCollection } from '../../lib/stack/globalField'
+import { GlobalField, GlobalFieldCollection, createFormData } from '../../lib/stack/globalField'
 import { systemUidMock, checkSystemFields, globalFieldMock, stackHeadersMock, noticeMock } from './mock/objects'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -171,8 +171,14 @@ describe('Contentstack GlobalField test', () => {
         ...globalFieldMock
       }
     })
+    const gfUpload = { global_field: path.join(__dirname, '../api/mock/globalfield.json') }
+    const form = createFormData(gfUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
     makeGlobalField()
-      .import({ global_field: path.join(__dirname, '../api/mock/globalfield.json') })
+      .import()
       .then((webhook) => {
         checkGlobalField(webhook)
         done()

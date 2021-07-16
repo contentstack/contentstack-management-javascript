@@ -3,7 +3,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { Asset, AssetCollection } from '../../lib/stack/asset'
+import { Asset, AssetCollection, createFormData } from '../../lib/stack/asset'
 import { systemUidMock, stackHeadersMock, assetMock, checkSystemFields, noticeMock } from './mock/objects'
 
 describe('Contentstack Asset test', () => {
@@ -127,8 +127,14 @@ describe('Contentstack Asset test', () => {
         ...assetMock
       }
     })
+    const assetUpload = { upload: path.join(__dirname, '../api/mock/customUpload.html'), tags: 'tags' }
+    const form = createFormData(assetUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
     makeAsset()
-      .create({ upload: path.join(__dirname, '../api/mock/customUpload.html'), tags: 'tags' })
+      .create(assetUpload)
       .then((asset) => {
         checkAsset(asset)
         done()
@@ -150,6 +156,11 @@ describe('Contentstack Asset test', () => {
       tags: ['Custom'],
       parent_uid: 'UID'
     }
+    const form = createFormData(assetUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
     makeAsset()
       .create(assetUpload)
       .then((asset) => {

@@ -3,7 +3,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { Webhook, WebhookCollection } from '../../lib/stack/webhook'
+import { Webhook, WebhookCollection, createFormData } from '../../lib/stack/webhook'
 import { systemUidMock, stackHeadersMock, webhookMock, checkSystemFields, noticeMock } from './mock/objects'
 
 describe('Contentstack Webhook test', () => {
@@ -303,8 +303,14 @@ describe('Contentstack Webhook test', () => {
         ...webhookMock
       }
     })
+    const webhookUpload = { webhook: path.join(__dirname, '../api/mock/customUpload.html') }
+    const form = createFormData(webhookUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
     makeWebhook()
-      .import({ webhook: path.join(__dirname, '../api/mock/customUpload.html') })
+      .import(webhookUpload)
       .then((webhook) => {
         checkWebhook(webhook)
         done()

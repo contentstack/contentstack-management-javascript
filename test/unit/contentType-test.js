@@ -2,7 +2,7 @@ import path from 'path'
 import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
-import { ContentType, ContentTypeCollection } from '../../lib/stack/contentType'
+import { ContentType, ContentTypeCollection, createFormData } from '../../lib/stack/contentType'
 import { systemUidMock, checkSystemFields, contentTypeMock, stackHeadersMock, noticeMock } from './mock/objects'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -220,8 +220,14 @@ describe('Contentstack ContentType test', () => {
         ...contentTypeMock
       }
     })
+    const contentTypeUpload = { content_type: path.join(__dirname, '../api/mock/contentType.json') }
+    const form = createFormData(contentTypeUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
     makeContentType()
-      .import({ content_type: path.join(__dirname, '../api/mock/contentType.json') })
+      .import(contentTypeUpload)
       .then((contentType) => {
         checkContentType(contentType)
         done()
