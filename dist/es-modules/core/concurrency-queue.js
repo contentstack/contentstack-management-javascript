@@ -84,6 +84,12 @@ export function ConcurrencyQueue(_ref) {
 
 
   var requestHandler = function requestHandler(request) {
+    if (typeof request.data === 'function') {
+      request.formdata = request.data;
+      request.data = transformFormData(request);
+    }
+
+    console.log(request.data);
     request.retryCount = request.retryCount || 0;
 
     if (request.headers.authorization && request.headers.authorization !== undefined) {
@@ -108,6 +114,13 @@ export function ConcurrencyQueue(_ref) {
     }
 
     return new Promise(function (resolve) {
+      request.onComplete = function () {
+        _this.running.pop({
+          request: request,
+          resolve: resolve
+        });
+      };
+
       _this.push({
         request: request,
         resolve: resolve
@@ -141,8 +154,7 @@ export function ConcurrencyQueue(_ref) {
 
 
   var responseHandler = function responseHandler(response) {
-    _this.running.shift();
-
+    response.config.onComplete();
     shift();
     return response;
   };
@@ -247,10 +259,21 @@ export function ConcurrencyQueue(_ref) {
       }
     }
 
+    requestConfig.data = transformFormData(requestConfig);
     requestConfig.transformRequest = [function (data) {
       return data;
     }];
     return requestConfig;
+  };
+
+  var transformFormData = function transformFormData(request) {
+    if (request.formdata) {
+      var formdata = request.formdata();
+      request.headers = _objectSpread(_objectSpread({}, request.headers), formdata.getHeaders());
+      return formdata;
+    }
+
+    return request.data;
   }; // Adds interseptors in axios to queue request
 
 

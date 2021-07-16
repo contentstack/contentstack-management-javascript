@@ -209,39 +209,41 @@ export function ExtensionCollection(http, data) {
 }
 
 function createExtensionFormData(data) {
-  var formData = new FormData();
+  return function () {
+    var formData = new FormData();
 
-  if (typeof data.title === 'string') {
-    formData.append('extension[title]', data.title);
-  }
+    if (typeof data.title === 'string') {
+      formData.append('extension[title]', data.title);
+    }
 
-  if (_typeof(data.scope) === 'object') {
-    formData.append('extension[scope]', "".concat(data.scope));
-  }
+    if (_typeof(data.scope) === 'object') {
+      formData.append('extension[scope]', "".concat(data.scope));
+    }
 
-  if (typeof data['data_type'] === 'string') {
-    formData.append('extension[data_type]', data['data_type']);
-  }
+    if (typeof data['data_type'] === 'string') {
+      formData.append('extension[data_type]', data['data_type']);
+    }
 
-  if (typeof data.type === 'string') {
-    formData.append('extension[type]', data.type);
-  }
+    if (typeof data.type === 'string') {
+      formData.append('extension[type]', data.type);
+    }
 
-  if (data.tags instanceof Array) {
-    formData.append('extension[tags]', data.tags.join(','));
-  } else if (typeof data.tags === 'string') {
-    formData.append('extension[tags]', data.tags);
-  }
+    if (data.tags instanceof Array) {
+      formData.append('extension[tags]', data.tags.join(','));
+    } else if (typeof data.tags === 'string') {
+      formData.append('extension[tags]', data.tags);
+    }
 
-  if (typeof data.multiple === 'boolean') {
-    formData.append('extension[multiple]', "".concat(data.multiple));
-  }
+    if (typeof data.multiple === 'boolean') {
+      formData.append('extension[multiple]', "".concat(data.multiple));
+    }
 
-  if (typeof data.enable === 'boolean') {
-    formData.append('extension[enable]', "".concat(data.enable));
-  }
+    if (typeof data.enable === 'boolean') {
+      formData.append('extension[enable]', "".concat(data.enable));
+    }
 
-  var uploadStream = createReadStream(data.upload);
-  formData.append('extension[upload]', uploadStream);
-  return formData;
+    var uploadStream = createReadStream(data.upload);
+    formData.append('extension[upload]', uploadStream);
+    return formData;
+  };
 }

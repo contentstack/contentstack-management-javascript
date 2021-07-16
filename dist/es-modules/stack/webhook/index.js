@@ -346,8 +346,10 @@ export function WebhookCollection(http, data) {
 }
 
 function createFormData(data) {
-  var formData = new FormData();
-  var uploadStream = createReadStream(data.webhook);
-  formData.append('webhook', uploadStream);
-  return formData;
+  return function () {
+    var formData = new FormData();
+    var uploadStream = createReadStream(data.webhook);
+    formData.append('webhook', uploadStream);
+    return formData;
+  };
 }
