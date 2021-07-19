@@ -386,8 +386,10 @@ function EntryCollection(http, data) {
 }
 
 function createFormData(entry) {
-  var formData = new _formData2["default"]();
-  var uploadStream = (0, _fs.createReadStream)(entry);
-  formData.append('entry', uploadStream);
-  return formData;
+  return function () {
+    var formData = new _formData2["default"]();
+    var uploadStream = (0, _fs.createReadStream)(entry);
+    formData.append('entry', uploadStream);
+    return formData;
+  };
 }

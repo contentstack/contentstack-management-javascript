@@ -147,7 +147,7 @@ export var upload = /*#__PURE__*/function () {
           case 0:
             http = _ref6.http, urlPath = _ref6.urlPath, stackHeaders = _ref6.stackHeaders, formData = _ref6.formData, params = _ref6.params, _ref6$method = _ref6.method, method = _ref6$method === void 0 ? 'POST' : _ref6$method;
             headers = {
-              headers: _objectSpread(_objectSpread(_objectSpread({}, params), formData.getHeaders()), cloneDeep(stackHeaders))
+              headers: _objectSpread(_objectSpread({}, params), cloneDeep(stackHeaders))
             } || {};
 
             if (!(method === 'POST')) {
@@ -186,38 +186,39 @@ export var create = function create(_ref8) {
                 headers: _objectSpread(_objectSpread({}, cloneDeep(params)), cloneDeep(this.stackHeaders)),
                 params: _objectSpread({}, cloneDeep(param))
               } || {};
-              _context5.prev = 1;
-              _context5.next = 4;
+              console.log('Entry ', data);
+              _context5.prev = 2;
+              _context5.next = 5;
               return http.post(this.urlPath, data, headers);
 
-            case 4:
+            case 5:
               response = _context5.sent;
 
               if (!response.data) {
-                _context5.next = 9;
+                _context5.next = 10;
                 break;
               }
 
               return _context5.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.content_type_uid)));
 
-            case 9:
+            case 10:
               throw error(response);
 
-            case 10:
-              _context5.next = 15;
+            case 11:
+              _context5.next = 16;
               break;
 
-            case 12:
-              _context5.prev = 12;
-              _context5.t0 = _context5["catch"](1);
+            case 13:
+              _context5.prev = 13;
+              _context5.t0 = _context5["catch"](2);
               throw error(_context5.t0);
 
-            case 15:
+            case 16:
             case "end":
               return _context5.stop();
           }
         }
-      }, _callee5, this, [[1, 12]]);
+      }, _callee5, this, [[2, 13]]);
     }));
 
     return function (_x8, _x9) {
