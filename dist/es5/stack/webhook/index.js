@@ -22,6 +22,7 @@ var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerat
 
 exports.Webhook = Webhook;
 exports.WebhookCollection = WebhookCollection;
+exports.createFormData = createFormData;
 
 var _cloneDeep = require("lodash/cloneDeep");
 

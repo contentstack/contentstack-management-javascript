@@ -354,8 +354,7 @@ export function EntryCollection(http, data) {
   });
   return entryCollection;
 }
-
-function createFormData(entry) {
+export function createFormData(entry) {
   return function () {
     var formData = new FormData();
     var uploadStream = createReadStream(entry);

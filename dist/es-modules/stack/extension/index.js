@@ -207,8 +207,7 @@ export function ExtensionCollection(http, data) {
   });
   return extensionCollection;
 }
-
-function createExtensionFormData(data) {
+export function createExtensionFormData(data) {
   return function () {
     var formData = new FormData();
 

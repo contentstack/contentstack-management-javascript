@@ -223,39 +223,38 @@ var create = exports.create = function create(_ref8) {
                 headers: _objectSpread(_objectSpread({}, (0, _cloneDeep2["default"])(params)), (0, _cloneDeep2["default"])(this.stackHeaders)),
                 params: _objectSpread({}, (0, _cloneDeep2["default"])(param))
               } || {};
-              console.log('Entry ', data);
-              _context5.prev = 2;
-              _context5.next = 5;
+              _context5.prev = 1;
+              _context5.next = 4;
               return http.post(this.urlPath, data, headers);
 
-            case 5:
+            case 4:
               response = _context5.sent;
 
               if (!response.data) {
-                _context5.next = 10;
+                _context5.next = 9;
                 break;
               }
 
               return _context5.abrupt("return", new this.constructor(http, parseData(response, this.stackHeaders, this.content_type_uid)));
 
-            case 10:
+            case 9:
               throw (0, _contentstackError2["default"])(response);
 
-            case 11:
-              _context5.next = 16;
+            case 10:
+              _context5.next = 15;
               break;
 
-            case 13:
-              _context5.prev = 13;
-              _context5.t0 = _context5["catch"](2);
+            case 12:
+              _context5.prev = 12;
+              _context5.t0 = _context5["catch"](1);
               throw (0, _contentstackError2["default"])(_context5.t0);
 
-            case 16:
+            case 15:
             case "end":
               return _context5.stop();
           }
         }
-      }, _callee5, this, [[2, 13]]);
+      }, _callee5, this, [[1, 12]]);
     }));
 
     return function (_x8, _x9) {

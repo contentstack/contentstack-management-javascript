@@ -22,6 +22,7 @@ var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerat
 
 exports.Extension = Extension;
 exports.ExtensionCollection = ExtensionCollection;
+exports.createExtensionFormData = createExtensionFormData;
 
 var _cloneDeep = require("lodash/cloneDeep");
 

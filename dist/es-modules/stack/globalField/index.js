@@ -191,8 +191,7 @@ export function GlobalFieldCollection(http, data) {
   });
   return globalFieldCollection;
 }
-
-function createFormData(data) {
+export function createFormData(data) {
   return function () {
     var formData = new FormData();
     var uploadStream = createReadStream(data.global_field);

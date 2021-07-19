@@ -325,8 +325,7 @@ export function AssetCollection(http, data) {
   });
   return assetCollection;
 }
-
-function createFormData(data) {
+export function createFormData(data) {
   return function () {
     var formData = new FormData();
 

@@ -18,6 +18,7 @@ var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerat
 
 exports.Asset = Asset;
 exports.AssetCollection = AssetCollection;
+exports.createFormData = createFormData;
 
 var _cloneDeep = require("lodash/cloneDeep");
 

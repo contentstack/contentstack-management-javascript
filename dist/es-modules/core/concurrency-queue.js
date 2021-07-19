@@ -89,7 +89,6 @@ export function ConcurrencyQueue(_ref) {
       request.data = transformFormData(request);
     }
 
-    console.log(request.data);
     request.retryCount = request.retryCount || 0;
 
     if (request.headers.authorization && request.headers.authorization !== undefined) {

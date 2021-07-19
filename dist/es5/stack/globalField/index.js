@@ -18,6 +18,7 @@ var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerat
 
 exports.GlobalField = GlobalField;
 exports.GlobalFieldCollection = GlobalFieldCollection;
+exports.createFormData = createFormData;
 
 var _cloneDeep = require("lodash/cloneDeep");
 
