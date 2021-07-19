@@ -1,6 +1,10 @@
 # Changelog
 
-## [v1.2.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.3) (2021-06-21)
+## [v1.2.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.4) (2021-07-19)
+ - Bug Fix
+   - Form data upload timeout on retrying rate limit error issue resolved
+
+## [v1.2.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.3) (2021-06-21)
  - Bug Fix
    - Request Timeout retry support added
 ## [v1.2.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.2) (2021-05-26)
