@@ -18,6 +18,7 @@ var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerat
 
 exports.Entry = Entry;
 exports.EntryCollection = EntryCollection;
+exports.createFormData = createFormData;
 
 var _cloneDeep = require("lodash/cloneDeep");
 
@@ -76,7 +77,7 @@ function Entry(http, data) {
      * .then((entry) => {
      *  entry.title = 'My New Entry'
      *  entry.description = 'Entry description'
-     *  return Entry.update({ locale: 'en-at' })
+     *  return entry.update({ locale: 'en-at' })
      * })
      * .then((entry) => console.log(entry))
      *
@@ -386,8 +387,10 @@ function EntryCollection(http, data) {
 }
 
 function createFormData(entry) {
-  var formData = new _formData2["default"]();
-  var uploadStream = (0, _fs.createReadStream)(entry);
-  formData.append('entry', uploadStream);
-  return formData;
+  return function () {
+    var formData = new _formData2["default"]();
+    var uploadStream = (0, _fs.createReadStream)(entry);
+    formData.append('entry', uploadStream);
+    return formData;
+  };
 }

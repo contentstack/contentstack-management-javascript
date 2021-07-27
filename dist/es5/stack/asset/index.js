@@ -18,6 +18,7 @@ var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerat
 
 exports.Asset = Asset;
 exports.AssetCollection = AssetCollection;
+exports.createFormData = createFormData;
 
 var _cloneDeep = require("lodash/cloneDeep");
 
@@ -358,27 +359,29 @@ function AssetCollection(http, data) {
 }
 
 function createFormData(data) {
-  var formData = new _formData2["default"]();
+  return function () {
+    var formData = new _formData2["default"]();
 
-  if (typeof data['parent_uid'] === 'string') {
-    formData.append('asset[parent_uid]', data['parent_uid']);
-  }
+    if (typeof data['parent_uid'] === 'string') {
+      formData.append('asset[parent_uid]', data['parent_uid']);
+    }
 
-  if (typeof data.description === 'string') {
-    formData.append('asset[description]', data.description);
-  }
+    if (typeof data.description === 'string') {
+      formData.append('asset[description]', data.description);
+    }
 
-  if (data.tags instanceof Array) {
-    formData.append('asset[tags]', data.tags.join(','));
-  } else if (typeof data.tags === 'string') {
-    formData.append('asset[tags]', data.tags);
-  }
+    if (data.tags instanceof Array) {
+      formData.append('asset[tags]', data.tags.join(','));
+    } else if (typeof data.tags === 'string') {
+      formData.append('asset[tags]', data.tags);
+    }
 
-  if (typeof data.title === 'string') {
-    formData.append('asset[title]', data.title);
-  }
+    if (typeof data.title === 'string') {
+      formData.append('asset[title]', data.title);
+    }
 
-  var uploadStream = (0, _fs.createReadStream)(data.upload);
-  formData.append('asset[upload]', uploadStream);
-  return formData;
+    var uploadStream = (0, _fs.createReadStream)(data.upload);
+    formData.append('asset[upload]', uploadStream);
+    return formData;
+  };
 }

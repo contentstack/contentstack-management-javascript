@@ -47,7 +47,7 @@ export function Entry(http, data) {
      * .then((entry) => {
      *  entry.title = 'My New Entry'
      *  entry.description = 'Entry description'
-     *  return Entry.update({ locale: 'en-at' })
+     *  return entry.update({ locale: 'en-at' })
      * })
      * .then((entry) => console.log(entry))
      *
@@ -354,10 +354,11 @@ export function EntryCollection(http, data) {
   });
   return entryCollection;
 }
-
-function createFormData(entry) {
-  var formData = new FormData();
-  var uploadStream = createReadStream(entry);
-  formData.append('entry', uploadStream);
-  return formData;
+export function createFormData(entry) {
+  return function () {
+    var formData = new FormData();
+    var uploadStream = createReadStream(entry);
+    formData.append('entry', uploadStream);
+    return formData;
+  };
 }

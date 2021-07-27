@@ -147,7 +147,7 @@ export var upload = /*#__PURE__*/function () {
           case 0:
             http = _ref6.http, urlPath = _ref6.urlPath, stackHeaders = _ref6.stackHeaders, formData = _ref6.formData, params = _ref6.params, _ref6$method = _ref6.method, method = _ref6$method === void 0 ? 'POST' : _ref6$method;
             headers = {
-              headers: _objectSpread(_objectSpread(_objectSpread({}, params), formData.getHeaders()), cloneDeep(stackHeaders))
+              headers: _objectSpread(_objectSpread({}, params), cloneDeep(stackHeaders))
             } || {};
 
             if (!(method === 'POST')) {

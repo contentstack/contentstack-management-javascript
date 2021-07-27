@@ -325,29 +325,30 @@ export function AssetCollection(http, data) {
   });
   return assetCollection;
 }
+export function createFormData(data) {
+  return function () {
+    var formData = new FormData();
 
-function createFormData(data) {
-  var formData = new FormData();
+    if (typeof data['parent_uid'] === 'string') {
+      formData.append('asset[parent_uid]', data['parent_uid']);
+    }
 
-  if (typeof data['parent_uid'] === 'string') {
-    formData.append('asset[parent_uid]', data['parent_uid']);
-  }
+    if (typeof data.description === 'string') {
+      formData.append('asset[description]', data.description);
+    }
 
-  if (typeof data.description === 'string') {
-    formData.append('asset[description]', data.description);
-  }
+    if (data.tags instanceof Array) {
+      formData.append('asset[tags]', data.tags.join(','));
+    } else if (typeof data.tags === 'string') {
+      formData.append('asset[tags]', data.tags);
+    }
 
-  if (data.tags instanceof Array) {
-    formData.append('asset[tags]', data.tags.join(','));
-  } else if (typeof data.tags === 'string') {
-    formData.append('asset[tags]', data.tags);
-  }
+    if (typeof data.title === 'string') {
+      formData.append('asset[title]', data.title);
+    }
 
-  if (typeof data.title === 'string') {
-    formData.append('asset[title]', data.title);
-  }
-
-  var uploadStream = createReadStream(data.upload);
-  formData.append('asset[upload]', uploadStream);
-  return formData;
+    var uploadStream = createReadStream(data.upload);
+    formData.append('asset[upload]', uploadStream);
+    return formData;
+  };
 }

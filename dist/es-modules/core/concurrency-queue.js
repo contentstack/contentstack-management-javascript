@@ -80,10 +80,15 @@ export function ConcurrencyQueue(_ref) {
       request: null,
       response: null
     };
-  }; // Request interseptor to queue the request
+  }; // Request interceptor to queue the request
 
 
   var requestHandler = function requestHandler(request) {
+    if (typeof request.data === 'function') {
+      request.formdata = request.data;
+      request.data = transformFormData(request);
+    }
+
     request.retryCount = request.retryCount || 0;
 
     if (request.headers.authorization && request.headers.authorization !== undefined) {
@@ -108,6 +113,13 @@ export function ConcurrencyQueue(_ref) {
     }
 
     return new Promise(function (resolve) {
+      request.onComplete = function () {
+        _this.running.pop({
+          request: request,
+          resolve: resolve
+        });
+      };
+
       _this.push({
         request: request,
         resolve: resolve
@@ -141,8 +153,7 @@ export function ConcurrencyQueue(_ref) {
 
 
   var responseHandler = function responseHandler(response) {
-    _this.running.shift();
-
+    response.config.onComplete();
     shift();
     return response;
   };
@@ -165,6 +176,7 @@ export function ConcurrencyQueue(_ref) {
           status: 408,
           statusText: "timeout of ".concat(_this.config.timeout, "ms exceeded")
         });
+        response = error.response;
       } else {
         return Promise.reject(responseHandler(error));
       }
@@ -176,44 +188,50 @@ export function ConcurrencyQueue(_ref) {
         return Promise.reject(responseHandler(error));
       }
 
-      _this.running.shift();
+      _this.running.shift(); // Cool down the running requests
 
-      wait = 1000; // Cooldown the running requests
 
       delay(wait);
       error.config.retryCount = networkError;
       return axios(updateRequestConfig(error, retryErrorType, wait));
-    } else if (_this.config.retryCondition && _this.config.retryCondition(error)) {
-      retryErrorType = "Error with status: ".concat(response.status);
+    }
+
+    if (_this.config.retryCondition && _this.config.retryCondition(error)) {
+      retryErrorType = error.response ? "Error with status: ".concat(response.status) : "Error Code:".concat(error.code);
       networkError++;
-
-      if (networkError > _this.config.retryLimit) {
-        return Promise.reject(responseHandler(error));
-      }
-
-      if (_this.config.retryDelayOptions) {
-        if (_this.config.retryDelayOptions.customBackoff) {
-          wait = _this.config.retryDelayOptions.customBackoff(networkError, error);
-
-          if (wait && wait <= 0) {
-            return Promise.reject(responseHandler(error));
-          }
-        } else if (_this.config.retryDelayOptions.base) {
-          wait = _this.config.retryDelayOptions.base * networkError;
-        }
-      } else {
-        wait = _this.config.retryDelay;
-      }
-
-      error.config.retryCount = networkError;
-      return new Promise(function (resolve) {
-        return setTimeout(function () {
-          return resolve(axios(updateRequestConfig(error, retryErrorType, wait)));
-        }, wait);
-      });
+      return _this.retry(error, retryErrorType, networkError, wait);
     }
 
     return Promise.reject(responseHandler(error));
+  };
+
+  this.retry = function (error, retryErrorType, retryCount, waittime) {
+    var delaytime = waittime;
+
+    if (retryCount > _this.config.retryLimit) {
+      return Promise.reject(responseHandler(error));
+    }
+
+    if (_this.config.retryDelayOptions) {
+      if (_this.config.retryDelayOptions.customBackoff) {
+        delaytime = _this.config.retryDelayOptions.customBackoff(retryCount, error);
+
+        if (delaytime && delaytime <= 0) {
+          return Promise.reject(responseHandler(error));
+        }
+      } else if (_this.config.retryDelayOptions.base) {
+        delaytime = _this.config.retryDelayOptions.base * retryCount;
+      }
+    } else {
+      delaytime = _this.config.retryDelay;
+    }
+
+    error.config.retryCount = retryCount;
+    return new Promise(function (resolve) {
+      return setTimeout(function () {
+        return resolve(axios(updateRequestConfig(error, retryErrorType, delaytime)));
+      }, delaytime);
+    });
   };
 
   this.interceptors = {
@@ -240,10 +258,21 @@ export function ConcurrencyQueue(_ref) {
       }
     }
 
+    requestConfig.data = transformFormData(requestConfig);
     requestConfig.transformRequest = [function (data) {
       return data;
     }];
     return requestConfig;
+  };
+
+  var transformFormData = function transformFormData(request) {
+    if (request.formdata) {
+      var formdata = request.formdata();
+      request.headers = _objectSpread(_objectSpread({}, request.headers), formdata.getHeaders());
+      return formdata;
+    }
+
+    return request.data;
   }; // Adds interseptors in axios to queue request
 
 

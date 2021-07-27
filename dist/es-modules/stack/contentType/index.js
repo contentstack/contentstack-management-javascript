@@ -244,10 +244,11 @@ export function ContentTypeCollection(http, data) {
   });
   return contentTypeCollection;
 }
-
-function createFormData(data) {
-  var formData = new FormData();
-  var uploadStream = createReadStream(data.content_type);
-  formData.append('content_type', uploadStream);
-  return formData;
+export function createFormData(data) {
+  return function () {
+    var formData = new FormData();
+    var uploadStream = createReadStream(data.content_type);
+    formData.append('content_type', uploadStream);
+    return formData;
+  };
 }

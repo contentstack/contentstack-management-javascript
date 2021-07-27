@@ -18,6 +18,7 @@ var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerat
 
 exports.ContentType = ContentType;
 exports.ContentTypeCollection = ContentTypeCollection;
+exports.createFormData = createFormData;
 
 var _cloneDeep = require("lodash/cloneDeep");
 
@@ -277,8 +278,10 @@ function ContentTypeCollection(http, data) {
 }
 
 function createFormData(data) {
-  var formData = new _formData2["default"]();
-  var uploadStream = (0, _fs.createReadStream)(data.content_type);
-  formData.append('content_type', uploadStream);
-  return formData;
+  return function () {
+    var formData = new _formData2["default"]();
+    var uploadStream = (0, _fs.createReadStream)(data.content_type);
+    formData.append('content_type', uploadStream);
+    return formData;
+  };
 }

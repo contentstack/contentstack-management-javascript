@@ -5,7 +5,10 @@ import http from 'http'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { ConcurrencyQueue } from '../../lib/core/concurrency-queue'
-
+import FormData from 'form-data'
+import { createReadStream } from 'fs'
+import path from 'path'
+import multiparty from 'multiparty'
 const axios = Axios.create()
 
 let server
@@ -56,7 +59,7 @@ const reconfigureQueue = (options = {}) => {
   concurrencyQueue.detach()
   concurrencyQueue = new ConcurrencyQueue({ axios: api, config })
 }
-
+var returnContent = false
 describe('Concurrency queue test', () => {
   before(() => {
     server = http.createServer((req, res) => {
@@ -71,6 +74,21 @@ describe('Concurrency queue test', () => {
       } else if (req.url === '/ratelimit') {
         res.writeHead(429, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify({ errorCode: 429 }))
+      } else if (req.url === '/assetUpload') {
+        var form = new multiparty.Form()
+        form.parse(req, function (err, fields, files) {
+          if (err) {
+            return
+          }
+          if (returnContent) {
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ randomInteger: 123 }))
+          } else {
+            res.writeHead(429, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ errorCode: 429 }))
+          }
+          returnContent = !returnContent
+        })
       } else {
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify({ randomInteger: 123 }))
@@ -207,6 +225,35 @@ describe('Concurrency queue test', () => {
       done()
     }).catch(done)
   })
+  it('Concurrency with 10 timeout requests retry', done => {
+    retryDelayOptionsStub.returns(5000)
+    const client = Axios.create({
+      baseURL: `${host}:${port}`
+    })
+    const concurrency = new ConcurrencyQueue({ axios: client, config: { retryCondition: (error) => {
+      if (error.response.status === 408) {
+        return true
+      }
+      return false
+    },
+    logHandler: logHandlerStub,
+    retryDelayOptions: {
+      base: retryDelayOptionsStub()
+    },
+    retryLimit: 2,
+    retryOnError: true, timeout: 250 } })
+    client.get('http://localhost:4444/timeout', {
+      timeout: 250
+    }).then(function (res) {
+      expect(res).to.be.equal(null)
+      done()
+    }).catch(function (err) {
+      concurrency.detach()
+      expect(err.response.status).to.be.equal(408)
+      expect(err.response.statusText).to.be.equal('timeout of 250ms exceeded')
+      done()
+    }).catch(done)
+  })
 
   it('Concurrency with 100 failing requests retry on error with no retry condition tests', done => {
     reconfigureQueue({ retryCondition: (error) => false })
@@ -244,6 +291,29 @@ describe('Concurrency queue test', () => {
       })
       .then(objects => {
         expect(logHandlerStub.callCount).to.be.equal(50)
+        expect(objects.length).to.be.equal(10)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Concurrency with 10 asset upload with rate limit error', done => {
+    reconfigureQueue()
+    const fuc = (pathcontent) => {
+      return () => {
+        const formData = new FormData()
+        const uploadStream = createReadStream(path.join(__dirname, '../api/mock/upload.html'))
+        formData.append('asset[upload]', uploadStream)
+        return formData
+      }
+    }
+
+    Promise.all(sequence(10).map(() => wrapPromise(api.post('/assetUpload', fuc()))))
+      .then((responses) => {
+        return responses.map(r => r.data)
+      })
+      .then(objects => {
+        expect(logHandlerStub.callCount).to.be.equal(10)
         expect(objects.length).to.be.equal(10)
         done()
       })

@@ -1,7 +1,7 @@
 import path from 'path'
 import Axios from 'axios'
 import { describe, it } from 'mocha'
-import { Extension, ExtensionCollection } from '../../lib/stack/extension/index'
+import { Extension, ExtensionCollection, createExtensionFormData } from '../../lib/stack/extension/index'
 import { expect } from 'chai'
 import { systemUidMock, stackHeadersMock, checkSystemFields, extensionMock, noticeMock } from './mock/objects'
 import MockAdapter from 'axios-mock-adapter'
@@ -170,8 +170,15 @@ describe('Contentstack Extension test', () => {
       }
     })
 
-    makeExtension()
-      .upload({ upload: path.join(__dirname, '../api/mock/customUpload.html') })
+    const extensionUpload = { upload: path.join(__dirname, '../api/mock/customUpload.html') }
+    const form = createExtensionFormData(extensionUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
+
+    makeExtension(extensionUpload)
+      .upload()
       .then((extension) => {
         checkExtension(extension)
         done()
@@ -188,8 +195,14 @@ describe('Contentstack Extension test', () => {
       }
     })
 
+    const extensionUpload = { upload: path.join(__dirname, '../api/mock/customUpload.html'), tags: 'tag1, tag2' }
+    const form = createExtensionFormData(extensionUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
     makeExtension()
-      .upload({ upload: path.join(__dirname, '../api/mock/customUpload.html'), tags: 'tag1, tag2' })
+      .upload(extensionUpload)
       .then((extension) => {
         checkExtension(extension)
         done()
@@ -205,19 +218,24 @@ describe('Contentstack Extension test', () => {
         ...extensionMock
       }
     })
+    const extensionUpload = {
+      title: 'Custom dashboard Upload',
+      data_type: extensionMock.data_type,
+      type: extensionMock.type,
+      tags: extensionMock.tags,
+      enable: true,
+      default_width: extensionMock.default_width,
+      upload: path.join(__dirname, '../api/mock/customUpload.html'),
+      scope: {},
+      multiple: true
+    }
+    const form = createExtensionFormData(extensionUpload)()
+    var boundary = form.getBoundary()
 
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
     makeExtension()
-      .upload({
-        title: 'Custom dashboard Upload',
-        data_type: extensionMock.data_type,
-        type: extensionMock.type,
-        tags: extensionMock.tags,
-        enable: true,
-        default_width: extensionMock.default_width,
-        upload: path.join(__dirname, '../api/mock/customUpload.html'),
-        scope: {},
-        multiple: true
-      })
+      .upload(extensionUpload)
       .then((extension) => {
         checkExtension(extension)
         done()
