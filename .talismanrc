@@ -1,0 +1,13 @@
+fileignoreconfig:
+- filename: jsdocs/stack_environment_index.js.html
+  checksum: 1eac06c1c56f00422a548245f1c92fe505174fb349d85584d81508028117f53c
+- filename: dist/node/contentstack-management.js
+  checksum: 0cc6ad62a7f0cef0882d7416e9ec966b34e56ef906592e11aa9a5dc4a6e443b9
+- filename: package-lock.json
+  checksum: 99fcfcea623a71f7b8b8537e19ff32f2e20bc17a21dfe861ce5697c5e928bae7
+- filename: dist/nativescript/contentstack-management.js
+  checksum: fbf96bf31cc89c74e3e239b8c330dd9be336af20973a0ec56dd11c463447ddf1
+- filename: dist/react-native/contentstack-management.js
+  checksum: 4eeba7bb1f57f6031334d4394ce2a40890fdc8e96101f8c01441fca2e2708baa
+- filename: dist/web/contentstack-management.js
+  checksum: 394411bc4d75c6ec6fc001cd2aea9747b91a065daa5b770dff0c1e58ef095465
