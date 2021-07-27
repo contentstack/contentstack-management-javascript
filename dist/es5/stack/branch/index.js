@@ -39,11 +39,11 @@ function Branch(http) {
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
      *
-     * client.stack({ api_key: 'api_key'}).branch('branch_name').delete()
+     * client.stack({ api_key: 'api_key'}).branch('branch_uid').delete()
      * .then((response) => console.log(response.notice))
      */
 
-    this["delete"] = (0, _entity.deleteEntity)(http);
+    this["delete"] = (0, _entity.deleteEntity)(http, true);
     /**
      * @description The fetch Branch call fetches Branch details.
      * @memberof Branch
@@ -53,7 +53,7 @@ function Branch(http) {
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
      *
-     * client.stack({ api_key: 'api_key'}).branch('branch_name').fetch()
+     * client.stack({ api_key: 'api_key'}).branch('branch_uid').fetch()
      * .then((branch) => console.log(branch))
      *
      */

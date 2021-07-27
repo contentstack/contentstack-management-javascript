@@ -283,7 +283,7 @@ function Stack(http, data) {
       return new _environment.Environment(http, data);
     };
     /**
-     * @description
+     * @description Branch corresponds to Stack branch.
      * @param {String}
      * @returns {Branch}
      *
@@ -294,7 +294,7 @@ function Stack(http, data) {
      * client.stack({ api_key: 'api_key'}).branch().create()
      * .then((branch) => console.log(branch))
      *
-     * client.stack({ api_key: 'api_key' }).branch('branch').fetch()
+     * client.stack({ api_key: 'api_key' }).branch('branch_uid').fetch()
      * .then((branch) => console.log(branch))
      *
      */
@@ -315,7 +315,7 @@ function Stack(http, data) {
       return new _branch.Branch(http, data);
     };
     /**
-     * @description
+     * @description Branch corresponds to Stack branch.
      * @param {String}
      * @returns {BranchAlias}
      *
@@ -326,7 +326,7 @@ function Stack(http, data) {
      * client.stack({ api_key: 'api_key'}).branchAlias().create()
      * .then((branch) => console.log(branch))
      *
-     * client.stack({ api_key: 'api_key' }).branchAlias('branch_uid').fetch()
+     * client.stack({ api_key: 'api_key' }).branchAlias('branch_alias_uid').fetch()
      * .then((branch) => console.log(branch))
      *
      */

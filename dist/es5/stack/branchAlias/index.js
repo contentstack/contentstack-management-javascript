@@ -56,7 +56,7 @@ function BranchAlias(http) {
      * @description The Update BranchAlias call lets you update the name of an existing BranchAlias.
      * @memberof BranchAlias
      * @func update
-     * @returns {Promise<BranchAlias.BranchAlias>} Promise for BranchAlias instance
+     * @returns {Promise<Branch.Branch>} Promise for Branch instance
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -140,7 +140,7 @@ function BranchAlias(http) {
      * @description The fetch BranchAlias call fetches BranchAlias details.
      * @memberof BranchAlias
      * @func fetch
-     * @returns {Promise<BranchAlias.BranchAlias>} Promise for BranchAlias instance
+     * @returns {Promise<Branch.Branch>} Promise for Branch instance
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
@@ -197,6 +197,22 @@ function BranchAlias(http) {
       }, _callee2, this, [[1, 13]]);
     }));
   } else {
+    /**
+     * @description The Get all BranchAlias request retrieves the details of all the Branch of a stack.
+     * @memberof BranchAlias
+     * @func fetchAll
+     * @param {Int} limit The limit parameter will return a specific number of Branch in the output.
+     * @param {Int} skip The skip parameter will skip a specific number of Branch in the output.
+     * @param {Boolean}include_count To retrieve the count of Branch.
+     * @returns {ContentstackCollection} Result collection of content of specified module.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).branchAlias().fetchAll()
+     * .then((collection) => console.log(collection))
+     *
+     */
     this.fetchAll = (0, _entity.fetchAll)(http, _branch.BranchCollection);
   }
 

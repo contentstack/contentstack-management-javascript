@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>stack/roles/index.js - Documentation</title>
+    <title>stack/branch/index.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">stack/roles/index.js</h1>
+    <h1 class="page-title">stack/branch/index.js</h1>
     
 
     
@@ -54,168 +54,94 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import cloneDeep from 'lodash/cloneDeep'
-import { create, update, deleteEntity, fetch, query, fetchAll } from '../../entity'
-import ContentstackCollection from '../../contentstackCollection'
-import error from '../../core/contentstackError'
+import { create, query, fetch, deleteEntity } from '../../entity'
+
 /**
- * A role is a collection of permissions that will be applicable to all the users who are assigned this role. Read more about &lt;a href= 'https://www.contentstack.com/docs/guide/users-and-roles#roles'>Roles&lt;/a>.
- * @namespace Role
+ *
+ * @namespace Branch
  */
-export function Role (http, data) {
-  this.urlPath = `/roles`
+export function Branch (http, data = {}) {
   this.stackHeaders = data.stackHeaders
-  if (data.role) {
-    Object.assign(this, cloneDeep(data.role))
-    this.urlPath = `/roles/${this.uid}`
-    if (this.stackHeaders) {
-      /**
-      * @description The Update role call lets you modify an existing role of your stack.
-      * @memberof Role
-      * @func update
-      * @returns {Promise&lt;Role.Role>} Promise for Role instance
-      * @example
-      * import * as contentstack from '@contentstack/management'
-      * const client = contentstack.client()
-      *
-      * client.stack({ api_key: 'api_key'}).role('role_uid').fetch({ include_rules: true, include_permissions: true})
-      * .then((role) => {
-      *  role.name = 'My New Role'
-      *  role.description = 'Role description'
-      *  role.rules = [
-      * {
-      *   module: 'asset',
-      *   assets: ['$all'],
-      *   acl: {
-      *     read: true,
-      *     create: true,
-      *     update: true,
-      *     publish: true,
-      *     delete: true
-      *   }
-      * },
-      * {
-      *   module: 'environment',
-      *   environments: [],
-      *   acl: { read: true }
-      * },
-      * {
-      *   module: 'locale',
-      *   locales: [Array],
-      *   acl: { read: true }
-      * }]
-      *  return role.update()
-      * })
-      * .then((role) => console.log(role))
-      *
-      */
-      this.update = update(http, 'role')
+  this.urlPath = `/stacks/branches`
 
-      /**
-       * @description The Delete role call deletes an existing role from your stack.
-       * @memberof Role
-       * @func delete
-       * @returns {Object} Response Object.
-       * @example
-       * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client()
-       *
-       * client.stack({ api_key: 'api_key'}).role('role_uid').delete()
-       * .then((response) => console.log(response.notice))
-       */
-      this.delete = deleteEntity(http)
+  data.branch = data.branch || data.branch_alias
+  delete data.branch_alias
 
-      /**
-       * @description The Get a single role request returns comprehensive information on a specific role.
-       * @memberof Role
-       * @func fetch
-       * @returns {Promise&lt;Role.Role>} Promise for Role instance
-       * @param {Boolean} include_permissions Set this parameter to 'true' to include the details of the permissions assigned to a particular role.
-       * @param {Boolean} include_rules Set this to ‘true’ to include the details of the rules assigned to a role.
-       * @example
-       * import * as contentstack from '@contentstack/management'
-       * const client = contentstack.client()
-       *
-       * client.stack({ api_key: 'api_key'}).role('role_uid').fetch()
-       * .then((role) => console.log(role))
-       *
-       */
-      this.fetch = fetch(http, 'role')
-    }
+  if (data.branch) {
+    Object.assign(this, cloneDeep(data.branch))
+    this.urlPath = `/stacks/branches/${this.uid}`
+
+    /**
+     * @description The Delete Branch call is used to delete an existing Branch permanently from your Stack.
+     * @memberof Branch
+     * @func delete
+     * @returns {Object} Response Object.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).branch('branch_uid').delete()
+     * .then((response) => console.log(response.notice))
+     */
+    this.delete = deleteEntity(http, true)
+
+    /**
+     * @description The fetch Branch call fetches Branch details.
+     * @memberof Branch
+     * @func fetch
+     * @returns {Promise&lt;Branch.Branch>} Promise for Branch instance
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).branch('branch_uid').fetch()
+     * .then((branch) => console.log(branch))
+     *
+     */
+    this.fetch = fetch(http, 'branch')
+
   } else {
     /**
-     * @description The Create a role call creates a new role in a stack.
-     * @memberof Role
+     * @description The Create a Branch call creates a new branch in a particular stack of your Contentstack account.
+     * @memberof Branch
      * @func create
-     * @returns {Promise&lt;Role.Role>} Promise for Role instance
+     * @returns {Promise&lt;Branch.Branch>} Promise for Branch instance
      *
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
-     * const role =  {
-     *   name: 'Role Name',
-     *   description: 'From CMA Js',
-     *   rules:
-     *     [
-     *       {
-     *         module: 'environment',
-     *         environments: [],
-     *         acl: { read: true }
-     *       },
-     *       {
-     *         module: 'locale',
-     *         locales: [],
-     *         acl: { read: true }
-     *       }
-     *     ],
-     *   uid: 'uid'
+     * const branch = {
+     *      name: 'branch_name',
+     *      source: 'master'
      * }
-     * client.stack().role().create({ role })
-     * .then((role) => console.log(role))
+     * client.stack({ api_key: 'api_key'}).branch().create({ branch })
+     * .then((branch) => { console.log(branch) })
      */
     this.create = create({ http: http })
 
     /**
-     * @description The ‘Get all roles’ request returns comprehensive information about all roles created in a stack.
-     * @memberof Role
-     * @func findAll
-     * @param {Boolean} include_permissions Set this parameter to 'true' to include the details of the permissions assigned to a particular role.
-     * @param {Boolean} include_rules Set this to ‘true’ to include the details of the rules assigned to a role.
-     * @returns {ContentstackCollection} Instance of ContentstackCollection.
-     * @example
-     * import * as contentstack from '@contentstack/management'
-     * const client = contentstack.client()
-     *
-     * client.stack().role().findAll()
-     * .then((collection) => console.log(collection))
-     */
-    this.fetchAll = fetchAll(http, RoleCollection)
-
-    /**
-     * @description The Query on Role will allow to fetch details of all or specific role.
-     * @memberof Role
+     * @description The 'Get all Branch' request returns comprehensive information about branch created in a Stack.
+     * @memberof Branch
      * @func query
-     * @param {Boolean} include_permissions Set this parameter to 'true' to include the details of the permissions assigned to a particular role.
-     * @param {Boolean} include_rules Set this to ‘true’ to include the details of the rules assigned to a role.
-     * @returns {ContentstackCollection} Instance of ContentstackCollection.
+     * @returns {Promise&lt;ContentstackCollection.ContentstackCollection>} Promise for ContentstackCollection instance
      *
      * @example
      * import * as contentstack from '@contentstack/management'
      * const client = contentstack.client()
      *
-     * client.stack({ api_key: 'api_key'}).role().query({ query: { filename: 'Asset Name' } }).find()
-     * .then((role) => console.log(role))
+     * client.stack({ api_key: 'api_key'}).branch().query().find()
+     * .then((collection) => { console.log(collection) })
      */
-    this.query = query({ http: http, wrapperCollection: RoleCollection })
+    this.query = query({ http, wrapperCollection: BranchCollection })
   }
   return this
 }
 
-export function RoleCollection (http, data) {
-  const obj = cloneDeep(data.roles || [])
-  const roleCollection = obj.map((userdata) => {
-    return new Role(http, { role: userdata, stackHeaders: data.stackHeaders })
+export function BranchCollection (http, data) {
+  const obj = cloneDeep(data.branches) || data.branch_aliases || []
+  return obj.map((branchData) => {
+    return new Branch(http, { branch: branchData, stackHeaders: data.stackHeaders })
   })
-  return roleCollection
 }
 </code></pre>
         </article>
