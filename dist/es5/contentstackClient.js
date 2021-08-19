@@ -28,7 +28,7 @@ var _contentstackError = require("./core/contentstackError");
 
 var _contentstackError2 = (0, _interopRequireDefault2["default"])(_contentstackError);
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty3["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -125,7 +125,7 @@ function contentstackClient(_ref) {
    * import * as contentstack from '@contentstack/management'
    * const client = contentstack.client()
    *
-   * client.stack({ api_key: 'api_key', management_token: 'management_token', branch_name: 'branch' }).contentType('content_type_uid').fetch()
+   * client.stack({ api_key: 'api_key', management_token: 'management_token', branch_uid: 'branch_uid' }).contentType('content_type_uid').fetch()
    * .then((stack) => console.log(stack))
    */
 

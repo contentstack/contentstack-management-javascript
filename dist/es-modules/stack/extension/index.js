@@ -1,6 +1,6 @@
 import _typeof from "@babel/runtime/helpers/typeof";
-import _regeneratorRuntime from "@babel/runtime/regenerator";
 import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _regeneratorRuntime from "@babel/runtime/regenerator";
 import cloneDeep from 'lodash/cloneDeep';
 import { create, update, deleteEntity, fetch, query, upload, parseData } from '../../entity';
 import error from '../../core/contentstackError';

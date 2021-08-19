@@ -8,10 +8,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _regenerator = require("@babel/runtime/regenerator");
-
-var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
-
 var _defineProperty2 = require("@babel/runtime/helpers/defineProperty");
 
 var _defineProperty3 = (0, _interopRequireDefault2["default"])(_defineProperty2);
@@ -21,6 +17,10 @@ var _asyncToGenerator2 = require("@babel/runtime/helpers/asyncToGenerator");
 var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerator2);
 
 exports.BranchAlias = BranchAlias;
+
+var _regenerator = require("@babel/runtime/regenerator");
+
+var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
 
 var _cloneDeep = require("lodash/cloneDeep");
 
@@ -34,7 +34,7 @@ var _entity = require("../../entity");
 
 var _branch = require("../branch");
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty3["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -162,7 +162,8 @@ function BranchAlias(http) {
               param = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {};
               _context2.prev = 1;
               headers = {
-                headers: _objectSpread({}, (0, _cloneDeep2["default"])(this.stackHeaders))
+                headers: _objectSpread({}, (0, _cloneDeep2["default"])(this.stackHeaders)),
+                params: _objectSpread({}, (0, _cloneDeep2["default"])(param))
               } || {};
               _context2.next = 5;
               return http.get(this.urlPath, headers);
