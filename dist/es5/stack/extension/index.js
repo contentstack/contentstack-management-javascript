@@ -12,10 +12,6 @@ var _typeof2 = require("@babel/runtime/helpers/typeof");
 
 var _typeof3 = (0, _interopRequireDefault2["default"])(_typeof2);
 
-var _regenerator = require("@babel/runtime/regenerator");
-
-var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
-
 var _asyncToGenerator2 = require("@babel/runtime/helpers/asyncToGenerator");
 
 var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerator2);
@@ -23,6 +19,10 @@ var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerat
 exports.Extension = Extension;
 exports.ExtensionCollection = ExtensionCollection;
 exports.createExtensionFormData = createExtensionFormData;
+
+var _regenerator = require("@babel/runtime/regenerator");
+
+var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
 
 var _cloneDeep = require("lodash/cloneDeep");
 

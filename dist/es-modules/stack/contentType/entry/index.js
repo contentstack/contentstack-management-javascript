@@ -1,5 +1,5 @@
-import _regeneratorRuntime from "@babel/runtime/regenerator";
 import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _regeneratorRuntime from "@babel/runtime/regenerator";
 import cloneDeep from 'lodash/cloneDeep';
 import { create, update, deleteEntity, fetch, query, upload, parseData, publish, unpublish } from '../../../entity';
 import FormData from 'form-data';

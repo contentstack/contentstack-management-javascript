@@ -8,10 +8,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _regenerator = require("@babel/runtime/regenerator");
-
-var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
-
 var _asyncToGenerator2 = require("@babel/runtime/helpers/asyncToGenerator");
 
 var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerator2);
@@ -19,6 +15,10 @@ var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerat
 exports.GlobalField = GlobalField;
 exports.GlobalFieldCollection = GlobalFieldCollection;
 exports.createFormData = createFormData;
+
+var _regenerator = require("@babel/runtime/regenerator");
+
+var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
 
 var _cloneDeep = require("lodash/cloneDeep");
 
