@@ -39,7 +39,7 @@ const customWidgetURL = {
     config: '{}',
     type: 'widget',
     scope: {
-      content_types: ['session']
+      content_types: ['single_page']
     }
   }
 }

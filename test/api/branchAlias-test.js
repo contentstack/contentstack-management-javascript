@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import { expect, use } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
@@ -7,25 +7,11 @@ import { branch } from './mock/branch'
 var client = {}
 var stack = {}
 
-describe('Branch api Test', () => {
+describe('Branch Alias api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     stack = jsonReader('stack.json')
     client = contentstackClient(user.authtoken)
-  })
-
-  it('Branch query should return master branch', done => {
-    makeBranchAlias()
-      .fetchAll({ query: { uid: 'master' } })
-      .then((response) => {
-        expect(response.items.length).to.be.equal(1)
-        var item = response.items[0]
-        expect(item.urlPath).to.be.equal(`/stacks/branches/master`)
-        expect(item.delete).to.not.equal(undefined)
-        expect(item.fetch).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
   })
 
   it('Should create Branch Alias', done => {
@@ -35,10 +21,23 @@ describe('Branch api Test', () => {
         expect(response.uid).to.be.equal(branch.uid)
         expect(response.urlPath).to.be.equal(`/stacks/branches/${branch.uid}`)
         expect(response.source).to.be.equal(branch.source)
-        expect(response.alias.length).to.be.equal(1)
-        expect(response.alias[0].uid).to.be.equal(`${branch.uid}_alias`)
+        expect(response.alias).to.be.equal(`${branch.uid}_alias`)
         expect(response.delete).to.not.equal(undefined)
         expect(response.fetch).to.not.equal(undefined)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Branch query should return master branch', done => {
+    makeBranchAlias()
+      .fetchAll({ query: { uid: branch.uid } })
+      .then((response) => {
+        expect(response.items.length).to.be.equal(1)
+        var item = response.items[0]
+        expect(item.urlPath).to.be.equal(`/stacks/branches/${branch.uid}`)
+        expect(item.delete).to.not.equal(undefined)
+        expect(item.fetch).to.not.equal(undefined)
         done()
       })
       .catch(done)
@@ -51,7 +50,7 @@ describe('Branch api Test', () => {
         expect(response.uid).to.be.equal(branch.uid)
         expect(response.urlPath).to.be.equal(`/stacks/branches/${branch.uid}`)
         expect(response.source).to.be.equal(branch.source)
-        expect(response.alias.length).to.be.equal(1)
+        expect(response.alias).to.be.equal(`${branch.uid}_alias`)
         expect(response.delete).to.not.equal(undefined)
         expect(response.fetch).to.not.equal(undefined)
         done()
