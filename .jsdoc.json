@@ -21,6 +21,7 @@
             "lib/stack/bulkOperation/index.js",
             "lib/stack/extension/index.js",
             "lib/stack/release/index.js",
+            "lib/stack/release/items/index.js",
             "lib/stack/label/index.js",
             "lib/stack/locale/index.js",
             "lib/stack/environment/index.js",
