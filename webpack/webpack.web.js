@@ -8,20 +8,14 @@ const commonConfig = require('./webpack.common.js')
 module.exports = function (options) {
   return webpackMerge(commonConfig(), {
     output: {
-      library: 'contentstack-management',
       libraryTarget: 'umd',
       path: path.join(__dirname, '../dist/web'),
       filename: 'contentstack-management.js'
     },
     resolve: {
-      alias: {
-        // runtime: path.resolve(__dirname, '../src/runtime/web')
-      },
-      modules: [
-        '../src',
-        // '../src/runtimes/web',
-        'node_modules'
-      ]
+      fallback: {
+        os: require.resolve('os-browserify/browser')
+      }
     },
     module: {
       rules: [{
@@ -29,7 +23,7 @@ module.exports = function (options) {
         exclude: ['/node_modules'],
         use: [{
           loader: 'string-replace-loader',
-          query: {
+          options: {
             search: '{{PLATFORM}}',
             replace: 'web'
           }
