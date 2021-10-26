@@ -184,7 +184,7 @@ export function BulkOperation(http) {
    * }
    * ]
    * }
-   * client.stack({ api_key: 'api_key'}).bulkOperation().publish({ details:  publishDetails, is_nested: true })
+   * client.stack({ api_key: 'api_key'}).bulkOperation().unpublish({ details:  publishDetails, is_nested: true })
    * .then((response) => {  console.log(response.notice) })
    */
 
