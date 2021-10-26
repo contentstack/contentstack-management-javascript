@@ -1,6 +1,7 @@
 
 const packages = require('../package.json')
 const webpack = require('webpack')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = function () {
   return {
@@ -8,7 +9,11 @@ module.exports = function () {
       contentstack: './lib/contentstack'
     },
     resolve: {
-      extensions: ['.js']
+      extensions: ['.js'],
+      modules: [
+        '../lib',
+        'node_modules'
+      ]
     },
     externals: { fs: 'commonjs fs' },
     module: {
@@ -23,7 +28,7 @@ module.exports = function () {
         },
         {
           loader: 'string-replace-loader',
-          query: {
+          options: {
             search: '{{VERSION}}',
             replace: packages.version
           }
@@ -32,7 +37,13 @@ module.exports = function () {
       }]
     },
     plugins: [
-      new webpack.IgnorePlugin(/vertx/)
+      new webpack.WatchIgnorePlugin({
+        paths: [/vertx/]
+      }),
+      new CleanWebpackPlugin({
+        protectWebpackAssets: false,
+        cleanAfterEveryBuildPatterns: ['*.LICENSE.txt']
+      })
     ]
   }
 }
