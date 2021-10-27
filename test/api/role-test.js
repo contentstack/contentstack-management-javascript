@@ -55,7 +55,7 @@ describe('Role api test', () => {
         roleUID = roles.uid
         expect(roles.name).to.be.equal(role.role.name, 'Role name not match')
         expect(roles.description).to.be.equal(role.role.description, 'Role description not match')
-        expect(roles.rules.length).to.be.equal(2, 'Role rule length not match')
+        expect(roles.rules.length).to.be.equal(3, 'Role rule length not match')
         done()
       })
       .catch(done)

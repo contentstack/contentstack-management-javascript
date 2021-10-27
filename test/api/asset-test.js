@@ -93,6 +93,7 @@ describe('Assets api Test', () => {
       .then((asset) => {
         asset.title = 'Update title'
         asset.description = 'Update description'
+        delete asset.ACL
         return asset.update()
       })
       .then((asset) => {

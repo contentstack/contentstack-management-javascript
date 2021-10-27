@@ -138,8 +138,7 @@ export function client() {
   params = _objectSpread(_objectSpread({}, defaultParameter), clonedeep(params));
   params.headers = _objectSpread(_objectSpread({}, params.headers), requiredHeaders);
   var http = httpClient(params);
-  var api = contentstackClient({
+  return contentstackClient({
     http: http
   });
-  return api;
 }
