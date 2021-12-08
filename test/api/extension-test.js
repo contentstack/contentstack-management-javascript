@@ -249,7 +249,6 @@ describe('Extension api Test', () => {
       .then((extension) => {
         expect(extension.uid).to.be.not.equal(null)
         expect(extension.title).to.be.equal('Custom widget Upload')
-        expect(extension.data_type).to.be.equal(customWidgetURL.extension.data_type)
         expect(extension.type).to.be.equal(customWidgetURL.extension.type)
         expect(extension.tag).to.be.equal(customWidgetURL.extension.tag)
         done()

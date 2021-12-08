@@ -22,3 +22,4 @@ docdash-template/
 .babel-preset.js
 .eslintrc.js
 .talismanrc
+lib/

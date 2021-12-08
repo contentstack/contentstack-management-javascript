@@ -16,14 +16,6 @@ var _cloneDeep2 = (0, _interopRequireDefault2["default"])(_cloneDeep);
 
 var _entity = require("../../../entity");
 
-var _contentstackError = require("../../../core/contentstackError");
-
-var _contentstackError2 = (0, _interopRequireDefault2["default"])(_contentstackError);
-
-var _contentstackCollection = require("../../../contentstackCollection");
-
-var _contentstackCollection2 = (0, _interopRequireDefault2["default"])(_contentstackCollection);
-
 /**
  * PublishRules is a tool that allows you to streamline the process of content creation and publishing, and lets you manage the content lifecycle of your project smoothly. Read more about <a href='https://www.contentstack.com/docs/developers/set-up-publish ruless-and-publish-rules'>PublishRuless and Publish Rules</a>.
  * @namespace PublishRules
@@ -87,50 +79,50 @@ function PublishRules(http) {
     this.fetch = (0, _entity.fetch)(http, 'publishing_rule');
   } else {
     /**
-         * @description The Create Publish Rules request allows you to create publish rules for the publish rules of a stack.
-         * @memberof PublishRules
-         * @func create
-         * @returns {Promise<PublishRules.PublishRules>} Promise for PublishRules instance
-         *
-         * @example
-         * import * as contentstack from '@contentstack/management'
-         * const client = contentstack.client()
-         * const publishing_rule = {
-         *    	"publish rules": "publish rules_uid",
-         *        "actions": [],
-         *        "content_types": ["$all"],
-         *        "locales": ["en-us"],
-         *        "environment": "environment_uid",
-         *         "approvers": {
-         *        	"users": ["user_uid"],
-         *        	"roles": ["role_uid"]
-         *        },
-         *        "publish rules_stage": "publish rules_stage_uid",
-         *         "disable_approver_publishing": false
-         *    }
-         * client.stack().publishRules().create({ publishing_rule })
-         * .then((publishRules) => console.log(publishRules))
-         */
+     * @description The Create Publish Rules request allows you to create publish rules for the publish rules of a stack.
+     * @memberof PublishRules
+     * @func create
+     * @returns {Promise<PublishRules.PublishRules>} Promise for PublishRules instance
+     *
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     * const publishing_rule = {
+     *    	"publish rules": "publish rules_uid",
+     *        "actions": [],
+     *        "content_types": ["$all"],
+     *        "locales": ["en-us"],
+     *        "environment": "environment_uid",
+     *         "approvers": {
+     *        	"users": ["user_uid"],
+     *        	"roles": ["role_uid"]
+     *        },
+     *        "publish rules_stage": "publish rules_stage_uid",
+     *         "disable_approver_publishing": false
+     *    }
+     * client.stack().publishRules().create({ publishing_rule })
+     * .then((publishRules) => console.log(publishRules))
+     */
     this.create = (0, _entity.create)({
       http: http
     });
     /**
-         * @description The Get all Publish Rules request retrieves the details of all the Publish rules of a workflow.
-         * @memberof Publish Rules
-         * @func fetchAll
-         * @param {String} content_types Enter a comma-separated list of content type UIDs for filtering publish rules on its basis.
-         * @param {Int} limit The limit parameter will return a specific number of Publish Ruless in the output.
-         * @param {Int} skip The skip parameter will skip a specific number of Publish Ruless in the output.
-         * @param {Boolean}include_count To retrieve the count of Publish Ruless.
-         * @returns {ContentstackCollection} Result collection of content of specified module.
-         * @example
-         * import * as contentstack from '@contentstack/management'
-         * const client = contentstack.client()
-         *
-         * client.stack({ api_key: 'api_key'}).publishRules().fetchAll({ content_types: 'content_type_uid1,content_type_uid2' })
-         * .then((collection) => console.log(collection))
-         *
-         */
+     * @description The Get all Publish Rules request retrieves the details of all the Publish rules of a workflow.
+     * @memberof Publish Rules
+     * @func fetchAll
+     * @param {String} content_types Enter a comma-separated list of content type UIDs for filtering publish rules on its basis.
+     * @param {Int} limit The limit parameter will return a specific number of Publish Rules in the output.
+     * @param {Int} skip The skip parameter will skip a specific number of Publish Rules in the output.
+     * @param {Boolean}include_count To retrieve the count of Publish Rules.
+     * @returns {ContentstackCollection} Result collection of content of specified module.
+     * @example
+     * import * as contentstack from '@contentstack/management'
+     * const client = contentstack.client()
+     *
+     * client.stack({ api_key: 'api_key'}).publishRules().fetchAll({ content_types: 'content_type_uid1,content_type_uid2' })
+     * .then((collection) => console.log(collection))
+     *
+     */
 
     this.fetchAll = (0, _entity.fetchAll)(http, PublishRulesCollection);
   }
@@ -138,11 +130,10 @@ function PublishRules(http) {
 
 function PublishRulesCollection(http, data) {
   var obj = (0, _cloneDeep2["default"])(data.publishing_rules) || [];
-  var publishRulesollection = obj.map(function (userdata) {
+  return obj.map(function (userdata) {
     return new PublishRules(http, {
       publishing_rule: userdata,
       stackHeaders: data.stackHeaders
     });
   });
-  return publishRulesollection;
 }

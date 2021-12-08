@@ -34,7 +34,7 @@ var _contentstackHTTPClient = require("./core/contentstackHTTPClient.js");
 
 var _contentstackHTTPClient2 = (0, _interopRequireDefault2["default"])(_contentstackHTTPClient);
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty3["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -162,8 +162,7 @@ function client() {
   params = _objectSpread(_objectSpread({}, defaultParameter), (0, _cloneDeep2["default"])(params));
   params.headers = _objectSpread(_objectSpread({}, params.headers), requiredHeaders);
   var http = (0, _contentstackHTTPClient2["default"])(params);
-  var api = (0, _contentstackClient2["default"])({
+  return (0, _contentstackClient2["default"])({
     http: http
   });
-  return api;
 }

@@ -9,10 +9,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.fetchAll = exports.fetch = exports.deleteEntity = exports.update = exports.query = exports.exportObject = exports.create = exports.upload = exports.publishUnpublish = exports.unpublish = exports.publish = undefined;
 
-var _regenerator = require("@babel/runtime/regenerator");
-
-var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
-
 var _defineProperty2 = require("@babel/runtime/helpers/defineProperty");
 
 var _defineProperty3 = (0, _interopRequireDefault2["default"])(_defineProperty2);
@@ -22,6 +18,10 @@ var _asyncToGenerator2 = require("@babel/runtime/helpers/asyncToGenerator");
 var _asyncToGenerator3 = (0, _interopRequireDefault2["default"])(_asyncToGenerator2);
 
 exports.parseData = parseData;
+
+var _regenerator = require("@babel/runtime/regenerator");
+
+var _regenerator2 = (0, _interopRequireDefault2["default"])(_regenerator);
 
 var _contentstackError = require("./core/contentstackError");
 
@@ -39,7 +39,7 @@ var _contentstackCollection = require("./contentstackCollection");
 
 var _contentstackCollection2 = (0, _interopRequireDefault2["default"])(_contentstackCollection);
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty3["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -403,6 +403,7 @@ var update = exports.update = function update(http, type) {
 };
 
 var deleteEntity = exports.deleteEntity = function deleteEntity(http) {
+  var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   return /*#__PURE__*/(0, _asyncToGenerator3["default"])( /*#__PURE__*/_regenerator2["default"].mark(function _callee8() {
     var param,
         headers,
@@ -418,37 +419,53 @@ var deleteEntity = exports.deleteEntity = function deleteEntity(http) {
               headers: _objectSpread({}, (0, _cloneDeep2["default"])(this.stackHeaders)),
               params: _objectSpread({}, (0, _cloneDeep2["default"])(param))
             } || {};
-            _context8.next = 5;
+
+            if (force === true) {
+              headers.params.force = true;
+            }
+
+            _context8.next = 6;
             return http["delete"](this.urlPath, headers);
 
-          case 5:
+          case 6:
             response = _context8.sent;
 
             if (!response.data) {
-              _context8.next = 10;
+              _context8.next = 11;
               break;
             }
 
             return _context8.abrupt("return", response.data);
 
-          case 10:
+          case 11:
+            if (!(response.status >= 200 && response.status < 300)) {
+              _context8.next = 15;
+              break;
+            }
+
+            return _context8.abrupt("return", {
+              status: response.status,
+              statusText: response.statusText
+            });
+
+          case 15:
             throw (0, _contentstackError2["default"])(response);
 
-          case 11:
-            _context8.next = 16;
+          case 16:
+            _context8.next = 21;
             break;
 
-          case 13:
-            _context8.prev = 13;
+          case 18:
+            _context8.prev = 18;
             _context8.t0 = _context8["catch"](1);
             throw (0, _contentstackError2["default"])(_context8.t0);
 
-          case 16:
+          case 21:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, this, [[1, 13]]);
+    }, _callee8, this, [[1, 18]]);
   }));
 };
 

@@ -1,8 +1,8 @@
-import _regeneratorRuntime from "@babel/runtime/regenerator";
 import _defineProperty from "@babel/runtime/helpers/defineProperty";
 import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _regeneratorRuntime from "@babel/runtime/regenerator";
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -362,6 +362,7 @@ export var update = function update(http, type) {
   }));
 };
 export var deleteEntity = function deleteEntity(http) {
+  var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   return /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee8() {
     var param,
         headers,
@@ -377,37 +378,53 @@ export var deleteEntity = function deleteEntity(http) {
               headers: _objectSpread({}, cloneDeep(this.stackHeaders)),
               params: _objectSpread({}, cloneDeep(param))
             } || {};
-            _context8.next = 5;
+
+            if (force === true) {
+              headers.params.force = true;
+            }
+
+            _context8.next = 6;
             return http["delete"](this.urlPath, headers);
 
-          case 5:
+          case 6:
             response = _context8.sent;
 
             if (!response.data) {
-              _context8.next = 10;
+              _context8.next = 11;
               break;
             }
 
             return _context8.abrupt("return", response.data);
 
-          case 10:
+          case 11:
+            if (!(response.status >= 200 && response.status < 300)) {
+              _context8.next = 15;
+              break;
+            }
+
+            return _context8.abrupt("return", {
+              status: response.status,
+              statusText: response.statusText
+            });
+
+          case 15:
             throw error(response);
 
-          case 11:
-            _context8.next = 16;
+          case 16:
+            _context8.next = 21;
             break;
 
-          case 13:
-            _context8.prev = 13;
+          case 18:
+            _context8.prev = 18;
             _context8.t0 = _context8["catch"](1);
             throw error(_context8.t0);
 
-          case 16:
+          case 21:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, this, [[1, 13]]);
+    }, _callee8, this, [[1, 18]]);
   }));
 };
 export var fetch = function fetch(http, type) {
