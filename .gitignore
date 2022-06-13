@@ -63,3 +63,6 @@ tsconfig.json
 
 # next.js build output
 .next
+.dccache
+dist
+jsdocs
