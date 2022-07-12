@@ -27,3 +27,9 @@ function ensureDirectoryExistence (filePath) {
     fs.mkdirSync(dirname)
   }
 }
+
+export function writeDownloadedFile (response, fileName) {
+  const filePath = path.resolve(dataFiles, fileName)
+  ensureDirectoryExistence(`${dataFiles}${fileName}`)
+  response.data.pipe(fs.createWriteStream(filePath))
+}
