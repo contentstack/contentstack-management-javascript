@@ -18,7 +18,7 @@ import { Webhook, Webhooks } from "./webhook";
 import { Workflow, Workflows } from "./workflow";
 
 export interface StackConfig {
-    api_key?:string
+    api_key:string
     management_token?: string
     branch_uid?: string
 }
