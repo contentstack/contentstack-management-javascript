@@ -20,6 +20,7 @@ import { Workflow, Workflows } from "./workflow";
 export interface StackConfig {
     api_key?:string
     management_token?: string
+    branch_uid?: string
 }
 
 export interface StackDetails {
