@@ -17,5 +17,11 @@ export interface Scope {
     module: string
     environments?: Array<string>
     locales?: Array<string>
-    acl: any
+    acl: ACL
+}
+export interface ACL extends AnyProperty {
+    read?: boolean
+    write?: boolean
+    create?: boolean
+    update?: boolean
 }
