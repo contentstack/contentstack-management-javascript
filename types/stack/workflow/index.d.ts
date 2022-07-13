@@ -1,3 +1,4 @@
+import { ContentstackCollection } from "../../contentstackCollection";
 import { AnyProperty, SystemFields } from "../../utility/fields";
 import { Creatable, SystemFunction } from "../../utility/operations";
 import { PublishRule, PublishRules } from "./publishRules";
