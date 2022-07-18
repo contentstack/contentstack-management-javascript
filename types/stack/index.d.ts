@@ -63,7 +63,7 @@ export interface Stack extends SystemFields {
     deliveryToken(uid: string): DeliveryToken
 
     extension(): Extensions
-    extension(uid): Extension
+    extension(uid: string): Extension
 
     workflow(): Workflows
     workflow(uid: string): Workflow
@@ -81,7 +81,7 @@ export interface Stack extends SystemFields {
 
     user(): Promise<Array<User>>
     updateUsersRoles(users: AnyProperty): Promise<any>
-    transferOwnership(email): Promise<Response>
+    transferOwnership(email: string): Promise<Response>
     settings(): Promise<any>
     resetSettings(): Promise<any>
     addSettings(stackVariables: AnyProperty): Promise<any>
