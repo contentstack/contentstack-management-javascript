@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv'
 import { shareStack, stacks, stackTest, unshareStack } from './stack';
 import { contentType, createContentType, queryContentType } from './contentType';
 import { createEntry, getEntries, importEntry, publishUnpublishEntry } from './entry';
-import { createAsset, deleteAsset, getAssets, publishUnpublishAsset, queryOnAsset, replaceAsset } from './asset';
+import { createAsset, deleteAsset, downloadAsset, getAssets, publishUnpublishAsset, queryOnAsset, replaceAsset } from './asset';
 import { createGlobalField, globalField, queryGlobalField } from './globalField';
 import { createBranch, deleteBranch, queryBranch } from './branch';
 import { createBranchAlias, deleteBranchAlias, queryBranchAlias } from './branchAlias';
@@ -76,6 +76,7 @@ describe('Typescript API test', () => {
     importEntry(stack)
 
     createAsset(stack)
+    downloadAsset(stack)
     replaceAsset(stack)
     getAssets(stack)
     publishUnpublishAsset(stack)

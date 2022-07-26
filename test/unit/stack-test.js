@@ -31,6 +31,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.release).to.be.equal(undefined)
     expect(stack.bulkOperation).to.be.equal(undefined)
     expect(stack.users).to.be.equal(undefined)
+    expect(stack.updateUsersRoles).to.be.equal(undefined)
     expect(stack.transferOwnership).to.be.equal(undefined)
     expect(stack.settings).to.be.equal(undefined)
     expect(stack.resetSettings).to.be.equal(undefined)
@@ -66,6 +67,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.release).to.be.equal(undefined)
     expect(stack.bulkOperation).to.be.equal(undefined)
     expect(stack.users).to.be.equal(undefined)
+    expect(stack.updateUsersRoles).to.be.equal(undefined)
     expect(stack.transferOwnership).to.be.equal(undefined)
     expect(stack.settings).to.be.equal(undefined)
     expect(stack.resetSettings).to.be.equal(undefined)
@@ -101,6 +103,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.release).to.be.equal(undefined)
     expect(stack.bulkOperation).to.be.equal(undefined)
     expect(stack.users).to.be.equal(undefined)
+    expect(stack.updateUsersRoles).to.be.equal(undefined)
     expect(stack.transferOwnership).to.be.equal(undefined)
     expect(stack.settings).to.be.equal(undefined)
     expect(stack.resetSettings).to.be.equal(undefined)
@@ -136,6 +139,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.release).to.be.equal(undefined)
     expect(stack.bulkOperation).to.be.equal(undefined)
     expect(stack.users).to.be.equal(undefined)
+    expect(stack.updateUsersRoles).to.be.equal(undefined)
     expect(stack.transferOwnership).to.be.equal(undefined)
     expect(stack.settings).to.be.equal(undefined)
     expect(stack.resetSettings).to.be.equal(undefined)
@@ -171,6 +175,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.release).to.be.equal(undefined)
     expect(stack.bulkOperation).to.be.equal(undefined)
     expect(stack.users).to.be.equal(undefined)
+    expect(stack.updateUsersRoles).to.be.equal(undefined)
     expect(stack.transferOwnership).to.be.equal(undefined)
     expect(stack.settings).to.be.equal(undefined)
     expect(stack.resetSettings).to.be.equal(undefined)
@@ -208,6 +213,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.release).to.not.equal(undefined)
     expect(stack.bulkOperation).to.not.equal(undefined)
     expect(stack.users).to.not.equal(undefined)
+    expect(stack.updateUsersRoles).to.not.equal(undefined)
     expect(stack.transferOwnership).to.not.equal(undefined)
     expect(stack.settings).to.not.equal(undefined)
     expect(stack.resetSettings).to.not.equal(undefined)
@@ -245,6 +251,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.release).to.not.equal(undefined)
     expect(stack.bulkOperation).to.not.equal(undefined)
     expect(stack.users).to.not.equal(undefined)
+    expect(stack.updateUsersRoles).to.not.equal(undefined)
     expect(stack.transferOwnership).to.not.equal(undefined)
     expect(stack.settings).to.not.equal(undefined)
     expect(stack.resetSettings).to.not.equal(undefined)
@@ -282,6 +289,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.release).to.not.equal(undefined)
     expect(stack.bulkOperation).to.not.equal(undefined)
     expect(stack.users).to.not.equal(undefined)
+    expect(stack.updateUsersRoles).to.not.equal(undefined)
     expect(stack.transferOwnership).to.not.equal(undefined)
     expect(stack.settings).to.not.equal(undefined)
     expect(stack.resetSettings).to.not.equal(undefined)
@@ -320,6 +328,7 @@ describe('Contentstack Stack test', () => {
     expect(stack.release).to.not.equal(undefined)
     expect(stack.bulkOperation).to.not.equal(undefined)
     expect(stack.users).to.not.equal(undefined)
+    expect(stack.updateUsersRoles).to.not.equal(undefined)
     expect(stack.transferOwnership).to.not.equal(undefined)
     expect(stack.settings).to.not.equal(undefined)
     expect(stack.resetSettings).to.not.equal(undefined)
@@ -835,6 +844,24 @@ describe('Contentstack Stack test', () => {
       })
       .catch(done)
   })
+  it('Update users roles in Stack test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('/stacks').reply(200, {
+      notice: "The roles were applied successfully.",
+    })
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+    .updateUsersRoles({ user_id: ['role1', 'role2']})
+    .then((response) => {
+      expect(response.notice).to.be.equal(noticeMock.notice)
+      done()
+    })
+    .catch(done)
+  })
+
 
   it('Stack transfer ownership test', done => {
     const mock = new MockAdapter(Axios)

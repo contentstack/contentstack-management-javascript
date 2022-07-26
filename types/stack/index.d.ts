@@ -20,8 +20,9 @@ import { Webhook, Webhooks } from "./webhook";
 import { Workflow, Workflows } from "./workflow";
 
 export interface StackConfig {
-    api_key?:string
+    api_key:string
     management_token?: string
+    branch_uid?: string
 }
 
 export interface StackDetails {
@@ -65,7 +66,7 @@ export interface Stack extends SystemFields {
     deliveryToken(uid: string): DeliveryToken
 
     extension(): Extensions
-    extension(uid): Extension
+    extension(uid: string): Extension
 
     workflow(): Workflows
     workflow(uid: string): Workflow
@@ -82,7 +83,8 @@ export interface Stack extends SystemFields {
     bulkOperation(): BulkOperation
 
     user(): Promise<Array<User>>
-    transferOwnership(email): Promise<Response>
+    updateUsersRoles(users: AnyProperty): Promise<any>
+    transferOwnership(email: string): Promise<Response>
     settings(): Promise<any>
     resetSettings(): Promise<any>
     addSettings(stackVariables: AnyProperty): Promise<any>

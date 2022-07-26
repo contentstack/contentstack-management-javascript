@@ -4,7 +4,7 @@ import path from "path";
 var assetUID = ''
 var folderUID = ''
 var publishAssetUID = ''
-
+var assetURL = ''
 export function createAsset(stack: Stack) {
     describe('Asset create', () => {
         test('Asset Upload', done => {
@@ -17,6 +17,7 @@ export function createAsset(stack: Stack) {
             stack.asset().create(asset)
             .then((asset) => {
                 assetUID = asset.uid
+                assetURL = asset.url
                 expect(asset.uid).to.be.not.equal(null)
                 expect(asset.url).to.be.not.equal(null)
                 expect(asset.filename).to.be.equal('customUpload.html')
@@ -64,6 +65,27 @@ export function createAsset(stack: Stack) {
             })
             .catch(done)
          })
+    })
+}
+
+export function downloadAsset(stack: Stack) {
+    describe('Asset download', () => {
+        test('Download asset from url', done => {
+            stack.asset().download({url: assetURL, responseType: 'stream'})
+            .then((_) => {
+                done()
+            })
+            .catch(done)
+        })
+
+        test('Download asset from uid', done => {
+            stack.asset(assetUID).fetch()
+            .then((asset) => asset.download({responseType: 'stream'}))
+            .then((_) => {
+                done()
+            })
+            .catch(done)
+        })
     })
 }
 
