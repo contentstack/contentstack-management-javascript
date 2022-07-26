@@ -1,10 +1,11 @@
+import { ContentstackCollection } from "../../contentstackCollection";
 import { AnyProperty, SystemFields } from "../../utility/fields";
 import { Creatable, SystemFunction } from "../../utility/operations";
 
-export interface PublishRule extends SystemFields, SystemFunction<PublishRuls> {
+export interface PublishRule extends SystemFields, SystemFunction<PublishRules> {
 }
     
-export interface PublishRules extends Creatable<PublishRule, {publishing_rule: PublishRuleData}> {
+export interface PublishRules extends Creatable<PublishRule, {publishing_rule: PublishRulesData}> {
     fetchAll(param?: AnyProperty): Promise<ContentstackCollection<PublishRule>>
 }
 
