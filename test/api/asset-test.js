@@ -1,7 +1,7 @@
 import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import { jsonReader } from '../utility/fileOperations/readwrite'
+import { jsonReader, writeDownloadedFile } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
@@ -10,6 +10,7 @@ var stack = {}
 var folderUID = ''
 var assetUID = ''
 var publishAssetUID = ''
+var assetURL = ''
 describe('Assets api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
@@ -27,6 +28,7 @@ describe('Assets api Test', () => {
     makeAsset().create(asset)
       .then((asset) => {
         assetUID = asset.uid
+        assetURL = asset.url
         expect(asset.uid).to.be.not.equal(null)
         expect(asset.url).to.be.not.equal(null)
         expect(asset.filename).to.be.equal('customUpload.html')
@@ -36,6 +38,22 @@ describe('Assets api Test', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('Download asset from URL.', done => {
+    makeAsset().download({ url: assetURL, responseType: 'stream' })
+      .then((response) => {
+        writeDownloadedFile(response, 'asset1')
+        done()
+      }).catch(done)
+  })
+  it('Download asset from fetch details ', done => {
+    makeAsset(assetUID).fetch()
+      .then((asset) => asset.download({ responseType: 'stream' }))
+      .then((response) => {
+        writeDownloadedFile(response, 'asset2')
+        done()
+      }).catch(done)
   })
 
   it('Create folder ', done => {
