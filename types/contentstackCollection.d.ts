@@ -11,3 +11,8 @@ export interface EntryCollection<T> extends ContentstackCollection<T> {
     schema?: object
     content_Type?: object
 }
+
+export type AssetResponseType =
+  | 'arraybuffer'
+  | 'blob'
+  | 'stream';

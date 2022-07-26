@@ -290,6 +290,38 @@ describe('Contentstack Entry test', () => {
       .catch(done)
   })
 
+  it('Entry set Workflow stage test', done => {
+    var mock = new MockAdapter(Axios);
+
+    mock.post('/content_types/content_type_uid/entries/UID/workflow').reply(200, {
+      ...noticeMock
+    })
+
+    const workflow_stage = {
+      uid: 'uid',
+      comment: 'Please review this.',
+      due_date: 'Thu Dec 01 2018',
+      notify: true,
+      assigned_to: [{
+        uid: "user_uid", 
+        name: "Username", 
+        email: "user_email_id"
+        }],
+    assigned_by_roles: [{
+      uid: "role_uid",
+      name: "Role name"
+    }]
+    }
+
+    makeEntry({entry: { ...systemUidMock }})
+      .setWorkflowStage({workflow_stage, locale: 'en-us'})
+      .then((response) => {
+        expect(response.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
+
   it('Entry publish request test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost('/content_types/content_type_uid/entries/UID/workflow').reply(200, {
