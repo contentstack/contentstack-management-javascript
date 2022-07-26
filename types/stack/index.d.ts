@@ -1,6 +1,8 @@
 import { Response } from "../contentstackCollection";
+import { Query } from "../query";
 import { User } from "../user";
 import { AnyProperty, SystemFields } from "../utility/fields";
+import { Pagination } from "../utility/pagination";
 import { Asset, Assets } from "./asset";
 import { Branch, Branches } from "./branch";
 import { BranchAlias, BranchAliases } from "./branchAlias";
@@ -35,6 +37,7 @@ export interface Stack extends SystemFields {
     name: string
     
     fetch(param?: AnyProperty): Promise<Stack>
+    query(param?: Pagination & AnyProperty): Query<Stack>
     update(param?: AnyProperty): Promise<Stack>
 
     locale(): Locales
