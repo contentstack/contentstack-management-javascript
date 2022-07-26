@@ -23,3 +23,4 @@ docdash-template/
 .eslintrc.js
 .talismanrc
 lib/
+.github
