@@ -6,10 +6,11 @@ import { expect } from 'chai'
 
 dotenv.config()
 
-// var stacks = {}
-var orgID = process.env.ORGANIZATION
-var client = {}
-var appUid = ''
+let stack = {}
+const orgID = process.env.ORGANIZATION
+let client = {}
+let appUid = ''
+let installationUid = ''
 const app = {
   name: 'My New App',
   description: 'My new test app',
@@ -21,6 +22,7 @@ describe('Apps api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
+    stack = jsonReader('stack.json')
   })
 
   it('Fetch all apps test', done => {
@@ -101,9 +103,46 @@ describe('Apps api Test', () => {
       .catch(done)
   })
 
+  it('Install app test', done => {
+    client.organization(orgID).app(appUid).install({ targetType: 'stack', targetUid: stack.api_key })
+      .then((installation) => {
+        installationUid = installation.uid
+        expect(installation.uid).to.not.equal(undefined)
+        expect(installation.params.organization_uid).to.be.equal(orgID)
+        expect(installation.urlPath).to.be.equal(`/installations/${installation.uid}`)
+        expect(installation.fetch).to.not.equal(undefined)
+        expect(installation.update).to.not.equal(undefined)
+        expect(installation.uninstall).to.not.equal(undefined)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Fetch installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).fetch()
+      .then((installation) => {
+        expect(installation.uid).to.be.equal(installationUid)
+        expect(installation.params.organization_uid).to.be.equal(orgID)
+        expect(installation.urlPath).to.be.equal(`/installations/${installation.uid}`)
+        expect(installation.target.type).to.be.equal('stack')
+        expect(installation.target.uid).to.be.equal(stack.api_key)
+        expect(installation.status).to.be.equal('installed')
+        done()
+      }).catch(done)
+  })
+
+  it('Uninstall installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).uninstall()
+      .then((installation) => {
+        expect(installation).to.deep.equal({})
+        done()
+      }).catch(done)
+  })
+
   it('Delete app test', done => {
     client.organization(orgID).app(appUid).delete()
       .then((appResponse) => {
+        expect(appResponse).to.deep.equal({})
         done()
       })
       .catch(done)
