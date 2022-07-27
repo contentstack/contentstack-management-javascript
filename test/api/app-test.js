@@ -9,7 +9,7 @@ dotenv.config()
 // var stacks = {}
 var orgID = process.env.ORGANIZATION
 var client = {}
-var appUid = '***REMOVED***'
+var appUid = ''
 const app = {
   name: 'My New App',
   description: 'My new test app',
@@ -81,7 +81,6 @@ describe('Apps api Test', () => {
   it('Update OAuth app test', done => {
     client.organization(orgID).app(appUid).updateOAuth({ config })
       .then((appResponse) => {
-        appUid = appResponse.uid
         expect(appResponse.redirect_uri).to.be.equal(config.redirect_uri)
         expect(appResponse.app_token_config.enabled).to.be.equal(config.app_token_config.enabled)
         expect(appResponse.user_token_config.enabled).to.be.equal(config.user_token_config.enabled)

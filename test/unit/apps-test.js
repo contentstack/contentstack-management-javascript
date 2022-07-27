@@ -16,6 +16,8 @@ describe('Contentstack apps test', () => {
     expect(app.delete).to.be.equal(undefined)
     expect(app.fetchOAuth).to.be.equal(undefined)
     expect(app.updateOAuth).to.be.equal(undefined)
+    expect(app.install).to.be.equal(undefined)
+    expect(app.installation).to.not.equal(undefined)
     done()
   })
 
@@ -30,6 +32,8 @@ describe('Contentstack apps test', () => {
     expect(app.delete).to.not.equal(undefined)
     expect(app.fetchOAuth).to.not.equal(undefined)
     expect(app.updateOAuth).to.not.equal(undefined)
+    expect(app.install).to.not.equal(undefined)
+    expect(app.installation).to.not.equal(undefined)
     done()
   })
 
