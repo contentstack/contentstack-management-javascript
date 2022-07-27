@@ -535,6 +535,58 @@ const oAuthMock = {
   }
 }
 
+const appInstallMock = {
+  status: 'installed',
+  installation_uid: 'installationUID',
+  redirect_to: 'config',
+  redirect_uri: 'redirect_uri',
+}
+
+const installationMock = {
+  status: 'installed',
+  manifest: {
+    framework_version: '1.0',
+    version: 1,
+    icon: '',
+    description: '',
+    target_type: 'stack',
+    name: 'Post man test 2',
+    visibility: 'private',
+    created_by: {
+      uid: 'user_uid',
+      first_name: 'user_name',
+      last_name: 'user_last_name'
+    },
+    updated_by: {
+      uid: 'user_uid',
+      first_name: 'user_name',
+      last_name: 'user_last_name'
+    },
+    organization_uid: 'org_uid',
+    created_at: 'date_time',
+    updated_at: 'date_time',
+    uid: 'installation_uid'
+  },
+  created_by: {
+    uid: 'user_uid',
+    first_name: 'user_name',
+    last_name: 'user_last_name'
+  },
+  updated_by: {
+    uid: 'user_uid',
+    first_name: 'user_name',
+    last_name: 'user_last_name'
+  },
+  target: {
+    type: 'stack',
+    uid: '{{stackUid}}'
+  },
+  organization_uid: 'org_uid',
+  created_at: 'date_time',
+  updated_at: 'date_time',
+  uid: 'installation_uid'
+}
+
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -545,14 +597,14 @@ function mockCollection (mockData, type) {
 }
 
 function entryMockCollection (mockData) {
-  var entryMockCollection = mockCollection(mockData, 'entries')
-  entryMockCollection.schema = {
+  const entryMockCll = mockCollection(mockData, 'entries')
+  entryMockCll.schema = {
     ...cloneDeep(singlepageCT.content_type)
   }
-  entryMockCollection.content_type = {
+  entryMockCll.content_type = {
     ...cloneDeep(singlepageCT.content_type)
   }
-  return entryMockCollection
+  return entryMockCll
 }
 
 function checkSystemFields (object) {
@@ -564,6 +616,8 @@ function checkSystemFields (object) {
 export {
   appMock,
   oAuthMock,
+  appInstallMock,
+  installationMock,
   errorMock,
   noticeMock,
   stackMock,
