@@ -1,10 +1,14 @@
 import { ContentstackCollection } from "../contentstackCollection";
 import { AnyProperty, SystemFields } from "../utility/fields";
 import { Creatable, SystemFunction } from "../utility/operations";
+import { Installation, Installations } from "./installation";
 
 export interface App extends SystemFields, SystemFunction<App> {
     fetchOAuth(param: AnyProperty): Promise<{AppOAuth}>
     updateOAuth(data: { config: AppOAuth, param: AnyProperty }): Promise<AppOAuth>
+    install(data: {targetUid: string, targetType: AppTarget}): Promise<Installation>
+    installation(): Installations
+    installation(uid: string): Installation
 }
 
 export interface Apps extends Creatable<App, AppData> {
