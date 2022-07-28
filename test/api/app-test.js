@@ -94,7 +94,6 @@ describe('Apps api Test', () => {
   it('Fetch OAuth app test', done => {
     client.organization(orgID).app(appUid).fetchOAuth()
       .then((appResponse) => {
-        appUid = appResponse.uid
         expect(appResponse.redirect_uri).to.be.equal(config.redirect_uri)
         expect(appResponse.app_token_config.enabled).to.be.equal(config.app_token_config.enabled)
         expect(appResponse.user_token_config.enabled).to.be.equal(config.user_token_config.enabled)
