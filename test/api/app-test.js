@@ -117,6 +117,14 @@ describe('Apps api Test', () => {
       .catch(done)
   })
 
+  it('Get configuration for installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).configuration()
+      .then((installation) => {
+        expect(installation).to.deep.equal({})
+        done()
+      }).catch(done)
+  })
+
   it('Fetch installation test', done => {
     client.organization(orgID).app(appUid).installation(installationUid).fetch()
       .then((installation) => {
