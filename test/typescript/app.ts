@@ -145,6 +145,13 @@ export function installation(organization: Organization) {
             }).catch(done)
         })
 
+        test('Get Configuration for App installation', done => {
+            organization.app(appUid).installation(installationUid).configuration()
+            .then(() => {
+                done()
+            }).catch(done)
+        })
+
         test('Uninstall App installation', done => {
             organization.app(appUid).installation(installationUid).uninstall()
             .then((installation) => {
