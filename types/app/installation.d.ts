@@ -1,12 +1,12 @@
 import { ContentstackCollection } from "../contentstackCollection";
-import { SystemFields } from "../utility/fields";
+import { AnyProperty, SystemFields } from "../utility/fields";
 
 export interface Installation extends SystemFields{
-    update(param?: AnyProperty): Promise<T>
-    fetch(param?: AnyProperty): Promise<T>
-    uninstall(param?: AnyProperty): Promise<T>
+    update(param?: AnyProperty): Promise<Installation>
+    fetch(param?: AnyProperty): Promise<Installation>
+    uninstall(param?: AnyProperty): Promise<AnyProperty>
 }
 
 export interface Installations {
-    findAll(param: AnyProperty): Promise<ContentstackCollection<Installation>>
+    findAll(param?: AnyProperty): Promise<ContentstackCollection<Installation>>
 }
