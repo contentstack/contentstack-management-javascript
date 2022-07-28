@@ -176,6 +176,7 @@ function checkApp (app) {
   expect(app.description).to.be.equal('Description of the app')
   expect(app.organization_uid).to.be.equal('org_uid')
 }
+
 function makeApp (data) {
   return new App(Axios, data)
 }

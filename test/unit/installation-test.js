@@ -17,7 +17,7 @@ describe('Contentstack apps installation test', () => {
     done()
   })
 
-  it('Installation with app uid', done => { 
+  it('Installation with app uid', done => {
     const uid = appMock.uid
     const installation = makeInstallation({ app_uid: uid })
     expect(installation.urlPath).to.be.equal(`apps/${uid}/installations`)
@@ -91,11 +91,7 @@ describe('Contentstack apps installation test', () => {
       .findAll()
       .then((installations) => {
         installations.items.forEach(installation => {
-          expect(installation.status).to.be.equal(installationMock.status)
-          expect(installation.uid).to.be.equal(installationMock.uid)
-          expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
-          expect(installation.target.type).to.be.equal(installationMock.target.type)
-          expect(installation.target.uid).to.be.equal(installationMock.target.uid)
+          checkInstallation(installation)
         })
         done()
       })
@@ -112,11 +108,23 @@ describe('Contentstack apps installation test', () => {
     makeInstallation({ data: { uid } })
       .fetch()
       .then((installation) => {
-        expect(installation.status).to.be.equal(installationMock.status)
-        expect(installation.uid).to.be.equal(installationMock.uid)
-        expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
-        expect(installation.target.type).to.be.equal(installationMock.target.type)
-        expect(installation.target.uid).to.be.equal(installationMock.target.uid)
+        checkInstallation(installation)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Get installation configuration test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onGet(`/installations/${uid}/configuration`).reply(200, {
+      data: {}
+    })
+
+    makeInstallation({ data: { uid } })
+      .configuration()
+      .then((configuration) => {
+        expect(configuration).to.deep.equal({})
         done()
       })
       .catch(done)
@@ -131,11 +139,7 @@ describe('Contentstack apps installation test', () => {
     makeInstallation({ data: { uid } })
       .update()
       .then((installation) => {
-        expect(installation.status).to.be.equal(installationMock.status)
-        expect(installation.uid).to.be.equal(installationMock.uid)
-        expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
-        expect(installation.target.type).to.be.equal(installationMock.target.type)
-        expect(installation.target.uid).to.be.equal(installationMock.target.uid)
+        checkInstallation(installation)
         done()
       })
       .catch(done)
@@ -155,6 +159,14 @@ describe('Contentstack apps installation test', () => {
       .catch(done)
   })
 })
+
+function checkInstallation (installation) {
+  expect(installation.status).to.be.equal(installationMock.status)
+  expect(installation.uid).to.be.equal(installationMock.uid)
+  expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
+  expect(installation.target.type).to.be.equal(installationMock.target.type)
+  expect(installation.target.uid).to.be.equal(installationMock.target.uid)
+}
 
 function makeInstallation (data, param = {}) {
   return new Installation(Axios, data, param)
