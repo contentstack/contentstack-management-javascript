@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as dotenv from 'dotenv'
 import { ContentstackClient } from '../..';
 import { ContentstackCollection } from '../../types/contentstackCollection';
-import { Stack, StackDetails } from '../../types/stack';
+import { Stack } from '../../types/stack';
 dotenv.config()
 
 var stackName: string
