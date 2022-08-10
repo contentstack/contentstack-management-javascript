@@ -1,6 +1,7 @@
 require('./api/user-test')
 require('./api/organization-test')
 require('./api/stack-test')
+require('./api/app-test')
 require('./api/branch-test')
 require('./api/branchAlias-test')
 require('./api/locale-test')
