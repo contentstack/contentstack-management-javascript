@@ -13,25 +13,35 @@ import { createLocale, deleteLocale, getLocale } from './locale';
 import { createEnvironment, deleteEnvironment, getEnvironment, updateEnvironment } from './environment';
 import { createDeliveryToken, deleteDeliveryToken, deliveryToken, queryDeliveryToken } from './deliveryToken';
 import { createRole, findAllRole, getRole, getRoleUid, queryRole } from './role';
+import { createApp, deleteApp, fetchApp, installation, updateApp, updateAuth } from './app';
 dotenv.config()
 jest.setTimeout(10000);
 
 const client =  Contentstack.client({
     authtoken: process.env.AUTHTOKEN,
-    host: process.env.host,
+    host: process.env.HOST,
 })
 
 describe('Typescript API test', () => {
     login(client);
     getUser(client)
 
+    const org =  client.organization(process.env.ORGANIZATION as string)
+    
     organizations(client)
-    organization(client.organization(process.env.ORGANIZATION as string))
+    organization(org)
 
     stacks(client)
-    stackTest(client.stack({api_key: process.env.APIKEY}))
+    stackTest(client.stack({api_key: process.env.APIKEY as string}))
 
-    const stack = client.stack({api_key: process.env.APIKEY})
+    createApp(org.app())
+    fetchApp(org)
+    updateApp(org)
+    updateAuth(org)
+    installation(org)
+    deleteApp(org)
+
+    const stack = client.stack({api_key: process.env.APIKEY as string})
 
     createBranch(stack)
     queryBranch(stack)
