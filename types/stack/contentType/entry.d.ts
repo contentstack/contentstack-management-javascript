@@ -3,10 +3,12 @@ import { AnyProperty, SystemFields } from "../../utility/fields";
 import { Queryable, SystemFunction } from "../../utility/operations";
 import { Publishable } from "../../utility/publish";
 import { Unpublishable } from "../../utility/unpublish";
+import { MetaData } from './metadata';
 
 
 export interface Entry extends Publishable, Unpublishable, SystemFields, SystemFunction<Entry> {
     setWorkflowStage(data: { workflow_stage: WorkflowStage, locale?:string}): Promise<Response>
+    metadata(uid: string): MetaData
 }
 
 export interface Entries extends Queryable<Entry, {entry: EntryData}> {
