@@ -355,6 +355,21 @@ const entryMock = {
   _rules: []
 }
 
+const metaDataMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  entity_uid: "content_type_entry_uid",
+  type: "entry",
+  _content_type_uid: "content_type_entry",
+  extension_uid: "extension_uid",
+  meta_key: {
+    key_one: "value_one",
+    key_two: "value_two"
+  },
+  locale: 'en-us',
+  _version: 1,
+}
+
 const labelMock = {
   ...systemFieldsMock,
   ...systemFieldsUserMock,
@@ -642,6 +657,7 @@ export {
   contentTypeMock,
   globalFieldMock,
   entryMock,
+  metaDataMock,
   labelMock,
   environmentMock,
   localeMock,
