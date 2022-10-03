@@ -9,6 +9,7 @@ import FormData from 'form-data'
 import { createReadStream } from 'fs'
 import path from 'path'
 import multiparty from 'multiparty'
+import { client } from '../../lib/contentstack'
 const axios = Axios.create()
 
 let server
@@ -60,10 +61,24 @@ const reconfigureQueue = (options = {}) => {
   concurrencyQueue = new ConcurrencyQueue({ axios: api, config })
 }
 var returnContent = false
+var unauthorized = false
+var token = 'Bearer <token_value_new>'
 describe('Concurrency queue test', () => {
   before(() => {
     server = http.createServer((req, res) => {
-      if (req.url === '/timeout') {
+      if (req.url === '/user-session') {
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ token }))
+      } else if (req.url === '/unauthorized') {
+        if (req.headers.authorization === token) {
+          res.writeHead(200, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ randomInteger: 123 }))
+        } else {
+          res.writeHead(401, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ errorCode: 401 }))
+        }
+        unauthorized = !unauthorized
+      } else if (req.url === '/timeout') {
         setTimeout(function () {
           res.writeHead(400, { 'Content-Type': 'application/json' })
           res.end()
@@ -109,6 +124,39 @@ describe('Concurrency queue test', () => {
       server.close()
       server = null
     }
+  })
+
+  it('Refresh Token on 401 with 1000 concurrent request', done => {
+    const axios2 = client({
+      baseURL: `${host}:${port}`
+    })
+    const axios = client({
+      baseURL: `${host}:${port}`,
+      authorization: 'Bearer <token_value>',
+      logHandler: logHandlerStub,
+      refreshToken: () => {
+        return new Promise((resolve, reject) => {
+          return axios2.login().then((res) => {
+            resolve({ authorization: res.token })
+          }).catch((error) => {
+            reject(error)
+          })
+        })
+      }
+    })
+    Promise.all(sequence(1003).map(() => axios.axiosInstance.get('/unauthorized')))
+      .then((responses) => {
+        return responses.map(r => r.config.headers.authorization)
+      })
+      .then(objects => {
+        objects.forEach((authorization) => {
+          expect(authorization).to.be.equal(token)
+        })
+        expect(logHandlerStub.callCount).to.be.equal(5)
+        expect(objects.length).to.be.equal(1003)
+        done()
+      })
+      .catch(done)
   })
 
   it('Initialize with bad axios instance', done => {
