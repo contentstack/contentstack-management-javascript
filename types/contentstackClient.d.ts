@@ -37,7 +37,7 @@ export interface ContentstackConfig extends AxiosRequestConfig, ContentstackToke
     retryDelay?: number
     retryCondition?: (error: Error) => boolean
     retryDelayOptions?: RetryDelayOption
-    refreshToken?: () => ContentstackToken
+    refreshToken?: () => Promise<ContentstackToken>
     maxContentLength?: number
     maxBodyLength?: number
     logHandler?: (level: string, data: any) => void
