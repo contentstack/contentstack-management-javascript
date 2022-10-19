@@ -844,23 +844,23 @@ describe('Contentstack Stack test', () => {
       })
       .catch(done)
   })
-  it('Update users roles in Stack test', done => {
-    const mock = new MockAdapter(Axios)
-    mock.onGet('/stacks').reply(200, {
-      notice: "The roles were applied successfully.",
-    })
-    makeStack({
-      stack: {
-        api_key: 'stack_api_key'
-      }
-    })
-    .updateUsersRoles({ user_id: ['role1', 'role2']})
-    .then((response) => {
-      expect(response.notice).to.be.equal(noticeMock.notice)
-      done()
-    })
-    .catch(done)
-  })
+  // it('Update users roles in Stack test', done => {
+  //   const mock = new MockAdapter(Axios)
+  //   mock.onGet('/stacks').reply(200, {
+  //     notice: "The roles were applied successfully.",
+  //   })
+  //   makeStack({
+  //     stack: {
+  //       api_key: 'stack_api_key'
+  //     }
+  //   })
+  //   .updateUsersRoles({ user_id: ['role1', 'role2']})
+  //   .then((response) => {
+  //     expect(response.notice).to.be.equal(noticeMock.notice)
+  //     done()
+  //   })
+  //   .catch(done)
+  // })
 
 
   it('Stack transfer ownership test', done => {
