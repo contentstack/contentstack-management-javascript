@@ -18,10 +18,15 @@ export interface ProxyConfig {
 }
 export interface RetryDelayOption {
     base?: number
-    customBackoff: (retryCount: number, error: Error) => number
+    customBackoff?: (retryCount: number, error: Error) => number
 }
 
-export interface ContentstackConfig extends AxiosRequestConfig {
+export interface ContentstackToken {
+    authorization?: string
+    authtoken?: string
+}
+
+export interface ContentstackConfig extends AxiosRequestConfig, ContentstackToken {
     proxy?: ProxyConfig | false
     endpoint?: string
     host?: string
@@ -32,12 +37,12 @@ export interface ContentstackConfig extends AxiosRequestConfig {
     retryDelay?: number
     retryCondition?: (error: Error) => boolean
     retryDelayOptions?: RetryDelayOption
+    refreshToken?: () => Promise<ContentstackToken>
     maxContentLength?: number
     maxBodyLength?: number
     logHandler?: (level: string, data: any) => void
     application?: string
     integration?: string
-    authtoken?: string
 }
 
 export interface LoginDetails {
