@@ -293,7 +293,7 @@ describe('Contentstack Entry test', () => {
   it('Entry set Workflow stage test', done => {
     var mock = new MockAdapter(Axios);
 
-    mock.post('/content_types/content_type_uid/entries/UID/workflow').reply(200, {
+    mock.onPost('/content_types/content_type_uid/entries/UID/workflow').reply(200, {
       ...noticeMock
     })
 

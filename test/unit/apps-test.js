@@ -17,7 +17,7 @@ describe('Contentstack apps test', () => {
     expect(app.fetchOAuth).to.be.equal(undefined)
     expect(app.updateOAuth).to.be.equal(undefined)
     expect(app.install).to.be.equal(undefined)
-    expect(app.installation).to.not.equal(undefined)
+    expect(app.installation).to.be.equal(undefined)
     done()
   })
 

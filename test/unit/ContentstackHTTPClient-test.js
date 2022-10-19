@@ -18,7 +18,7 @@ describe('Contentstack HTTP Client', () => {
     expect(logHandlerStub.callCount).to.be.equal(0)
     expect(axiosInstance.defaults.headers.apiKey).to.be.equal('apiKey', 'Api not Equal to \'apiKey\'')
     expect(axiosInstance.defaults.headers.accessToken).to.be.equal('accessToken', 'Api not Equal to \'accessToken\'')
-    expect(axiosInstance.defaults.baseURL).to.be.equal('https://defaulthost:443/v3', 'Api not Equal to \'https://defaulthost:443/v3\'')
+    expect(axiosInstance.defaults.baseURL).to.be.equal('https://defaulthost:443/{api-version}', 'Api not Equal to \'https://defaulthost:443/v3\'')
     done()
   })
 
@@ -32,7 +32,7 @@ describe('Contentstack HTTP Client', () => {
       })
     expect(axiosInstance.defaults.headers.apiKey).to.be.equal('apiKey', 'Api not Equal to \'apiKey\'')
     expect(axiosInstance.defaults.headers.accessToken).to.be.equal('accessToken', 'Api not Equal to \'accessToken\'')
-    expect(axiosInstance.defaults.baseURL).to.be.equal('https://contentstack.com:443/v3', 'Api not Equal to \'https://defaulthost:443/v3\'')
+    expect(axiosInstance.defaults.baseURL).to.be.equal('https://contentstack.com:443/{api-version}', 'Api not Equal to \'https://defaulthost:443/v3\'')
     done()
   })
 
@@ -47,7 +47,7 @@ describe('Contentstack HTTP Client', () => {
 
     expect(axiosInstance.defaults.headers.apiKey).to.be.equal('apiKey', 'Api not Equal to \'apiKey\'')
     expect(axiosInstance.defaults.headers.accessToken).to.be.equal('accessToken', 'Api not Equal to \'accessToken\'')
-    expect(axiosInstance.defaults.baseURL).to.be.equal('https://contentstack.com:443/v3', 'Api not Equal to \'https://contentstack.com:443/v3\'')
+    expect(axiosInstance.defaults.baseURL).to.be.equal('https://contentstack.com:443/{api-version}', 'Api not Equal to \'https://contentstack.com:443/v3\'')
     done()
   })
 
@@ -63,7 +63,7 @@ describe('Contentstack HTTP Client', () => {
 
     expect(axiosInstance.defaults.headers.apiKey).to.be.equal('apiKey', 'Api not Equal to \'apiKey\'')
     expect(axiosInstance.defaults.headers.accessToken).to.be.equal('accessToken', 'Api not Equal to \'accessToken\'')
-    expect(axiosInstance.defaults.baseURL).to.be.equal('https://contentstack.com:443/stack/v3', 'Api not Equal to \'https://contentstack.com:443/stack/v3\'')
+    expect(axiosInstance.defaults.baseURL).to.be.equal('https://contentstack.com:443/stack/{api-version}', 'Api not Equal to \'https://contentstack.com:443/stack/v3\'')
     done()
   })
   it('Contentstack Http Client blank API key', done => {
