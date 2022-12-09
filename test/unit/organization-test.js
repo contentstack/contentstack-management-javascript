@@ -30,12 +30,12 @@ describe('Organization Test', () => {
     } })
     expect(organization.fetchAll).to.be.equal(undefined)
     expect(organization.fetch).to.not.equal(undefined)
-    expect(organization.stacks).to.be.equal(undefined)
-    expect(organization.transferOwnership).to.be.equal(undefined)
-    expect(organization.addUser).to.be.equal(undefined)
-    expect(organization.getInvitations).to.be.equal(undefined)
-    expect(organization.resendInvitation).to.be.equal(undefined)
-    expect(organization.roles).to.be.equal(undefined)
+    expect(organization.stacks).to.not.equal(undefined)
+    expect(organization.transferOwnership).to.not.equal(undefined)
+    expect(organization.addUser).to.not.equal(undefined)
+    expect(organization.getInvitations).to.not.equal(undefined)
+    expect(organization.resendInvitation).to.not.equal(undefined)
+    expect(organization.roles).to.not.equal(undefined)
     done()
   })
 
@@ -255,12 +255,12 @@ function makeOrganization (params = {}) {
 function checknonAdminFunction (organization) {
   expect(organization.fetchAll).to.be.equal(undefined)
   expect(organization.fetch).to.not.equal(undefined)
-  expect(organization.stacks).to.be.equal(undefined)
-  expect(organization.transferOwnership).to.be.equal(undefined)
-  expect(organization.addUser).to.be.equal(undefined)
-  expect(organization.getInvitations).to.be.equal(undefined)
-  expect(organization.resendInvitation).to.be.equal(undefined)
-  expect(organization.roles).to.be.equal(undefined)
+  expect(organization.stacks).to.not.equal(undefined)
+  expect(organization.transferOwnership).to.not.equal(undefined)
+  expect(organization.addUser).to.not.equal(undefined)
+  expect(organization.getInvitations).to.not.equal(undefined)
+  expect(organization.resendInvitation).to.not.equal(undefined)
+  expect(organization.roles).to.not.equal(undefined)
 }
 
 function checkAdminFunction (organization) {
