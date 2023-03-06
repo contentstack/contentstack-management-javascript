@@ -32,6 +32,7 @@
     "test": "npm run test:api && npm run test:unit",
     "test:api": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/test.js -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:unit": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/unit/index.js -t 30000 --reporter mochawesome --require babel-polyfill",
+    "test:unit:report:json": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/unit/index.js -t 30000 --reporter json --reporter-options output=report.json  --require babel-polyfill",
     "test:typescript": "jest --testPathPattern=test/typescript --config ./jest.config.js --coverage",
     "test:debug": "BABEL_ENV=test mocha debug --require @babel/register ./test",
     "lint": "eslint lib test",
