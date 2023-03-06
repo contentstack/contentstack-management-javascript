@@ -12,7 +12,7 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci                   # install packages
-      - run: npm run test:unit                 # run tests (configured to use jest-junit reporter)
+      - run: npm run test:unit:report:json                 # run tests (configured to use jest-junit reporter)
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
