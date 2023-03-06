@@ -8,7 +8,7 @@ import { appMock, noticeMock, oAuthMock } from './mock/objects'
 describe('Contentstack apps test', () => {
   it('App without app uid', done => {
     const app = makeApp({})
-    expect(app.urlPath).to.be.equal('/apps')
+    expect(app.urlPath).to.be.equal('/manifests')
     expect(app.create).to.not.equal(undefined)
     expect(app.findAll).to.not.equal(undefined)
     expect(app.fetch).to.be.equal(undefined)
@@ -16,6 +16,7 @@ describe('Contentstack apps test', () => {
     expect(app.delete).to.be.equal(undefined)
     expect(app.fetchOAuth).to.be.equal(undefined)
     expect(app.updateOAuth).to.be.equal(undefined)
+    expect(app.hosting).to.be.equal(undefined)
     expect(app.install).to.be.equal(undefined)
     expect(app.installation).to.be.equal(undefined)
     done()
@@ -24,7 +25,7 @@ describe('Contentstack apps test', () => {
   it('App with app uid', done => {
     const uid = 'APP_UID'
     const app = makeApp({ data: { uid } })
-    expect(app.urlPath).to.be.equal(`/apps/${uid}`)
+    expect(app.urlPath).to.be.equal(`/manifests/${uid}`)
     expect(app.create).to.be.equal(undefined)
     expect(app.findAll).to.be.equal(undefined)
     expect(app.fetch).to.not.equal(undefined)
@@ -32,6 +33,7 @@ describe('Contentstack apps test', () => {
     expect(app.delete).to.not.equal(undefined)
     expect(app.fetchOAuth).to.not.equal(undefined)
     expect(app.updateOAuth).to.not.equal(undefined)
+    expect(app.hosting).to.not.equal(undefined)
     expect(app.install).to.not.equal(undefined)
     expect(app.installation).to.not.equal(undefined)
     done()
@@ -39,7 +41,7 @@ describe('Contentstack apps test', () => {
 
   it('Create app test', done => {
     const mock = new MockAdapter(Axios)
-    mock.onPost('/apps').reply(200, {
+    mock.onPost('/manifests').reply(200, {
       data: {
         ...appMock
       }
@@ -57,7 +59,7 @@ describe('Contentstack apps test', () => {
   it('Update app test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onPut(`/apps/${uid}`).reply(200, {
+    mock.onPut(`/manifests/${uid}`).reply(200, {
       data: {
         ...appMock
       }
@@ -75,7 +77,7 @@ describe('Contentstack apps test', () => {
   it('Get app from UID test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onGet(`/apps/${uid}`).reply(200, {
+    mock.onGet(`/manifests/${uid}`).reply(200, {
       data: {
         ...appMock
       }
@@ -93,7 +95,7 @@ describe('Contentstack apps test', () => {
   it('Delete app from UID test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onDelete(`/apps/${uid}`).reply(200, {
+    mock.onDelete(`/manifests/${uid}`).reply(200, {
       ...noticeMock
     })
 
@@ -109,7 +111,7 @@ describe('Contentstack apps test', () => {
 
   it('Get all apps in organization test', done => {
     const mock = new MockAdapter(Axios)
-    mock.onGet(`/apps`).reply(200, {
+    mock.onGet(`/manifests`).reply(200, {
       data: [appMock]
     })
 
@@ -125,7 +127,7 @@ describe('Contentstack apps test', () => {
   it('Get oAuth configuration test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onGet(`/apps/${uid}/oauth`).reply(200, {
+    mock.onGet(`/manifests/${uid}/oauth`).reply(200, {
       data: {
         ...oAuthMock
       }
@@ -147,7 +149,7 @@ describe('Contentstack apps test', () => {
   it('Update oAuth configuration test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onPut(`/apps/${uid}/oauth`).reply(200, {
+    mock.onPut(`/manifests/${uid}/oauth`).reply(200, {
       data: {
         ...oAuthMock
       }
@@ -168,7 +170,7 @@ describe('Contentstack apps test', () => {
 })
 
 function checkApp (app) {
-  expect(app.urlPath).to.be.equal('/apps/UID')
+  expect(app.urlPath).to.be.equal('/manifests/UID')
   expect(app.created_at).to.be.equal('created_at_date')
   expect(app.updated_at).to.be.equal('updated_at_date')
   expect(app.uid).to.be.equal('UID')
