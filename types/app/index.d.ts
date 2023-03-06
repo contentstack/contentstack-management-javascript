@@ -1,6 +1,7 @@
 import { ContentstackCollection } from "../contentstackCollection";
 import { AnyProperty, SystemFields } from "../utility/fields";
 import { Creatable, SystemFunction } from "../utility/operations";
+import { Hosting } from './hosting';
 import { Installation, Installations } from "./installation";
 
 export interface App extends SystemFields, SystemFunction<App> {
@@ -9,6 +10,7 @@ export interface App extends SystemFields, SystemFunction<App> {
     install(data: {targetUid: string, targetType: AppTarget}): Promise<Installation>
     installation(): Installations
     installation(uid: string): Installation
+    hosting(): Hosting
 }
 
 export interface Apps extends Creatable<App, AppData> {
