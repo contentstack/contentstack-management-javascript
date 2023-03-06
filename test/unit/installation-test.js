@@ -62,7 +62,7 @@ describe('Contentstack apps installation test', () => {
   it('Install app test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onPost(`/apps/${uid}/install`).reply(200, {
+    mock.onPost(`/manifests/${uid}/install`).reply(200, {
       data: {
         ...appInstallMock
       }
