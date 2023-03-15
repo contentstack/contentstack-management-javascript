@@ -30,12 +30,15 @@ export interface AppData extends AnyProperty {
 export interface AppOAuth extends AnyProperty {
     redirect_uri?: string
     app_token_config?: TokenConfig
-    user_token_config?: TokenConfig
+    user_token_config?: UserTokenConfig
 }
 
 export interface TokenConfig extends AnyProperty {
     enabled: boolean
     scopes: string[]
+}
+export interface UserTokenConfig extends TokenConfig {
+    allow_pkce: boolean
 }
 
 export interface AppWebhookChannel extends AppWebhook {
