@@ -7,7 +7,7 @@ import { appInstallMock, appMock, installationMock } from './mock/objects'
 import { Installation } from '../../lib/app/installation'
 
 describe('Contentstack apps installation test', () => {
-  it('Installation without installation uid', done => { 
+  it('Installation without installation uid', done => {
     const installation = makeInstallation({})
     expect(installation.urlPath).to.be.equal(undefined)
     expect(installation.fetch).to.be.equal(undefined)
@@ -20,7 +20,7 @@ describe('Contentstack apps installation test', () => {
   it('Installation with app uid', done => {
     const uid = appMock.uid
     const installation = makeInstallation({ app_uid: uid })
-    expect(installation.urlPath).to.be.equal(`apps/${uid}/installations`)
+    expect(installation.urlPath).to.be.equal(`manifests/${uid}/installations`)
     expect(installation.fetch).to.be.equal(undefined)
     expect(installation.update).to.be.equal(undefined)
     expect(installation.uninstall).to.be.equal(undefined)
@@ -83,7 +83,7 @@ describe('Contentstack apps installation test', () => {
   it('Get app installation test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onGet(`apps/${uid}/installations`).reply(200, {
+    mock.onGet(`manifests/${uid}/installations`).reply(200, {
       data: [installationMock]
     })
 

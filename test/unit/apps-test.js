@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { App } from '../../lib/app'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { appMock, noticeMock, oAuthMock } from './mock/objects'
+import { appMock, installationMock, noticeMock, oAuthMock } from './mock/objects'
 
 describe('Contentstack apps test', () => {
   it('App without app uid', done => {
@@ -25,6 +25,27 @@ describe('Contentstack apps test', () => {
   it('App with app uid', done => {
     const uid = 'APP_UID'
     const app = makeApp({ data: { uid } })
+    expect(app.urlPath).to.be.equal(`/manifests/${uid}`)
+    expect(app.create).to.be.equal(undefined)
+    expect(app.findAll).to.be.equal(undefined)
+    expect(app.fetch).to.not.equal(undefined)
+    expect(app.update).to.not.equal(undefined)
+    expect(app.delete).to.not.equal(undefined)
+    expect(app.fetchOAuth).to.not.equal(undefined)
+    expect(app.updateOAuth).to.not.equal(undefined)
+    expect(app.hosting).to.not.equal(undefined)
+    expect(app.install).to.not.equal(undefined)
+    expect(app.installation).to.not.equal(undefined)
+    expect(app.hosting()).to.not.equal(undefined)
+    expect(app.installation()).to.not.equal(undefined)
+    expect(app.installation(uid)).to.not.equal(undefined)
+    done()
+  })
+
+  it('App with app uid', done => {
+    const uid = 'APP_UID'
+    const organizationUid = 'ORG_UID'
+    const app = makeApp({ data: { uid, organization_uid: organizationUid }, organization_uid: organizationUid })
     expect(app.urlPath).to.be.equal(`/manifests/${uid}`)
     expect(app.create).to.be.equal(undefined)
     expect(app.findAll).to.be.equal(undefined)
@@ -163,6 +184,29 @@ describe('Contentstack apps test', () => {
         expect(oAuthConfig.redirect_uri).to.be.equal(oAuthMock.redirect_uri)
         expect(oAuthConfig.app_token_config.enabled).to.be.equal(oAuthMock.app_token_config.enabled)
         expect(oAuthConfig.user_token_config.enabled).to.be.equal(oAuthMock.user_token_config.enabled)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('app install test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    mock.onPost(`/manifests/${uid}/install`).reply(200, {
+      data: {
+        ...installationMock
+      }
+    })
+    const targetUid = 'target_uid'
+    const targetType = 'target_type'
+    makeApp({ data: { uid } })
+      .install({ targetUid, targetType })
+      .then((installation) => {
+        expect(installation.status).to.be.equal(installationMock.status)
+        expect(installation.manifest.name).to.be.equal(installationMock.manifest.name)
+        expect(installation.target.uid).to.be.equal(installationMock.target.uid)
+        expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
+        expect(installation.uid).to.be.equal(installationMock.uid)
         done()
       })
       .catch(done)

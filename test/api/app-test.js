@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { describe, it, setup } from 'mocha'
-import { jsonReader } from '../utility/fileOperations/readwrite'
+import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import { expect } from 'chai'
 
@@ -16,7 +16,7 @@ const app = {
   description: 'My new test app',
   target_type: 'organization'
 }
-const config = { redirect_uri: 'https://example.com/oauth/callback', app_token_config: { enabled: true, scopes: ['scim:manage'] }, user_token_config: { enabled: true, scopes: ['user:read', 'user:write', 'scim:manage'] } }
+const config = { redirect_uri: 'https://example.com/oauth/callback', app_token_config: { enabled: true, scopes: ['scim:manage'] }, user_token_config: { enabled: true, scopes: ['user:read', 'user:write', 'scim:manage'], allow_pkce: true } }
 
 describe('Apps api Test', () => {
   setup(() => {
@@ -43,6 +43,7 @@ describe('Apps api Test', () => {
     client.organization(orgID).app().create(app)
       .then((appResponse) => {
         appUid = appResponse.uid
+        jsonWrite(appResponse, 'apps.json')
         expect(appResponse.uid).to.not.equal(undefined)
         expect(appResponse.name).to.be.equal(app.name)
         expect(appResponse.description).to.be.equal(app.description)
@@ -65,7 +66,7 @@ describe('Apps api Test', () => {
   })
 
   it('Update app test', done => {
-    const updateApp = { name: 'Update my app Name' }
+    const updateApp = { name: 'Update my app name' }
     let appObject = client.organization(orgID).app(appUid)
     appObject = Object.assign(appObject, updateApp)
     appObject.update()
@@ -106,6 +107,7 @@ describe('Apps api Test', () => {
     client.organization(orgID).app(appUid).install({ targetType: 'stack', targetUid: stack.api_key })
       .then((installation) => {
         installationUid = installation.uid
+        jsonWrite(installation, 'installation.json')
         expect(installation.uid).to.not.equal(undefined)
         expect(installation.params.organization_uid).to.be.equal(orgID)
         expect(installation.urlPath).to.be.equal(`/installations/${installation.uid}`)
@@ -136,22 +138,5 @@ describe('Apps api Test', () => {
         expect(installation.status).to.be.equal('installed')
         done()
       }).catch(done)
-  })
-
-  it('Uninstall installation test', done => {
-    client.organization(orgID).app(appUid).installation(installationUid).uninstall()
-      .then((installation) => {
-        expect(installation).to.deep.equal({})
-        done()
-      }).catch(done)
-  })
-
-  it('Delete app test', done => {
-    client.organization(orgID).app(appUid).delete()
-      .then((appResponse) => {
-        expect(appResponse).to.deep.equal({})
-        done()
-      })
-      .catch(done)
   })
 })
