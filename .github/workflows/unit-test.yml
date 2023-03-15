@@ -23,5 +23,6 @@ jobs:
           reporter: mocha-json        # Format of test results
       - name: Coverage report 
         uses: lucassabreu/comment-coverage-clover@main
-        with:         
+        with:       
+          name: Unit test Coverage report   
           file: coverage/clover.xml       
