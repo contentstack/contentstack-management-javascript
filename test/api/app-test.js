@@ -139,4 +139,13 @@ describe('Apps api Test', () => {
         done()
       }).catch(done)
   })
+  it('test fetch app request', done => {
+    client.organization(orgID).app(appUid)
+      .getRequests()
+      .then((response) => {
+        expect(response.data).to.not.equal(undefined)
+        done()
+      })
+      .catch(done)
+  })
 })

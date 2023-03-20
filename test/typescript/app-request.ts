@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 import * as dotenv from 'dotenv'
 import { Hosting } from '../../types/app/hosting'
-import { Request, Requests } from '../../types/app/request'
+import { AppRequest } from '../../types/app/request'
 dotenv.config()
 let requestUID = ''
 
-export function orgAppRequest (request: Requests) {
+export function orgAppRequest (request: AppRequest) {
     describe('Org App request api', () => {
         test('test get all request for oranization', done => {
             request
@@ -26,14 +26,9 @@ export function orgAppRequest (request: Requests) {
             })
             .catch(done)
         })
-    })
-}
-
-export function appRequest (request: Request) {
-    describe('App request', () => {
         test('test create app request', done => {
             request
-              .create(process.env.APIKEY as string)
+              .create({ appUid: '', targetUid: process.env.APIKEY as string})
               .then((response) => {
                 requestUID = response.data.data.uid
                 expect(response.data).to.not.equal(undefined)
@@ -41,15 +36,5 @@ export function appRequest (request: Request) {
               })
               .catch(done)
           })
-        
-        test('test fetch app request', done => {
-        request
-            .fetch()
-            .then((response) => {
-            expect(response.data).to.not.equal(undefined)
-            done()
-            })
-            .catch(done)
-        })
     })
 }

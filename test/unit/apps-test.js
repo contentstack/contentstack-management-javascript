@@ -4,6 +4,7 @@ import { App } from '../../lib/app'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { appMock, installationMock, noticeMock, oAuthMock } from './mock/objects'
+import { requestMock } from './mock/request-mock'
 
 describe('Contentstack apps test', () => {
   it('App without app uid', done => {
@@ -210,6 +211,40 @@ describe('Contentstack apps test', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('test fetch request for app uid', (done) => {
+    const uid = appMock.uid
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/manifests/${appMock.uid}/requests`).reply(200, {
+      data: { ...requestMock }
+    })
+
+    makeApp({ data: { uid } })
+      .getRequests()
+      .then((response) => {
+        const request = response.data
+        expect(request.organization_uid).to.be.equal(requestMock.organization_uid)
+        expect(request.target_uid).to.be.equal(requestMock.target_uid)
+        expect(request.uid).to.be.equal(requestMock.uid)
+        done()
+      })
+      .catch(done)
+  })
+  it('test fetch request for app uid fail request', (done) => {
+    const uid = appMock.uid
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/manifests/${appMock.uid}/requests`).reply(400, {
+
+    })
+
+    makeApp({ data: { uid } })
+      .getRequests()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
   })
 })
 

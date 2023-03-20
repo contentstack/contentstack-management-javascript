@@ -20,8 +20,8 @@ describe('Apps request api Test', () => {
   })
 
   it('test create app request', done => {
-    client.organization(orgID).app(apps.uid).request()
-      .create(stack.api_key)
+    client.organization(orgID).request()
+      .create({ appUid: apps.uid, targetUid: stack.api_key })
       .then((response) => {
         requestUID = response.data.data.uid
         expect(response.data).to.not.equal(undefined)
@@ -30,18 +30,8 @@ describe('Apps request api Test', () => {
       .catch(done)
   })
 
-  it('test fetch app request', done => {
-    client.organization(orgID).app(apps.uid).request()
-      .fetch()
-      .then((response) => {
-        expect(response.data).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
-  })
-
   it('test get all request for oranization', done => {
-    client.organization(orgID).app().request()
+    client.organization(orgID).request()
       .findAll()
       .then((response) => {
         expect(response.data).to.not.equal(undefined)
@@ -51,7 +41,7 @@ describe('Apps request api Test', () => {
   })
 
   it('test delete app request', done => {
-    client.organization(orgID).app().request()
+    client.organization(orgID).request()
       .delete(requestUID)
       .then((response) => {
         expect(response.data).to.not.equal(undefined)
