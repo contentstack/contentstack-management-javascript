@@ -6,6 +6,7 @@ import { Pagination } from './utility/pagination'
 import { AnyProperty, SystemFields } from './utility/fields'
 import { ContentstackCollection, Response } from './contentstackCollection'
 import { App, Apps } from './app'
+import { AppRequest } from './app/request'
 
 export interface Organizations {
     fetchAll(params?: AnyProperty): Promise<ContentstackCollection<Organization>>
@@ -23,6 +24,7 @@ export interface Organization extends SystemFields {
     roles(param?: Pagination & AnyProperty): Promise<ContentstackCollection<Role>>
     app(): Apps
     app(uid: string): App
+    appRequest(): AppRequest
 }
 
 export interface OrganizationInvite {

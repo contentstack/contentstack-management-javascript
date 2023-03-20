@@ -3,7 +3,6 @@ import { AnyProperty, SystemFields } from "../utility/fields";
 import { Creatable, SystemFunction } from "../utility/operations";
 import { Hosting } from './hosting';
 import { Installation, Installations } from "./installation";
-import { Request, Requests } from './request';
 
 export interface App extends SystemFields, SystemFunction<App> {
     fetchOAuth(param?: AnyProperty): Promise<AppOAuth>
@@ -12,12 +11,10 @@ export interface App extends SystemFields, SystemFunction<App> {
     installation(): Installations
     installation(uid: string): Installation
     hosting(): Hosting
-    request(): Request
 }
 
 export interface Apps extends Creatable<App, AppData> {
     findAll(param?: AnyProperty): Promise<ContentstackCollection<App>>
-    request(): Requests
 }
 
 export interface AppData extends AnyProperty {
