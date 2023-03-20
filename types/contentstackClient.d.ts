@@ -61,7 +61,7 @@ export interface ContentstackClient {
 
     getUser(params?: Pagination & AnyProperty): Promise<User>
 
-    stack(): Queryable<Stack, StackDetails>
+    stack(query?: {organization_uid?: string}): Queryable<Stack, StackDetails>
     stack(config: StackConfig): Stack
     
     organization(): Organizations

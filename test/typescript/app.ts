@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as dotenv from 'dotenv'
-import { AppData, Apps } from '../../types/app'
+import { AppData, AppOAuth, Apps } from '../../types/app'
 import { Organization } from '../../types/organization';
 dotenv.config()
 let appUid = ''
@@ -11,7 +11,7 @@ const app: AppData  = {
     description: 'My new test app',
     target_type: 'organization',
   }
-const config = { redirect_uri: 'https://example.com/oauth/callback', app_token_config: { enabled: true, scopes: ['scim:manage'] }, user_token_config: { enabled: true, scopes: ['user:read', 'user:write', 'scim:manage'] } }
+const config: AppOAuth = { redirect_uri: 'https://example.com/oauth/callback', app_token_config: { enabled: true, scopes: ['scim:manage'] }, user_token_config: { enabled: true, scopes: ['user:read', 'user:write', 'scim:manage'], allow_pkce: true } }
   
 export function createApp(apps: Apps) {
     describe('App create', () => { 
@@ -19,6 +19,7 @@ export function createApp(apps: Apps) {
             apps.create(app)
             .then((appResponse) => {
                 appUid = appResponse.uid
+                process.env.APP_UID =  appResponse.uid
                 expect(appResponse.uid).to.not.equal(undefined)
                 expect(appResponse.name).to.be.equal(app.name)
                 expect(appResponse.description).to.be.equal(app.description)
