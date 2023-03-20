@@ -56,6 +56,18 @@ export function fetchApp(organization: Organization) {
                 done()
             }).catch(done)
         })
+        test('Find all Authorized Apps', done => {
+            organization.app().findAllAuthorized()
+            .then((apps) => {
+                for (const index in apps.data) {
+                    const appObject = apps.data[index]
+                    expect(appObject.name).to.not.equal(null)
+                    expect(appObject.uid).to.not.equal(null)
+                    expect(appObject.target_type).to.not.equal(null)
+                  }
+                done()
+            }).catch(done)
+        })
     })
 }
 

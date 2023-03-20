@@ -39,6 +39,20 @@ describe('Apps api Test', () => {
       .catch(done)
   })
 
+  it('Fetch all authorized apps test', done => {
+    client.organization(orgID).app().findAllAuthorized()
+      .then((apps) => {
+        for (const index in apps.data) {
+          const appObject = apps.data[index]
+          expect(appObject.name).to.not.equal(null)
+          expect(appObject.uid).to.not.equal(null)
+          expect(appObject.target_type).to.not.equal(null)
+        }
+        done()
+      })
+      .catch(done)
+  })
+
   it('Create app test', done => {
     client.organization(orgID).app().create(app)
       .then((appResponse) => {
