@@ -1,4 +1,4 @@
-import { AnyProperty } from '../utility/fields';
+import { AnyProperty, SystemFields } from '../utility/fields';
 import { ContentstackCollection } from '../contentstackCollection'
 export interface Hosting {
     isEnable(): Promise<AnyProperty>
@@ -22,7 +22,7 @@ export interface Deployments {
     findAll(param?: AnyProperty): Promise<ContentstackCollection<Deployment>>
 }
 
-export interface Deployment {
+export interface Deployment extends SystemFields {
     fetch(): Promise<Deployment>
     logs(): Promise<DeploymentLog[]>
     signedDownloadUrl(): Promise<DownloadDetails>

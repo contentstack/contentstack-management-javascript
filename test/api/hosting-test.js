@@ -57,13 +57,13 @@ describe('Apps hosting api Test', () => {
   it('test deployment for signed upload app hosting', done => {
     makeHosting(apps.uid).deployment().findAll()
       .then((response) => {
-        for (const deployment in response.item) {
+        response.items.forEach(deployment => {
           expect(deployment.deployment_number).to.not.equal(undefined)
           expect(deployment.deployment_url).to.not.equal(undefined)
           expect(deployment.environment).to.not.equal(undefined)
           expect(deployment.uid).to.not.equal(undefined)
           expect(deployment.urlPath).to.not.equal(undefined)
-        }
+        })
         done()
       })
       .catch(done)
