@@ -2,6 +2,7 @@ import { ContentstackCollection } from "../contentstackCollection";
 import { AnyProperty, SystemFields } from "../utility/fields";
 import { Creatable, SystemFunction } from "../utility/operations";
 import { Pagination } from '../utility/pagination';
+import { Authorization } from './authorization';
 import { Hosting } from './hosting';
 import { Installation, Installations } from "./installation";
 
@@ -18,6 +19,7 @@ export interface App extends SystemFields, SystemFunction<App> {
         redirectUri: string, 
         scope: string, 
         state: string }): Promise<AnyProperty>
+    authorization(): Authorization
 }
 
 export interface Apps extends Creatable<App, AppData> {

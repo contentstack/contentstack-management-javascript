@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as dotenv from 'dotenv'
-import { Hosting } from '../../types/app/hosting'
 import { AppRequest } from '../../types/app/request'
 dotenv.config()
 let requestUID = ''
