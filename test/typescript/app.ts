@@ -158,8 +158,35 @@ export function installation(organization: Organization) {
             }).catch(done)
         })
 
+        test('Get installation data for App installation', done => {
+            organization.app(appUid).installation(installationUid).installationData()
+            .then(() => {
+                done()
+            }).catch(done)
+        })
+
         test('Get Configuration for App installation', done => {
             organization.app(appUid).installation(installationUid).configuration()
+            .then(() => {
+                done()
+            }).catch(done)
+        })
+
+        test('Get Server Configuration for App installation', done => {
+            organization.app(appUid).installation(installationUid).serverConfig()
+            .then(() => {
+                done()
+            }).catch(done)
+        })
+
+        test('Set Configuration for App installation', done => {
+            organization.app(appUid).installation(installationUid).setConfiguration({})
+            .then(() => {
+                done()
+            }).catch(done)
+        })
+        test('Set Server Configuration for App installation', done => {
+            organization.app(appUid).installation(installationUid).setServerConfig({})
             .then(() => {
                 done()
             }).catch(done)

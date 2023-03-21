@@ -46,6 +46,7 @@ describe('Contentstack apps test', () => {
     expect(app.hosting()).to.not.equal(undefined)
     expect(app.installation()).to.not.equal(undefined)
     expect(app.installation(uid)).to.not.equal(undefined)
+    expect(app.authorization()).to.not.equal(undefined)
     done()
   })
 
