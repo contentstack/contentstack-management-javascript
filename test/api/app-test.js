@@ -133,10 +133,39 @@ describe('Apps api Test', () => {
       .catch(done)
   })
 
+  it('Get installationData for installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).installationData()
+      .then((installation) => {
+        expect(installation).to.not.equal(null)
+        done()
+      }).catch(done)
+  })
+
   it('Get configuration for installation test', done => {
     client.organization(orgID).app(appUid).installation(installationUid).configuration()
-      .then((installation) => {
-        expect(installation).to.deep.equal({})
+      .then((config) => {
+        expect(config).to.not.equal(null)
+        done()
+      }).catch(done)
+  })
+  it('Set configuration for installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).setConfiguration({})
+      .then((config) => {
+        expect(config.data).to.deep.equal({})
+        done()
+      }).catch(done)
+  })
+  it('Get server config for installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).serverConfig()
+      .then((config) => {
+        expect(config).to.not.equal(null)
+        done()
+      }).catch(done)
+  })
+  it('Set server config for installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).serServerConfig({})
+      .then((config) => {
+        expect(config.data).to.deep.equal({})
         done()
       }).catch(done)
   })
