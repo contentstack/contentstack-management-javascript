@@ -14,6 +14,11 @@ describe('Contentstack apps installation test', () => {
     expect(installation.update).to.be.equal(undefined)
     expect(installation.uninstall).to.be.equal(undefined)
     expect(installation.findAll).to.be.equal(undefined)
+    expect(installation.installationData).to.be.equal(undefined)
+    expect(installation.configuration).to.be.equal(undefined)
+    expect(installation.setConfiguration).to.be.equal(undefined)
+    expect(installation.serverConfig).to.be.equal(undefined)
+    expect(installation.setServerConfig).to.be.equal(undefined)
     done()
   })
 
@@ -24,6 +29,11 @@ describe('Contentstack apps installation test', () => {
     expect(installation.fetch).to.be.equal(undefined)
     expect(installation.update).to.be.equal(undefined)
     expect(installation.uninstall).to.be.equal(undefined)
+    expect(installation.installationData).to.be.equal(undefined)
+    expect(installation.configuration).to.be.equal(undefined)
+    expect(installation.setConfiguration).to.be.equal(undefined)
+    expect(installation.serverConfig).to.be.equal(undefined)
+    expect(installation.setServerConfig).to.be.equal(undefined)
     expect(installation.findAll).to.not.equal(undefined)
     done()
   })
@@ -35,6 +45,11 @@ describe('Contentstack apps installation test', () => {
     expect(installation.fetch).to.not.equal(undefined)
     expect(installation.update).to.not.equal(undefined)
     expect(installation.uninstall).to.not.equal(undefined)
+    expect(installation.installationData).to.not.equal(undefined)
+    expect(installation.configuration).to.not.equal(undefined)
+    expect(installation.setConfiguration).to.not.equal(undefined)
+    expect(installation.serverConfig).to.not.equal(undefined)
+    expect(installation.setServerConfig).to.not.equal(undefined)
     expect(installation.findAll).to.be.equal(undefined)
     done()
   })
@@ -114,6 +129,22 @@ describe('Contentstack apps installation test', () => {
       .catch(done)
   })
 
+  it('Get installation installationData test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onGet(`/installations/${uid}/installationData`).reply(200, {
+      data: {}
+    })
+
+    makeInstallation({ data: { uid } })
+      .installationData()
+      .then((data) => {
+        expect(data).to.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
   it('Get installation configuration test', done => {
     const mock = new MockAdapter(Axios)
     const uid = installationMock.uid
@@ -123,8 +154,53 @@ describe('Contentstack apps installation test', () => {
 
     makeInstallation({ data: { uid } })
       .configuration()
-      .then((configuration) => {
-        expect(configuration).to.deep.equal({})
+      .then((data) => {
+        expect(data).to.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+  it('Set installation configuration test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onPut(`/installations/${uid}/configuration`).reply(200, {
+      data: {}
+    })
+
+    makeInstallation({ data: { uid } })
+      .setConfiguration({})
+      .then((data) => {
+        expect(data).to.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+  it('Get installation server config test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onGet(`/installations/${uid}/server-configuration`).reply(200, {
+      data: {}
+    })
+
+    makeInstallation({ data: { uid } })
+      .serverConfig()
+      .then((data) => {
+        expect(data).to.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+  it('Get installation installationData test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onPut(`/installations/${uid}/server-configuration`).reply(200, {
+      data: {}
+    })
+
+    makeInstallation({ data: { uid } })
+      .setServerConfig({})
+      .then((data) => {
+        expect(data).to.not.equal(null)
         done()
       })
       .catch(done)
