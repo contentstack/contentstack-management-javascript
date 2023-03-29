@@ -1,0 +1,28 @@
+name: Unit Test & Reports
+on:
+  pull_request:
+  push:
+jobs:
+  build-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2     # checkout the repo
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci                   # install packages
+      - run: npm run test:unit:report:json                 # run tests (configured to use jest-junit reporter)
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: Mocha Unit test             # Name of the check run which will be created
+          path: report.json           # Path to test results
+          reporter: mocha-json        # Format of test results
+      - name: Coverage report 
+        uses: lucassabreu/comment-coverage-clover@main
+        with:       
+          name: Unit test Coverage report   
+          file: coverage/clover.xml       
