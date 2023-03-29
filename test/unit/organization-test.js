@@ -261,6 +261,8 @@ function checknonAdminFunction (organization) {
   expect(organization.getInvitations).to.not.equal(undefined)
   expect(organization.resendInvitation).to.not.equal(undefined)
   expect(organization.roles).to.not.equal(undefined)
+  expect(organization.app()).to.not.equal(undefined)
+  expect(organization.appRequest()).to.not.equal(undefined)
 }
 
 function checkAdminFunction (organization) {

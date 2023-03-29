@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { describe, it, setup } from 'mocha'
-import { jsonReader } from '../utility/fileOperations/readwrite'
+import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import { expect } from 'chai'
 
@@ -16,7 +16,7 @@ const app = {
   description: 'My new test app',
   target_type: 'organization'
 }
-const config = { redirect_uri: 'https://example.com/oauth/callback', app_token_config: { enabled: true, scopes: ['scim:manage'] }, user_token_config: { enabled: true, scopes: ['user:read', 'user:write', 'scim:manage'] } }
+const config = { redirect_uri: 'https://example.com/oauth/callback', app_token_config: { enabled: true, scopes: ['scim:manage'] }, user_token_config: { enabled: true, scopes: ['user:read', 'user:write', 'scim:manage'], allow_pkce: true } }
 
 describe('Apps api Test', () => {
   setup(() => {
@@ -39,10 +39,25 @@ describe('Apps api Test', () => {
       .catch(done)
   })
 
+  it('Fetch all authorized apps test', done => {
+    client.organization(orgID).app().findAllAuthorized()
+      .then((apps) => {
+        for (const index in apps.data) {
+          const appObject = apps.data[index]
+          expect(appObject.name).to.not.equal(null)
+          expect(appObject.uid).to.not.equal(null)
+          expect(appObject.target_type).to.not.equal(null)
+        }
+        done()
+      })
+      .catch(done)
+  })
+
   it('Create app test', done => {
     client.organization(orgID).app().create(app)
       .then((appResponse) => {
         appUid = appResponse.uid
+        jsonWrite(appResponse, 'apps.json')
         expect(appResponse.uid).to.not.equal(undefined)
         expect(appResponse.name).to.be.equal(app.name)
         expect(appResponse.description).to.be.equal(app.description)
@@ -65,7 +80,7 @@ describe('Apps api Test', () => {
   })
 
   it('Update app test', done => {
-    const updateApp = { name: 'Update my app Name' }
+    const updateApp = { name: 'Update my app name' }
     let appObject = client.organization(orgID).app(appUid)
     appObject = Object.assign(appObject, updateApp)
     appObject.update()
@@ -106,6 +121,7 @@ describe('Apps api Test', () => {
     client.organization(orgID).app(appUid).install({ targetType: 'stack', targetUid: stack.api_key })
       .then((installation) => {
         installationUid = installation.uid
+        jsonWrite(installation, 'installation.json')
         expect(installation.uid).to.not.equal(undefined)
         expect(installation.params.organization_uid).to.be.equal(orgID)
         expect(installation.urlPath).to.be.equal(`/installations/${installation.uid}`)
@@ -117,10 +133,39 @@ describe('Apps api Test', () => {
       .catch(done)
   })
 
+  it('Get installationData for installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).installationData()
+      .then((installation) => {
+        expect(installation).to.not.equal(null)
+        done()
+      }).catch(done)
+  })
+
   it('Get configuration for installation test', done => {
     client.organization(orgID).app(appUid).installation(installationUid).configuration()
-      .then((installation) => {
-        expect(installation).to.deep.equal({})
+      .then((config) => {
+        expect(config).to.not.equal(null)
+        done()
+      }).catch(done)
+  })
+  it('Set configuration for installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).setConfiguration({})
+      .then((config) => {
+        expect(config.data).to.deep.equal({})
+        done()
+      }).catch(done)
+  })
+  it('Get server config for installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).serverConfig()
+      .then((config) => {
+        expect(config).to.not.equal(null)
+        done()
+      }).catch(done)
+  })
+  it('Set server config for installation test', done => {
+    client.organization(orgID).app(appUid).installation(installationUid).serServerConfig({})
+      .then((config) => {
+        expect(config.data).to.deep.equal({})
         done()
       }).catch(done)
   })
@@ -137,19 +182,11 @@ describe('Apps api Test', () => {
         done()
       }).catch(done)
   })
-
-  it('Uninstall installation test', done => {
-    client.organization(orgID).app(appUid).installation(installationUid).uninstall()
-      .then((installation) => {
-        expect(installation).to.deep.equal({})
-        done()
-      }).catch(done)
-  })
-
-  it('Delete app test', done => {
-    client.organization(orgID).app(appUid).delete()
-      .then((appResponse) => {
-        expect(appResponse).to.deep.equal({})
+  it('test fetch app request', done => {
+    client.organization(orgID).app(appUid)
+      .getRequests()
+      .then((response) => {
+        expect(response.data).to.not.equal(undefined)
         done()
       })
       .catch(done)
