@@ -52,7 +52,7 @@
     "axios": "^0.27.2",
     "form-data": "^3.0.1",
     "lodash": "^4.17.21",
-    "qs": "^6.10.3"
+    "qs": "^6.11.1"
   },
   "keywords": [
     "contentstack management api",
