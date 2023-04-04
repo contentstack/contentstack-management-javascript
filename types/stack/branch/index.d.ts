@@ -1,7 +1,7 @@
-import { Response } from "../../contentstackCollection";
 import { AnyProperty, SystemFields } from "../../utility/fields";
 import { Queryable, SystemFunction } from "../../utility/operations";
 import { Compare } from './compare';
+import { MergeQueue } from "./merge-queue";
 
 export interface Branch extends SystemFields, SystemFunction<Branch> {
     compare(compareBranchUid: string): Compare
@@ -9,6 +9,7 @@ export interface Branch extends SystemFields, SystemFunction<Branch> {
     
 export interface Branches extends Queryable<Branch, {branch: BranchData}> {
     merge(mergeObj: MergePayload): Promise<AnyProperty>
+    mergeQueue(uid?: string): MergeQueue
 }
 
 export interface BranchData extends AnyProperty {
