@@ -1,6 +1,10 @@
 import { Response } from "../../contentstackCollection"
+import { AnyProperty } from "../../utility/fields"
 
 export interface MergeQueue {
-  fetch():Promise<Response>
-  find():Promise<Response>
+  fetch():Promise<AnyProperty>
+}
+
+export interface MergeQueues {
+  find(params?: object): Promise<AnyProperty>
 }
