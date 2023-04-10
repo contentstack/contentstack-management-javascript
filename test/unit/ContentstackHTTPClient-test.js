@@ -103,7 +103,7 @@ describe('Contentstack HTTP Client', () => {
           defaultHostName: 'defaulthost'
         })
       expect(axiosInstance.defaults.paramsSerializer({ skip: 1, limit: 1 })).to.be.equal('skip=1&limit=1')
-      expect(axiosInstance.defaults.paramsSerializer({ query: { title: 'title' }, limit: 1 })).to.be.equal('limit=1&query=%7B%22title%22:%22title%22%7D')
+      expect(axiosInstance.defaults.paramsSerializer({ query: { title: 'title' }, limit: 1 })).to.be.equal('limit=1&query=%7B%22title%22%3A%22title%22%7D')
     } catch (err) {
       expect(err.message).to.be.equal('Expected parameter accessToken')
     }
