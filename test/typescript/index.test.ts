@@ -14,6 +14,9 @@ import { createEnvironment, deleteEnvironment, getEnvironment, updateEnvironment
 import { createDeliveryToken, deleteDeliveryToken, deliveryToken, queryDeliveryToken } from './deliveryToken';
 import { createRole, findAllRole, getRole, getRoleUid, queryRole } from './role';
 import { createApp, deleteApp, fetchApp, installation, updateApp, updateAuth } from './app';
+import { deployment, hosting } from './hosting';
+import { orgAppRequest } from './app-request';
+import { authorization } from './authorization';
 dotenv.config()
 jest.setTimeout(10000);
 
@@ -39,6 +42,11 @@ describe('Typescript API test', () => {
     updateApp(org)
     updateAuth(org)
     installation(org)
+    hosting(org.app(process.env.APP_UID as string).hosting())
+    deployment(org.app(process.env.APP_UID as string).hosting())
+    orgAppRequest(org.app(process.env.APP_UID as string).request())
+    authorization(org.app(process.env.APP_UID as string).authorization())
+    orgAppRequest(org.request())
     deleteApp(org)
 
     const stack = client.stack({api_key: process.env.APIKEY as string})

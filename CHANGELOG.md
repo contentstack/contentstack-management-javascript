@@ -1,5 +1,29 @@
 # Changelog
 
+## [v1.7.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.7.0) (2023-04-04)
+ - Feature
+   - Marketplace API support added.
+## [v1.6.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.6.1) (2022-12-09)
+ - Bug Fix
+  - SSO get stack details Latest
+
+## [v1.6.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.6.0) (2022-10-19)
+ - Feature
+  - OAuth token refresh function added
+
+## [v1.5.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.5.0) (2022-08-10)
+ - Feature
+  - App creation, fetch and update
+  - App configuration
+  - App Installation and getting installation details
+
+## [v1.4.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.4.0) (2022-07-26)
+- Bug Fix
+ - Delete: Set entry workflow and asset download
+ - Asset Download
+ - Set Entry workflow stages
+ - OAuth token authorisation
+
 ## [v1.2.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.2.4) (2021-07-19)
  - Bug Fix
    - Form data upload timeout on retrying rate limit error issue resolved
