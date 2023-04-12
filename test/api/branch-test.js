@@ -116,6 +116,84 @@ describe('Branch api Test', () => {
       })
       .catch(done)
   })
+
+  it('Should provide list of content types and global fields that exist in only one branch or are different between the two branches', done => {
+    makeBranch(branch.uid)
+      .compare(devBranch.uid)
+      .all()
+      .then((response) => {
+        expect(response.branches.base_branch).to.be.equal(branch.uid)
+        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should list differences for a single content type between two branches', done => {
+    makeBranch(branch.uid)
+      .compare(devBranch.uid)
+      .contentTypes()
+      .then((response) => {
+        expect(response.branches.base_branch).to.be.equal(branch.uid)
+        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should list differences for a single global field between two branches', done => {
+    makeBranch(branch.uid)
+      .compare(devBranch.uid)
+      .globalFields()
+      .then((response) => {
+        expect(response.branches.base_branch).to.be.equal(branch.uid)
+        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should provide list of global fields that exist in only one branch or are different between the two branches', done => {
+    const mergeObj = {
+      base_branch: branch.uid,
+      compare_branch: devBranch.uid,
+      default_merge_strategy: "ignore",
+      merge_comment: "Merging dev into main", 
+      no_revert: true
+    }
+    makeBranch()
+      .merge(mergeObj)
+      .then((response) => {
+        expect(response.branches.base_branch).to.be.equal(branch.uid)
+        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should list all recent merge jobs', done => {
+    makeBranch()
+      .mergeQueue()
+      .find()
+      .then((response) => {
+        expect(response.branches.base_branch).to.be.equal(branch.uid)
+        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should list all recent merge jobs', done => {
+    makeBranch()
+      .mergeQueue(branch.uid)
+      .fetch()
+      .then((response) => {
+        expect(response.branches.base_branch).to.be.equal(branch.uid)
+        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeBranch (uid = null) {
