@@ -154,18 +154,36 @@ describe('Branch api Test', () => {
   })
 
   it('Should provide list of global fields that exist in only one branch or are different between the two branches', done => {
-    const mergeObj = {
+    const params = {
       base_branch: branch.uid,
       compare_branch: devBranch.uid,
       default_merge_strategy: "ignore",
-      merge_comment: "Merging dev into main", 
-      no_revert: true
+      merge_comment: "Merging dev into main",
+    }
+    const mergeObj = {
+      item_merge_strategies: [
+        {
+          "uid": "global_field_uid", 
+          "type": "global_field", 
+          "merge_strategy": "merge_prefer_base"
+        },
+        {
+          "uid": "ct5", 
+          "type": "content_type",
+          "merge_strategy": "merge_prefer_compare"
+        },
+        {
+          "uid": "bot_all", 
+          "type": "content_type",
+          "merge_strategy": "merge_prefer_base"
+        }
+      ]
     }
     makeBranch()
-      .merge(mergeObj)
+      .merge(mergeObj, params)
       .then((response) => {
-        expect(response.branches.base_branch).to.be.equal(branch.uid)
-        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        expect(response.merge_details.base_branch).to.be.equal(branch.uid)
+        expect(response.merge_details.compare_branch).to.be.equal(devBranch.uid)
         done()
       })
       .catch(done)
@@ -176,16 +194,18 @@ describe('Branch api Test', () => {
       .mergeQueue()
       .find()
       .then((response) => {
-        expect(response.branches.base_branch).to.be.equal(branch.uid)
-        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        expect(response.queue).to.not.equal(undefined)
+        expect(response.queue[0].merge_details.base_branch).to.be.equal(branch.uid)
+        expect(response.queue[0].merge_details.compare_branch).to.be.equal(devBranch.uid)
         done()
       })
       .catch(done)
   })
 
   it('Should list all recent merge jobs', done => {
+    const mergeJobUid = 'db7bf199-2a9d-4c2c-99d5-72453f70fb40'
     makeBranch()
-      .mergeQueue(branch.uid)
+      .mergeQueue(mergeJobUid)
       .fetch()
       .then((response) => {
         expect(response.branches.base_branch).to.be.equal(branch.uid)
