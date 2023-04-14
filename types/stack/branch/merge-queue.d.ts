@@ -1,4 +1,3 @@
-import { Response } from "../../contentstackCollection"
 import { AnyProperty } from "../../utility/fields"
 
 export interface MergeQueue {

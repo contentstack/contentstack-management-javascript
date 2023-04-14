@@ -588,69 +588,69 @@ const installationMock = {
 }
 
 const globalFieldDiff = [{
-  "uid": "global_field_uid",
-  "title": "Global Field Title",
-  "type": "global_field",
-  "status": "base_only"
+  uid: 'global_field_uid',
+  title: 'Global Field Title',
+  type: 'global_field',
+  status: 'base_only'
 }]
 
 const contentTypeDiff = [{
-  "uid": "content_type_uid_1",
-  "title": "Content Type 1 Title",
-  "type": "content_type",
-  "status": "compare_only"
+  uid: 'content_type_uid_1',
+  title: 'Content Type 1 Title',
+  type: 'content_type',
+  status: 'compare_only'
 },
 {
-  "uid": "content_type_uid_2",
-  "title": "Content Type 2 Title",
-  "type": "content_type",
-  "status": "modified"
+  uid: 'content_type_uid_2',
+  title: 'Content Type 2 Title',
+  type: 'content_type',
+  status: 'modified'
 }]
 
 const branchCompareAllMock = {
-  "branches": {
-    "base_branch": "UID",
-    "compare_branch": "dev"
+  branches: {
+    base_branch: 'UID',
+    compare_branch: 'dev'
   },
-  "diff": [...globalFieldDiff, ...contentTypeDiff],
-  "next_url":"https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100"
+  diff: [...globalFieldDiff, ...contentTypeDiff],
+  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareContentTypeMock = {
-  "branches": {
-    "base_branch": "UID",
-    "compare_branch": "dev"
+  branches: {
+    base_branch: 'UID',
+    compare_branch: 'dev'
   },
-  "diff": [ ...contentTypeDiff ],
-  "next_url":"https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100"
+  diff: [ ...contentTypeDiff ],
+  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareGlobalFieldMock = {
-  "branches": {
-    "base_branch": "UID",
-    "compare_branch": "dev"
+  branches: {
+    base_branch: 'UID',
+    compare_branch: 'dev'
   },
-  "diff": [...globalFieldDiff],
-  "next_url":"https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100"
+  diff: [...globalFieldDiff],
+  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchMergeAllMock = {
-  "uid": "UID",
-  "stack": "stack_uid",
-  "created_at": "created_at_date",
-  "updated_at": "updated_at_date",
-  "created_by": "created_by_user_uid",
-  "updated_by": "updated_by_user_uid",
-  "merge_details": {
-    "base_branch": "main",
-    "compare_branch": "dev",
-    "status": "in_progress"
+  uid: 'UID',
+  stack: 'stack_uid',
+  created_at: 'created_at_date',
+  updated_at: 'updated_at_date',
+  created_by: 'created_by_user_uid',
+  updated_by: 'updated_by_user_uid',
+  merge_details: {
+    base_branch: 'main',
+    compare_branch: 'dev',
+    status: 'in_progress'
   },
-  "merged_at": null,
-  "errors": [ 
+  merged_at: null,
+  errors: [ 
     {
-      "code": "error_code",
-      "message": "Error message"
+      code: 'error_code',
+      message: 'Error message'
     }
   ]
 }
@@ -660,7 +660,7 @@ const branchMergeQueueFetchMock = {
 }
 
 const branchMergeQueueFindMock = {
-  "queue": [
+  queue: [
     { ...branchMergeQueueFetchMock }
   ]
 }
