@@ -5,11 +5,11 @@ import { MergeQueue, MergeQueues } from "./merge-queue";
 
 export interface Branch extends SystemFields, SystemFunction<Branch> {
     compare(compareBranchUid: string): Compare
-    mergeQueue(mergeJobUid?: string): MergeQueue | MergeQueues
-    merge(mergeObj: IMergeObj, params: IMergeParams)
 }
     
 export interface Branches extends Queryable<Branch, {branch: BranchData}> {
+    mergeQueue(mergeJobUid?: string): MergeQueue | MergeQueues
+    merge(mergeObj: IMergeObj, params: IMergeParams): Promise<AnyProperty>
 }
 
 export interface BranchData extends AnyProperty {
