@@ -129,7 +129,7 @@ describe('Branch api Test', () => {
       .catch(done)
   })
 
-  it('Should list differences for a single content type between two branches', done => {
+  it('Should list differences for a content types between two branches', done => {
     makeBranch(branch.uid)
       .compare(devBranch.uid)
       .contentTypes()
@@ -141,7 +141,7 @@ describe('Branch api Test', () => {
       .catch(done)
   })
 
-  it('Should list differences for a single global field between two branches', done => {
+  it('Should list differences for a global fields between two branches', done => {
     makeBranch(branch.uid)
       .compare(devBranch.uid)
       .globalFields()
@@ -202,14 +202,15 @@ describe('Branch api Test', () => {
       .catch(done)
   })
 
-  it('Should list all recent merge jobs', done => {
+  it('Should list details of merge job when job uid is passed', done => {
     const mergeJobUid = 'db7bf199-2a9d-4c2c-99d5-72453f70fb40'
     makeBranch()
       .mergeQueue(mergeJobUid)
       .fetch()
       .then((response) => {
-        expect(response.branches.base_branch).to.be.equal(branch.uid)
-        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        expect(response.queue).to.not.equal(undefined)
+        expect(response.queue[0].merge_details.base_branch).to.be.equal(branch.uid)
+        expect(response.queue[0].merge_details.compare_branch).to.be.equal(devBranch.uid)
         done()
       })
       .catch(done)
