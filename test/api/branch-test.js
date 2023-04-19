@@ -116,6 +116,105 @@ describe('Branch api Test', () => {
       })
       .catch(done)
   })
+
+  it('Should provide list of content types and global fields that exist in only one branch or are different between the two branches', done => {
+    makeBranch(branch.uid)
+      .compare(devBranch.uid)
+      .all()
+      .then((response) => {
+        expect(response.branches.base_branch).to.be.equal(branch.uid)
+        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should list differences for a content types between two branches', done => {
+    makeBranch(branch.uid)
+      .compare(devBranch.uid)
+      .contentTypes()
+      .then((response) => {
+        expect(response.branches.base_branch).to.be.equal(branch.uid)
+        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should list differences for a global fields between two branches', done => {
+    makeBranch(branch.uid)
+      .compare(devBranch.uid)
+      .globalFields()
+      .then((response) => {
+        expect(response.branches.base_branch).to.be.equal(branch.uid)
+        expect(response.branches.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should provide list of global fields that exist in only one branch or are different between the two branches', done => {
+    const params = {
+      base_branch: branch.uid,
+      compare_branch: devBranch.uid,
+      default_merge_strategy: "ignore",
+      merge_comment: "Merging dev into main",
+    }
+    const mergeObj = {
+      item_merge_strategies: [
+        {
+          "uid": "global_field_uid", 
+          "type": "global_field", 
+          "merge_strategy": "merge_prefer_base"
+        },
+        {
+          "uid": "ct5", 
+          "type": "content_type",
+          "merge_strategy": "merge_prefer_compare"
+        },
+        {
+          "uid": "bot_all", 
+          "type": "content_type",
+          "merge_strategy": "merge_prefer_base"
+        }
+      ]
+    }
+    makeBranch()
+      .merge(mergeObj, params)
+      .then((response) => {
+        expect(response.merge_details.base_branch).to.be.equal(branch.uid)
+        expect(response.merge_details.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should list all recent merge jobs', done => {
+    makeBranch()
+      .mergeQueue()
+      .find()
+      .then((response) => {
+        expect(response.queue).to.not.equal(undefined)
+        expect(response.queue[0].merge_details.base_branch).to.be.equal(branch.uid)
+        expect(response.queue[0].merge_details.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Should list details of merge job when job uid is passed', done => {
+    const mergeJobUid = 'db7bf199-2a9d-4c2c-99d5-72453f70fb40'
+    makeBranch()
+      .mergeQueue(mergeJobUid)
+      .fetch()
+      .then((response) => {
+        expect(response.queue).to.not.equal(undefined)
+        expect(response.queue[0].merge_details.base_branch).to.be.equal(branch.uid)
+        expect(response.queue[0].merge_details.compare_branch).to.be.equal(devBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeBranch (uid = null) {

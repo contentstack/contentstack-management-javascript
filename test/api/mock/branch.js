@@ -1,10 +1,10 @@
 const branch = {
-  uid: 'staging',
+  uid: 'main',
   source: 'master'
 }
 
 const devBranch = {
-  uid: 'development',
+  uid: 'merge_test',
   source: 'staging'
 }
 

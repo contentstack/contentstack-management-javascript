@@ -13,6 +13,7 @@ export interface BulkOperationConfig {
     skip_workflow_stage?: boolean
     approvals?: boolean
     is_nested?: boolean
+    api_version?: string
 }
 
 export interface PublishItems extends PublishDetails {
