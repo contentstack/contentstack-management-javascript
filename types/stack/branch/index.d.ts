@@ -8,7 +8,8 @@ export interface Branch extends SystemFields, SystemFunction<Branch> {
 }
     
 export interface Branches extends Queryable<Branch, {branch: BranchData}> {
-    mergeQueue(mergeJobUid?: string): MergeQueue | MergeQueues
+    mergeQueue(): MergeQueues
+    mergeQueue(mergeJobUid: string): MergeQueue
     merge(mergeObj: IMergeObj, params: IMergeParams): Promise<AnyProperty>
 }
 
