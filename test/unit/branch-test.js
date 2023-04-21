@@ -3,18 +3,18 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { Branch, BranchCollection } from '../../lib/stack/branch'
-import { 
-  branchCompareAllMock, 
-  branchCompareContentTypeMock, 
-  branchCompareGlobalFieldMock, 
+import {
+  branchCompareAllMock,
+  branchCompareContentTypeMock,
+  branchCompareGlobalFieldMock,
   branchMergeAllMock,
   branchMergeQueueFindMock,
   branchMergeQueueFetchMock,
-  branchMock, 
-  checkSystemFields, 
-  noticeMock, 
-  stackHeadersMock, 
-  systemUidMock 
+  branchMock,
+  checkSystemFields,
+  noticeMock,
+  stackHeadersMock,
+  systemUidMock
 } from './mock/objects'
 
 describe('Contentstack Branch test', () => {
@@ -168,12 +168,12 @@ describe('Contentstack Branch test', () => {
 
   it('Branch compare all test', done => {
     var mock = new MockAdapter(axios)
-    mock.onGet('/stacks/branches/compare', { params: { base_branch: 'UID', compare_branch:'dev', skip:0, limit:100}}).reply(200, branchCompareAllMock)
+    mock.onGet('/stacks/branches_compare', { params: { base_branch: 'UID', compare_branch: 'dev', skip: 0, limit: 100 } }).reply(200, branchCompareAllMock)
     makeBranch({
       branch: {
         ...systemUidMock
       },
-      stackHeaders: { ...stackHeadersMock, authtoken: 'authtoken'}
+      stackHeaders: { ...stackHeadersMock, authtoken: 'authtoken' }
     })
       .compare('dev')
       .all({ skip: 0, limit: 100 })
@@ -189,12 +189,12 @@ describe('Contentstack Branch test', () => {
 
   it('Branch compare content types test', done => {
     var mock = new MockAdapter(axios)
-    mock.onGet('/stacks/branches/compare/content_types', { params: { base_branch: 'UID', compare_branch:'dev', skip:0, limit:100}}).reply(200, branchCompareContentTypeMock)
+    mock.onGet('/stacks/branches_compare/content_types', { params: { base_branch: 'UID', compare_branch: 'dev', skip: 0, limit: 100 } }).reply(200, branchCompareContentTypeMock)
     makeBranch({
       branch: {
         ...systemUidMock
       },
-      stackHeaders: { ...stackHeadersMock, authtoken: 'authtoken'}
+      stackHeaders: { ...stackHeadersMock, authtoken: 'authtoken' }
     })
       .compare('dev')
       .contentTypes({ skip: 0, limit: 100 })
@@ -210,12 +210,12 @@ describe('Contentstack Branch test', () => {
 
   it('Branch compare global fields test', done => {
     var mock = new MockAdapter(axios)
-    mock.onGet('/stacks/branches/compare/global_fields', { params: { base_branch: 'UID', compare_branch:'dev', skip:0, limit:100 }}).reply(200, branchCompareGlobalFieldMock)
+    mock.onGet('/stacks/branches_compare/global_fields', { params: { base_branch: 'UID', compare_branch: 'dev', skip: 0, limit: 100 } }).reply(200, branchCompareGlobalFieldMock)
     makeBranch({
       branch: {
         ...systemUidMock
       },
-      stackHeaders: { ...stackHeadersMock, authtoken: 'authtoken'}
+      stackHeaders: { ...stackHeadersMock, authtoken: 'authtoken' }
     })
       .compare('dev')
       .globalFields({ skip: 0, limit: 100 })
@@ -232,23 +232,23 @@ describe('Contentstack Branch test', () => {
   it('Branch Merge All test', done => {
     var mock = new MockAdapter(axios)
     const params = {
-      base_branch: "main",
-      compare_branch: "dev",
-      default_merge_strategy: "merge_prefer_base",
-      merge_comment: "Merging dev into main", 
-      no_revert: true,
+      base_branch: 'main',
+      compare_branch: 'dev',
+      default_merge_strategy: 'merge_prefer_base',
+      merge_comment: 'Merging dev into main',
+      no_revert: true
     }
     const mergeObj = {
-      item_merge_strategies: [ 
+      item_merge_strategies: [
         {
-          uid: "global_field_uid", 
-          type: "global_field", 
-          merge_strategy: "merge_prefer_base"
+          uid: 'global_field_uid',
+          type: 'global_field',
+          merge_strategy: 'merge_prefer_base'
         }
-      ],
+      ]
     }
-    mock.onPost('/stacks/branches/merge').reply(200, branchMergeAllMock)
-    makeBranch({ stackHeaders: { ...stackHeadersMock, authtoken: 'authtoken'} })
+    mock.onPost('/stacks/branches_merge').reply(200, branchMergeAllMock)
+    makeBranch({ stackHeaders: { ...stackHeadersMock, authtoken: 'authtoken' } })
       .merge(mergeObj, params)
       .then((response) => {
         checkBranch(response)
@@ -261,7 +261,7 @@ describe('Contentstack Branch test', () => {
 
   it('Branch MergeQueue find test', done => {
     var mock = new MockAdapter(axios)
-    mock.onGet('/stacks/branches/merge-queue').reply(200, branchMergeQueueFindMock)
+    mock.onGet('/stacks/branches_queue').reply(200, branchMergeQueueFindMock)
     makeBranch()
       .mergeQueue()
       .find()
@@ -276,7 +276,7 @@ describe('Contentstack Branch test', () => {
 
   it('Branch MergeQueue fetch test', done => {
     var mock = new MockAdapter(axios)
-    mock.onGet('/stacks/branches/merge-queue/UID').reply(200, branchMergeQueueFetchMock)
+    mock.onGet('/stacks/branches_queue/UID').reply(200, branchMergeQueueFetchMock)
     makeBranch()
       .mergeQueue('UID')
       .fetch()
