@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.8.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.8.0) (2023-05-11)
+ - Feature
+   - Branches Compare and Merge feature added.
 ## [v1.7.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.7.0) (2023-04-04)
  - Feature
    - Marketplace API support added.
