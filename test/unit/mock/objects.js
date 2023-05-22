@@ -535,6 +535,14 @@ const oAuthMock = {
   }
 }
 
+const oAuthScopesMock = {
+  scopes: [
+    'user:read',
+    'user:write',
+    'user.profile:read'
+  ]
+}
+
 const appInstallMock = {
   status: 'installed',
   installation_uid: 'installationUID',
@@ -694,6 +702,7 @@ function checkSystemFields (object) {
 export {
   appMock,
   oAuthMock,
+  oAuthScopesMock,
   appInstallMock,
   installationMock,
   errorMock,
