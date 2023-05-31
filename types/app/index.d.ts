@@ -19,7 +19,7 @@ export interface App extends SystemFields, SystemFunction<App> {
         redirectUri: string, 
         scope: string, 
         state: string }): Promise<AnyProperty>
-    listInstallations(): Promise<AnyProperty>
+    listInstallations(): Promise<ContentstackCollection<App>>
     authorization(): Authorization
     oauth(): Oauth
 }

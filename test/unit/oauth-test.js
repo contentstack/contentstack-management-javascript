@@ -64,7 +64,7 @@ describe('Contentstack app oauth', () => {
       .oauth()
       .getScopes()
       .then((scopes) => {
-        expect(scopes).to.be.equal(oAuthScopesMock)
+        expect(scopes).to.deep.equal(oAuthScopesMock)
         done()
       })
       .catch(done)

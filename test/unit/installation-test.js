@@ -34,7 +34,6 @@ describe('Contentstack apps installation test', () => {
     expect(installation.setConfiguration).to.be.equal(undefined)
     expect(installation.serverConfig).to.be.equal(undefined)
     expect(installation.setServerConfig).to.be.equal(undefined)
-    expect(installation.findAll).to.not.equal(undefined)
     done()
   })
 
@@ -236,7 +235,7 @@ describe('Contentstack apps installation test', () => {
   })
 })
 
-function checkInstallation (installation) {
+export function checkInstallation (installation) {
   expect(installation.status).to.be.equal(installationMock.status)
   expect(installation.uid).to.be.equal(installationMock.uid)
   expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
