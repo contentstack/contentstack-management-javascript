@@ -3,8 +3,9 @@ import { expect } from 'chai'
 import { App } from '../../lib/app'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { appMock, installationMock, noticeMock, oAuthMock } from './mock/objects'
+import { appMock, installationMock, noticeMock } from './mock/objects'
 import { requestMock } from './mock/request-mock'
+import { checkInstallation } from './installation-test'
 
 describe('Contentstack apps test', () => {
   it('App without app uid', done => {
@@ -21,7 +22,6 @@ describe('Contentstack apps test', () => {
     expect(app.installation).to.be.equal(undefined)
     expect(app.getRequests).to.be.equal(undefined)
     expect(app.authorize).to.be.equal(undefined)
-    expect(app.oath()).to.be.equal(undefined)
     done()
   })
 
@@ -184,45 +184,21 @@ describe('Contentstack apps test', () => {
       .catch(done)
   })
 
-  it('Get oAuth configuration test', done => {
+  it('Get app installation test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onGet(`/manifests/${uid}/oauth`).reply(200, {
-      data: {
-        ...oAuthMock
-      }
+    const url = `manifests/${uid}/installations`
+    mock.onGet(url).reply(200, {
+      data: [installationMock]
     })
 
+    console.log(makeApp({ data: { uid } }).listInstallations())
     makeApp({ data: { uid } })
-      .fetchOAuth()
-      .then((oAuthConfig) => {
-        expect(oAuthConfig.client_id).to.be.equal(oAuthMock.client_id)
-        expect(oAuthConfig.client_secret).to.be.equal(oAuthMock.client_secret)
-        expect(oAuthConfig.redirect_uri).to.be.equal(oAuthMock.redirect_uri)
-        expect(oAuthConfig.app_token_config.enabled).to.be.equal(oAuthMock.app_token_config.enabled)
-        expect(oAuthConfig.user_token_config.enabled).to.be.equal(oAuthMock.user_token_config.enabled)
-        done()
-      })
-      .catch(done)
-  })
-
-  it('Update oAuth configuration test', done => {
-    const mock = new MockAdapter(Axios)
-    const uid = appMock.uid
-    mock.onPut(`/manifests/${uid}/oauth`).reply(200, {
-      data: {
-        ...oAuthMock
-      }
-    })
-    const config = { ...oAuthMock }
-    makeApp({ data: { uid } })
-      .updateOAuth({ config })
-      .then((oAuthConfig) => {
-        expect(oAuthConfig.client_id).to.be.equal(oAuthMock.client_id)
-        expect(oAuthConfig.client_secret).to.be.equal(oAuthMock.client_secret)
-        expect(oAuthConfig.redirect_uri).to.be.equal(oAuthMock.redirect_uri)
-        expect(oAuthConfig.app_token_config.enabled).to.be.equal(oAuthMock.app_token_config.enabled)
-        expect(oAuthConfig.user_token_config.enabled).to.be.equal(oAuthMock.user_token_config.enabled)
+      .listInstallations()
+      .then((installations) => {
+        installations.items.forEach(installation => {
+          checkInstallation(installation)
+        })
         done()
       })
       .catch(done)
@@ -240,6 +216,29 @@ describe('Contentstack apps test', () => {
     const targetType = 'target_type'
     makeApp({ data: { uid } })
       .install({ targetUid, targetType })
+      .then((installation) => {
+        expect(installation.status).to.be.equal(installationMock.status)
+        expect(installation.manifest.name).to.be.equal(installationMock.manifest.name)
+        expect(installation.target.uid).to.be.equal(installationMock.target.uid)
+        expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
+        expect(installation.uid).to.be.equal(installationMock.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('app upgrade test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    mock.onPut(`/manifests/${uid}/reinstall`).reply(200, {
+      data: {
+        ...installationMock
+      }
+    })
+    const targetUid = 'target_uid'
+    const targetType = 'target_type'
+    makeApp({ data: { uid } })
+      .upgrade({ targetUid, targetType })
       .then((installation) => {
         expect(installation.status).to.be.equal(installationMock.status)
         expect(installation.manifest.name).to.be.equal(installationMock.manifest.name)
