@@ -1,10 +1,10 @@
 import Axios from 'axios'
 import { expect } from 'chai'
-import { App } from '../../lib/app'
+import { App } from '../../lib/marketplace/app'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { appInstallMock, appMock, installationMock } from './mock/objects'
-import { Installation } from '../../lib/app/installation'
+import { Installation } from '../../lib/marketplace/installation'
 
 describe('Contentstack apps installation test', () => {
   it('Installation without installation uid', done => {
@@ -25,7 +25,7 @@ describe('Contentstack apps installation test', () => {
   it('Installation with app uid', done => {
     const uid = appMock.uid
     const installation = makeInstallation({ app_uid: uid })
-    expect(installation.urlPath).to.be.equal(`manifests/${uid}/installations`)
+    expect(installation.urlPath).to.be.equal(undefined)
     expect(installation.fetch).to.be.equal(undefined)
     expect(installation.update).to.be.equal(undefined)
     expect(installation.uninstall).to.be.equal(undefined)
@@ -86,7 +86,7 @@ describe('Contentstack apps installation test', () => {
       .install({ targetType: 'stack', targetUid: 'STACK_UID' })
       .then((installation) => {
         expect(installation.status).to.be.equal(appInstallMock.status)
-        expect(installation.uid).to.be.equal(appInstallMock.installation_uid)
+        expect(installation.installation_uid).to.be.equal(appInstallMock.installation_uid)
         expect(installation.redirect_to).to.be.equal(appInstallMock.redirect_to)
         expect(installation.redirect_uri).to.be.equal(appInstallMock.redirect_uri)
         done()
@@ -97,12 +97,11 @@ describe('Contentstack apps installation test', () => {
   it('Get app installation test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onGet(`manifests/${uid}/installations`).reply(200, {
+    mock.onGet(`/installations`).reply(200, {
       data: [installationMock]
     })
 
-    makeInstallation({ app_uid: uid })
-      .findAll()
+    makeInstallation({ data: { app_uid: uid } }).fetchAll()
       .then((installations) => {
         installations.items.forEach(installation => {
           checkInstallation(installation)

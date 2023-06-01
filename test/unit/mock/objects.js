@@ -453,7 +453,7 @@ const appMock = {
   icon: 'icon',
   description: 'Description of the app',
   target_type: 'stack',
-  name: 'Name of the app',
+  name: 'App Name',
   ui_location: {
     signed: true,
     base_url: 'base_url',
@@ -515,6 +515,16 @@ const appMock = {
   }
 }
 
+const appsMock = {
+  data: [
+    { ...appMock },
+    { ...appMock, name: 'App2 Name' }
+  ],
+  skip: 0,
+  limit: 50,
+  count: 2
+}
+
 const oAuthMock = {
   client_id: 'client_id',
   client_secret: 'client_secret',
@@ -547,7 +557,7 @@ const appInstallMock = {
   status: 'installed',
   installation_uid: 'installationUID',
   redirect_to: 'config',
-  redirect_uri: 'redirect_uri',
+  redirect_uri: 'redirect_uri'
 }
 
 const installationMock = {
@@ -621,7 +631,7 @@ const branchCompareAllMock = {
     compare_branch: 'dev'
   },
   diff: [...globalFieldDiff, ...contentTypeDiff],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareContentTypeMock = {
@@ -629,8 +639,8 @@ const branchCompareContentTypeMock = {
     base_branch: 'UID',
     compare_branch: 'dev'
   },
-  diff: [ ...contentTypeDiff ],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  diff: [...contentTypeDiff],
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareGlobalFieldMock = {
@@ -639,7 +649,7 @@ const branchCompareGlobalFieldMock = {
     compare_branch: 'dev'
   },
   diff: [...globalFieldDiff],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchMergeAllMock = {
@@ -655,7 +665,7 @@ const branchMergeAllMock = {
     status: 'in_progress'
   },
   merged_at: null,
-  errors: [ 
+  errors: [
     {
       code: 'error_code',
       message: 'Error message'
@@ -701,6 +711,7 @@ function checkSystemFields (object) {
 
 export {
   appMock,
+  appsMock,
   oAuthMock,
   oAuthScopesMock,
   appInstallMock,
