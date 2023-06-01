@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import { expect } from 'chai'
-import { App } from '../../lib/app'
+import { Oauth } from '../../lib/marketplace/app/oauth'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { appMock, oAuthMock, oAuthScopesMock } from './mock/objects'
@@ -15,8 +15,9 @@ describe('Contentstack app oauth', () => {
       }
     })
 
-    makeApp({ data: { uid } })
-      .oauth()
+    const oauthObj = makeOauth({ app_uid: uid, organization_uid: 'organization_uid' })
+    expect(oauthObj.params.organization_uid).to.be.equal('organization_uid')
+    oauthObj
       .fetch()
       .then((oAuthConfig) => {
         expect(oAuthConfig.client_id).to.be.equal(oAuthMock.client_id)
@@ -38,8 +39,7 @@ describe('Contentstack app oauth', () => {
       }
     })
     const config = { ...oAuthMock }
-    makeApp({ data: { uid } })
-      .oauth()
+    makeOauth({ app_uid: uid })
       .update({ config })
       .then((oAuthConfig) => {
         expect(oAuthConfig.client_id).to.be.equal(oAuthMock.client_id)
@@ -60,8 +60,7 @@ describe('Contentstack app oauth', () => {
         ...oAuthScopesMock
       }
     })
-    makeApp({ data: { uid } })
-      .oauth()
+    makeOauth({ app_uid: uid })
       .getScopes()
       .then((scopes) => {
         expect(scopes).to.deep.equal(oAuthScopesMock)
@@ -71,6 +70,6 @@ describe('Contentstack app oauth', () => {
   })
 })
 
-function makeApp (data) {
-  return new App(Axios, data)
+function makeOauth (data) {
+  return new Oauth(Axios, data, {})
 }

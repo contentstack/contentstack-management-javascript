@@ -263,7 +263,6 @@ function checknonAdminFunction (organization) {
   expect(organization.roles).to.not.equal(undefined)
   expect(organization.marketplace()).to.not.equal(undefined)
   expect(organization.marketplace().app()).to.not.equal(undefined)
-  expect(organization.appRequest()).to.not.equal(undefined)
 }
 
 function checkAdminFunction (organization) {

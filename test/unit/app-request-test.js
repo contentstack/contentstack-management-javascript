@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { appMock } from './mock/objects'
-import { AppRequest } from '../../lib/app/request'
+import { AppRequest } from '../../lib/marketplace/request'
 import { requestMock } from './mock/request-mock'
 
 describe('Contentstack apps request test', () => {
