@@ -683,6 +683,43 @@ const branchMergeQueueFindMock = {
   ]
 }
 
+const installationConfigLocationMock = {
+  uid: 'Installation_UID',
+  created_at: '2023-02-28T09:41:01.288Z',
+  updated_at: '2023-02-28T09:41:01.288Z',
+  created_by: 'blt22e22222d22d2f22222a2b2f',
+  updated_by: 'blt22e22222d22d2f22222a2b2f',
+  tags: [],
+  ACL: [],
+  _version: 1,
+  title: 'App Name',
+  config: {},
+  type: 'stack_config_widget',
+  app_installation_uid: '63fdcc2c84fad28ef0b7564e',
+  app_uid: '620a496d38c9480018b9b0d6',
+  signed: true,
+  enable: true,
+  src: 'http://localhost:3000/config'
+}
+
+const installedAppsMock = {
+  app1: 'data1',
+  app2: 'data2',
+  app3: 'data3'
+}
+
+const installedUsersMock = {
+  user1: 'data1',
+  user2: 'data2',
+  user3: 'data3'
+}
+
+const installedStacksMock = {
+  stack1: 'data1',
+  stack2: 'data2',
+  stack3: 'data3'
+}
+
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -751,6 +788,10 @@ export {
   branchMergeAllMock,
   branchMergeQueueFindMock,
   branchMergeQueueFetchMock,
+  installationConfigLocationMock,
+  installedAppsMock,
+  installedUsersMock,
+  installedStacksMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
