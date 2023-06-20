@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as dotenv from 'dotenv'
-import { AppData, AppOAuth, Apps } from '../../types/app'
+import { AppData, AppOAuth, Apps } from '../../types/marketplace'
 import { Organization } from '../../types/organization';
 dotenv.config()
 let appUid = ''

@@ -38,7 +38,7 @@
             "lib/marketplace/index.js",
             "lib/marketplace/installation/index.js",
             "lib/marketplace/installation/webhooks/index.js",
-            "lib/marketplace/request/index.js",
+            "lib/marketplace/apprequest/index.js",
             "lib/marketplace/authorization/index.js"
 
         ],
