@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter'
 import { appsMock } from './mock/objects'
 import { App } from '../../lib/marketplace/app'
 import { Installation } from '../../lib/marketplace/installation'
-import { AppRequest } from '../../lib/marketplace/request'
+import { AppRequest } from '../../lib/marketplace/apprequest'
 describe('marketplace test', () => {
   it('should create Marketplace object with params when marketplace function is called with data', () => {
     const mktplace = marketplaceObj({ organization_uid: 'organization_uid' })
