@@ -4,7 +4,7 @@ import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { appMock } from './mock/objects'
 import { latestLiveResponse, signedUrlResponse } from './mock/hosting-mock'
-import { Deployment } from '../../lib/app/hosting/deployment'
+import { Deployment } from '../../lib/marketplace/app/hosting/deployment'
 
 describe('Contentstack hosting test', () => {
   it('test deployment without contents', done => {
@@ -81,7 +81,7 @@ describe('Contentstack hosting test', () => {
     })
 
     makeDeployment({ app_uid: uid, organization_uid: organizationUid })
-      .findAll()
+      .findAll({ skip: 10 })
       .then((deployments) => {
         deployments.items.forEach(deployment => {
           checkDeployment(deployment)

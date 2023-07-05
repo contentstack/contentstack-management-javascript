@@ -453,7 +453,7 @@ const appMock = {
   icon: 'icon',
   description: 'Description of the app',
   target_type: 'stack',
-  name: 'Name of the app',
+  name: 'App Name',
   ui_location: {
     signed: true,
     base_url: 'base_url',
@@ -515,6 +515,16 @@ const appMock = {
   }
 }
 
+const appsMock = {
+  data: [
+    { ...appMock },
+    { ...appMock, name: 'App2 Name' }
+  ],
+  skip: 0,
+  limit: 50,
+  count: 2
+}
+
 const oAuthMock = {
   client_id: 'client_id',
   client_secret: 'client_secret',
@@ -535,11 +545,19 @@ const oAuthMock = {
   }
 }
 
+const oAuthScopesMock = {
+  scopes: [
+    'user:read',
+    'user:write',
+    'user.profile:read'
+  ]
+}
+
 const appInstallMock = {
   status: 'installed',
   installation_uid: 'installationUID',
   redirect_to: 'config',
-  redirect_uri: 'redirect_uri',
+  redirect_uri: 'redirect_uri'
 }
 
 const installationMock = {
@@ -613,7 +631,7 @@ const branchCompareAllMock = {
     compare_branch: 'dev'
   },
   diff: [...globalFieldDiff, ...contentTypeDiff],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareContentTypeMock = {
@@ -621,8 +639,8 @@ const branchCompareContentTypeMock = {
     base_branch: 'UID',
     compare_branch: 'dev'
   },
-  diff: [ ...contentTypeDiff ],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  diff: [...contentTypeDiff],
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareGlobalFieldMock = {
@@ -631,7 +649,7 @@ const branchCompareGlobalFieldMock = {
     compare_branch: 'dev'
   },
   diff: [...globalFieldDiff],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchMergeAllMock = {
@@ -647,7 +665,7 @@ const branchMergeAllMock = {
     status: 'in_progress'
   },
   merged_at: null,
-  errors: [ 
+  errors: [
     {
       code: 'error_code',
       message: 'Error message'
@@ -663,6 +681,43 @@ const branchMergeQueueFindMock = {
   queue: [
     { ...branchMergeQueueFetchMock }
   ]
+}
+
+const installationConfigLocationMock = {
+  uid: 'Installation_UID',
+  created_at: '2023-02-28T09:41:01.288Z',
+  updated_at: '2023-02-28T09:41:01.288Z',
+  created_by: 'blt22e22222d22d2f22222a2b2f',
+  updated_by: 'blt22e22222d22d2f22222a2b2f',
+  tags: [],
+  ACL: [],
+  _version: 1,
+  title: 'App Name',
+  config: {},
+  type: 'stack_config_widget',
+  app_installation_uid: '63fdcc2c84fad28ef0b7564e',
+  app_uid: '620a496d38c9480018b9b0d6',
+  signed: true,
+  enable: true,
+  src: 'http://localhost:3000/config'
+}
+
+const installedAppsMock = {
+  app1: 'data1',
+  app2: 'data2',
+  app3: 'data3'
+}
+
+const installedUsersMock = {
+  user1: 'data1',
+  user2: 'data2',
+  user3: 'data3'
+}
+
+const installedStacksMock = {
+  stack1: 'data1',
+  stack2: 'data2',
+  stack3: 'data3'
 }
 
 function mockCollection (mockData, type) {
@@ -693,7 +748,9 @@ function checkSystemFields (object) {
 
 export {
   appMock,
+  appsMock,
   oAuthMock,
+  oAuthScopesMock,
   appInstallMock,
   installationMock,
   errorMock,
@@ -731,6 +788,10 @@ export {
   branchMergeAllMock,
   branchMergeQueueFindMock,
   branchMergeQueueFetchMock,
+  installationConfigLocationMock,
+  installedAppsMock,
+  installedUsersMock,
+  installedStacksMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
