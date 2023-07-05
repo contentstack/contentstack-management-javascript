@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { appMock } from './mock/objects'
-import { Hosting } from '../../lib/app/hosting'
+import { Hosting } from '../../lib/marketplace/app/hosting'
 import { latestLiveResponse, signedUrlResponse } from './mock/hosting-mock'
 
 describe('Contentstack hosting test', () => {

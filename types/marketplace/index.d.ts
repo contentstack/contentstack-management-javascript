@@ -5,10 +5,10 @@ import { Pagination } from '../utility/pagination';
 import { Authorization } from './authorization';
 import { Hosting } from './hosting';
 import { Installation, Installations } from "./installation";
+import { Oauth } from "./oath";
 
 export interface App extends SystemFields, SystemFunction<App> {
-    fetchOAuth(param?: AnyProperty): Promise<AppOAuth>
-    updateOAuth(data: { config: AppOAuth, param?: AnyProperty }): Promise<AppOAuth>
+    
     install(data: {targetUid: string, targetType: AppTarget}): Promise<Installation>
     installation(): Installations
     installation(uid: string): Installation
@@ -19,7 +19,9 @@ export interface App extends SystemFields, SystemFunction<App> {
         redirectUri: string, 
         scope: string, 
         state: string }): Promise<AnyProperty>
+    listInstallations(): Promise<ContentstackCollection<App>>
     authorization(): Authorization
+    oauth(): Oauth
 }
 
 export interface Apps extends Creatable<App, AppData> {
