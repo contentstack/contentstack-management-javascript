@@ -1,10 +1,11 @@
 import Axios from 'axios'
 import { expect } from 'chai'
-import { App } from '../../lib/app'
+import { App } from '../../lib/marketplace/app'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { appInstallMock, appMock, installationMock } from './mock/objects'
-import { Installation } from '../../lib/app/installation'
+import { appInstallMock, appMock, installationConfigLocationMock, installationMock, installedAppsMock, installedStacksMock, installedUsersMock } from './mock/objects'
+import { Installation } from '../../lib/marketplace/installation'
+import { WebHooks } from '../../lib/marketplace/installation/webhooks'
 
 describe('Contentstack apps installation test', () => {
   it('Installation without installation uid', done => {
@@ -13,28 +14,35 @@ describe('Contentstack apps installation test', () => {
     expect(installation.fetch).to.be.equal(undefined)
     expect(installation.update).to.be.equal(undefined)
     expect(installation.uninstall).to.be.equal(undefined)
-    expect(installation.findAll).to.be.equal(undefined)
+    expect(installation.fetchAll).to.be.equal(undefined)
     expect(installation.installationData).to.be.equal(undefined)
     expect(installation.configuration).to.be.equal(undefined)
     expect(installation.setConfiguration).to.be.equal(undefined)
+    expect(installation.getConfigLocation).to.be.equal(undefined)
     expect(installation.serverConfig).to.be.equal(undefined)
     expect(installation.setServerConfig).to.be.equal(undefined)
+    expect(installation.webhooks).to.be.equal(undefined)
     done()
   })
 
   it('Installation with app uid', done => {
     const uid = appMock.uid
-    const installation = makeInstallation({ app_uid: uid })
-    expect(installation.urlPath).to.be.equal(`manifests/${uid}/installations`)
+    const installation = makeInstallation({ data: { app_uid: uid } })
+    expect(installation.urlPath).to.be.equal('/installations')
     expect(installation.fetch).to.be.equal(undefined)
     expect(installation.update).to.be.equal(undefined)
     expect(installation.uninstall).to.be.equal(undefined)
     expect(installation.installationData).to.be.equal(undefined)
     expect(installation.configuration).to.be.equal(undefined)
     expect(installation.setConfiguration).to.be.equal(undefined)
+    expect(installation.getConfigLocation).to.be.equal(undefined)
     expect(installation.serverConfig).to.be.equal(undefined)
     expect(installation.setServerConfig).to.be.equal(undefined)
-    expect(installation.findAll).to.not.equal(undefined)
+    expect(installation.webhooks).to.be.equal(undefined)
+    expect(installation.fetchAll).to.not.equal(undefined)
+    expect(installation.getInstalledApps).to.not.equal(undefined)
+    expect(installation.getInstalledUsers).to.not.equal(undefined)
+    expect(installation.getInstalledStacks).to.not.equal(undefined)
     done()
   })
 
@@ -48,9 +56,14 @@ describe('Contentstack apps installation test', () => {
     expect(installation.installationData).to.not.equal(undefined)
     expect(installation.configuration).to.not.equal(undefined)
     expect(installation.setConfiguration).to.not.equal(undefined)
+    expect(installation.getConfigLocation).to.not.equal(undefined)
     expect(installation.serverConfig).to.not.equal(undefined)
     expect(installation.setServerConfig).to.not.equal(undefined)
-    expect(installation.findAll).to.be.equal(undefined)
+    expect(installation.webhooks).to.not.equal(undefined)
+    expect(installation.fetchAll).to.be.equal(undefined)
+    expect(installation.getInstalledApps).to.be.equal(undefined)
+    expect(installation.getInstalledUsers).to.be.equal(undefined)
+    expect(installation.getInstalledStacks).to.be.equal(undefined)
     done()
   })
 
@@ -87,7 +100,7 @@ describe('Contentstack apps installation test', () => {
       .install({ targetType: 'stack', targetUid: 'STACK_UID' })
       .then((installation) => {
         expect(installation.status).to.be.equal(appInstallMock.status)
-        expect(installation.uid).to.be.equal(appInstallMock.installation_uid)
+        expect(installation.installation_uid).to.be.equal(appInstallMock.installation_uid)
         expect(installation.redirect_to).to.be.equal(appInstallMock.redirect_to)
         expect(installation.redirect_uri).to.be.equal(appInstallMock.redirect_uri)
         done()
@@ -98,12 +111,11 @@ describe('Contentstack apps installation test', () => {
   it('Get app installation test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
-    mock.onGet(`manifests/${uid}/installations`).reply(200, {
+    mock.onGet(`/installations`).reply(200, {
       data: [installationMock]
     })
 
-    makeInstallation({ app_uid: uid })
-      .findAll()
+    makeInstallation({ data: { app_uid: uid } }).fetchAll()
       .then((installations) => {
         installations.items.forEach(installation => {
           checkInstallation(installation)
@@ -160,6 +172,7 @@ describe('Contentstack apps installation test', () => {
       })
       .catch(done)
   })
+
   it('Set installation configuration test', done => {
     const mock = new MockAdapter(Axios)
     const uid = installationMock.uid
@@ -175,6 +188,7 @@ describe('Contentstack apps installation test', () => {
       })
       .catch(done)
   })
+
   it('Get installation server config test', done => {
     const mock = new MockAdapter(Axios)
     const uid = installationMock.uid
@@ -190,6 +204,7 @@ describe('Contentstack apps installation test', () => {
       })
       .catch(done)
   })
+
   it('Get installation installationData test', done => {
     const mock = new MockAdapter(Axios)
     const uid = installationMock.uid
@@ -234,9 +249,80 @@ describe('Contentstack apps installation test', () => {
       })
       .catch(done)
   })
+
+  it('getConfigLocation call should retrieve uilocation configuration details of an installation', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationConfigLocationMock.uid
+    mock.onGet(`/installations/${uid}/locations/configuration`).reply(200, {
+      data: installationConfigLocationMock
+    })
+
+    makeInstallation({ data: { uid } })
+      .getConfigLocation()
+      .then((response) => {
+        expect(response.data).to.be.eql(installationConfigLocationMock)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should get object of WebHook class when webhooks function is called with uid', () => {
+    const webHook = makeInstallation({ data: { uid: 'uid' } }).webhooks('webhookUid')
+
+    expect(webHook).to.be.instanceOf(WebHooks)
+    expect(webHook.uid).to.be.equal('webhookUid')
+    expect(webHook.listExecutionLogs).to.not.equal(undefined)
+    expect(webHook.getExecutionLog).to.not.equal(undefined)
+    expect(webHook.retryExecution).to.not.equal(undefined)
+  })
+
+  it('getInstalledApps call should fetch all the installed apps in your Contentstack organization', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/installations/view/apps`).reply(200, {
+      data: installedAppsMock
+    })
+
+    makeInstallation({ data: {} })
+      .getInstalledApps()
+      .then((response) => {
+        expect(response.data).to.be.eql(installedAppsMock)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('getInstalledUsers call should fetch all the installed Users in your Contentstack organization', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/installations/view/users`).reply(200, {
+      data: installedUsersMock
+    })
+
+    makeInstallation({ data: {} })
+      .getInstalledUsers()
+      .then((response) => {
+        expect(response.data).to.be.eql(installedUsersMock)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('getInstalledStacks call should fetch all the installed Stacks in your Contentstack organization', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/installations/view/stacks`).reply(200, {
+      data: installedStacksMock
+    })
+
+    makeInstallation({ data: {} })
+      .getInstalledStacks()
+      .then((response) => {
+        expect(response.data).to.be.eql(installedStacksMock)
+        done()
+      })
+      .catch(done)
+  })
 })
 
-function checkInstallation (installation) {
+export function checkInstallation (installation) {
   expect(installation.status).to.be.equal(installationMock.status)
   expect(installation.uid).to.be.equal(installationMock.uid)
   expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
