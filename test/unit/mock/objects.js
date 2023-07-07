@@ -685,18 +685,18 @@ const branchMergeQueueFindMock = {
 
 const installationConfigLocationMock = {
   uid: 'Installation_UID',
-  created_at: '2023-02-28T09:41:01.288Z',
-  updated_at: '2023-02-28T09:41:01.288Z',
-  created_by: 'blt22e22222d22d2f22222a2b2f',
-  updated_by: 'blt22e22222d22d2f22222a2b2f',
+  created_at: 'created_at_date',
+  updated_at: 'updated_at_date',
+  created_by: 'created_by_author',
+  updated_by: 'updated_by_author',
   tags: [],
   ACL: [],
   _version: 1,
   title: 'App Name',
   config: {},
   type: 'stack_config_widget',
-  app_installation_uid: '63fdcc2c84fad28ef0b7564e',
-  app_uid: '620a496d38c9480018b9b0d6',
+  app_installation_uid: 'app_installation_uid',
+  app_uid: 'app_uid',
   signed: true,
   enable: true,
   src: 'http://localhost:3000/config'
@@ -723,15 +723,15 @@ const installedStacksMock = {
 const auditLogItemMock = {
   logs: {
     uid: 'UID',
-    stack: 'blt8d542b122115b153',
+    stack: 'stack_uid',
     created_at: 'created_at_date',
-    created_by: 'blt7b815b05d2fe5dd8',
+    created_by: 'created_by_author',
     module: 'environment',
     event_type: 'create',
     request_id: '86352',
     metadata: {
       title: 'production',
-      uid: 'blt2c60160a046ce26d'
+      uid: 'uid'
     },
     remote_addr: '202.179.94.0',
     request: {
@@ -761,11 +761,11 @@ const auditLogItemMock = {
           }
         ],
         name: 'production',
-        uid: 'blt2c60160a046ce26d',
-        created_by: 'blt7b815b05d2fe5dd8',
-        updated_by: 'blt7b815b05d2fe5dd8',
-        created_at: '2021-08-19T12:37:44.414Z',
-        updated_at: '2021-08-19T12:37:44.414Z',
+        uid: 'UID',
+        created_by: 'created_by_author',
+        updated_by: 'updated_by_author',
+        created_at: 'created_at_date',
+        updated_at: 'updated_at_date',
         ACL: {},
         _version: 1,
         isEnvironment: true
