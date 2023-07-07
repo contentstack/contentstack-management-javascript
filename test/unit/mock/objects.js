@@ -720,6 +720,66 @@ const installedStacksMock = {
   stack3: 'data3'
 }
 
+const auditLogItemMock = {
+  logs: {
+    uid: 'UID',
+    stack: 'blt8d542b122115b153',
+    created_at: 'created_at_date',
+    created_by: 'blt7b815b05d2fe5dd8',
+    module: 'environment',
+    event_type: 'create',
+    request_id: '86352',
+    metadata: {
+      title: 'production',
+      uid: 'blt2c60160a046ce26d'
+    },
+    remote_addr: '202.179.94.0',
+    request: {
+      r: '0.5090218519397551',
+      environment: {
+        deploy_content: false,
+        servers: [],
+        urls: [
+          {
+            url: '',
+            locale: 'en-us'
+          }
+        ],
+        name: 'production',
+        color: '#01977c'
+      }
+    },
+    response: {
+      notice: 'Environment created successfully.',
+      environment: {
+        deploy_content: false,
+        servers: [],
+        urls: [
+          {
+            url: '',
+            locale: 'en-us'
+          }
+        ],
+        name: 'production',
+        uid: 'blt2c60160a046ce26d',
+        created_by: 'blt7b815b05d2fe5dd8',
+        updated_by: 'blt7b815b05d2fe5dd8',
+        created_at: '2021-08-19T12:37:44.414Z',
+        updated_at: '2021-08-19T12:37:44.414Z',
+        ACL: {},
+        _version: 1,
+        isEnvironment: true
+      }
+    }
+  }
+}
+
+const auditLogsMock = {
+  logs: [
+    { ...auditLogItemMock.logs }
+  ]
+}
+
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -792,6 +852,8 @@ export {
   installedAppsMock,
   installedUsersMock,
   installedStacksMock,
+  auditLogItemMock,
+  auditLogsMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields

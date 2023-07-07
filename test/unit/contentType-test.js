@@ -14,6 +14,7 @@ describe('Contentstack ContentType test', () => {
     expect(contentType.update).to.be.equal(undefined)
     expect(contentType.delete).to.be.equal(undefined)
     expect(contentType.fetch).to.be.equal(undefined)
+    expect(contentType.references).to.be.equal(undefined)
     expect(contentType.create).to.not.equal(undefined)
     expect(contentType.query).to.not.equal(undefined)
     done()
@@ -30,6 +31,7 @@ describe('Contentstack ContentType test', () => {
     expect(contentType.update).to.not.equal(undefined)
     expect(contentType.delete).to.not.equal(undefined)
     expect(contentType.fetch).to.not.equal(undefined)
+    expect(contentType.references).to.not.equal(undefined)
     expect(contentType.create).to.be.equal(undefined)
     expect(contentType.query).to.be.equal(undefined)
     done()
@@ -48,6 +50,7 @@ describe('Contentstack ContentType test', () => {
     expect(contentType.update).to.not.equal(undefined)
     expect(contentType.delete).to.not.equal(undefined)
     expect(contentType.fetch).to.not.equal(undefined)
+    expect(contentType.references).to.not.equal(undefined)
     expect(contentType.create).to.be.equal(undefined)
     expect(contentType.query).to.be.equal(undefined)
     done()
@@ -151,6 +154,28 @@ describe('Contentstack ContentType test', () => {
       .fetch()
       .then((contentType) => {
         checkContentType(contentType)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('ContentType references test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/content_types/UID/references').reply(200, {
+      references: [
+        'Product',
+        'Blog'
+      ]
+    })
+    makeContentType({
+      content_type: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .references()
+      .then((response) => {
+        expect(response.references).to.be.eql(['Product', 'Blog'])
         done()
       })
       .catch(done)
