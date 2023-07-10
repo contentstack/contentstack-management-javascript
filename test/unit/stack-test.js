@@ -738,6 +738,7 @@ describe('Contentstack Stack test', () => {
       .bulkOperation()
     expect(bulkOperation.publish).to.not.equal(undefined)
     expect(bulkOperation.unpublish).to.not.equal(undefined)
+    expect(bulkOperation.update).to.not.equal(undefined)
     expect(bulkOperation.stackHeaders).to.not.equal(undefined)
     expect(bulkOperation.stackHeaders.api_key).to.be.equal('stack_api_key')
     done()
