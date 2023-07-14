@@ -1,5 +1,5 @@
-import { AnyProperty, SystemFields } from '../utility/fields';
-import { ContentstackCollection } from '../contentstackCollection'
+import { AnyProperty, SystemFields } from '../../utility/fields';
+import { ContentstackCollection } from '../../contentstackCollection'
 export interface Hosting {
     isEnable(): Promise<AnyProperty>
     enable(): Promise<AnyProperty>
