@@ -3,7 +3,7 @@ export interface Response {
 }
 
 export interface ContentstackCollection<T> extends Response {
-    items: [T]
+    items: T[]
     count: number
 }
 
