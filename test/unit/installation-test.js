@@ -266,16 +266,6 @@ describe('Contentstack apps installation test', () => {
       .catch(done)
   })
 
-  it('should get object of WebHook class when webhooks function is called with uid', () => {
-    const webHook = makeInstallation({ data: { uid: 'uid' } }).webhooks('webhookUid')
-
-    expect(webHook).to.be.instanceOf(WebHooks)
-    expect(webHook.uid).to.be.equal('webhookUid')
-    expect(webHook.listExecutionLogs).to.not.equal(undefined)
-    expect(webHook.getExecutionLog).to.not.equal(undefined)
-    expect(webHook.retryExecution).to.not.equal(undefined)
-  })
-
   it('getInstalledApps call should fetch all the installed apps in your Contentstack organization', done => {
     const mock = new MockAdapter(Axios)
     mock.onGet(`/installations/view/apps`).reply(200, {
@@ -319,6 +309,192 @@ describe('Contentstack apps installation test', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('Get app installation failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    mock.onGet(`/installations`).reply(400, {})
+
+    makeInstallation({ data: { app_uid: uid } }).fetchAll()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('Fetch Installation failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onGet(`/installations/${uid}`).reply(400, {})
+
+    makeInstallation({ data: { uid } })
+      .fetch()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('Get installation installationData failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onGet(`/installations/${uid}/installationData`).reply(400, {})
+
+    makeInstallation({ data: { uid } })
+      .installationData()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('Get installation configuration failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onGet(`/installations/${uid}/configuration`).reply(400, {})
+
+    makeInstallation({ data: { uid } })
+      .configuration()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('Set installation configuration failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onPut(`/installations/${uid}/configuration`).reply(400, {})
+
+    makeInstallation({ data: { uid } })
+      .setConfiguration({})
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('Get installation server config failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onGet(`/installations/${uid}/server-configuration`).reply(400, {})
+
+    makeInstallation({ data: { uid } })
+      .serverConfig()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('Get installation installationData failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onPut(`/installations/${uid}/server-configuration`).reply(400, {})
+
+    makeInstallation({ data: { uid } })
+      .setServerConfig({})
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('Update Installation failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onPut(`/installations/${uid}`).reply(400, {})
+    makeInstallation({ data: { uid } })
+      .update()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('Uninstall Installation failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationMock.uid
+    mock.onDelete(`/installations/${uid}`).reply(400, {})
+    makeInstallation({ data: { uid } })
+      .uninstall()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('getConfigLocation call should retrieve uilocation configuration details of an installation failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = installationConfigLocationMock.uid
+    mock.onGet(`/installations/${uid}/locations/configuration`).reply(400, {})
+
+    makeInstallation({ data: { uid } })
+      .getConfigLocation()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('getInstalledApps call should fetch all the installed apps in your Contentstack organization failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/installations/view/apps`).reply(400, {})
+
+    makeInstallation({ data: {} })
+      .getInstalledApps()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('getInstalledUsers call should fetch all the installed Users in your Contentstack organization failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/installations/view/users`).reply(400, {})
+
+    makeInstallation({ data: {} })
+      .getInstalledUsers()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('getInstalledStacks call should fetch all the installed Stacks in your Contentstack organization failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/installations/view/stacks`).reply(400, {})
+
+    makeInstallation({ data: {} })
+      .getInstalledStacks()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(undefined)
+        done()
+      })
+  })
+
+  it('should get object of WebHook class when webhooks function is called with uid', () => {
+    const webHook = makeInstallation({ data: { uid: 'uid' } }).webhooks('webhookUid')
+
+    expect(webHook).to.be.instanceOf(WebHooks)
+    expect(webHook.uid).to.be.equal('webhookUid')
+    expect(webHook.listExecutionLogs).to.not.equal(undefined)
+    expect(webHook.getExecutionLog).to.not.equal(undefined)
+    expect(webHook.retryExecution).to.not.equal(undefined)
   })
 })
 
