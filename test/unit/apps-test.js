@@ -147,9 +147,18 @@ describe('Contentstack apps test', () => {
         installations.items.forEach(installation => {
           checkInstallation(installation)
         })
-        done()
       })
       .catch(done)
+
+    // Failing test
+    mock.onGet(`manifests/${uid}/installations`).reply(400, {})
+    makeApp({ data: { uid } })
+      .listInstallations()
+      .then()
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 
   it('app install test', done => {
@@ -170,9 +179,18 @@ describe('Contentstack apps test', () => {
         expect(installation.target.uid).to.be.equal(installationMock.target.uid)
         expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
         expect(installation.uid).to.be.equal(installationMock.uid)
-        done()
       })
       .catch(done)
+
+    // Failing test
+    mock.onPost(`/manifests/${uid}/install`).reply(400, {})
+    makeApp({ data: { uid } })
+      .install({ targetUid, targetType })
+      .then()
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 
   it('app upgrade test', done => {
@@ -193,9 +211,18 @@ describe('Contentstack apps test', () => {
         expect(installation.target.uid).to.be.equal(installationMock.target.uid)
         expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
         expect(installation.uid).to.be.equal(installationMock.uid)
-        done()
       })
       .catch(done)
+
+    // Failing test
+    mock.onPut(`/manifests/${uid}/reinstall`).reply(400, {})
+    makeApp({ data: { uid } })
+      .upgrade({ targetUid, targetType })
+      .then()
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 
   it('test fetch request for app uid', (done) => {

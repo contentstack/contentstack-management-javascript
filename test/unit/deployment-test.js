@@ -86,9 +86,18 @@ describe('Contentstack hosting test', () => {
         deployments.items.forEach(deployment => {
           checkDeployment(deployment)
         })
-        done()
       })
       .catch(done)
+
+    // Failing test
+    mock.onGet(`manifests/${uid}/hosting/deployments`).reply(400, {})
+    makeDeployment({ app_uid: uid, organization_uid: organizationUid })
+      .findAll({ skip: 10 })
+      .then()
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 
   it('test create deployment from signed url', done => {
@@ -105,10 +114,20 @@ describe('Contentstack hosting test', () => {
       .create({ uploadUid, fileType })
       .then((deployment) => {
         checkDeployment(deployment)
-        done()
       })
       .catch(done)
+
+    // Failing test
+    mock.onPost(`manifests/${uid}/hosting/deployments`).reply(400, {})
+    makeDeployment({ app_uid: uid, organization_uid: organizationUid })
+      .create({ uploadUid, fileType })
+      .then()
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
+
   it('test create deployment from signed url with advance options', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
@@ -140,10 +159,27 @@ describe('Contentstack hosting test', () => {
     makeDeployment({ app_uid: uid, organization_uid: organizationUid, data: { uid: deploymentUid, organization_uid: organizationUid } })
       .fetch()
       .then((deployment) => {
+        expect(deployment).to.be.instanceOf(Deployment)
         checkDeployment(deployment)
         done()
       })
       .catch(done)
+  })
+
+  it('test get deployment from uid fail test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    const organizationUid = appMock.organization_uid
+    const deploymentUid = latestLiveResponse.data.uid
+    mock.onGet(`manifests/${uid}/hosting/deployments/${deploymentUid}`).reply(400, {})
+
+    makeDeployment({ app_uid: uid, organization_uid: organizationUid, data: { uid: deploymentUid, organization_uid: organizationUid } })
+      .fetch()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 
   it('test get deployment logs from uid', done => {
@@ -168,12 +204,21 @@ describe('Contentstack hosting test', () => {
           expect(log.stage).to.be.equal(content.stage)
           expect(log.timestamp).to.be.equal(content.timestamp)
         })
-        done()
       })
       .catch(done)
+
+    // Failing test
+    mock.onGet(`manifests/${uid}/hosting/deployments/${deploymentUid}/logs`).reply(400, {})
+    makeDeployment({ app_uid: uid, organization_uid: organizationUid, data: { uid: deploymentUid } })
+      .logs()
+      .then()
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 
-  it('test get deployment logs from uid', done => {
+  it('signedDownloadUrl test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
     const organizationUid = appMock.organization_uid
@@ -191,9 +236,18 @@ describe('Contentstack hosting test', () => {
       .then((download) => {
         expect(download.download_url).to.be.equal(content.download_url)
         expect(download.expires_in).to.be.equal(content.expires_in)
-        done()
       })
       .catch(done)
+
+    // Failing test
+    mock.onPost(`manifests/${uid}/hosting/deployments/${deploymentUid}/signedDownloadUrl`).reply(400, {})
+    makeDeployment({ app_uid: uid, organization_uid: organizationUid, data: { uid: deploymentUid } })
+      .signedDownloadUrl()
+      .then()
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 })
 

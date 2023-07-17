@@ -80,6 +80,54 @@ describe('Installation WebHook function', () => {
       })
       .catch(done)
   })
+
+  it('should fail in listing all the execution logs when listExecutionLogs function is called', (done) => {
+    const mockClient = new MockAdapter(Axios)
+    const url = 'installations/installationUid/webhooks/uid/executions'
+
+    mockClient.onGet(url).reply(400, {})
+    webHookObj({
+      installationUid: 'installationUid', uid: 'uid'
+    })
+      .listExecutionLogs()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('should fail to get detailed of an execution when execution uid is passed', (done) => {
+    const mockClient = new MockAdapter(Axios)
+    const url = 'installations/installationUid/webhooks/uid/executions/execUid'
+
+    mockClient.onGet(url).reply(400, {})
+    webHookObj({
+      installationUid: 'installationUid', uid: 'uid'
+    })
+      .getExecutionLog('execUid')
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('should fail in retry execution and get data when execution uid is passed', (done) => {
+    const mockClient = new MockAdapter(Axios)
+    const url = 'installations/installationUid/webhooks/uid/executions/execUid/retry'
+
+    mockClient.onPost(url).reply(400, {})
+    webHookObj({
+      installationUid: 'installationUid', uid: 'uid'
+    })
+      .retryExecution('execUid')
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
 })
 
 const webHookObj = (data) => {
