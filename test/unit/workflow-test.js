@@ -246,6 +246,23 @@ describe('Contentstack Workflow test', () => {
       .catch(done)
   })
 
+  it('Workflow disable failing test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/workflows/UID/disable').reply(400, {})
+    makeWorkflow({
+      workflow: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .disable()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('Workflow enable test', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet('/workflows/UID/enable').reply(200, {
@@ -269,6 +286,22 @@ describe('Contentstack Workflow test', () => {
       .catch(done)
   })
 
+  it('Workflow enable failing test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/workflows/UID/enable').reply(400, {})
+    makeWorkflow({
+      workflow: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .enable()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
 
   it('Workflow content type get publish rules', done => {
     var mock = new MockAdapter(Axios)
@@ -288,8 +321,7 @@ describe('Contentstack Workflow test', () => {
       .catch(done)
   })
 
-
-  it('Workflow content type get publish rules', done => {
+  it('Workflow content type get publish rules with params', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet('/workflows/content_type/ct_UID').reply(200, {
       publishing_rules: [
@@ -297,19 +329,32 @@ describe('Contentstack Workflow test', () => {
       ]
     })
     makeWorkflow().contentType('ct_UID')
-      .getPublishRules({ action: "publish", locale: "en-us" })
+      .getPublishRules({ action: 'publish', locale: 'en-us' })
       .then((response) => {
         checkPublishRules(response.items[0])
         done()
       })
       .catch(done)
   })
+
+  it('Workflow content type get publish rules failing test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/workflows/content_type/ct_UID').reply(400, {})
+    makeWorkflow({
+      stackHeaders: stackHeadersMock
+    }).contentType('ct_UID')
+      .getPublishRules()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
 })
 
-
 function makeWorkflow (data) {
-    return new Workflow(Axios, data)
-  }
+  return new Workflow(Axios, data)
+}
 
 function checkWorkflow (workflow) {
   checkSystemFields(workflow)
@@ -325,7 +370,6 @@ function checkPublishRules (publishRules) {
   checkSystemFields(publishRules)
   expect(publishRules.locale).to.be.equal('en-us')
   expect(publishRules.action).to.be.equal('publish')
-  expect(publishRules.environment).to.be.equal("env")
-  expect(publishRules.workflow_stage).to.be.equal("stage")
+  expect(publishRules.environment).to.be.equal('env')
+  expect(publishRules.workflow_stage).to.be.equal('stage')
 }
-  

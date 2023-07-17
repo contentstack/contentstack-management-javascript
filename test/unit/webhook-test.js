@@ -238,6 +238,23 @@ describe('Contentstack Webhook test', () => {
       .catch(done)
   })
 
+  it('Webhook executions test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/webhooks/UID/executions').reply(400, {})
+    makeWebhook({
+      webhook: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .executions()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('Webhook executions params test', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet('/webhooks/UID/executions').reply(200, {
@@ -316,6 +333,41 @@ describe('Contentstack Webhook test', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('Webhook retry failing test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/webhooks/UID/retry').reply(400, {})
+    makeWebhook({
+      webhook: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .retry('exe_id')
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Webhook import failing test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/webhooks/import').reply(400, {})
+    const webhookUpload = { webhook: path.join(__dirname, '../api/mock/customUpload.html') }
+    const form = createFormData(webhookUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
+    makeWebhook()
+      .import(webhookUpload)
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 })
 
