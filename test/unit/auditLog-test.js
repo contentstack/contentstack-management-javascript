@@ -64,6 +64,18 @@ describe('Contentstack AuditLog test', () => {
       })
       .catch(done)
   })
+
+  it('AuditLog fetch failing test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/audit-logs/UID').reply(400, {})
+    makeAuditLog({ stackHeaders: stackHeadersMock, logs: { uid: 'UID' } })
+      .fetch()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
 })
 
 function makeAuditLog (data) {
