@@ -53,7 +53,7 @@ describe('Stack api Test', () => {
   })
 
   it('Update Stack details', done => {
-    const name = 'My New Stack Update Name'
+    const name = 'Conference Demo'
     const description = 'My New description stack'
     client.stack({ api_key: stacks.api_key })
       .fetch().then((stack) => {
@@ -130,13 +130,13 @@ describe('Stack api Test', () => {
 
   it('Get query stack', done => {
     client.stack()
-      .query({ query: { name: 'Conference Demo' } })
+      .query({ query: { name: 'My New Stack Update Name' } })
       .find()
       .then((response) => {
         expect(response.items.length).to.be.equal(1)
         for (const index in response.items) {
           const stack = response.items[index]
-          expect(stack.name).to.be.equal('Conference Demo')
+          expect(stack.name).to.be.equal('My New Stack Update Name')
         }
         done()
       })
@@ -145,12 +145,12 @@ describe('Stack api Test', () => {
 
   it('Find one stack', done => {
     client.stack()
-      .query({ query: { name: 'Conference Demo' } })
+      .query({ query: { name: 'My New Stack Update Name' } })
       .findOne()
       .then((response) => {
         const stack = response.items[0]
         expect(response.items.length).to.be.equal(1)
-        expect(stack.name).to.be.equal('Conference Demo')
+        expect(stack.name).to.be.equal('My New Stack Update Name')
         done()
       })
       .catch(done)
