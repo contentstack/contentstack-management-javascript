@@ -72,6 +72,42 @@ describe('Contentstack Query test', () => {
       })
       .catch(done)
   })
+
+  it('Query find failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('query').reply(400, {})
+    makeQuery({}, stackHeadersMock)
+      .find()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Query findOne failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('query').reply(400, {})
+    makeQuery({}, stackHeadersMock)
+      .findOne()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Query count failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('query').reply(400, {})
+    makeQuery({}, stackHeadersMock)
+      .count()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
 })
 
 function makeQuery (param = null, stackHeaders = null) {

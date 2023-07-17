@@ -30,6 +30,22 @@ describe('Contentstack app oauth', () => {
       .catch(done)
   })
 
+  it('Get oAuth configuration failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    mock.onGet(`/manifests/${uid}/oauth`).reply(400, {})
+
+    const oauthObj = makeOauth({ app_uid: uid, organization_uid: 'organization_uid' })
+    expect(oauthObj.params.organization_uid).to.be.equal('organization_uid')
+    oauthObj
+      .fetch()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('Update oAuth configuration test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
@@ -52,6 +68,21 @@ describe('Contentstack app oauth', () => {
       .catch(done)
   })
 
+  it('Update oAuth configuration failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    mock.onPut(`/manifests/${uid}/oauth`).reply(400, {})
+
+    const config = { ...oAuthMock }
+    makeOauth({ app_uid: uid })
+      .update({ config })
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('List Scopes', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
@@ -67,6 +98,19 @@ describe('Contentstack app oauth', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('List Scopes failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    mock.onGet(`/manifests/oauth/scopes`).reply(400, {})
+    makeOauth({ app_uid: uid })
+      .getScopes()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 })
 

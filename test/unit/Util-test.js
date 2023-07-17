@@ -21,10 +21,28 @@ describe('Get User Agent', () => {
         platform: 'MacIntel'
       }
     }
-    const userAgent = getUserAgent('contentstack-sdk/1.0.0', 'SampleApplication/0.1', 'SampleIntegration/0,1')
-    expect(userAgent.match(headerRegEx).length).to.be.equal(5)
-    expect(userAgent.indexOf('platform browser')).to.not.equal(-1)
-    expect(userAgent.indexOf('os macOS;')).to.not.equal(-1)
+    const macUserAgent = getUserAgent('contentstack-sdk/1.0.0', 'SampleApplication/0.1', 'SampleIntegration/0,1')
+    expect(macUserAgent.match(headerRegEx).length).to.be.equal(5)
+    expect(macUserAgent.indexOf('platform browser')).to.not.equal(-1)
+    expect(macUserAgent.indexOf('os macOS;')).to.not.equal(-1)
+
+    global.window.navigator.platform = 'Windows'
+    const windowsUserAgent = getUserAgent('contentstack-sdk/1.0.0', 'SampleApplication/0.1', 'SampleIntegration/0,1')
+    expect(windowsUserAgent.match(headerRegEx).length).to.be.equal(5)
+    expect(windowsUserAgent.indexOf('platform browser')).to.not.equal(-1)
+    expect(windowsUserAgent.indexOf('os Windows;')).to.not.equal(-1)
+
+    global.window.navigator = { userAgent: 'Android' }
+    const androidUserAgent = getUserAgent('contentstack-sdk/1.0.0', 'SampleApplication/0.1', 'SampleIntegration/0,1')
+    expect(androidUserAgent.match(headerRegEx).length).to.be.equal(5)
+    expect(androidUserAgent.indexOf('platform browser')).to.not.equal(-1)
+    expect(androidUserAgent.indexOf('os Android;')).to.not.equal(-1)
+
+    global.window.navigator = { platform: 'Linux' }
+    const linuxUserAgent = getUserAgent('contentstack-sdk/1.0.0', 'SampleApplication/0.1', 'SampleIntegration/0,1')
+    expect(linuxUserAgent.match(headerRegEx).length).to.be.equal(5)
+    expect(linuxUserAgent.indexOf('platform browser')).to.not.equal(-1)
+    expect(linuxUserAgent.indexOf('os Linux;')).to.not.equal(-1)
     done()
 
     getUserAgentRewireApi.__ResetDependency__('isNode')
@@ -40,7 +58,6 @@ describe('Get User Agent', () => {
     global.window = {}
 
     const userAgent = getUserAgent('contentstack-sdk/1.0.0', 'SampleApplication/0.1', 'SampleIntegration/0,1')
-
     expect(userAgent.match(headerRegEx).length).to.be.equal(3)
     expect(userAgent.indexOf('platform browser')).to.equal(-1)
     expect(userAgent.indexOf('os macOS;')).to.equal(-1)

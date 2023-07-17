@@ -1,7 +1,7 @@
+require('./Util-test')
 require('./concurrency-Queue-test')
 require('./ContentstackClient-test')
 require('./ContentstackHTTPClient-test')
-require('./Util-test')
 require('./contentstack-test')
 require('./contentstackError-test')
 require('./contentstackCollection-test')
