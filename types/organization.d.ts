@@ -5,8 +5,7 @@ import { Sorting } from './utility/sorting'
 import { Pagination } from './utility/pagination'
 import { AnyProperty, SystemFields } from './utility/fields'
 import { ContentstackCollection, Response } from './contentstackCollection'
-import { App, Apps } from './app'
-import { AppRequest } from './app/request'
+import { Marketplace } from '../lib/marketplace'
 
 export interface Organizations {
     fetchAll(params?: AnyProperty): Promise<ContentstackCollection<Organization>>
@@ -22,9 +21,7 @@ export interface Organization extends SystemFields {
     getInvitations(param?: Pagination & AnyProperty): Promise<ContentstackCollection<User>>
     resendInvitation(invitationUid: string): Promise<Response>
     roles(param?: Pagination & AnyProperty): Promise<ContentstackCollection<Role>>
-    app(): Apps
-    app(uid: string): App
-    appRequest(): AppRequest
+    marketplace(): Marketplace
 }
 
 export interface OrganizationInvite {

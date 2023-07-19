@@ -14,6 +14,7 @@ describe('Contentstack ContentType test', () => {
     expect(contentType.update).to.be.equal(undefined)
     expect(contentType.delete).to.be.equal(undefined)
     expect(contentType.fetch).to.be.equal(undefined)
+    expect(contentType.references).to.be.equal(undefined)
     expect(contentType.create).to.not.equal(undefined)
     expect(contentType.query).to.not.equal(undefined)
     done()
@@ -30,6 +31,7 @@ describe('Contentstack ContentType test', () => {
     expect(contentType.update).to.not.equal(undefined)
     expect(contentType.delete).to.not.equal(undefined)
     expect(contentType.fetch).to.not.equal(undefined)
+    expect(contentType.references).to.not.equal(undefined)
     expect(contentType.create).to.be.equal(undefined)
     expect(contentType.query).to.be.equal(undefined)
     done()
@@ -48,6 +50,7 @@ describe('Contentstack ContentType test', () => {
     expect(contentType.update).to.not.equal(undefined)
     expect(contentType.delete).to.not.equal(undefined)
     expect(contentType.fetch).to.not.equal(undefined)
+    expect(contentType.references).to.not.equal(undefined)
     expect(contentType.create).to.be.equal(undefined)
     expect(contentType.query).to.be.equal(undefined)
     done()
@@ -156,6 +159,45 @@ describe('Contentstack ContentType test', () => {
       .catch(done)
   })
 
+  it('ContentType references test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/content_types/UID/references').reply(200, {
+      references: [
+        'Product',
+        'Blog'
+      ]
+    })
+    makeContentType({
+      content_type: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .references()
+      .then((response) => {
+        expect(response.references).to.be.eql(['Product', 'Blog'])
+        done()
+      })
+      .catch(done)
+  })
+
+  it('ContentType references failing test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/content_types/UID/references').reply(400, {})
+    makeContentType({
+      content_type: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .references()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('ContentType delete test', done => {
     var mock = new MockAdapter(Axios)
     mock.onDelete('/content_types/UID').reply(200, {
@@ -233,6 +275,24 @@ describe('Contentstack ContentType test', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('ContentType import failing test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/import').reply(400, {})
+    const contentTypeUpload = { content_type: path.join(__dirname, '../api/mock/contentType.json') }
+    const form = createFormData(contentTypeUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
+    makeContentType()
+      .import(contentTypeUpload)
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 })
 

@@ -186,6 +186,26 @@ describe('Contentstack Extension test', () => {
       .catch(done)
   })
 
+  it('Extension upload failing test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/extensions').reply(400, {})
+
+    const extensionUpload = { upload: path.join(__dirname, '../api/mock/customUpload.html') }
+    const form = createExtensionFormData(extensionUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
+
+    makeExtension(extensionUpload)
+      .upload()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('Extension upload test string tags', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost('/extensions').reply(200, {
