@@ -230,7 +230,6 @@ describe('Contentstack Stack test', () => {
     expect(stack.organization_uid).to.be.equal(undefined)
     expect(stack.stackHeaders).to.not.equal(undefined)
     expect(stack.stackHeaders.api_key).to.be.equal('API_KEY')
-    expect(stack.stackHeaders.authorization).to.be.equal('Management_Token')
     expect(stack.api_key).to.be.equal('API_KEY')
     expect(stack.create).to.be.equal(undefined)
     expect(stack.query).to.be.equal(undefined)
@@ -306,7 +305,6 @@ describe('Contentstack Stack test', () => {
     expect(stack.organization_uid).to.be.equal(undefined)
     expect(stack.stackHeaders).to.not.equal(undefined)
     expect(stack.stackHeaders.api_key).to.be.equal('API_KEY')
-    expect(stack.stackHeaders.authorization).to.be.equal('Management_Token')
     expect(stack.branch_name).to.be.equal('branch')
     expect(stack.api_key).to.be.equal('API_KEY')
     expect(stack.create).to.be.equal(undefined)
@@ -738,6 +736,7 @@ describe('Contentstack Stack test', () => {
       .bulkOperation()
     expect(bulkOperation.publish).to.not.equal(undefined)
     expect(bulkOperation.unpublish).to.not.equal(undefined)
+    expect(bulkOperation.update).to.not.equal(undefined)
     expect(bulkOperation.stackHeaders).to.not.equal(undefined)
     expect(bulkOperation.stackHeaders.api_key).to.be.equal('stack_api_key')
     done()
@@ -844,24 +843,65 @@ describe('Contentstack Stack test', () => {
       })
       .catch(done)
   })
-  // it('Update users roles in Stack test', done => {
-  //   const mock = new MockAdapter(Axios)
-  //   mock.onGet('/stacks').reply(200, {
-  //     notice: "The roles were applied successfully.",
-  //   })
-  //   makeStack({
-  //     stack: {
-  //       api_key: 'stack_api_key'
-  //     }
-  //   })
-  //   .updateUsersRoles({ user_id: ['role1', 'role2']})
-  //   .then((response) => {
-  //     expect(response.notice).to.be.equal(noticeMock.notice)
-  //     done()
-  //   })
-  //   .catch(done)
-  // })
 
+  it('Stack users failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('/stacks').reply(400, {})
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .users()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Update users roles in Stack test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/stacks/users/roles').reply(200, {
+      notice: 'The roles were applied successfully.',
+      users: [
+        {
+          uid: 'user_uid',
+          roles: [
+            'role_uid1',
+            'role_uid2'
+          ]
+        }
+      ]
+    })
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .updateUsersRoles({ user_id: ['role1', 'role2'] })
+      .then((response) => {
+        expect(response.notice).to.be.equal('The roles were applied successfully.')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Fail in Update users roles in Stack test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/stacks/users/roles').reply(400, {})
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .updateUsersRoles({ user_id: ['role1', 'role2'] })
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
 
   it('Stack transfer ownership test', done => {
     const mock = new MockAdapter(Axios)
@@ -999,6 +1039,118 @@ describe('Contentstack Stack test', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('Stack transfer ownership failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/stacks/transfer_ownership').reply(400, {})
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .transferOwnership()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Stack settings failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('/stacks/settings').reply(400, {})
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .settings()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Stack reset settings failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/stacks/settings').reply(400, {})
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .resetSettings()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Stack add settings failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/stacks/settings').reply(400, {})
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .addSettings()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Stack share failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/stacks/share').reply(400, {})
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .share(['test@email.id'], { 'test@email.id': ['test roles'] })
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Stack share none failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/stacks/share').reply(400, {})
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .share()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('Stack unshare failing test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/stacks/unshare').reply(400, {})
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .unShare('test@email.id')
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 })
 

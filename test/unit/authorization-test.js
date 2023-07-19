@@ -2,7 +2,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { Authorization } from '../../lib/app/authorization'
+import { Authorization } from '../../lib/marketplace/authorization'
 
 const uid = 'APP_UID'
 const orgUid = 'org_uid'
