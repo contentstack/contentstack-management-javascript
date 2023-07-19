@@ -1,18 +1,19 @@
-import { ContentstackCollection } from "../contentstackCollection";
-import { AnyProperty, SystemFields } from "../utility/fields";
-import { Creatable, SystemFunction } from "../utility/operations";
-import { Pagination } from '../utility/pagination';
-import { Authorization } from './authorization';
+import { ContentstackCollection } from "../../contentstackCollection";
+import { AnyProperty, SystemFields } from "../../utility/fields";
+import { Creatable, SystemFunction } from "../../utility/operations";
+import { Authorization } from '../authorization';
 import { Hosting } from './hosting';
-import { Installation, Installations } from "./installation";
+import { Installation } from "../installation";
+import { Oauth } from "./oath";
 
 export interface App extends SystemFields, SystemFunction<App> {
-    fetchOAuth(param?: AnyProperty): Promise<AppOAuth>
-    updateOAuth(data: { config: AppOAuth, param?: AnyProperty }): Promise<AppOAuth>
-    install(data: {targetUid: string, targetType: AppTarget}): Promise<Installation>
-    installation(): Installations
-    installation(uid: string): Installation
+    
+    update(param?: AnyProperty): Promise<App>
+    fetch(param?: AnyProperty): Promise<App>
+    delete(param?: AnyProperty): Promise<App>
+    oauth(): Oauth
     hosting(): Hosting
+    install(data: {targetUid: string, targetType: AppTarget}): Promise<Installation>
     authorize(param: { 
         responseType: string, 
         clientId: string, 
@@ -20,11 +21,11 @@ export interface App extends SystemFields, SystemFunction<App> {
         scope: string, 
         state: string }): Promise<AnyProperty>
     authorization(): Authorization
+    listInstallations(): Promise<ContentstackCollection<App>>
 }
 
 export interface Apps extends Creatable<App, AppData> {
-    findAll(param?: AnyProperty): Promise<ContentstackCollection<App>>
-    findAllAuthorized(param?: Pagination & AnyProperty): Promise<AnyProperty>
+    create(): Promise<App>
 }
 
 export interface AppData extends AnyProperty {
@@ -47,6 +48,7 @@ export interface TokenConfig extends AnyProperty {
     enabled: boolean
     scopes: string[]
 }
+
 export interface UserTokenConfig extends TokenConfig {
     allow_pkce: boolean
 }

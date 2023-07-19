@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as dotenv from 'dotenv'
-import { Hosting } from '../../types/app/hosting'
+import { Hosting } from '../../types/marketplace/hosting'
 dotenv.config()
 let uploadUid = ''
 let deploymentUid = ''
