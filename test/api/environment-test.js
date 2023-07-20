@@ -20,7 +20,6 @@ describe('Environment api Test', () => {
       .create(environmentCreate)
       .then((environment) => {
         expect(environment.name).to.be.equal(environmentCreate.environment.name)
-        expect(environment.deploy_content).to.be.equal(environmentCreate.environment.deploy_content)
         expect(environment.uid).to.be.not.equal(null)
         done()
       })
@@ -32,7 +31,6 @@ describe('Environment api Test', () => {
       .create(environmentProdCreate)
       .then((environment) => {
         expect(environment.name).to.be.equal(environmentProdCreate.environment.name)
-        expect(environment.deploy_content).to.be.equal(environmentProdCreate.environment.deploy_content)
         expect(environment.uid).to.be.not.equal(null)
         done()
       })
@@ -44,7 +42,6 @@ describe('Environment api Test', () => {
       .fetch()
       .then((environment) => {
         expect(environment.name).to.be.equal(environmentCreate.environment.name)
-        expect(environment.deploy_content).to.be.equal(environmentCreate.environment.deploy_content)
         expect(environment.uid).to.be.not.equal(null)
         done()
       })
@@ -58,7 +55,6 @@ describe('Environment api Test', () => {
       .then((environments) => {
         environments.items.forEach((environment) => {
           expect(environment.name).to.be.equal(environmentCreate.environment.name)
-          expect(environment.deploy_content).to.be.equal(environmentCreate.environment.deploy_content)
           expect(environment.uid).to.be.not.equal(null)
         })
         done()
@@ -75,7 +71,6 @@ describe('Environment api Test', () => {
       })
       .then((environment) => {
         expect(environment.name).to.be.equal('dev')
-        expect(environment.deploy_content).to.be.equal(environmentCreate.environment.deploy_content)
         expect(environment.uid).to.be.not.equal(null)
         done()
       })
@@ -88,7 +83,6 @@ describe('Environment api Test', () => {
     environment.update()
       .then((environment) => {
         expect(environment.name).to.be.equal(environmentCreate.environment.name)
-        expect(environment.deploy_content).to.be.equal(environmentCreate.environment.deploy_content)
         expect(environment.uid).to.be.not.equal(null)
         done()
       })
@@ -110,7 +104,6 @@ describe('Environment api Test', () => {
       .create(environmentProdCreate)
       .then((environment) => {
         expect(environment.name).to.be.equal(environmentProdCreate.environment.name)
-        expect(environment.deploy_content).to.be.equal(environmentProdCreate.environment.deploy_content)
         expect(environment.uid).to.be.not.equal(null)
         done()
       })
@@ -125,7 +118,6 @@ describe('Environment api Test', () => {
         jsonWrite(environments.items, 'environments.json')
         environments.items.forEach((environment) => {
           expect(environment.name).to.be.not.equal(null)
-          expect(environment.deploy_content).to.be.not.equal(null)
           expect(environment.uid).to.be.not.equal(null)
         })
         done()

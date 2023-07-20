@@ -25,7 +25,7 @@ export interface App extends SystemFields, SystemFunction<App> {
 }
 
 export interface Apps extends Creatable<App, AppData> {
-    create(): Promise<App>
+    create(appData: AppData): Promise<App>
 }
 
 export interface AppData extends AnyProperty {

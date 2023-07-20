@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import * as dotenv from 'dotenv'
-import { Hosting } from '../../types/marketplace/hosting'
+import { Hosting } from '../../types/marketplace/app/hosting'
 dotenv.config()
 let uploadUid = ''
 let deploymentUid = ''
-export function hosting(hosting: Hosting) {
+export function hostingTest(hosting: Hosting) {
     describe('Hosting api', () => {
         test('create upload url', done => {
             hosting.createUploadUrl()

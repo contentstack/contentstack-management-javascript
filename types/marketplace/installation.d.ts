@@ -1,5 +1,6 @@
 import { ContentstackCollection } from "../contentstackCollection";
 import { AnyProperty, SystemFields } from "../utility/fields";
+import { WebHooks } from "./webhooks";
 
 export interface Installation extends SystemFields {
     update(param?: AnyProperty): Promise<Installation>

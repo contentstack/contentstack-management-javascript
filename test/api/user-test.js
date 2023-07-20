@@ -13,7 +13,6 @@ describe('Contentstack User Session api Test', () => {
   it('User login wrong credentials', done => {
     contentstackClient().login({ email: process.env.EMAIL, password: process.env.PASSWORD })
       .then((response) => {
-        console.log(response)
         done()
       }).catch((error) => {
         const jsonMessage = JSON.parse(error.message)

@@ -1,6 +1,5 @@
 import { ContentstackCollection } from "../../contentstackCollection";
 import { AnyProperty, SystemFields } from "../../utility/fields";
-import { SystemFunction } from "../../utility/operations";
 import { Branch } from "../branch";
 
 export interface BranchAlias extends SystemFields {

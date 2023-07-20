@@ -5,7 +5,7 @@ import { Sorting } from './utility/sorting'
 import { Pagination } from './utility/pagination'
 import { AnyProperty, SystemFields } from './utility/fields'
 import { ContentstackCollection, Response } from './contentstackCollection'
-import { Marketplace } from '../lib/marketplace'
+import { Marketplace } from './marketplace'
 
 export interface Organizations {
     fetchAll(params?: AnyProperty): Promise<ContentstackCollection<Organization>>

@@ -14,7 +14,7 @@ import { createEnvironment, deleteEnvironment, getEnvironment, updateEnvironment
 import { createDeliveryToken, deleteDeliveryToken, deliveryToken, queryDeliveryToken } from './deliveryToken';
 import { createRole, findAllRole, getRole, getRoleUid, queryRole } from './role';
 import { createApp, deleteApp, fetchApp, installation, updateApp, updateAuth } from './app';
-import { deployment, hosting } from './hosting';
+import { hostingTest, deployment } from './hosting';
 import { orgAppRequest } from './app-request';
 import { authorization } from './authorization';
 dotenv.config()
@@ -37,16 +37,16 @@ describe('Typescript API test', () => {
     stacks(client)
     stackTest(client.stack({api_key: process.env.APIKEY as string}))
 
-    createApp(org.app())
+    createApp(org.marketplace().app())
     fetchApp(org)
     updateApp(org)
     updateAuth(org)
     installation(org)
-    hosting(org.app(process.env.APP_UID as string).hosting())
-    deployment(org.app(process.env.APP_UID as string).hosting())
-    orgAppRequest(org.app(process.env.APP_UID as string).request())
-    authorization(org.app(process.env.APP_UID as string).authorization())
-    orgAppRequest(org.request())
+    hostingTest(org.marketplace().app(process.env.APP_UID as string).hosting())
+    deployment(org.marketplace().app(process.env.APP_UID as string).hosting())
+    orgAppRequest(org.marketplace().appRequests())
+    authorization(org.marketplace().app(process.env.APP_UID as string).authorization())
+    orgAppRequest(org.marketplace().appRequests())
     deleteApp(org)
 
     const stack = client.stack({api_key: process.env.APIKEY as string})
