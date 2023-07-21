@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as dotenv from 'dotenv'
-import { Authorization } from '../../types/marketplace/authorization'
+import { Authorization } from '../../types/app/authorization'
 dotenv.config()
 
 
