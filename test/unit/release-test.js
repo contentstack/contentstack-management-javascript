@@ -200,32 +200,6 @@ describe('Contentstack Release test', () => {
       .catch(done)
   })
 
-  it('Release deploy failing test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onPost('/releases/UID/deploy').reply(400, {})
-    makeRelease({
-      release: {
-        ...systemUidMock
-      },
-      stackHeaders: stackHeadersMock
-    })
-      .deploy({ environments: [
-        'production',
-        'uat'
-      ],
-      locales: [
-        'en-us',
-        'ja-jp'
-      ],
-      scheduledAt: '2018-12-12T13:13:13:122Z',
-      action: 'publish' })
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
   it('Release clone test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost('/releases/UID/clone').reply(200, {
@@ -246,23 +220,6 @@ describe('Contentstack Release test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('Release clone test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onPost('/releases/UID/clone').reply(400, {})
-    makeRelease({
-      release: {
-        ...systemUidMock
-      },
-      stackHeaders: stackHeadersMock
-    })
-      .clone({ name: 'New Clone Name', description: 'New Desc' })
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 })
 

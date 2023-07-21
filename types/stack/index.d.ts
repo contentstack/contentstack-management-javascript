@@ -82,7 +82,7 @@ export interface Stack extends SystemFields {
 
     bulkOperation(): BulkOperation
 
-    users(): Promise<Array<User>>
+    user(): Promise<Array<User>>
     updateUsersRoles(users: AnyProperty): Promise<any>
     transferOwnership(email: string): Promise<Response>
     settings(): Promise<any>
