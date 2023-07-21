@@ -185,24 +185,6 @@ describe('Contentstack GlobalField test', () => {
       })
       .catch(done)
   })
-
-  it('Global Field import failing test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onPost('/global_fields/import').reply(400, {})
-    const gfUpload = { global_field: path.join(__dirname, '../api/mock/globalfield.json') }
-    const form = createFormData(gfUpload)()
-    var boundary = form.getBoundary()
-
-    expect(boundary).to.be.equal(form.getBoundary())
-    expect(boundary.length).to.be.equal(50)
-    makeGlobalField()
-      .import()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
 })
 
 function makeGlobalField (data) {

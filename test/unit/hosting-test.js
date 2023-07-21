@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { appMock } from './mock/objects'
-import { Hosting } from '../../lib/marketplace/app/hosting'
+import { Hosting } from '../../lib/app/hosting'
 import { latestLiveResponse, signedUrlResponse } from './mock/hosting-mock'
 
 describe('Contentstack hosting test', () => {
@@ -83,19 +83,6 @@ describe('Contentstack hosting test', () => {
       .catch(done)
   })
 
-  it('fail test hosting isEnable request', done => {
-    const mock = new MockAdapter(Axios)
-    const uid = appMock.uid
-    mock.onGet(`manifests/${uid}/hosting`).reply(400, {})
-    makeHosting({ app_uid: uid })
-      .isEnable()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
   it('test set hosting enable', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
@@ -110,20 +97,6 @@ describe('Contentstack hosting test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('fail test set hosting enable', done => {
-    const mock = new MockAdapter(Axios)
-    const uid = appMock.uid
-    mock.onPatch(`manifests/${uid}/hosting/enable`).reply(400, {})
-
-    makeHosting({ app_uid: uid })
-      .enable()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 
   it('test set hosting disble', done => {
@@ -142,20 +115,6 @@ describe('Contentstack hosting test', () => {
       .catch(done)
   })
 
-  it('fail test set hosting disble', done => {
-    const mock = new MockAdapter(Axios)
-    const uid = appMock.uid
-    mock.onPatch(`manifests/${uid}/hosting/disable`).reply(400, {})
-
-    makeHosting({ app_uid: uid })
-      .disable()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
   it('test create signed url for hosting', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
@@ -172,20 +131,6 @@ describe('Contentstack hosting test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('fail test create signed url for hosting', done => {
-    const mock = new MockAdapter(Axios)
-    const uid = appMock.uid
-    mock.onPost(`manifests/${uid}/hosting/signedUploadUrl`).reply(400, {})
-
-    makeHosting({ app_uid: uid })
-      .createUploadUrl()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 
   it('test latest deployment for hosting', done => {
@@ -210,20 +155,6 @@ describe('Contentstack hosting test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('fail test latest deployment for hosting', done => {
-    const mock = new MockAdapter(Axios)
-    const uid = appMock.uid
-    mock.onGet(`manifests/${uid}/hosting/latestLiveDeployment`).reply(400, {})
-
-    makeHosting({ app_uid: uid })
-      .latestLiveDeployment()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 })
 

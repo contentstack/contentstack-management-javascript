@@ -17,8 +17,6 @@
             "lib/stack/asset/index.js",
             "lib/stack/asset/folders/index.js",
             "lib/stack/branch/index.js",
-            "lib/stack/branch/compare.js",
-            "lib/stack/branch/mergeQueue.js",
             "lib/stack/branchAlias/index.js",
             "lib/stack/bulkOperation/index.js",
             "lib/stack/extension/index.js",
@@ -29,23 +27,15 @@
             "lib/stack/environment/index.js",
             "lib/stack/deliveryToken/index.js",
             "lib/stack/roles/index.js",
+            "lib/stack/webhook/index.js",
             "lib/stack/workflow/index.js",
-            "lib/stack/workflow/publishRules/index.js",
-            "lib/marketplace/app/oauth/index.js",
-            "lib/marketplace/app/index.js",
-            "lib/marketplace/app/hosting/deployment.js",
-            "lib/marketplace/app/hosting/index.js",
-            "lib/marketplace/index.js",
-            "lib/marketplace/installation/index.js",
-            "lib/marketplace/installation/webhooks/index.js",
-            "lib/marketplace/apprequest/index.js",
-            "lib/marketplace/authorization/index.js"
+            "lib/stack/workflow/publishRules/index.js"
 
         ],
         "excludePattern": "(node_modules/|jsdocs)"
     },
     "opts": {
-        "template": "./node_modules/docdash",
+        "template": "docdash-template",
         "destination": "./jsdocs/",
         "encoding": "utf8",
         "private": true,
