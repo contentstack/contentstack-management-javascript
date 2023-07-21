@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.10.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.8.0) (2023-07-21)
+ - Fixes
+   - Fixes Breaking Changes
+## [v1.9.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.8.0) (2023-07-19)
+ - Features:
+   - NRP support added
+   - Audit logs APIs support
+   - Contenttype References API support
+ - Fixes:
+   - Type correction for ContentstackCollection
+   - Type correction for BulkOperation
+   - Type correction for Environment parameter
 ## [v1.8.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.8.0) (2023-05-11)
  - Feature
    - Branches Compare and Merge feature added.
