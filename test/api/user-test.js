@@ -11,7 +11,7 @@ var loggedinUserID = ''
 var client = contentstackClient()
 describe('Contentstack User Session api Test', () => {
   it('User login wrong credentials', done => {
-    contentstackClient().login({ email: process.env.EMAIL, password: process.env.PASSWORD })
+    contentstackClient().login({ email: process.env.EMAIL, password: process.env.PASSWORDWRONG })
       .then((response) => {
         console.log(response)
         done()

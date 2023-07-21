@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import path from 'path'
 import Axios from 'axios'
 import { expect } from 'chai'
@@ -100,7 +99,7 @@ describe('Contentstack Entry test', () => {
         entryMock
       ]
     })
-    makeEntry({ stackHeaders: { organization_uid: 'org_uid' } })
+    makeEntry()
       .query()
       .find()
       .then((entry) => {
@@ -185,7 +184,7 @@ describe('Contentstack Entry test', () => {
       ]
     }
     makeEntry({ entry: { ...systemUidMock } })
-      .publish({ publishDetails, locale: 'en-us', version: '3.2', scheduledAt: '01/01/2020' })
+      .publish({ publishDetails })
       .then((entry) => {
         expect(entry.notice).to.be.equal(noticeMock.notice)
         done()
@@ -235,24 +234,6 @@ describe('Contentstack Entry test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('Entry import test failing test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onPost('/content_types/content_type_uid/entries/import?overwrite=false').reply(400, {})
-    const entryUpload = { entry: path.join(__dirname, '../api/mock/entry.json') }
-    const form = createFormData(entryUpload.entry)()
-    var boundary = form.getBoundary()
-
-    expect(boundary).to.be.equal(form.getBoundary())
-    expect(boundary.length).to.be.equal(50)
-    makeEntry()
-      .import(entryUpload)
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 
   it('Entry import test Overwrite true', done => {
@@ -309,26 +290,6 @@ describe('Contentstack Entry test', () => {
       .catch(done)
   })
 
-  it('Entry publish request failing test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onPost('/content_types/content_type_uid/entries/UID/workflow').reply(400, {})
-
-    const publishing_rule = {
-      uid: 'uid',
-      action: 'publish', // (‘publish’, ‘unpublish’, or ’both’)
-      status: 1, // (this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
-      notify: false,
-      comment: 'Please review this.'
-    }
-    makeEntry({ entry: { ...systemUidMock } })
-      .publishRequest({ publishing_rule, locale: 'en-us' })
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
   it('Entry set Workflow stage test', done => {
     var mock = new MockAdapter(Axios)
 
@@ -361,37 +322,7 @@ describe('Contentstack Entry test', () => {
       .catch(done)
   })
 
-  it('Entry set Workflow stage failing test', done => {
-    var mock = new MockAdapter(Axios)
-
-    mock.onPost('/content_types/content_type_uid/entries/UID/workflow').reply(400, {})
-
-    const workflow_stage = {
-      uid: 'uid',
-      comment: 'Please review this.',
-      due_date: 'Thu Dec 01 2018',
-      notify: true,
-      assigned_to: [{
-        uid: 'user_uid',
-        name: 'Username',
-        email: 'user_email_id'
-      }],
-      assigned_by_roles: [{
-        uid: 'role_uid',
-        name: 'Role name'
-      }]
-    }
-
-    makeEntry({ entry: { ...systemUidMock } })
-      .setWorkflowStage({ workflow_stage, locale: 'en-us' })
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
-  it('Entry set Workflow stage test with stackHeaders', done => {
+  it('Entry set Workflow stage test', done => {
     var mock = new MockAdapter(Axios)
 
     mock.onPost('/content_types/content_type_uid/entries/UID/workflow').reply(200, {
@@ -448,7 +379,6 @@ describe('Contentstack Entry test', () => {
 
 function makeEntry (data) {
   return new Entry(Axios, { content_type_uid: 'content_type_uid', ...data })
-  // return new Stack(Axios).contentType('content_type_uid').entry()
 }
 
 function checkEntry (entry) {

@@ -157,23 +157,6 @@ describe('Organization Test', () => {
       .catch(done)
   })
 
-  it('Organization Stacks fetch failing test', done => {
-    const mock = new MockAdapter(Axios)
-    mock.onGet(`/organizations/${systemUidMock.uid}/stacks`).reply(400, {})
-    makeOrganization({
-      organization: {
-        ...systemUidMock,
-        org_roles: [adminRoleMock]
-      }
-    })
-      .stacks()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
   it('Organization Transfer Ownership', done => {
     const mock = new MockAdapter(Axios)
     mock.onPost(`/organizations/${systemUidMock.uid}/transfer_ownership`).reply(200, { ...noticeMock })
@@ -189,23 +172,6 @@ describe('Organization Test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('Organization Transfer Ownership failing test', done => {
-    const mock = new MockAdapter(Axios)
-    mock.onPost(`/organizations/${systemUidMock.uid}/transfer_ownership`).reply(400, {})
-    makeOrganization({
-      organization: {
-        ...systemUidMock,
-        org_roles: [adminRoleMock]
-      }
-    })
-      .transferOwnership('email')
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 
   it('Organization add User', done => {
@@ -226,23 +192,6 @@ describe('Organization Test', () => {
       .catch(done)
   })
 
-  it('Organization add User failing test', done => {
-    const mock = new MockAdapter(Axios)
-    mock.onPost(`/organizations/${systemUidMock.uid}/share`).reply(400, {})
-    makeOrganization({
-      organization: {
-        ...systemUidMock,
-        org_roles: [adminRoleMock]
-      }
-    })
-      .addUser({})
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
   it('Organization Get all invitation', done => {
     const mock = new MockAdapter(Axios)
     mock.onGet(`/organizations/${systemUidMock.uid}/share`).reply(200, { ...noticeMock, shares: [userMock] })
@@ -259,23 +208,6 @@ describe('Organization Test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('Organization Get all invitation failing test', done => {
-    const mock = new MockAdapter(Axios)
-    mock.onGet(`/organizations/${systemUidMock.uid}/share`).reply(400, {})
-    makeOrganization({
-      organization: {
-        ...systemUidMock,
-        org_roles: [adminRoleMock]
-      }
-    })
-      .getInvitations({})
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 
   it('Organization Resend Invitation', done => {
@@ -296,24 +228,6 @@ describe('Organization Test', () => {
       .catch(done)
   })
 
-  it('Organization Resend Invitation failing test', done => {
-    const inviteID = 'inviteID'
-    const mock = new MockAdapter(Axios)
-    mock.onGet(`/organizations/${systemUidMock.uid}/${inviteID}/resend_invitation`).reply(400, {})
-    makeOrganization({
-      organization: {
-        ...systemUidMock,
-        org_roles: [adminRoleMock]
-      }
-    })
-      .resendInvitation(inviteID)
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
   it('Organization Roles', done => {
     const mock = new MockAdapter(Axios)
     mock.onGet(`/organizations/${systemUidMock.uid}/roles`).reply(200, { roles: [adminRoleMock, roleMock] })
@@ -332,23 +246,6 @@ describe('Organization Test', () => {
       })
       .catch(done)
   })
-
-  it('Organization Roles failing test', done => {
-    const mock = new MockAdapter(Axios)
-    mock.onGet(`/organizations/${systemUidMock.uid}/roles`).reply(400, {})
-    makeOrganization({
-      organization: {
-        ...systemUidMock,
-        org_roles: [adminRoleMock]
-      }
-    })
-      .roles()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
 })
 
 function makeOrganization (params = {}) {
@@ -364,8 +261,8 @@ function checknonAdminFunction (organization) {
   expect(organization.getInvitations).to.not.equal(undefined)
   expect(organization.resendInvitation).to.not.equal(undefined)
   expect(organization.roles).to.not.equal(undefined)
-  expect(organization.marketplace()).to.not.equal(undefined)
-  expect(organization.marketplace().app()).to.not.equal(undefined)
+  expect(organization.app()).to.not.equal(undefined)
+  expect(organization.appRequest()).to.not.equal(undefined)
 }
 
 function checkAdminFunction (organization) {

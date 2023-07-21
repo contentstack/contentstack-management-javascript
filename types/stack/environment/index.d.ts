@@ -4,7 +4,7 @@ import { Queryable, SystemFunction } from "../../utility/operations";
 export interface Environment extends SystemFields, SystemFunction<Environment> {
 }
     
-export interface Environments extends Queryable<Environment, {environment: EnvironmentData}> {
+export interface Environments extends Queryable<Environment, {extension: EnvironmentData}> {
 }
 
 export interface EnvironmentData extends AnyProperty {
