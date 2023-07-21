@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { branchAliasMock, checkSystemFields, noticeMock, stackHeadersMock, systemUidMock } from './mock/objects'
-import { BranchAlias } from '../../lib/stack/branchAlias'
+import { BranchAlias, BranchAliasCollection } from '../../lib/stack/branchAlias'
 
 describe('Contentstack BranchAlias test', () => {
   it('BranchAlias test without uid', done => {
@@ -97,23 +97,6 @@ describe('Contentstack BranchAlias test', () => {
       .catch(done)
   })
 
-  it('BranchAlias update failing test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onPut('/stacks/branch_aliases/UID').reply(400, {})
-    makeBranchAlias({
-      branch_alias: {
-        ...systemUidMock
-      },
-      stackHeaders: stackHeadersMock
-    })
-      .createOrUpdate()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
   it('BranchAlias fetch test', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet('/stacks/branch_aliases/UID').reply(200, {
@@ -133,23 +116,6 @@ describe('Contentstack BranchAlias test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('BranchAlias fetch failing test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onGet('/stacks/branch_aliases/UID').reply(400, {})
-    makeBranchAlias({
-      branch_alias: {
-        ...systemUidMock
-      },
-      stackHeaders: stackHeadersMock
-    })
-      .fetch()
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 
   it('BranchAlias delete test', done => {

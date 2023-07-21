@@ -7,7 +7,7 @@ import cloneDeep from "lodash/cloneDeep";
 export function createEnvironment(stack: Stack) {
     describe('Environment create', () => {
         test('Create a development environment', done => {
-            stack.environment().create({ environment: environmentCreate})
+            stack.environment().create({ extension: environmentCreate})
             .then((environment) => {
                 expect(environment.name).to.be.equal(environmentCreate.name)
                 expect(environment.deploy_content).to.be.equal(environmentCreate.deploy_content)
@@ -18,7 +18,7 @@ export function createEnvironment(stack: Stack) {
         })
 
         test('Create a production environment', done => {
-            stack.environment().create({ environment: environmentProdCreate})
+            stack.environment().create({ extension: environmentProdCreate})
             .then((environment) => {
                 expect(environment.name).to.be.equal(environmentCreate.name)
                 expect(environment.deploy_content).to.be.equal(environmentCreate.deploy_content)

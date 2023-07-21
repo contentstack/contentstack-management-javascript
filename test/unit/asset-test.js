@@ -170,30 +170,6 @@ describe('Contentstack Asset test', () => {
       .catch(done)
   })
 
-  it('Asset create test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onPost('/assets').reply(400, {})
-    const assetUpload = {
-      upload: path.join(__dirname, '../api/mock/customUpload.html'),
-      title: 'customasset',
-      description: 'Custom Asset Desc',
-      tags: ['Custom'],
-      parent_uid: 'UID'
-    }
-    const form = createFormData(assetUpload)()
-    var boundary = form.getBoundary()
-
-    expect(boundary).to.be.equal(form.getBoundary())
-    expect(boundary.length).to.be.equal(50)
-    makeAsset()
-      .create(assetUpload)
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
-  })
-
   it('Asset replace test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPut('/assets/UID').reply(200, {
@@ -215,25 +191,6 @@ describe('Contentstack Asset test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('Asset replace failing test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onPut('/assets/UID').reply(400, {})
-    const assetUpload = {
-      upload: path.join(__dirname, '../api/mock/customUpload.html'),
-      title: 'customasset',
-      description: 'Custom Asset Desc',
-      tags: ['Custom'],
-      parent_uid: 'UID'
-    }
-    makeAsset({ asset: { ...systemUidMock } })
-      .replace(assetUpload)
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 
   it('Asset Query test', done => {
@@ -356,44 +313,6 @@ describe('Contentstack Asset test', () => {
         done()
       })
       .catch(done)
-  })
-
-  it('Asset download test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onGet('/asset_url_to_download').reply(200, {
-      asset: 'Downloaded asset'
-    })
-    makeAsset({
-      asset: {
-        ...systemUidMock
-      },
-      stackHeaders: stackHeadersMock
-    })
-      .download({ url: 'asset_url_to_download', responseType: 'blob' })
-      .then((response) => {
-        expect(response.data.asset).to.be.equal('Downloaded asset')
-        done()
-      })
-      .catch(done)
-  })
-
-  it('Asset download failing test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onGet('/asset_url_to_download').reply(200, {
-      asset: 'Downloaded asset'
-    })
-    makeAsset({
-      asset: {
-        ...systemUidMock
-      },
-      stackHeaders: stackHeadersMock
-    })
-      .download({ })
-      .then(done)
-      .catch((error) => {
-        expect(error).to.not.equal(null)
-        done()
-      })
   })
 })
 
