@@ -49,7 +49,7 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.27.2",
+    "axios": "^1.4.0",
     "form-data": "^3.0.1",
     "lodash": "^4.17.21",
     "qs": "^6.10.3"
