@@ -2,8 +2,8 @@ import axios from 'axios'
 import httpAdapter from 'axios/lib/adapters/http'
 import ContentstackClient from '../../lib/contentstackClient'
 import { expect } from 'chai'
-import { describe, it, beforeEach } from 'mocha'
-import MockAdapter from 'axios-mock-adapter'
+import { describe, it, after, beforeEach } from 'mocha'
+import nock from 'nock'
 var host = 'http://localhost/'
 
 describe('Contentstack Client', () => {
@@ -11,6 +11,10 @@ describe('Contentstack Client', () => {
     host = 'http://localhost/'
     axios.defaults.host = host
     axios.defaults.adapter = httpAdapter
+  })
+  after('all', function () {
+    nock.restore()
+    nock.cleanAll()
   })
 
   it('Contentstack Client Object successful', done => {
@@ -20,12 +24,30 @@ describe('Contentstack Client', () => {
   })
 
   it('Contentstack Client login success', done => {
-    var mock = new MockAdapter(axios)
-    mock.onPost('/user-session').reply(200, {
-      user: {
-        authtoken: 'Test Auth'
-      }
-    })
+    nock(host)
+      .post('/user-session', {})
+      .reply(200, {
+        user: {
+          authtoken: 'Test Auth'
+        }
+      })
+    ContentstackClient({ http: axios })
+      .login()
+      .then((response) => {
+        expect(response.user.authtoken).to.be.equal('Test Auth')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Contentstack Client login success', done => {
+    nock(host)
+      .post('/user-session', {})
+      .reply(200, {
+        user: {
+          authtoken: 'Test Auth'
+        }
+      })
     ContentstackClient({ http: axios })
       .login()
       .then((response) => {
@@ -36,12 +58,13 @@ describe('Contentstack Client', () => {
   })
 
   it('Contentstack Client get user info', done => {
-    var mock = new MockAdapter(axios)
-    mock.onGet('/user').reply(200, {
-      user: {
-        uid: 'test uid'
-      }
-    })
+    nock(host)
+      .get('/user')
+      .reply(200, {
+        user: {
+          uid: 'test uid'
+        }
+      })
     ContentstackClient({ http: axios })
       .getUser()
       .then((user) => {
@@ -52,10 +75,11 @@ describe('Contentstack Client', () => {
   })
 
   it('Contentstack Client Logout with Authtoken', done => {
-    var mock = new MockAdapter(axios)
-    mock.onDelete('/user-session').reply(200, {
-      notice: 'You\'ve logged out successfully'
-    })
+    nock(host)
+      .delete('/user-session')
+      .reply(200, {
+        notice: 'You\'ve logged out successfully'
+      })
     ContentstackClient({ http: axios })
       .logout('Test Auth')
       .then((response) => {
@@ -66,10 +90,11 @@ describe('Contentstack Client', () => {
   })
 
   it('Contentstack Client Logout', done => {
-    var mock = new MockAdapter(axios)
-    mock.onDelete('/user-session').reply(200, {
-      notice: 'You\'ve logged out successfully'
-    })
+    nock(host)
+      .delete('/user-session')
+      .reply(200, {
+        notice: 'You\'ve logged out successfully'
+      })
     axios.defaults.headers = {
       common: {
         authtoken: 'Authtoken'
