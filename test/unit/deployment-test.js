@@ -146,6 +146,22 @@ describe('Contentstack hosting test', () => {
       .catch(done)
   })
 
+  it('Failing test get deployment from uid', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    const organizationUid = appMock.organization_uid
+    const deploymentUid = latestLiveResponse.data.uid
+    mock.onGet(`manifests/${uid}/hosting/deployments/${deploymentUid}`).reply(400, {})
+
+    makeDeployment({ app_uid: uid, organization_uid: organizationUid, data: { uid: deploymentUid, organization_uid: organizationUid } })
+      .fetch()
+      .then()
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('test get deployment logs from uid', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
@@ -178,6 +194,22 @@ describe('Contentstack hosting test', () => {
     const uid = appMock.uid
     const organizationUid = appMock.organization_uid
     const deploymentUid = latestLiveResponse.data.uid
+    mock.onGet(`manifests/${uid}/hosting/deployments/${deploymentUid}/logs`).reply(400, {})
+
+    makeDeployment({ app_uid: uid, organization_uid: organizationUid, data: { uid: deploymentUid } })
+      .logs()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
+  it('test get deployment logs from uid', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    const organizationUid = appMock.organization_uid
+    const deploymentUid = latestLiveResponse.data.uid
     const content = {
       download_url: 'download_url',
       expires_in: 900
@@ -194,6 +226,22 @@ describe('Contentstack hosting test', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('Failing test get deployment logs from uid', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    const organizationUid = appMock.organization_uid
+    const deploymentUid = latestLiveResponse.data.uid
+    mock.onPost(`manifests/${uid}/hosting/deployments/${deploymentUid}/signedDownloadUrl`).reply(400, {})
+
+    makeDeployment({ app_uid: uid, organization_uid: organizationUid, data: { uid: deploymentUid } })
+      .signedDownloadUrl()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 })
 

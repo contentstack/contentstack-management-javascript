@@ -157,6 +157,23 @@ describe('Organization Test', () => {
       .catch(done)
   })
 
+  it('Organization Stacks fetch Fail test', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/organizations/${systemUidMock.uid}/stacks`).reply(400, {})
+    makeOrganization({
+      organization: {
+        ...systemUidMock,
+        org_roles: [adminRoleMock]
+      }
+    })
+      .stacks()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('Organization Transfer Ownership', done => {
     const mock = new MockAdapter(Axios)
     mock.onPost(`/organizations/${systemUidMock.uid}/transfer_ownership`).reply(200, { ...noticeMock })

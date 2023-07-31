@@ -41,6 +41,7 @@ describe('Contentstack apps test', () => {
     expect(app.hosting).to.not.equal(undefined)
     expect(app.install).to.not.equal(undefined)
     expect(app.installation).to.not.equal(undefined)
+    expect(app.listInstallations).to.not.equal(undefined)
     expect(app.getRequests).to.not.equal(undefined)
     expect(app.authorize).to.not.equal(undefined)
     expect(app.hosting()).to.not.equal(undefined)
@@ -50,7 +51,7 @@ describe('Contentstack apps test', () => {
     done()
   })
 
-  it('App with app uid', done => {
+  it('App with app uid and org uid', done => {
     const uid = 'APP_UID'
     const organizationUid = 'ORG_UID'
     const app = makeApp({ data: { uid, organization_uid: organizationUid }, organization_uid: organizationUid })
@@ -156,6 +157,37 @@ describe('Contentstack apps test', () => {
       .catch(done)
   })
 
+  it('Get app installation test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    mock.onGet(`manifests/${uid}/installations`).reply(200, {
+      data: [installationMock]
+    })
+
+    makeApp({ data: { uid } })
+      .listInstallations()
+      .then((installations) => {
+        installations.items.forEach(installation => {
+          expect(installation.status).to.be.equal(installationMock.status)
+          expect(installation.uid).to.be.equal(installationMock.uid)
+          expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
+          expect(installation.target.type).to.be.equal(installationMock.target.type)
+          expect(installation.target.uid).to.be.equal(installationMock.target.uid)
+        })
+      })
+      .catch(done)
+
+    // Failing test
+    mock.onGet(`manifests/${uid}/installations`).reply(400, {})
+    makeApp({ data: { uid } })
+      .listInstallations()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('Get all authorized apps in organization test', done => {
     const content = {
       visibility: 'private',
@@ -210,6 +242,20 @@ describe('Contentstack apps test', () => {
       .catch(done)
   })
 
+  it('Get oAuth configuration failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    mock.onGet(`/manifests/${uid}/oauth`).reply(400, {})
+
+    makeApp({ data: { uid } })
+      .fetchOAuth()
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('Update oAuth configuration test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
@@ -232,6 +278,21 @@ describe('Contentstack apps test', () => {
       .catch(done)
   })
 
+  it('Update oAuth configuration failing test', done => {
+    const mock = new MockAdapter(Axios)
+    const uid = appMock.uid
+    mock.onPut(`/manifests/${uid}/oauth`).reply(400, {})
+
+    const config = { ...oAuthMock }
+    makeApp({ data: { uid } })
+      .updateOAuth({ config })
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
+  })
+
   it('app install test', done => {
     const mock = new MockAdapter(Axios)
     const uid = appMock.uid
@@ -250,9 +311,18 @@ describe('Contentstack apps test', () => {
         expect(installation.target.uid).to.be.equal(installationMock.target.uid)
         expect(installation.organization_uid).to.be.equal(installationMock.organization_uid)
         expect(installation.uid).to.be.equal(installationMock.uid)
-        done()
       })
       .catch(done)
+
+    // Failing test
+    mock.onPost(`/manifests/${uid}/install`).reply(400, {})
+    makeApp({ data: { uid } })
+      .install({ targetUid, targetType })
+      .then(done)
+      .catch((error) => {
+        expect(error).to.not.equal(null)
+        done()
+      })
   })
 
   it('test fetch request for app uid', (done) => {
