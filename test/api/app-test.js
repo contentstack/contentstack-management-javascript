@@ -1,8 +1,8 @@
 import dotenv from 'dotenv'
 import { describe, it, setup } from 'mocha'
 import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
-import { contentstackClient } from '../utility/ContentstackClient.js'
 import { expect } from 'chai'
+import * as contentstack from '../../lib/contentstack.js'
 
 dotenv.config()
 
@@ -21,13 +21,14 @@ const config = { redirect_uri: 'https://example.com/oauth/callback', app_token_c
 describe('Apps api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
-    client = contentstackClient(user.authtoken)
+    client = contentstack.client({ host: process.env.APP_HOST, defaultHostName: process.env.DEFAULTHOST, authtoken: user.authtoken })
     stack = jsonReader('stack.json')
   })
 
   it('Fetch all apps test', done => {
     client.organization(orgID).app().findAll()
       .then((apps) => {
+        console.log(apps);
         for (const index in apps.items) {
           const appObject = apps.items[index]
           expect(appObject.name).to.not.equal(null)
@@ -118,7 +119,7 @@ describe('Apps api Test', () => {
   })
 
   it('Install app test', done => {
-    client.organization(orgID).app(appUid).install({ targetType: 'stack', targetUid: stack.api_key })
+    client.organization(orgID).app(appUid).install({ targetType: 'stack', targetUid: process.env.APIKEY })
       .then((installation) => {
         installationUid = installation.uid
         jsonWrite(installation, 'installation.json')

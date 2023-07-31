@@ -43,7 +43,7 @@ describe('Organization api test', () => {
   it('Fetch organization', done => {
     organization.fetch()
       .then((organizations) => {
-        expect(organizations.name).to.be.equal('Uttam Ukkoji\'s Personal Organization', 'Organization name dose not match')
+        expect(organizations.name).to.be.equal('SDK org', 'Organization name dose not match')
         done()
       })
       .catch(done)
