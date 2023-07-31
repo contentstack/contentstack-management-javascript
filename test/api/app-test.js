@@ -28,7 +28,6 @@ describe('Apps api Test', () => {
   it('Fetch all apps test', done => {
     client.organization(orgID).app().findAll()
       .then((apps) => {
-        console.log(apps);
         for (const index in apps.items) {
           const appObject = apps.items[index]
           expect(appObject.name).to.not.equal(null)
@@ -119,7 +118,7 @@ describe('Apps api Test', () => {
   })
 
   it('Install app test', done => {
-    client.organization(orgID).app(appUid).install({ targetType: 'stack', targetUid: process.env.APIKEY })
+    client.organization(orgID).app(appUid).install({ targetType: 'organization', targetUid: process.env.ORGANIZATION })
       .then((installation) => {
         installationUid = installation.uid
         jsonWrite(installation, 'installation.json')
@@ -164,7 +163,7 @@ describe('Apps api Test', () => {
       }).catch(done)
   })
   it('Set server config for installation test', done => {
-    client.organization(orgID).app(appUid).installation(installationUid).serServerConfig({})
+    client.organization(orgID).app(appUid).installation(installationUid).setServerConfig({})
       .then((config) => {
         expect(config.data).to.deep.equal({})
         done()
@@ -177,8 +176,8 @@ describe('Apps api Test', () => {
         expect(installation.uid).to.be.equal(installationUid)
         expect(installation.params.organization_uid).to.be.equal(orgID)
         expect(installation.urlPath).to.be.equal(`/installations/${installation.uid}`)
-        expect(installation.target.type).to.be.equal('stack')
-        expect(installation.target.uid).to.be.equal(stack.api_key)
+        expect(installation.target.type).to.be.equal('organization')
+        expect(installation.target.uid).to.be.equal(orgID)
         expect(installation.status).to.be.equal('installed')
         done()
       }).catch(done)
