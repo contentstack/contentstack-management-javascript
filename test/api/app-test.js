@@ -1,8 +1,8 @@
 import dotenv from 'dotenv'
 import { describe, it, setup } from 'mocha'
 import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
-import { contentstackClient } from '../utility/ContentstackClient.js'
 import { expect } from 'chai'
+import * as contentstack from '../../lib/contentstack.js'
 
 dotenv.config()
 
@@ -21,7 +21,7 @@ const config = { redirect_uri: 'https://example.com/oauth/callback', app_token_c
 describe('Apps api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
-    client = contentstackClient(user.authtoken)
+    client = contentstack.client({ host: process.env.APP_HOST, defaultHostName: process.env.DEFAULTHOST, authtoken: user.authtoken })
     stack = jsonReader('stack.json')
   })
 
@@ -118,7 +118,7 @@ describe('Apps api Test', () => {
   })
 
   it('Install app test', done => {
-    client.organization(orgID).app(appUid).install({ targetType: 'stack', targetUid: stack.api_key })
+    client.organization(orgID).app(appUid).install({ targetType: 'organization', targetUid: process.env.ORGANIZATION })
       .then((installation) => {
         installationUid = installation.uid
         jsonWrite(installation, 'installation.json')
@@ -163,7 +163,7 @@ describe('Apps api Test', () => {
       }).catch(done)
   })
   it('Set server config for installation test', done => {
-    client.organization(orgID).app(appUid).installation(installationUid).serServerConfig({})
+    client.organization(orgID).app(appUid).installation(installationUid).setServerConfig({})
       .then((config) => {
         expect(config.data).to.deep.equal({})
         done()
@@ -176,8 +176,8 @@ describe('Apps api Test', () => {
         expect(installation.uid).to.be.equal(installationUid)
         expect(installation.params.organization_uid).to.be.equal(orgID)
         expect(installation.urlPath).to.be.equal(`/installations/${installation.uid}`)
-        expect(installation.target.type).to.be.equal('stack')
-        expect(installation.target.uid).to.be.equal(stack.api_key)
+        expect(installation.target.type).to.be.equal('organization')
+        expect(installation.target.uid).to.be.equal(orgID)
         expect(installation.status).to.be.equal('installed')
         done()
       }).catch(done)
