@@ -17,6 +17,8 @@
             "lib/stack/asset/index.js",
             "lib/stack/asset/folders/index.js",
             "lib/stack/branch/index.js",
+            "lib/stack/branch/compare.js",
+            "lib/stack/branch/mergeQueue.js",
             "lib/stack/branchAlias/index.js",
             "lib/stack/bulkOperation/index.js",
             "lib/stack/extension/index.js",
@@ -35,7 +37,7 @@
         "excludePattern": "(node_modules/|jsdocs)"
     },
     "opts": {
-        "template": "docdash-template",
+        "template": "./node_modules/docdash",
         "destination": "./jsdocs/",
         "encoding": "utf8",
         "private": true,
