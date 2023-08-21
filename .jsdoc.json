@@ -26,6 +26,7 @@
             "lib/stack/release/items/index.js",
             "lib/stack/label/index.js",
             "lib/stack/locale/index.js",
+            "lib/stack/auditlog/index.js",
             "lib/stack/environment/index.js",
             "lib/stack/deliveryToken/index.js",
             "lib/stack/roles/index.js",
