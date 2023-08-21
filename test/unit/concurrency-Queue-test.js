@@ -69,6 +69,10 @@ describe('Concurrency queue test', () => {
       if (req.url === '/user-session') {
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify({ token }))
+
+        // Test for refresh token error - uncomment this
+        // res.writeHead(401, { 'Content-Type': 'application/json' })
+        // res.end(JSON.stringify({ errorCode: 401 }))
       } else if (req.url === '/unauthorized') {
         if (req.headers.authorization === token) {
           res.writeHead(200, { 'Content-Type': 'application/json' })
