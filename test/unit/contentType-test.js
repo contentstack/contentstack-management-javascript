@@ -234,6 +234,31 @@ describe('Contentstack ContentType test', () => {
       })
       .catch(done)
   })
+
+  it('ContentType import test with overwrite flag', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/import').reply(200, {
+      content_type: {
+        ...contentTypeMock
+      }
+    })
+    const contentTypeUpload = { content_type: path.join(__dirname, '../api/mock/contentType.json') }
+    const form = createFormData(contentTypeUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
+    makeContentType()
+      .import(contentTypeUpload, { overwrite: true })
+      .then((contentType) => {
+        checkContentType(contentType)
+        done()
+      })
+      .catch((err) => {
+        console.log('><><><><><><><', err)
+        done()
+      })
+  })
 })
 
 function makeContentType (data) {
