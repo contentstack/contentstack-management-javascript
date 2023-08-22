@@ -32,7 +32,6 @@ describe('Contentstack AuditLog test', () => {
     makeAuditLog()
       .fetchAll()
       .then((response) => {
-        console.log(response);
         expect(response.items[0].created_at).to.be.equal('created_at_date')
         expect(response.items[0].uid).to.be.equal('UID')
         done()

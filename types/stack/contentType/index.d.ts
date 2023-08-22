@@ -8,7 +8,7 @@ export interface ContentType extends SystemFields, SystemFunction<ContentType> {
 }
 
 export interface ContentTypes extends Queryable<ContentType, {content_type: ContentTypeData}> {
-    import(data: {content_type: string}): Promise<ContentType>
+    import(data: {content_type: string}, params?: any): Promise<ContentType>
     generateUid(name: string): string
 }
 
