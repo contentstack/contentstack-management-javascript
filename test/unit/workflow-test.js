@@ -83,7 +83,7 @@ describe('Contentstack Workflow test', () => {
 
   it('Workflow Collection test with blank data', done => {
     const workflow = new WorkflowCollection(Axios, {})
-    expect(workflow.length).to.be.equal(0)
+    expect(workflow[0]).to.be.equal(undefined)
     done()
   })
 
@@ -93,7 +93,15 @@ describe('Contentstack Workflow test', () => {
         workflowMock
       ]
     })
-    expect(workflow.length).to.be.equal(1)
+    expect(typeof workflow[0]).to.be.equal('object')
+    checkWorkflow(workflow[0])
+    done()
+  })
+
+  it('Workflow Collection test with data without array', done => {
+    const workflow = new WorkflowCollection(Axios, {
+      workflows: workflowMock
+    })
     checkWorkflow(workflow[0])
     done()
   })
@@ -120,6 +128,20 @@ describe('Contentstack Workflow test', () => {
       workflows: [
         workflowMock
       ]
+    })
+    makeWorkflow()
+      .fetchAll()
+      .then((workflows) => {
+        checkWorkflow(workflows.items[0])
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Workflow Fetch all without Stack Headers test with response in object format instead of array of workflows', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/workflows').reply(200, {
+      workflows: workflowMock
     })
     makeWorkflow()
       .fetchAll()
@@ -269,7 +291,6 @@ describe('Contentstack Workflow test', () => {
       .catch(done)
   })
 
-
   it('Workflow content type get publish rules', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet('/workflows/content_type/ct_UID').reply(200, {
@@ -288,7 +309,6 @@ describe('Contentstack Workflow test', () => {
       .catch(done)
   })
 
-
   it('Workflow content type get publish rules', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet('/workflows/content_type/ct_UID').reply(200, {
@@ -297,7 +317,7 @@ describe('Contentstack Workflow test', () => {
       ]
     })
     makeWorkflow().contentType('ct_UID')
-      .getPublishRules({ action: "publish", locale: "en-us" })
+      .getPublishRules({ action: 'publish', locale: 'en-us' })
       .then((response) => {
         checkPublishRules(response.items[0])
         done()
@@ -306,10 +326,9 @@ describe('Contentstack Workflow test', () => {
   })
 })
 
-
 function makeWorkflow (data) {
-    return new Workflow(Axios, data)
-  }
+  return new Workflow(Axios, data)
+}
 
 function checkWorkflow (workflow) {
   checkSystemFields(workflow)
@@ -325,7 +344,6 @@ function checkPublishRules (publishRules) {
   checkSystemFields(publishRules)
   expect(publishRules.locale).to.be.equal('en-us')
   expect(publishRules.action).to.be.equal('publish')
-  expect(publishRules.environment).to.be.equal("env")
-  expect(publishRules.workflow_stage).to.be.equal("stage")
+  expect(publishRules.environment).to.be.equal('env')
+  expect(publishRules.workflow_stage).to.be.equal('stage')
 }
-  
