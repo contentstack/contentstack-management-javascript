@@ -185,6 +185,28 @@ describe('Contentstack GlobalField test', () => {
       })
       .catch(done)
   })
+
+  it('Global Field import test with overwrite flag', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/global_fields/import').reply(200, {
+      global_field: {
+        ...globalFieldMock
+      }
+    })
+    const gfUpload = { global_field: path.join(__dirname, '../api/mock/globalfield.json') }
+    const form = createFormData(gfUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
+    makeGlobalField()
+      .import(gfUpload, { overwrite: true })
+      .then((webhook) => {
+        checkGlobalField(webhook)
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeGlobalField (data) {
