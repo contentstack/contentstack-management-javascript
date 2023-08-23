@@ -7,7 +7,7 @@ export interface GlobalField extends SystemFields, SystemFunction<GlobalField> {
 }
 
 export interface GlobalFields extends Queryable<GlobalField, {global_field: GlobalFieldData}> {
-    import(data: {global_field: string}): Promise<GlobalField>
+    import(data: {global_field: string}, params?: any): Promise<GlobalField>
 }
 
 export interface GlobalFieldData extends AnyProperty {
