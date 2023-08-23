@@ -44,9 +44,8 @@ describe('Typescript API test', () => {
     installation(org)
     hosting(org.app(process.env.APP_UID as string).hosting())
     deployment(org.app(process.env.APP_UID as string).hosting())
-    orgAppRequest(org.app(process.env.APP_UID as string).request())
     authorization(org.app(process.env.APP_UID as string).authorization())
-    orgAppRequest(org.request())
+    orgAppRequest(org.appRequest())
     deleteApp(org)
 
     const stack = client.stack({api_key: process.env.APIKEY as string})
