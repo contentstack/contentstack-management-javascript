@@ -1,5 +1,4 @@
 import axios from 'axios'
-import httpAdapter from 'axios/lib/adapters/http'
 import ContentstackClient from '../../lib/contentstackClient'
 import { expect } from 'chai'
 import { describe, it, beforeEach } from 'mocha'
@@ -11,7 +10,7 @@ describe('Contentstack Client', () => {
   beforeEach(function () {
     host = 'http://localhost/'
     axios.defaults.host = host
-    axios.defaults.adapter = httpAdapter
+    axios.defaults.adapter = 'http'
   })
 
   it('Contentstack Client Object successful', done => {
