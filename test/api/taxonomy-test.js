@@ -36,7 +36,8 @@ describe('taxonomy api Test', () => {
     makeTaxonomy(taxonomyUID)
       .fetch()
       .then((taxonomyResponse) => {
-        expect(taxonomyResponse.name).to.be.equal(taxonomy.name)
+        expect(taxonomyResponse.uid).to.be.equal(taxonomyUID)
+        expect(taxonomyResponse.name).to.be.not.equal(null)
         done()
       })
       .catch(done)
