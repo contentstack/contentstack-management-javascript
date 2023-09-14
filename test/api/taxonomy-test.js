@@ -13,7 +13,7 @@ const taxonomy = {
 }
 
 var taxonomyUID = ''
-// var taxonomyDelUID = 'taxonomy_testing'
+var taxonomyDelUID = 'taxonomy_testing'
 
 describe('taxonomy api Test', () => {
   setup(() => {
@@ -58,15 +58,15 @@ describe('taxonomy api Test', () => {
       .catch(done)
   })
 
-  // it('Delete taxonomy from uid', done => {
-  //   makeTaxonomy(taxonomyDelUID)
-  //     .delete()
-  //     .then((taxonomyResponse) => {
-  //       expect(taxonomyResponse.notice).to.be.equal('Taxonomy deleted successfully.')
-  //       done()
-  //     })
-  //     .catch(done)
-  // })
+  it('Delete taxonomy from uid', done => {
+    makeTaxonomy(taxonomyDelUID)
+      .delete()
+      .then((taxonomyResponse) => {
+        expect(taxonomyResponse.notice).to.be.equal('Taxonomy deleted successfully.')
+        done()
+      })
+      .catch(done)
+  })
 
   it('Query to get all taxonomies', async () => {
     makeTaxonomy()
