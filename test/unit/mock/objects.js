@@ -539,7 +539,7 @@ const appInstallMock = {
   status: 'installed',
   installation_uid: 'installationUID',
   redirect_to: 'config',
-  redirect_uri: 'redirect_uri',
+  redirect_uri: 'redirect_uri'
 }
 
 const installationMock = {
@@ -613,7 +613,7 @@ const branchCompareAllMock = {
     compare_branch: 'dev'
   },
   diff: [...globalFieldDiff, ...contentTypeDiff],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareContentTypeMock = {
@@ -621,8 +621,8 @@ const branchCompareContentTypeMock = {
     base_branch: 'UID',
     compare_branch: 'dev'
   },
-  diff: [ ...contentTypeDiff ],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  diff: [...contentTypeDiff],
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareGlobalFieldMock = {
@@ -631,7 +631,7 @@ const branchCompareGlobalFieldMock = {
     compare_branch: 'dev'
   },
   diff: [...globalFieldDiff],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchMergeAllMock = {
@@ -647,7 +647,7 @@ const branchMergeAllMock = {
     status: 'in_progress'
   },
   merged_at: null,
-  errors: [ 
+  errors: [
     {
       code: 'error_code',
       message: 'Error message'
@@ -725,6 +725,15 @@ const auditLogsMock = {
   ]
 }
 
+const taxonomyMock = {
+  uid: 'UID',
+  name: 'name',
+  description: 'Description for Taxonomy',
+  terms_count: 4,
+  referenced_terms_count: 3,
+  referenced_entries_count: 6
+}
+
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -793,6 +802,7 @@ export {
   branchMergeQueueFetchMock,
   auditLogsMock,
   auditLogItemMock,
+  taxonomyMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
