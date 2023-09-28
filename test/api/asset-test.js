@@ -90,6 +90,30 @@ describe('Assets api Test', () => {
       })
       .catch(done)
   })
+
+  it('Asset Upload in folder with contenttype', done => {
+    const asset = {
+      upload: path.join(__dirname, './mock/berries.jfif'),
+      title: 'customasset2 in Folder',
+      description: 'Custom Asset Desc in Folder',
+      parent_uid: folderUID,
+      tags: 'folder',
+      content_type: 'image/jpeg'
+    }
+    makeAsset().create(asset)
+      .then((asset) => {
+        publishAssetUID = asset.uid
+        expect(asset.uid).to.be.not.equal(null)
+        expect(asset.url).to.be.not.equal(null)
+        expect(asset.filename).to.be.equal('berries.jfif')
+        expect(asset.title).to.be.equal('customasset2 in Folder')
+        expect(asset.description).to.be.equal('Custom Asset Desc in Folder')
+        expect(asset.content_type).to.be.equal('image/jpeg')
+        expect(asset.parent_uid).to.be.equal(folderUID)
+        done()
+      })
+      .catch(done)
+  })
   it('Replace asset ', done => {
     const asset = {
       upload: path.join(__dirname, './mock/upload.html')
