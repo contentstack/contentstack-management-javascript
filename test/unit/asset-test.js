@@ -154,7 +154,8 @@ describe('Contentstack Asset test', () => {
       title: 'customasset',
       description: 'Custom Asset Desc',
       tags: ['Custom'],
-      parent_uid: 'UID'
+      parent_uid: 'UID',
+      content_type: 'text/html'
     }
     const form = createFormData(assetUpload)()
     var boundary = form.getBoundary()
@@ -322,7 +323,7 @@ function makeAsset (data) {
 
 function checkAsset (asset) {
   checkSystemFields(asset)
-  expect(asset.content_type).to.be.equal('image/png')
+  expect(asset.content_type).to.be.equal('text/html')
   expect(asset.file_size).to.be.equal('42670')
   expect(asset.tags.length).to.be.equal(0)
   expect(asset.filename).to.be.equal('file.png')
