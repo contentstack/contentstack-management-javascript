@@ -212,7 +212,7 @@ const releaseMock = {
 const assetMock = {
   ...systemFieldsMock,
   ...systemFieldsUserMock,
-  content_type: 'image/png',
+  content_type: 'text/html',
   file_size: '42670',
   tags: [],
   filename: 'file.png',
