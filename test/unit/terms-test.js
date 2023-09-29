@@ -95,9 +95,13 @@ describe('Contentstack Term test', () => {
       })
       .catch(done)
   })
-  it('Term ancestors test', done => {
+  it('term ancestors test', done => {
     var mock = new MockAdapter(Axios)
-    mock.onGet(`/taxonomies/taxonomy_uid/terms/UID/ancestors`).reply(200, { ...termsMock })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms/UID/ancestors`).reply(200, {
+      term: {
+        ...termsMock
+      }
+    })
     makeTerms({
       term: {
         ...systemUidMock
@@ -106,19 +110,22 @@ describe('Contentstack Term test', () => {
     })
       .ancestors()
       .then((terms) => {
-        checkTerms(terms)
-        expect(terms.uid).to.be.equal('UID')
-        expect(terms.parent_uid).to.be.equal('term_2')
-        expect(terms.ancestors[0].uid).to.be.equal('term_1')
-        expect(terms.ancestors[1].uid).to.be.equal('term_2')
-        expect(terms.ancestors[1].parent_uid).to.be.equal('term_1')
+        expect(terms.term.uid).to.be.equal('UID')
+        expect(terms.term.parent_uid).to.be.equal('term_2')
+        expect(terms.term.ancestors[0].uid).to.be.equal('term_1')
+        expect(terms.term.ancestors[1].uid).to.be.equal('term_2')
+        expect(terms.term.ancestors[1].parent_uid).to.be.equal('term_1')
         done()
       })
       .catch(done)
   })
-  it('Term descendants test', done => {
+  it('term descendants test', done => {
     var mock = new MockAdapter(Axios)
-    mock.onGet(`/taxonomies/taxonomy_uid/terms/UID/descendants`).reply(200, { ...termsMock })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms/UID/descendants`).reply(200, {
+      term: {
+        ...termsMock
+      }
+    })
     makeTerms({
       term: {
         ...systemUidMock
@@ -127,11 +134,10 @@ describe('Contentstack Term test', () => {
     })
       .descendants()
       .then((terms) => {
-        checkTerms(terms)
-        expect(terms.uid).to.be.equal('UID')
-        expect(terms.descendants[0].uid).to.be.equal('term_4')
-        expect(terms.descendants[1].uid).to.be.equal('term_5')
-        expect(terms.descendants[1].parent_uid).to.be.equal('term_4')
+        expect(terms.term.uid).to.be.equal('UID')
+        expect(terms.term.descendants[0].uid).to.be.equal('term_4')
+        expect(terms.term.descendants[1].uid).to.be.equal('term_5')
+        expect(terms.term.descendants[1].parent_uid).to.be.equal('term_4')
         done()
       })
       .catch(done)
@@ -160,6 +166,42 @@ describe('Contentstack Term test', () => {
     expect(term.create).to.be.equal(undefined)
     expect(term.query).to.be.equal(undefined)
     done()
+  })
+  it('term search test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?term=UID`).reply(200, {
+      term: {
+        ...termsMock
+      }
+    })
+    makeTerms()
+      .search('UID')
+      .then((terms) => {
+        expect(terms.term.uid).to.be.equal('UID')
+        done()
+      })
+      .catch(done)
+  })
+  it('term move test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPut(`/taxonomies/taxonomy_uid/terms/UID/move`).reply(200, {
+      term: {
+        ...termsMock
+      }
+    })
+    makeTerms({
+      term: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .move()
+      .then((terms) => {
+        checkTerms(terms)
+        expect(terms.uid).to.be.equal('UID')
+        done()
+      })
+      .catch(done)
   })
 })
 
