@@ -733,6 +733,47 @@ const taxonomyMock = {
   referenced_terms_count: 3,
   referenced_entries_count: 6
 }
+const termsMock = {
+  taxonomy_uid: 'taxonomy_uid',
+  uid: 'UID',
+  name: 'name',
+  parent_uid: 'term_2',
+  depth: 2,
+  children_count: 2,
+  referenced_entries_count: 2,
+  ancestors: [{
+    uid: 'term_1',
+    name: 'Term 1',
+    parent_uid: null,
+    depth: 1,
+    children_count: 3,
+    referenced_entries_count: 3
+  },
+  {
+    uid: 'term_2',
+    name: 'Term 2',
+    parent_uid: 'term_1',
+    depth: 2,
+    children_count: 2,
+    referenced_entries_count: 2
+  }],
+  descendants: [{
+    uid: 'term_4',
+    name: 'Term 4',
+    parent_uid: 'term_3',
+    depth: 3,
+    children_count: 1,
+    referenced_entries_count: 2
+  },
+  {
+    uid: 'term_5',
+    name: 'Term 5',
+    parent_uid: 'term_4',
+    depth: 4,
+    children_count: 0,
+    referenced_entries_count: 4
+  }]
+}
 
 function mockCollection (mockData, type) {
   const mock = {
@@ -803,6 +844,7 @@ export {
   auditLogsMock,
   auditLogItemMock,
   taxonomyMock,
+  termsMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
