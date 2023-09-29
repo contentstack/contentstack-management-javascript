@@ -24,7 +24,7 @@ describe('taxonomy api Test', () => {
 
   it('Create taxonomy', done => {
     makeTaxonomy()
-      .create([{ taxonomy }])
+      .create(taxonomy)
       .then((taxonomyResponse) => {
         expect(taxonomyResponse.name).to.be.equal(taxonomy.name)
         done()
