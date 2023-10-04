@@ -212,7 +212,7 @@ const releaseMock = {
 const assetMock = {
   ...systemFieldsMock,
   ...systemFieldsUserMock,
-  content_type: 'image/png',
+  content_type: 'text/html',
   file_size: '42670',
   tags: [],
   filename: 'file.png',
@@ -539,7 +539,7 @@ const appInstallMock = {
   status: 'installed',
   installation_uid: 'installationUID',
   redirect_to: 'config',
-  redirect_uri: 'redirect_uri',
+  redirect_uri: 'redirect_uri'
 }
 
 const installationMock = {
@@ -613,7 +613,7 @@ const branchCompareAllMock = {
     compare_branch: 'dev'
   },
   diff: [...globalFieldDiff, ...contentTypeDiff],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareContentTypeMock = {
@@ -621,8 +621,8 @@ const branchCompareContentTypeMock = {
     base_branch: 'UID',
     compare_branch: 'dev'
   },
-  diff: [ ...contentTypeDiff ],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  diff: [...contentTypeDiff],
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchCompareGlobalFieldMock = {
@@ -631,7 +631,7 @@ const branchCompareGlobalFieldMock = {
     compare_branch: 'dev'
   },
   diff: [...globalFieldDiff],
-  next_url:'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
+  next_url: 'https://api.contentstack.io/v3/stacks/branches/compare?base_branch=main&compare_branch=dev&skip=0&limit=100'
 }
 
 const branchMergeAllMock = {
@@ -647,7 +647,7 @@ const branchMergeAllMock = {
     status: 'in_progress'
   },
   merged_at: null,
-  errors: [ 
+  errors: [
     {
       code: 'error_code',
       message: 'Error message'
@@ -725,6 +725,56 @@ const auditLogsMock = {
   ]
 }
 
+const taxonomyMock = {
+  uid: 'UID',
+  name: 'name',
+  description: 'Description for Taxonomy',
+  terms_count: 4,
+  referenced_terms_count: 3,
+  referenced_entries_count: 6
+}
+const termsMock = {
+  taxonomy_uid: 'taxonomy_uid',
+  uid: 'UID',
+  name: 'name',
+  parent_uid: 'term_2',
+  depth: 2,
+  children_count: 2,
+  referenced_entries_count: 2,
+  ancestors: [{
+    uid: 'term_1',
+    name: 'Term 1',
+    parent_uid: null,
+    depth: 1,
+    children_count: 3,
+    referenced_entries_count: 3
+  },
+  {
+    uid: 'term_2',
+    name: 'Term 2',
+    parent_uid: 'term_1',
+    depth: 2,
+    children_count: 2,
+    referenced_entries_count: 2
+  }],
+  descendants: [{
+    uid: 'term_4',
+    name: 'Term 4',
+    parent_uid: 'term_3',
+    depth: 3,
+    children_count: 1,
+    referenced_entries_count: 2
+  },
+  {
+    uid: 'term_5',
+    name: 'Term 5',
+    parent_uid: 'term_4',
+    depth: 4,
+    children_count: 0,
+    referenced_entries_count: 4
+  }]
+}
+
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -793,6 +843,8 @@ export {
   branchMergeQueueFetchMock,
   auditLogsMock,
   auditLogItemMock,
+  taxonomyMock,
+  termsMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields

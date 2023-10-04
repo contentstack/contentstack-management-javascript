@@ -162,25 +162,24 @@ describe('Contentstack User test', () => {
     })
 
     user.getTasks()
-    .then((userTasks) => {
-      const assignment = userTasks.asassignments
-      expect(assignment.api_key).to.be.equal(stackHeadersMock.api_key)
-      expect(assignment.content_type).to.be.equal("CT_UID")
-      expect(assignment.entry_uid).to.be.equal("ETR_UID")
-      expect(assignment.locale).to.be.equal("en-us")
-      expect(assignment.org_uid).to.be.equal("orgUID")
-      expect(assignment.type).to.be.equal("workflow_stage")
-      expect(assignment.entry_locale).to.be.equal("en-us")
-      expect(assignment.version).to.be.equal(1)
-      expect(assignment.assigned_to[0]).to.be.equal("user_UID")
-      expect(assignment.assigned_at).to.be.equal("assign_date")
-      expect(assignment.assigned_by).to.be.equal("assign_by")
-      expect(assignment.due_date).to.be.equal("due_date")
-      done()
-    })
-    .catch(done)
+      .then((userTasks) => {
+        const assignment = userTasks.asassignments
+        expect(assignment.api_key).to.be.equal(stackHeadersMock.api_key)
+        expect(assignment.content_type).to.be.equal('CT_UID')
+        expect(assignment.entry_uid).to.be.equal('ETR_UID')
+        expect(assignment.locale).to.be.equal('en-us')
+        expect(assignment.org_uid).to.be.equal('orgUID')
+        expect(assignment.type).to.be.equal('workflow_stage')
+        expect(assignment.entry_locale).to.be.equal('en-us')
+        expect(assignment.version).to.be.equal(1)
+        expect(assignment.assigned_to[0]).to.be.equal('user_UID')
+        expect(assignment.assigned_at).to.be.equal('assign_date')
+        expect(assignment.assigned_by).to.be.equal('assign_by')
+        expect(assignment.due_date).to.be.equal('due_date')
+        done()
+      })
+      .catch(done)
   })
-
 
   it('User get task with params test', done => {
     var mock = new MockAdapter(Axios)
@@ -194,24 +193,24 @@ describe('Contentstack User test', () => {
     }
     })
 
-    user.getTasks({sort: 'sort'})
-    .then((userTasks) => {
-      const assignment = userTasks.asassignments
-      expect(assignment.api_key).to.be.equal(stackHeadersMock.api_key)
-      expect(assignment.content_type).to.be.equal("CT_UID")
-      expect(assignment.entry_uid).to.be.equal("ETR_UID")
-      expect(assignment.locale).to.be.equal("en-us")
-      expect(assignment.org_uid).to.be.equal("orgUID")
-      expect(assignment.type).to.be.equal("workflow_stage")
-      expect(assignment.entry_locale).to.be.equal("en-us")
-      expect(assignment.version).to.be.equal(1)
-      expect(assignment.assigned_to[0]).to.be.equal("user_UID")
-      expect(assignment.assigned_at).to.be.equal("assign_date")
-      expect(assignment.assigned_by).to.be.equal("assign_by")
-      expect(assignment.due_date).to.be.equal("due_date")
-      done()
-    })
-    .catch(done)
+    user.getTasks({ sort: 'sort' })
+      .then((userTasks) => {
+        const assignment = userTasks.asassignments
+        expect(assignment.api_key).to.be.equal(stackHeadersMock.api_key)
+        expect(assignment.content_type).to.be.equal('CT_UID')
+        expect(assignment.entry_uid).to.be.equal('ETR_UID')
+        expect(assignment.locale).to.be.equal('en-us')
+        expect(assignment.org_uid).to.be.equal('orgUID')
+        expect(assignment.type).to.be.equal('workflow_stage')
+        expect(assignment.entry_locale).to.be.equal('en-us')
+        expect(assignment.version).to.be.equal(1)
+        expect(assignment.assigned_to[0]).to.be.equal('user_UID')
+        expect(assignment.assigned_at).to.be.equal('assign_date')
+        expect(assignment.assigned_by).to.be.equal('assign_by')
+        expect(assignment.due_date).to.be.equal('due_date')
+        done()
+      })
+      .catch(done)
   })
 })
 

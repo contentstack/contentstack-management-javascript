@@ -1,9 +1,28 @@
 # Changelog
 
-## [v1.10.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.8.0) (2023-07-21)
+## [v1.11.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.11.0) (2023-09-03)
+ - Fixes and Enhancements
+   - Allows contenttype in asset upload
+   - Taxonomy feature addition
+   - Terms feature addition
+## [v1.10.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.10.2) (2023-08-23)
+ - Fixes and Enhancements
+   - RefreshToken error handling
+   - Handling workflow response of object format
+   - Support for overwrite flag in Contenttype and Global fields import functionality
+## [v1.10.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.10.1) (2023-08-01)
+ - Fixes:
+   - Token leak
+   - Users type
+   - ContentstackCollection type
+   - Environment param type
+ - Enhancements
+   - Adds Auditlogs functions
+   - Contenttype references function
+## [v1.10.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.10.0) (2023-07-21)
  - Fixes
    - Fixes Breaking Changes
-## [v1.9.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.8.0) (2023-07-19)
+## [v1.9.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.9.0) (2023-07-19)
  - Features:
    - NRP support added
    - Audit logs APIs support
