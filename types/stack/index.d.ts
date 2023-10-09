@@ -94,6 +94,6 @@ export interface Stack extends SystemFields {
     role(): Roles
     role(uid: string): Role
 
-    taxonomy(): Taxonomy
-    taxonomies(uid: string): Taxonomies
+    taxonomy(): Taxonomies
+    taxonomy(uid: string): Taxonomy
 }

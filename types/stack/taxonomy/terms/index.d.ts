@@ -2,9 +2,9 @@ import { AnyProperty, SystemFields } from "../../../utility/fields";
 import { Creatable, Queryable, SystemFunction } from "../../../utility/operations";
 
 export interface Term extends SystemFields, SystemFunction<Term> {
-    ancestors(data: {term_uid: TermData, include_children_count: boolean, include_referenced_entries_count: boolean, include_count: boolean, skip: number, limit: number}): Promise<Response>
-    descendants(data: {term_uid: TermData, include_children_count: boolean, include_referenced_entries_count: boolean, include_count: boolean, skip: number, limit: number}): Promise<Response>
-    move(data: {term_uid: TermData, force: boolean}): Promise<Response>
+    ancestors(data: { include_children_count?: boolean, include_referenced_entries_count?: boolean, include_count?: boolean, skip?: number, limit?: number}): Promise<Response>
+    descendants(data: { include_children_count?: boolean, include_referenced_entries_count?: boolean, include_count?: boolean, skip?: number, limit?: number}): Promise<Response>
+    move(data: { term: { parent_uid?: string, order: number } }, force?: boolean): Promise<Response>
 }
 
 export interface Term extends Creatable<Term, {term: TermData}> {
