@@ -18,6 +18,7 @@ import { Release, Releases } from "./release";
 import { Role, Roles } from "./role";
 import { Webhook, Webhooks } from "./webhook";
 import { Workflow, Workflows } from "./workflow";
+import { Taxonomy, Taxonomies } from "./taxonomy";
 
 export interface StackConfig {
     api_key:string
@@ -92,4 +93,7 @@ export interface Stack extends SystemFields {
     unShare(email: string): Promise<Response>
     role(): Roles
     role(uid: string): Role
+
+    taxonomy(): Taxonomy
+    taxonomies(uid: string): Taxonomies
 }
