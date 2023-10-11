@@ -15,6 +15,6 @@ export interface Taxonomies extends Creatable<Taxonomy, {taxonomy: TaxonomyData}
 
 export interface TaxonomyData extends AnyProperty {
     name: string
-    taxonomy_uid: string
+    uid: string
     description: string
 }
