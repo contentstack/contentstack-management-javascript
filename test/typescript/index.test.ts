@@ -18,6 +18,7 @@ import { deployment, hosting } from './hosting';
 import { orgAppRequest } from './app-request';
 import { authorization } from './authorization';
 import { testTaxonomy } from './taxonomy';
+import { testTerm } from './terms';
 dotenv.config()
 jest.setTimeout(10000);
 
@@ -102,6 +103,7 @@ describe('Typescript API test', () => {
     queryOnAsset(stack)
 
     testTaxonomy(stack)
+    testTerm(stack)
 
     deleteEnvironment(stack)
 
