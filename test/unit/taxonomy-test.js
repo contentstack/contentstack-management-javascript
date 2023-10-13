@@ -44,7 +44,7 @@ describe('Contentstack Taxonomy test', () => {
   it('Taxonomies query test', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet('/taxonomies').reply(200, {
-      taxonomy: [
+      taxonomies: [
         taxonomyMock
       ]
     })
