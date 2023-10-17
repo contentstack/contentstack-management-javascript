@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.12.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.12.0) (2023-10-17)
+ - Feature
+   - Types support for Taxonomy feature
+   - Types support for Terms feature
+- Fixes
+   - Correction in refreshToken error message
 ## [v1.11.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.11.0) (2023-09-03)
  - Fixes and Enhancements
    - Allows contenttype in asset upload
