@@ -6,6 +6,10 @@ export interface Creatable<T, D> {
     create(data: D, param?: AnyProperty): Promise<T>
 }
 
+export interface Searchable<T, D> {
+    search(string: D, param?: AnyProperty): Promise<T>
+}
+
 export interface SystemFunction<T> {
     update(param?: AnyProperty): Promise<T>
     fetch(param?: AnyProperty): Promise<T>
