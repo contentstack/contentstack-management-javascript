@@ -163,6 +163,26 @@ describe('Concurrency queue test', () => {
       .catch(done)
   })
 
+  it('should give passed error message when refreshToken function fails', done => {
+    const axios = client({
+      baseURL: `${host}:${port}`,
+      authorization: 'Bearer <token_value>',
+      logHandler: logHandlerStub,
+      refreshToken: () => {
+        return new Promise((resolve, reject) => {
+          reject(new Error('Rejected in Promise'))
+        })
+      }
+    })
+    Promise.all(sequence(3).map(() => axios.axiosInstance.get('/unauthorized')))
+      .catch(err => {
+        expect(err.errorCode).to.equal('401')
+        expect(err.errorMessage).to.equal('Rejected in Promise')
+        expect(err.message).to.equal('Unable to refresh token')
+        done()
+      })
+  })
+
   it('Initialize with bad axios instance', done => {
     try {
       new ConcurrencyQueue({ axios: undefined })

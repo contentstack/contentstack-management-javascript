@@ -169,7 +169,7 @@ describe('Contentstack Term test', () => {
   })
   it('term search test', done => {
     var mock = new MockAdapter(Axios)
-    mock.onGet(`/taxonomies/taxonomy_uid/terms?term=UID`).reply(200, {
+    mock.onGet(`/taxonomies/$all/terms?typeahead=UID`).reply(200, {
       term: {
         ...termsMock
       }
