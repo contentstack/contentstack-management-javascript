@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { Taxonomy } from '../../lib/stack/taxonomy'
-import { systemUidMock, stackHeadersMock, taxonomyMock, noticeMock } from './mock/objects'
+import { systemUidMock, stackHeadersMock, taxonomyMock, noticeMock, termsMock } from './mock/objects'
 
 describe('Contentstack Taxonomy test', () => {
   it('taxonomy create test', done => {
@@ -120,6 +120,27 @@ describe('Contentstack Taxonomy test', () => {
     expect(taxonomy.create).to.be.equal(undefined)
     expect(taxonomy.query).to.be.equal(undefined)
     done()
+  })
+
+  it('term create test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      term: {
+        ...termsMock
+      }
+    })
+    makeTaxonomy({
+      taxonomy: {
+        uid: 'taxonomy_uid'
+      },
+      stackHeaders: stackHeadersMock
+    }).terms()
+      .create()
+      .then((term) => {
+        console.log(term)
+        done()
+      })
+      .catch(done)
   })
 })
 

@@ -774,7 +774,11 @@ const termsMock = {
     referenced_entries_count: 4
   }]
 }
-
+const teamsMock = {
+  organization_uid: 'organization_uid',
+  uid: 'UID',
+  name: 'name'
+}
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -845,6 +849,7 @@ export {
   auditLogItemMock,
   taxonomyMock,
   termsMock,
+  teamsMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
