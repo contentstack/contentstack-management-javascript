@@ -775,9 +775,13 @@ const termsMock = {
   }]
 }
 const teamsMock = {
-  organization_uid: 'organization_uid',
   uid: 'UID',
-  name: 'name'
+  name: 'name',
+  organizationUid: 'organization_uid',
+  users: [],
+  stackRoleMapping: [],
+  organizationRole: 'organizationRole'
+
 }
 function mockCollection (mockData, type) {
   const mock = {

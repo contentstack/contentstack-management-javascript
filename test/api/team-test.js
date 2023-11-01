@@ -1,78 +1,61 @@
 import { describe, it, beforeEach } from 'mocha'
 import { expect } from 'chai'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-// import * as contentstack from '../../lib/contentstack.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
-var client = {}
+let client = {}
 
-var org_uid = 'blt242b133b4e9bd736'
-const team_uid = '6539eed4b502f0a73415188e'
-const team = {
-  name: 'team_name',
-  users: [],
-  stackRoleMapping: [],
-  organizationRole: 'organization_role_uid'
-}
+const organizationUid = 'organizationUid'
+const teamUid = 'teamUid'
+const deleteUid = 'deleteUid'
 
 describe('Teams API Test', () => {
   beforeEach(() => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
   })
-  it('Query and get all teams', async () => {
-    try {
-      const response = await client.organization(org_uid).teams().query()
-      console.log('res', response)
-    } catch (err) {
-      console.log(err)
-    }
+  it('should get all the teams when correct organization uid is passed', async () => {
+    const response = await makeTeams(organizationUid).fetchAll()
+    expect(response.items[0].organizationUid).to.be.equal(organizationUid)
+    expect(response.items[0].name).not.to.be.equal(null)
+    expect(response.items[0].created_by).not.to.be.equal(null)
+    expect(response.items[0].updated_by).not.to.be.equal(null)
+    expect(response.items[0].users).to.be.an('array')
   })
-  it('fetch test', async () => {
-    try {
-      const response = await client.organization(org_uid).teams(team_uid).fetch()
-      console.log('res2', await response)
-    } catch (err) {
-      console.log(err)
-    }
+  it('should fetch the team when correct organization uid and team uid is passed', async () => {
+    const response = await makeTeams(organizationUid, teamUid).fetch()
+    expect(response.uid).to.be.equal(teamUid)
+    expect(response.organizationUid).to.be.equal(organizationUid)
+    expect(response.name).not.to.be.equal(null)
+    expect(response.created_by).not.to.be.equal(null)
+    expect(response.updated_by).not.to.be.equal(null)
+    expect(response.users).to.be.an('array')
   })
-  // it('create test', async () => {
-  //   try {
-  //     const response = await makeTeams(org_uid).create({
-  //       name: 't2',
-  //       users: [],
-  //       stackRoleMapping: [],
-  //       organizationRole: 'blt09e5dfced326aaea' })
-  //     console.log('res2', response)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // })
-  // it('delete test', async () => {
-  //   try {
-  //     const response = await makeTeams(org_uid, '').delete()
-  //     console.log('res2', response)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // })
-  // it('update test', async () => {
-  //   try {
-  //     var response = await makeTeams(org_uid, team_uid).fetch()
-  //       .then((team) => {
-  //         team.name = 'updated'
-  //         console.log('tttt', team)
-  //         return response.update()
-  //       })
-  //     // const res = response.update()
-  //     console.log('update', response)
-  //     // console.log('update12', res)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // })
+  it('should create new team when required object is passed', async () => {
+    const response = await makeTeams(organizationUid).create({
+      name: 'test_team',
+      users: [],
+      stackRoleMapping: [],
+      organizationRole: 'organizationRoleUid' })
+    expect(response.name).not.to.be.equal(null)
+    expect(response.stackRoleMapping).not.to.be.equal(null)
+    expect(response.organizationRole).not.to.be.equal(null)
+    expect(response.users).to.be.an('array')
+  })
+  it('should delete team when correct organization uid and team uid is passed', async () => {
+    const response = await makeTeams(organizationUid, deleteUid).delete()
+    expect(response.status).not.to.be.equal(204)
+  })
+  it('should update team when updating data is passed', async () => {
+    const response = await makeTeams(organizationUid, teamUid).fetch()
+      .then((team) => {
+        team.name = 'updateName'
+        return team.update()
+      })
+    console.log('update', response)
+  })
 })
 
-function makeTeams (org_uid, team_uid = null) {
-  return client.organization(org_uid).teams(team_uid)
+function makeTeams (organizationUid, teamUid = null) {
+  return client.organization(organizationUid).teams(teamUid)
 }
