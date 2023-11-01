@@ -6,69 +6,50 @@ import { Teams } from '../../lib/organization/team'
 import { systemUidMock, teamsMock, noticeMock } from './mock/objects'
 
 describe('Contentstack Team test', () => {
-  it('team create test', done => {
+  it('should get all the teams when correct organization uid is passed', done => {
     var mock = new MockAdapter(Axios)
-    mock.onPost(`/organizations/organization_uid/teams`).reply(200, {
-      team: {
-        ...teamsMock
-      }
-    })
-    makeTeams()
-      .create()
-      .then((team) => {
-        checkTeams(team)
-        done()
-      })
-      .catch(done)
-  })
-  it('Team fetch test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onGet(`/organizations/organization_uid/teams/UID`).reply(200, {
-      team: {
-        ...teamsMock
-      }
-    })
-    makeTeams({
-      team: {
-        ...systemUidMock
-      }
-    })
-      .fetch()
-      .then((team) => {
-        console.log('fetch', team)
-        checkTeams(team)
-        done()
-      })
-      .catch(done)
-  })
-  it('Teams query test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onGet(`/organizations/organization_uid/teams`).reply(200, {
-      teams: [
-        teamsMock
-      ]
-    })
-    makeTeams()
-      .query()
+    mock.onGet(`/organizations/organization_uid/teams`).reply(200, [teamsMock])
+    makeTeams().fetchAll()
       .then((teams) => {
-        console.log(teams)
+        expect(teams.items[0].uid).to.be.equal('UID')
         checkTeams(teams.items[0])
         done()
       })
       .catch(done)
   })
-  it('Team update test', done => {
+  it('should fetch the team when correct organization uid and team uid is passed', done => {
     var mock = new MockAdapter(Axios)
-    mock.onPut(`/organizations/organization_uid/teams/UID`).reply(200, {
-      team: {
-        ...teamsMock
-      }
+    mock.onGet(`/organizations/organization_uid/teams/UID`).reply(200, { ...teamsMock })
+    makeTeams({ ...systemUidMock })
+      .fetch()
+      .then((team) => {
+        checkTeams(team)
+        done()
+      })
+      .catch(done)
+  })
+  it('should create new team when required object is passedt', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost(`/organizations/organization_uid/teams`).reply(200, { ...teamsMock })
+    makeTeams()
+      .create({
+        name: 'name',
+        organizationUid: 'organization_uid',
+        users: [],
+        stackRoleMapping: [],
+        organizationRole: 'organizationRole'
+      })
+      .then((team) => {
+        checkTeams(team)
+        done()
+      })
+      .catch(done)
+  })
+  it('should update team when updating data is passed', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPut(`/organizations/organization_uid/teams/UID`).reply(200, { ...teamsMock
     })
-    makeTeams({
-      team: {
-        ...systemUidMock
-      }
-    })
+    makeTeams({ ...systemUidMock })
       .update()
       .then((team) => {
         checkTeams(team)
@@ -76,16 +57,12 @@ describe('Contentstack Team test', () => {
       })
       .catch(done)
   })
-  it('team delete test', done => {
+  it('should delete team when correct organization uid and team uid is passed', done => {
     var mock = new MockAdapter(Axios)
     mock.onDelete(`/organizations/organization_uid/teams/UID`).reply(200, {
       ...noticeMock
     })
-    makeTeams({
-      team: {
-        ...systemUidMock
-      }
-    })
+    makeTeams({ ...systemUidMock })
       .delete()
       .then((team) => {
         expect(team.notice).to.be.equal(noticeMock.notice)
@@ -96,7 +73,7 @@ describe('Contentstack Team test', () => {
 })
 
 function makeTeams (data = {}) {
-  return new Teams(Axios, { organization_uid: 'organization_uid', ...data })
+  return new Teams(Axios, { organizationUid: 'organization_uid', ...data })
 }
 
 function checkTeams (teams) {
