@@ -781,7 +781,12 @@ const teamsMock = {
   users: [],
   stackRoleMapping: [],
   organizationRole: 'organizationRole'
-
+}
+const teamUsersMock = {
+  users: ['user1', 'user2', 'UID'],
+  addUser: {
+    userId: 'UID'
+  }
 }
 function mockCollection (mockData, type) {
   const mock = {
@@ -854,6 +859,7 @@ export {
   taxonomyMock,
   termsMock,
   teamsMock,
+  teamUsersMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
