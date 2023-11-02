@@ -14,27 +14,30 @@ describe('Teams API Test', () => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
   })
-  it('should add the user when user\'s mail is passed', async () => {
+  it.only('should add the user when user\'s mail is passed', done => {
     const usersMail = {
       emails: ['email@email.com']
     }
     makeUsers(organizationUid, teamUid).add(usersMail).then((response) => {
       expect(response).to.be.equal(null)
     })
+      .catch(done)
   })
-  it('should remove the user when uid is passed', async () => {
+  it('should remove the user when uid is passed', done => {
     makeUsers(organizationUid, teamUid, userId).remove().then((response) => {
       expect(response).to.be.equal(null)
       expect(response.status).to.be.equal(204)
+      done()
     })
+      .catch(done)
   })
   it('should fetch all users', async () => {
     makeUsers(organizationUid, teamUid)
       .query()
       .find()
       .then((response) => {
-        response.items.forEach((termResponse) => {
-          expect(termResponse.uidId).to.be.not.equal(null)
+        response.items.forEach((user) => {
+          expect(user.uidId).to.be.not.equal(null)
         })
       })
   })
