@@ -25,7 +25,6 @@ describe('Teams API Test', () => {
   })
   it('should remove the user when uid is passed', done => {
     makeUsers(organizationUid, teamUid, userId).remove().then((response) => {
-      expect(response).to.be.equal(null)
       expect(response.status).to.be.equal(204)
       done()
     })
