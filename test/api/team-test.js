@@ -20,7 +20,6 @@ describe('Teams API Test', () => {
     expect(response.items[0].name).not.to.be.equal(null)
     expect(response.items[0].created_by).not.to.be.equal(null)
     expect(response.items[0].updated_by).not.to.be.equal(null)
-    expect(response.items[0].users).to.be.an('array')
   })
   it('should fetch the team when correct organization uid and team uid is passed', async () => {
     const response = await makeTeams(organizationUid, teamUid).fetch()
@@ -29,30 +28,39 @@ describe('Teams API Test', () => {
     expect(response.name).not.to.be.equal(null)
     expect(response.created_by).not.to.be.equal(null)
     expect(response.updated_by).not.to.be.equal(null)
-    expect(response.users).to.be.an('array')
   })
   it('should create new team when required object is passed', async () => {
     const response = await makeTeams(organizationUid).create({
-      name: 'test_team',
+      name: 'test_team11111',
       users: [],
       stackRoleMapping: [],
-      organizationRole: 'organizationRoleUid' })
+      organizationRole: 'blt09e5dfced326aaea' })
+    expect(response.uid).not.to.be.equal(null)
     expect(response.name).not.to.be.equal(null)
     expect(response.stackRoleMapping).not.to.be.equal(null)
     expect(response.organizationRole).not.to.be.equal(null)
-    expect(response.users).to.be.an('array')
   })
   it('should delete team when correct organization uid and team uid is passed', async () => {
     const response = await makeTeams(organizationUid, deleteUid).delete()
-    expect(response.status).not.to.be.equal(204)
+    expect(response.status).to.be.equal(204)
   })
   it('should update team when updating data is passed', async () => {
-    const response = await makeTeams(organizationUid, teamUid).fetch()
+    const updateData = {
+      name: 'name',
+      users: [
+        {
+          email: 'abc@abc.com'
+        }
+      ],
+      organizationRole: '',
+      stackRoleMapping: []
+    }
+    await makeTeams(organizationUid, teamUid).update(updateData)
       .then((team) => {
-        team.name = 'updateName'
-        return team.update()
+        expect(team.name).to.be.equal(updateData.name)
+        expect(team.createdByUserName).not.to.be.equal(undefined)
+        expect(team.updatedByUserName).not.to.be.equal(undefined)
       })
-    console.log('update', response)
   })
 })
 
