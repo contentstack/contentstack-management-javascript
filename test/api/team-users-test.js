@@ -14,7 +14,7 @@ describe('Teams API Test', () => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
   })
-  it.only('should add the user when user\'s mail is passed', done => {
+  it('should add the user when user\'s mail is passed', done => {
     const usersMail = {
       emails: ['email@email.com']
     }
