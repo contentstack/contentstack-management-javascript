@@ -2,7 +2,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { Teams } from '../../lib/organization/team'
+import { Teams } from '../../lib/organization/teams'
 import { systemUidMock, teamsMock, noticeMock } from './mock/objects'
 
 describe('Contentstack Team test', () => {
