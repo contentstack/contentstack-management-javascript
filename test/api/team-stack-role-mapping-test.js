@@ -16,10 +16,7 @@ describe('Teams API Test', () => {
   })
   it('should fetch all stackRoleMappings', done => {
     makestackRoleMappings(organizationUid, teamUid).fetchAll().then((response) => {
-      response.items.forEach((stackRoleMapping) => {
-        console.log(stackRoleMapping)
-      })
-      expect(response).to.be.not.equal(null)
+      expect(response.stackRoleMappings).to.be.not.equal(undefined)
       done()
     })
       .catch(done)
