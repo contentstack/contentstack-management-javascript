@@ -2,27 +2,27 @@ import { AnyProperty, SystemFields } from "../utility/fields";
 import { ContentstackCollection } from '../contentstackCollection'
 import { Creatable, SystemFunction } from "../utility/operations";
 import { User, Users } from "./teamUsers";
-import { StackRoleMapping, StackRoleMappings } from "./stackRoleMapping";
+import { StackRoleMapping, StackRoleMappings, StackRoleMappingData } from "./stackRoleMapping";
 
-export interface Team extends SystemFields, SystemFunction<Team> {
-    update(data?:TeamData, param?: { includeUserDetails?: boolean}): Promise<Team>
-    user(): User
+export interface Team extends TeamData {
+    update(data: TeamData, param?: { includeUserDetails?: boolean}): Promise<AnyProperty>
+    users(): User
     users(uid: string): Users
     stackRoleMappings(): StackRoleMappings
     stackRoleMappings(uid: string): StackRoleMapping
+    fetch(): Promise<Team>
+    delete(): Promise<AnyProperty>
 }
 
 export interface Teams extends Creatable<Team, TeamData> {
-}
-
-export interface Teams {
     fetchAll(params?: AnyProperty): Promise<ContentstackCollection<Teams>>
 }
 
 export interface TeamData extends AnyProperty {
-    name: string,
-    users: any,
-    stackRoleMapping: any,
-    organizationRole: string
+    uid?: string,
+    name?: string,
+    users?: any,
+    stackRoleMapping?: StackRoleMappingData[] | [],
+    organizationRole?: string
 }
 
