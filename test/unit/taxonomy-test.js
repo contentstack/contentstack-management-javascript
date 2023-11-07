@@ -137,7 +137,9 @@ describe('Contentstack Taxonomy test', () => {
     }).terms()
       .create()
       .then((term) => {
-        console.log(term)
+        expect(term.taxonomy_uid).to.be.not.equal(undefined)
+        expect(term.uid).to.be.equal('UID')
+        expect(term.name).to.be.equal('name')
         done()
       })
       .catch(done)
