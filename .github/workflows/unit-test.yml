@@ -1,7 +1,10 @@
 name: Unit Test & Reports
 on:
   pull_request:
-  push:
+    branches:
+        - master
+        - main
+        - next
 jobs:
   build-test:
     name: Build & Test
