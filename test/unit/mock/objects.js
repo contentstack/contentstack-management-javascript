@@ -788,6 +788,16 @@ const teamUsersMock = {
     userId: 'UID'
   }
 }
+const stackRoleMappingMock = {
+  stackRoleMappings: [
+    {
+      stackApiKey: 'stackApiKey',
+      roles: [
+        'roles_uid'
+      ]
+    }
+  ]
+}
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -860,6 +870,7 @@ export {
   termsMock,
   teamsMock,
   teamUsersMock,
+  stackRoleMappingMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
