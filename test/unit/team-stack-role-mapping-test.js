@@ -10,8 +10,8 @@ describe('Contentstack Team Stack Role Mapping test', () => {
     var mock = new MockAdapter(Axios)
     mock.onGet(`/organizations/organization_uid/teams/team_uid/stack_role_mappings`).reply(200, stackRoleMappingMock)
     makeStackRoleMapping().fetchAll()
-      .then((roles) => {
-        console.log('🚀 ~ file: team-stack-role-mapping-test.js:14 ~ .then ~ roles:', roles)
+      .then((response) => {
+        expect(response.stackRoleMappings).to.be.not.equal(undefined)
         done()
       })
       .catch(done)

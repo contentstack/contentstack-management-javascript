@@ -31,10 +31,10 @@ describe('Teams API Test', () => {
   })
   it('should create new team when required object is passed', async () => {
     const response = await makeTeams(organizationUid).create({
-      name: 'test_team11111',
+      name: 'test_team',
       users: [],
       stackRoleMapping: [],
-      organizationRole: 'blt09e5dfced326aaea' })
+      organizationRole: 'organizationRole' })
     expect(response.uid).not.to.be.equal(null)
     expect(response.name).not.to.be.equal(null)
     expect(response.stackRoleMapping).not.to.be.equal(null)
