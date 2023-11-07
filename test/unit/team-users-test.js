@@ -9,7 +9,7 @@ describe('Contentstack Team Users test', () => {
   it('should query and find all users', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet(`/organizations/organization_uid/teams/team_uid/users`).reply(200, teamUsersMock)
-    makeTeamUsers().query().find()
+    makeTeamUsers().fetchAll()
       .then((users) => {
         users.items.forEach((user) => {
           expect(user.uidId).to.be.not.equal(null)
