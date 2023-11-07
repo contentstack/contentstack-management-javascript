@@ -52,6 +52,26 @@ export function testTeams (organization: Organization) {
         })
         .catch(done)
     })
+    test('should update team when update data is passed', done => {
+      const updateData = {
+        name: 'name',
+        users: [
+          {
+            email: 'abc@abc.com'
+          }
+        ],
+        organizationRole: 'blt09e5dfced326aaea',
+        stackRoleMapping: []
+      }
+      organization.teams(teamUid).update(updateData)
+        .then((team) => {
+          expect(team.name).to.be.equal(updateData.name)
+          expect(team.createdByUserName).not.to.be.equal(undefined)
+          expect(team.updatedByUserName).not.to.be.equal(undefined)
+          done()
+        })
+        .catch(done)
+    })
   })
 }
 
