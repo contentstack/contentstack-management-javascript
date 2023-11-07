@@ -9,7 +9,7 @@ const organizationUid = 'organizationUid'
 const teamUid = 'teamUid'
 const userId = 'userId'
 
-describe('Teams API Test', () => {
+describe('Teams Users API Test', () => {
   beforeEach(() => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
@@ -32,8 +32,7 @@ describe('Teams API Test', () => {
   })
   it('should fetch all users', async () => {
     makeUsers(organizationUid, teamUid)
-      .query()
-      .find()
+      .fetchAll()
       .then((response) => {
         response.items.forEach((user) => {
           expect(user.uidId).to.be.not.equal(null)
