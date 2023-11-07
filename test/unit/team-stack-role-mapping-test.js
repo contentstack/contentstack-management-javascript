@@ -2,7 +2,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { StackRoleMappings } from '../../lib/organization/team/stackRoleMapping'
+import { StackRoleMappings } from '../../lib/organization/teams/stackRoleMappings'
 import { stackRoleMappingMock } from './mock/objects'
 
 describe('Contentstack Team Stack Role Mapping test', () => {
