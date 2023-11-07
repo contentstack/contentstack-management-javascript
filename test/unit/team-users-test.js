@@ -5,11 +5,11 @@ import MockAdapter from 'axios-mock-adapter'
 import { TeamUsers } from '../../lib/organization/team/teamUsers'
 import { teamUsersMock, noticeMock } from './mock/objects'
 
-describe('Contentstack Team test', () => {
+describe('Contentstack Team Users test', () => {
   it('should query and find all users', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet(`/organizations/organization_uid/teams/team_uid/users`).reply(200, teamUsersMock)
-    makeTeams().query().find()
+    makeTeamUsers().query().find()
       .then((users) => {
         users.items.forEach((user) => {
           expect(user.uidId).to.be.not.equal(null)
@@ -24,7 +24,7 @@ describe('Contentstack Team test', () => {
     const usersMail = {
       emails: ['email@email.com']
     }
-    makeTeams()
+    makeTeamUsers()
       .add(usersMail)
       .then((team) => {
         expect(team.userId).to.be.equal('UID')
@@ -35,7 +35,7 @@ describe('Contentstack Team test', () => {
   it('should remove the user when uid is passed', done => {
     var mock = new MockAdapter(Axios)
     mock.onDelete(`/organizations/organization_uid/teams/team_uid/users/UID`).reply(200, { ...noticeMock })
-    makeTeams({ userId: 'UID' }, noticeMock)
+    makeTeamUsers({ userId: 'UID' }, noticeMock)
       .remove()
       .then((user) => {
         expect(user.notice).to.be.equal(noticeMock.notice)
@@ -45,6 +45,6 @@ describe('Contentstack Team test', () => {
   })
 })
 
-function makeTeams (data = {}) {
+function makeTeamUsers (data = {}) {
   return new TeamUsers(Axios, { organizationUid: 'organization_uid', teamUid: 'team_uid', ...data })
 }
