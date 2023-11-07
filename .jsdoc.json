@@ -33,8 +33,9 @@
             "lib/stack/webhook/index.js",
             "lib/stack/workflow/index.js",
             "lib/stack/workflow/publishRules/index.js",
-            "lib/organization/team/stackRoleMapping/index.js̀"
-
+            "lib/organization/teams/index.js",
+            "lib/organization/teams/stackRoleMappings/index.js",
+            "lib/organization/teams/teamUsers/index.js"
         ],
         "excludePattern": "(node_modules/|jsdocs)"
     },
