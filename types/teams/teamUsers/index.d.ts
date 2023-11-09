@@ -1,15 +1,15 @@
-import { AnyProperty, SystemFields } from "../../utility/fields";
-import { Creatable, Queryable, SystemFunction } from "../../utility/operations";
+import { AnyProperty } from "../../utility/fields";
 
-export interface User extends SystemFields, SystemFunction<User> { 
+export interface Users extends UserData {
+    add(data:UserData): Promise<UserData>
+    fetchAll(params?: { includeUserDetails: boolean, include_count: boolean}): Promise<AnyProperty>
 }
 
-export interface Users extends Creatable<User, {User: UserData}> {
-}
-
-export interface Users extends Queryable<User, {User: UserData}> {
+export interface User {
+    remove(): Promise<AnyProperty>
 }
 
 export interface UserData extends AnyProperty {
-    users: string[]
+    emails?: string[]
+    users?: string[]
 }

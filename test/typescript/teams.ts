@@ -60,12 +60,13 @@ export function testTeams (organization: Organization) {
             email: 'abc@abc.com'
           }
         ],
-        organizationRole: 'blt09e5dfced326aaea',
+        organizationRole: '',
         stackRoleMapping: []
-      }
+      } 
       organization.teams(teamUid).update(updateData)
         .then((team) => {
           expect(team.name).to.be.equal(updateData.name)
+          expect(team.organizationRole).to.be.equal(updateData.organizationRole)
           expect(team.createdByUserName).not.to.be.equal(undefined)
           expect(team.updatedByUserName).not.to.be.equal(undefined)
           done()
