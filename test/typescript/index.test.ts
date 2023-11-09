@@ -21,6 +21,7 @@ import { testTaxonomy } from './taxonomy';
 import { testTerm } from './terms';
 import { testTeams } from './teams';
 import { testTeamUsers } from './teamUsers';
+import { testTeamStackRoleMapping } from './teamsStackRoleMappings';
 dotenv.config()
 jest.setTimeout(10000);
 
@@ -53,6 +54,8 @@ describe('Typescript API test', () => {
     deleteApp(org)
     testTeams(org)
     testTeamUsers(org)
+    testTeamStackRoleMapping(org)
+    
     const stack = client.stack({api_key: process.env.APIKEY as string})
 
     createBranch(stack)
