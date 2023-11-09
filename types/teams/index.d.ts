@@ -9,7 +9,7 @@ export interface Team extends TeamData {
     users(): TeamUsers
     users(uid: string): TeamUser
     stackRoleMappings(): StackRoleMappings
-    stackRoleMappings(uid: string): StackRoleMapping
+    stackRoleMappings(stackApiKey: string): StackRoleMapping
     fetch(): Promise<Team>
     delete(): Promise<AnyProperty>
 }
