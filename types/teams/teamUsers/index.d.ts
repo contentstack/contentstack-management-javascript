@@ -1,15 +1,15 @@
 import { AnyProperty } from "../../utility/fields";
 
-export interface Users extends UserData {
-    add(data:UserData): Promise<UserData>
+export interface TeamUsers extends TeamUserData {
+    add(data:TeamUserData): Promise<TeamUserData>
     fetchAll(params?: { includeUserDetails: boolean, include_count: boolean}): Promise<AnyProperty>
 }
 
-export interface User {
+export interface TeamUser {
     remove(): Promise<AnyProperty>
 }
 
-export interface UserData extends AnyProperty {
+export interface TeamUserData extends AnyProperty {
     emails?: string[]
     users?: string[]
 }
