@@ -6,8 +6,8 @@ import { StackRoleMapping, StackRoleMappings, StackRoleMappingData } from "./sta
 
 export interface Team extends TeamData {
     update(data: TeamData, param?: { includeUserDetails?: boolean}): Promise<AnyProperty>
-    users(): User
-    users(uid: string): Users
+    users(): Users
+    users(uid: string): User
     stackRoleMappings(): StackRoleMappings
     stackRoleMappings(uid: string): StackRoleMapping
     fetch(): Promise<Team>
