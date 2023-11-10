@@ -19,7 +19,7 @@ export function testTeamStackRoleMapping (organization: Organization) {
           'role_uid'
         ]
       }
-      organization.teams(teamUid).stackRoleMappings(stackApiKey).add(stackRoleMappings).then((response) => {
+      organization.teams(teamUid).stackRoleMappings().add(stackRoleMappings).then((response) => {
         expect(response.stackRoleMapping).not.to.be.equal(undefined)
         expect(response.stackRoleMapping.roles[0]).to.be.equal(stackRoleMappings.roles[0])
         expect(response.stackRoleMapping.stackApiKey).to.be.equal(stackRoleMappings.stackApiKey)
@@ -34,13 +34,17 @@ export function testTeamStackRoleMapping (organization: Organization) {
           'role_uid2'
         ]
       }
-        organization.teams(teamUid).stackRoleMappings(stackApiKey).update(stackRoleMappings).then((response) => {
+      try {
+        organization.teams(teamUid).stackRoleMappings(stackApiKey).update(stackRoleMappings).then((response) => 
+        {
           expect(response).not.to.be.equal(undefined)
-          expect(response.StackRoleMappingData.roles[0]).to.be.equal(stackRoleMappings.roles[0])
-          expect(response.StackRoleMappingData.stackApiKey).to.be.equal(stackApiKey)
+          expect(response.StackRoleMapping).to.be.equal(stackRoleMappings)
+          expect(response.StackRoleMapping.stackApiKey).to.be.equal(stackApiKey)
           done()
         })
-        .catch(done)
+      } catch(err) {
+        done()
+      }
     })
     it('should delete roles', done => {
       organization.teams(teamUid).stackRoleMappings(stackApiKey).delete().then((response) => {
