@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { Teams } from '../../lib/organization/teams'
-import { systemUidMock, teamsMock, noticeMock } from './mock/objects'
+import { systemUidMock, teamsMock, noticeMock, teamUsersMock, stackRoleMappingMock } from './mock/objects'
 
 describe('Contentstack Team test', () => {
   it('should get all the teams when correct organization uid is passed', done => {
@@ -66,6 +66,28 @@ describe('Contentstack Team test', () => {
       .delete()
       .then((team) => {
         expect(team.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
+  it('should fetch all users', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet(`/organizations/organization_uid/teams/UID/users`).reply(200, teamUsersMock)
+    makeTeams({ ...systemUidMock }).users().fetchAll()
+      .then((users) => {
+        users.items.forEach((user) => {
+          expect(user.uidId).to.be.not.equal(null)
+        })
+        done()
+      })
+      .catch(done)
+  })
+  it('should fetch all the roles', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet(`/organizations/organization_uid/teams/UID/stack_role_mappings`).reply(200, stackRoleMappingMock)
+    makeTeams({ ...systemUidMock }).stackRoleMappings().fetchAll()
+      .then((response) => {
+        expect(response.stackRoleMappings).to.be.not.equal(undefined)
         done()
       })
       .catch(done)
