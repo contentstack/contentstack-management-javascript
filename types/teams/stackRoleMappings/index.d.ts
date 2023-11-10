@@ -3,7 +3,7 @@ import { ContentstackCollection } from '../../contentstackCollection'
 import { SystemFunction } from "../../utility/operations";
 
 export interface StackRoleMapping extends StackRoleMappingData {
-    update(data:StackRoleMappingData): Promise<{StackRoleMappingData: StackRoleMappingData}>
+    update(data:StackRoleMappingData): Promise<AnyProperty>
 }
 
 export interface StackRoleMappings extends StackRoleMappingData {
