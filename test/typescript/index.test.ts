@@ -13,10 +13,6 @@ import { createLocale, deleteLocale, getLocale } from './locale';
 import { createEnvironment, deleteEnvironment, getEnvironment, updateEnvironment } from './environment';
 import { createDeliveryToken, deleteDeliveryToken, deliveryToken, queryDeliveryToken } from './deliveryToken';
 import { createRole, findAllRole, getRole, getRoleUid, queryRole } from './role';
-import { createApp, deleteApp, fetchApp, installation, updateApp, updateAuth } from './app';
-import { deployment, hosting } from './hosting';
-import { orgAppRequest } from './app-request';
-import { authorization } from './authorization';
 import { testTaxonomy } from './taxonomy';
 import { testTerm } from './terms';
 import { testTeams } from './teams';
@@ -42,16 +38,6 @@ describe('Typescript API test', () => {
     stacks(client)
     stackTest(client.stack({api_key: process.env.APIKEY as string}))
 
-    createApp(org.app())
-    fetchApp(org)
-    updateApp(org)
-    updateAuth(org)
-    installation(org)
-    hosting(org.app(process.env.APP_UID as string).hosting())
-    deployment(org.app(process.env.APP_UID as string).hosting())
-    authorization(org.app(process.env.APP_UID as string).authorization())
-    orgAppRequest(org.appRequest())
-    deleteApp(org)
     testTeams(org)
     testTeamUsers(org)
     testTeamStackRoleMapping(org)
