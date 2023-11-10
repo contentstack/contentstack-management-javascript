@@ -447,74 +447,6 @@ const userAssignments = {
   }
 }
 
-const appMock = {
-  framework_version: '1.0',
-  version: 1,
-  icon: 'icon',
-  description: 'Description of the app',
-  target_type: 'stack',
-  name: 'Name of the app',
-  ui_location: {
-    signed: true,
-    base_url: 'base_url',
-    locations: [
-      {
-        type: 'cs.cm.stack.config',
-        meta: [
-          {
-            signed: true,
-            path: '/config',
-            name: 'Configuration'
-          }
-        ]
-      },
-      {
-        type: 'cs.cm.stack.custom_field',
-        meta: [
-          {
-            signed: true,
-            path: '/custom-field',
-            name: 'Field',
-            data_type: 'text'
-          }
-        ]
-      }
-    ]
-  },
-  webhook: {
-    signed: true,
-    name: 'Algolia',
-    enabled: true,
-    target_url: 'target_url',
-    channels: [
-    ],
-    app_lifecycle_enabled: true,
-    retry_policy: 'manual'
-  },
-  visibility: 'private',
-  organization_uid: 'org_uid',
-  created_at: 'created_at_date',
-  updated_at: 'updated_at_date',
-  uid: 'UID',
-  oauth: {
-    redirect_uri: 'redirect_url',
-    app_token_config: {
-      enabled: true,
-      scopes: [
-        'user:read',
-        'user:write',
-        'user.profile:read'
-      ]
-    },
-    user_token_config: {
-      enabled: true,
-      scopes: [
-        'user.profile:read'
-      ]
-    }
-  }
-}
-
 const oAuthMock = {
   client_id: 'client_id',
   client_secret: 'client_secret',
@@ -533,58 +465,6 @@ const oAuthMock = {
       'user.profile:read'
     ]
   }
-}
-
-const appInstallMock = {
-  status: 'installed',
-  installation_uid: 'installationUID',
-  redirect_to: 'config',
-  redirect_uri: 'redirect_uri'
-}
-
-const installationMock = {
-  status: 'installed',
-  manifest: {
-    framework_version: '1.0',
-    version: 1,
-    icon: '',
-    description: '',
-    target_type: 'stack',
-    name: 'Post man test 2',
-    visibility: 'private',
-    created_by: {
-      uid: 'user_uid',
-      first_name: 'user_name',
-      last_name: 'user_last_name'
-    },
-    updated_by: {
-      uid: 'user_uid',
-      first_name: 'user_name',
-      last_name: 'user_last_name'
-    },
-    organization_uid: 'org_uid',
-    created_at: 'date_time',
-    updated_at: 'date_time',
-    uid: 'installation_uid'
-  },
-  created_by: {
-    uid: 'user_uid',
-    first_name: 'user_name',
-    last_name: 'user_last_name'
-  },
-  updated_by: {
-    uid: 'user_uid',
-    first_name: 'user_name',
-    last_name: 'user_last_name'
-  },
-  target: {
-    type: 'stack',
-    uid: '{{stackUid}}'
-  },
-  organization_uid: 'org_uid',
-  created_at: 'date_time',
-  updated_at: 'date_time',
-  uid: 'installation_uid'
 }
 
 const globalFieldDiff = [{
@@ -825,10 +705,7 @@ function checkSystemFields (object) {
 }
 
 export {
-  appMock,
   oAuthMock,
-  appInstallMock,
-  installationMock,
   errorMock,
   noticeMock,
   stackMock,
