@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.13.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.13.0) (2023-11-15)
+ - Feature
+   - Teams API support
 ## [v1.12.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.12.0) (2023-10-17)
  - Feature
    - Types support for Taxonomy feature
