@@ -7,6 +7,7 @@ import { AnyProperty, SystemFields } from './utility/fields'
 import { ContentstackCollection, Response } from './contentstackCollection'
 import { App, Apps } from './app'
 import { AppRequest } from './app/request'
+import { Team, Teams } from './teams'
 
 export interface Organizations {
     fetchAll(params?: AnyProperty): Promise<ContentstackCollection<Organization>>
@@ -25,6 +26,8 @@ export interface Organization extends SystemFields {
     app(): Apps
     app(uid: string): App
     appRequest(): AppRequest
+    teams(): Teams
+    teams(uid: string): Team
 }
 
 export interface OrganizationInvite {
