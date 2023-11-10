@@ -6,7 +6,7 @@ import { TeamUsers } from '../../lib/organization/teams/teamUsers'
 import { teamUsersMock, noticeMock } from './mock/objects'
 
 describe('Contentstack Team Users test', () => {
-  it('should query and find all users', done => {
+  it('should fetch all users', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet(`/organizations/organization_uid/teams/team_uid/users`).reply(200, teamUsersMock)
     makeTeamUsers().fetchAll()
