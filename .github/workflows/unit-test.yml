@@ -1,7 +1,10 @@
 name: Unit Test & Reports
 on:
   pull_request:
-  push:
+    branches:
+        - master
+        - main
+        - next
 jobs:
   build-test:
     name: Build & Test
@@ -23,6 +26,5 @@ jobs:
           reporter: mocha-json        # Format of test results
       - name: Coverage report 
         uses: lucassabreu/comment-coverage-clover@main
-        with:       
-          name: Unit test Coverage report   
+        with: 
           file: coverage/clover.xml       
