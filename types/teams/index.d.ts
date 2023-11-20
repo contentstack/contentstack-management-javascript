@@ -6,8 +6,8 @@ import { StackRoleMapping, StackRoleMappings, StackRoleMappingData } from "./sta
 
 export interface Team extends TeamData {
     update(data: TeamData, param?: { includeUserDetails?: boolean}): Promise<AnyProperty>
-    users(): TeamUsers
-    users(uid: string): TeamUser
+    teamUsers(): TeamUsers
+    teamUsers(uid: string): TeamUser
     stackRoleMappings(): StackRoleMappings
     stackRoleMappings(stackApiKey: string): StackRoleMapping
     fetch(): Promise<Team>
@@ -15,7 +15,7 @@ export interface Team extends TeamData {
 }
 
 export interface Teams extends Creatable<Team, TeamData> {
-    fetchAll(params?: AnyProperty): Promise<ContentstackCollection<Teams>>
+    fetchAll(params?: AnyProperty): Promise<ContentstackCollection<Team>>
 }
 
 export interface TeamData extends AnyProperty {
