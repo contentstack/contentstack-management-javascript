@@ -19,7 +19,8 @@ describe('Teams Users API Test', () => {
       emails: ['email@email.com']
     }
     makeUsers(organizationUid, teamUid).add(usersMail).then((response) => {
-      expect(response).to.be.equal(null)
+      expect(response.status).to.be.equal(201)
+      done()
     })
       .catch(done)
   })
@@ -42,5 +43,5 @@ describe('Teams Users API Test', () => {
 })
 
 function makeUsers (organizationUid, teamUid, userId = null) {
-  return client.organization(organizationUid).teams(teamUid).users(userId)
+  return client.organization(organizationUid).teams(teamUid).teamUsers(userId)
 }
