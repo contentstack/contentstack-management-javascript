@@ -9,7 +9,7 @@ export function testTeamUsers (organization: Organization) {
         emails: ['email@email.com']
       }
         organization.teams(teamUid).users().add(usersMail).then((response) => {
-        expect(response).not.to.be.equal(null)
+        expect(response.status).to.be.eql(201)
         done()
       })
         .catch(done)
@@ -24,7 +24,7 @@ export function testTeamUsers (organization: Organization) {
     })
     test('should fetch all users', done => {
       organization.teams(teamUid).users()
-        .fetchAll()
+      .fetchAll()
         .then((response) => {
           expect(response.items[0]).not.to.be.equal(undefined)
           done()
