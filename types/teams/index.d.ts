@@ -15,7 +15,7 @@ export interface Team extends TeamData {
 }
 
 export interface Teams extends Creatable<Team, TeamData> {
-    fetchAll(params?: AnyProperty): Promise<ContentstackCollection<Teams>>
+    fetchAll(params?: AnyProperty): Promise<ContentstackCollection<Team>>
 }
 
 export interface TeamData extends AnyProperty {
