@@ -8,7 +8,10 @@ import { systemUidMock, teamsMock, noticeMock, teamUsersMock, stackRoleMappingMo
 describe('Contentstack Team test', () => {
   it('should get all the teams when correct organization uid is passed', done => {
     var mock = new MockAdapter(Axios)
-    mock.onGet(`/organizations/organization_uid/teams`).reply(200, [teamsMock])
+    mock.onGet(`/organizations/organization_uid/teams`).reply(200, {
+      count: 17,
+      teams: [teamsMock]
+    })
     makeTeams().fetchAll()
       .then((teams) => {
         expect(teams.items[0].uid).to.be.equal('UID')
@@ -73,7 +76,7 @@ describe('Contentstack Team test', () => {
   it('should fetch all users', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet(`/organizations/organization_uid/teams/UID/users`).reply(200, teamUsersMock)
-    makeTeams({ ...systemUidMock }).users().fetchAll()
+    makeTeams({ ...systemUidMock }).teamUsers().fetchAll()
       .then((users) => {
         users.items.forEach((user) => {
           expect(user.uidId).to.be.not.equal(null)

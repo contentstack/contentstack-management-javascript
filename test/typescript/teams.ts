@@ -7,10 +7,10 @@ export function testTeams (organization: Organization) {
     test('should fetch all the teams', done => {
       organization.teams().fetchAll()
         .then((teams) => {
-          expect(teams[0].organizationUid).not.to.be.equal(undefined)
-          expect(teams[0].name).not.to.be.equal(null)
-          expect(teams[0].created_by).not.to.be.equal(null)
-          expect(teams[0].updated_by).not.to.be.equal(null)
+          expect(teams.items[0].organizationUid).not.to.be.equal(undefined)
+          expect(teams.items[0].name).not.to.be.equal(null)
+          expect(teams.items[0].created_by).not.to.be.equal(null)
+          expect(teams.items[0].updated_by).not.to.be.equal(null)
           done()
         })
         .catch(done)
