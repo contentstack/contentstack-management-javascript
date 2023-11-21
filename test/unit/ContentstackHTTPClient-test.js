@@ -154,4 +154,17 @@ describe('Contentstack HTTP Client', () => {
     expect(client.defaults.retryCondition('error')).to.be.equal(true)
     done()
   })
+  it('should add x-header-ea in headers when early_access is passed', done => {
+    var axiosInstance = contentstackHTTPClient(
+      {
+        apiKey: 'apiKey',
+        accessToken: 'accessToken',
+        early_access: 'ea1,ea2'
+      })
+
+    expect(axiosInstance.defaults.headers.apiKey).to.be.equal('apiKey', 'Api not Equal to \'apiKey\'')
+    expect(axiosInstance.defaults.headers.accessToken).to.be.equal('accessToken', 'Api not Equal to \'accessToken\'')
+    expect(axiosInstance.defaults.headers['x-header-ea']).to.be.equal('ea1,ea2')
+    done()
+  })
 })
