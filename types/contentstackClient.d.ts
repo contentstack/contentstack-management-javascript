@@ -24,6 +24,7 @@ export interface RetryDelayOption {
 export interface ContentstackToken {
     authorization?: string
     authtoken?: string
+    early_access?: string[]
 }
 
 export interface ContentstackConfig extends AxiosRequestConfig, ContentstackToken {

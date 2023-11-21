@@ -263,6 +263,25 @@ describe('Organization Test', () => {
       })
       .catch(done)
   })
+  it('should get teams', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/organizations/UID`).reply(200, {
+      organization: {
+        ...orgMock
+      }
+    })
+    makeOrganization({ organization: {
+      ...systemUidMock
+    } })
+      .fetch()
+      .then((response) => {
+        const teams = response.teams()
+        expect(teams).to.not.equal(undefined)
+        expect(teams.organizationUid).to.be.equal('UID')
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeOrganization (params = {}) {
