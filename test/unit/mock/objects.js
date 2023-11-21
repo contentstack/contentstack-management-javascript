@@ -774,7 +774,30 @@ const termsMock = {
     referenced_entries_count: 4
   }]
 }
-
+const teamsMock = {
+  uid: 'UID',
+  name: 'name',
+  organizationUid: 'organization_uid',
+  users: [],
+  stackRoleMapping: [],
+  organizationRole: 'organizationRole'
+}
+const teamUsersMock = {
+  users: ['user1', 'user2', 'UID'],
+  addUser: {
+    userId: 'UID'
+  }
+}
+const stackRoleMappingMock = {
+  stackRoleMappings: [
+    {
+      stackApiKey: 'stackApiKey',
+      roles: [
+        'roles_uid'
+      ]
+    }
+  ]
+}
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -845,6 +868,9 @@ export {
   auditLogItemMock,
   taxonomyMock,
   termsMock,
+  teamsMock,
+  teamUsersMock,
+  stackRoleMappingMock,
   mockCollection,
   entryMockCollection,
   checkSystemFields
