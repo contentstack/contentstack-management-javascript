@@ -190,8 +190,45 @@ describe('Entry api Test', () => {
       })
       .catch(done)
   })
+
+  it('Create and update an entry with asset', done => {
+    // get asset
+    let asset;
+    makeAsset()
+    .query()
+    .find()
+    .then((collection) => {
+        asset = collection.items[0];
+        // create entry
+        let entry = {
+          ...entryFirst,
+          title: "uniqueTitle45",
+          modular_blocks: [
+            {
+              block1: {
+                file: asset.uid
+              }
+            }
+          ]
+        };
+        makeEntry(multiPageCT.content_type.uid)
+        .create({entry: entry})
+        .then(entry => {
+          const newTitle = "updated title";
+          entry.title = newTitle;
+          entry.update().then(updatedEntry => {
+            expect(updatedEntry.title).to.be.equal(newTitle);
+            done();
+          })
+        })
+      })
+    });
 })
 
 function makeEntry (contentType, uid = null) {
   return client.stack({ api_key: stack.api_key }).contentType(contentType).entry(uid)
+}
+
+function makeAsset (uid = null) {
+  return client.stack({ api_key: stack.api_key }).asset(uid)
 }
