@@ -4,6 +4,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { Entry, EntryCollection, createFormData } from '../../lib/stack/contentType/entry'
+import { cleanAssets } from '../../lib/entity'
 import { systemUidMock, stackHeadersMock, entryMock, noticeMock, checkSystemFields } from './mock/objects'
 
 describe('Contentstack Entry test', () => {
@@ -374,6 +375,196 @@ describe('Contentstack Entry test', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('Entry with asset object', done => {
+    const entry = {
+      empty_array: [],
+      empty_object: {},
+      single_file: {
+        file_size: 69420,
+        uid: 'single_file'
+      },
+      title: 'test entry',
+      property: 'test property 3',
+      array_file: [
+        { file_size: 69420, uid: 'array_file_1' },
+        { file_size: 69420, uid: 'array_file_2' },
+        { file_size: 69420, uid: 'array_file_3' },
+      ],
+      wrapper1: {
+        something: 'something',
+        something_else: 'something_else',
+        file_inside_wrapper : {
+            file_size: 69420,
+            uid: 'single_file'
+        },
+        file_array_wrapper : [
+          { file_size: 69420, uid: 'array_file_wrap_1' },
+          { file_size: 69420, uid: 'array_file_wrap_2' },
+          { file_size: 69420, uid: 'array_file_wrap_3' },
+        ],
+        array_wrapper: [
+          {
+            something: 'something',
+            single_file: {
+              file_size: 69420,
+              uid: 'single_file_1'
+            },
+            something_else: 'something_else'
+          },
+          {
+            something: 'something',
+            single_file: {
+              file_size: 69420,
+              uid: 'single_file_2'
+            },
+            something_else: 'something_else'
+          },
+          {
+            something: 'something',
+            single_file: {
+              file_size: 69420,
+              uid: 'single_file_3'
+            },
+            something_else: 'something_else'
+          }
+        ],
+        wrapper2: {
+          array_of_array_wrapper: [
+            {
+              something: 'something',
+              oneMoreWrapper : {
+                file_array_wrapper : [
+                  { file_size: 69420, uid: 'array_file_wrap_1' },
+                  { file_size: 69420, uid: 'array_file_wrap_2' },
+                  { file_size: 69420, uid: 'array_file_wrap_3' },
+                ],
+                array_wrapper: [
+                  {
+                    something: 'something',
+                    single_file: {
+                      file_size: 69420,
+                      uid: 'single_file_1'
+                    },
+                    something_else: 'something_else'
+                  },
+                  {
+                    something: 'something',
+                    single_file: {
+                      file_size: 69420,
+                      uid: 'single_file_2'
+                    },
+                    something_else: 'something_else'
+                  },
+                  {
+                    something: 'something',
+                    single_file: {
+                      file_size: 69420,
+                      uid: 'single_file_3'
+                    },
+                    something_else: 'something_else'
+                  }
+                ],     
+              },
+              something_else: 'something_else'
+            },
+            {
+              something: 'something',
+              file_array_wrapper : [
+                { file_size: 69420, uid: 'array_file_wrap_1' },
+                { file_size: 69420, uid: 'array_file_wrap_2' },
+                { file_size: 69420, uid: 'array_file_wrap_3' },
+              ],
+              something_else: 'something_else'
+            },
+            {
+              something: 'something',
+              file_array_wrapper : [
+                { file_size: 69420, uid: 'array_file_wrap_1' },
+                { file_size: 69420, uid: 'array_file_wrap_2' },
+                { file_size: 69420, uid: 'array_file_wrap_3' },
+              ],
+              something_else: 'something_else'
+            }
+          ]
+        }
+      },
+      ...systemUidMock
+    };
+    const expectedResult = {
+      empty_array: [],
+      empty_object: {},
+      single_file: 'single_file',
+      title: 'test entry',
+      property: 'test property 3',
+      array_file: ['array_file_1', 'array_file_2', 'array_file_3'],
+      wrapper1: {
+        something: 'something',
+        something_else: 'something_else',
+        file_inside_wrapper : 'single_file',
+        file_array_wrapper : ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
+        array_wrapper: [
+          {
+            something: 'something',
+            single_file: 'single_file_1',
+            something_else: 'something_else'
+          },
+          {
+            something: 'something',
+            single_file: 'single_file_2',
+            something_else: 'something_else'
+          },
+          {
+            something: 'something',
+            single_file: 'single_file_3',
+            something_else: 'something_else'
+          }
+        ],
+        wrapper2: {
+          array_of_array_wrapper: [
+            {
+              something: 'something',
+              oneMoreWrapper : {
+                file_array_wrapper : ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
+                array_wrapper: [
+                  {
+                    something: 'something',
+                    single_file: 'single_file_1',
+                    something_else: 'something_else'
+                  },
+                  {
+                    something: 'something',
+                    single_file: 'single_file_2',
+                    something_else: 'something_else'
+                  },
+                  {
+                    something: 'something',
+                    single_file: 'single_file_3',
+                    something_else: 'something_else'
+                  }
+                ],     
+              },
+              something_else: 'something_else'
+            },
+            {
+              something: 'something',
+              file_array_wrapper : ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
+              something_else: 'something_else'
+            },
+            {
+              something: 'something',
+              file_array_wrapper : ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
+              something_else: 'something_else'
+            }
+          ]
+        }
+      },
+      ...systemUidMock
+    };
+    const result = cleanAssets(entry);
+    expect(result).to.deep.equal(expectedResult);
+    done();
   })
 })
 
