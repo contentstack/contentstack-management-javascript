@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "./dist/node/contentstack-management.js",
   "browser": "./dist/web/contentstack-management.js",
@@ -66,7 +66,9 @@
     "@babel/preset-env": "^7.18.2",
     "@babel/register": "^7.17.7",
     "@babel/runtime": "^7.18.3",
+    "@types/chai": "^4.3.11",
     "@types/jest": "^28.1.0",
+    "@types/lodash": "^4.14.202",
     "@types/mocha": "^7.0.2",
     "axios-mock-adapter": "^1.21.1",
     "babel-loader": "^8.2.5",
