@@ -25,12 +25,3 @@ export interface ACL extends AnyProperty {
     create?: boolean
     update?: boolean
 }
-
-export interface Schema extends AnyProperty {
-    display_name: string 
-    uid: string
-    data_type: string
-    mandatory?: boolean
-    unique?: boolean
-    field_metadata?: AnyProperty
-}
