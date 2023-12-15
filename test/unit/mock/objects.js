@@ -418,6 +418,22 @@ const deliveryTokenMock = {
   type: 'delivery'
 }
 
+const managementTokenMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  name: 'Test',
+  scope: [{
+    environments: [environmentMock],
+    module: 'environment',
+    acl: {
+      read: true
+    }
+  }],
+  description: 'description',
+  token: 'token',
+  type: 'management'
+}
+
 const userAssignments = {
   ...stackHeadersMock,
   content_type: 'CT_UID',
@@ -873,5 +889,6 @@ export {
   stackRoleMappingMock,
   mockCollection,
   entryMockCollection,
-  checkSystemFields
+  checkSystemFields,
+  managementTokenMock
 }
