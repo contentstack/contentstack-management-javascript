@@ -12,6 +12,7 @@ import { createBranchAlias, deleteBranchAlias, queryBranchAlias } from './branch
 import { createLocale, deleteLocale, getLocale } from './locale';
 import { createEnvironment, deleteEnvironment, getEnvironment, updateEnvironment } from './environment';
 import { createDeliveryToken, deleteDeliveryToken, deliveryToken, queryDeliveryToken } from './deliveryToken';
+import { createManagementToken, deleteManagementToken, managementToken, queryManagementToken } from './managementToken';
 import { createRole, findAllRole, getRole, getRoleUid, queryRole } from './role';
 import { createApp, deleteApp, fetchApp, installation, updateApp, updateAuth } from './app';
 import { deployment, hosting } from './hosting';
@@ -78,6 +79,11 @@ describe('Typescript API test', () => {
     queryDeliveryToken(stack.deliveryToken())
     deliveryToken(stack)
     deleteDeliveryToken(stack)
+
+    createManagementToken(stack.managementToken())
+    queryManagementToken(stack.managementToken())
+    managementToken(stack)
+    deleteManagementToken(stack)
 
     findAllRole(stack.role())
     createRole(stack.role())
