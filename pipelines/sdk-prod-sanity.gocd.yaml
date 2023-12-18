@@ -1,6 +1,6 @@
 format_version: 3
 pipelines:
-  sdk-stage-sanity:
+  sdk-prod-sanity:
     group: sdk
     label_template: ${git[:7]}
     lock_behavior: none
@@ -10,7 +10,7 @@ pipelines:
         git: git@github.com:contentstack/contentstack-management-javascript.git
         shallow_clone: true
         auto_update: true
-        branch: next
+        branch: main
     stages:
       - sanity:
           fetch_materials: true
