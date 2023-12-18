@@ -15,7 +15,7 @@ describe('Entry api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('Create Entry in Single ', done => {
+  it('should create Entry in Single ', done => {
     var entry = {
       title: 'Sample Entry',
       url: 'sampleEntry'
@@ -31,7 +31,7 @@ describe('Entry api Test', () => {
       })
       .catch(done)
   })
-  it('Entry fetch with Content Type', done => {
+  it('should entry fetch with Content Type', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .fetch({ include_content_type: true })
       .then((entryResponse) => {
@@ -42,7 +42,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Localize entry with title update', done => {
+  it('should localize entry with title update', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .fetch()
       .then((entry) => {
@@ -59,7 +59,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Create Entries for Multiple page', done => {
+  it('should create Entries for Multiple page', done => {
     makeEntry(multiPageCT.content_type.uid)
       .create({ entry: entryFirst })
       .then((entry) => {
@@ -74,7 +74,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Create Entries 2 for Multiple page', done => {
+  it('should create Entries 2 for Multiple page', done => {
     makeEntry(multiPageCT.content_type.uid)
       .create({ entry: entrySecond })
       .then((entry) => {
@@ -90,7 +90,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Create Entries 3 for Multiple page', done => {
+  it('should create Entries 3 for Multiple page', done => {
     makeEntry(multiPageCT.content_type.uid)
       .create({ entry: entryThird })
       .then((entry) => {
@@ -106,7 +106,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Get all Entry', done => {
+  it('should get all Entry', done => {
     makeEntry(multiPageCT.content_type.uid)
       .query({ include_count: true, include_content_type: true }).find()
       .then((collection) => {
@@ -121,7 +121,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Get all Entry from tag', done => {
+  it('should get all Entry from tag', done => {
     makeEntry(multiPageCT.content_type.uid)
       .query({ include_count: true, query: { tags: entrySecond.tags[0] } }).find()
       .then((collection) => {
@@ -135,7 +135,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Publish Entry', done => {
+  it('should publish Entry', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .publish({ publishDetails: {
         locales: ['en-us'],
@@ -148,7 +148,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Publish localized Entry to locales', done => {
+  it('should publish localized Entry to locales', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .publish({ publishDetails: {
         locales: ['hi-in', 'en-at'],
@@ -162,7 +162,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Unpublish localized entry', done => {
+  it('should unpublish localized entry', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .unpublish({ publishDetails: {
         locales: ['hi-in', 'en-at'],
@@ -176,7 +176,7 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
-  it('Import Entry', done => {
+  it('should import Entry', done => {
     makeEntry(multiPageCT.content_type.uid)
       .import({
         entry: path.join(__dirname, '../mock/entry.json')

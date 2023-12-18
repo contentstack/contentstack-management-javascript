@@ -24,7 +24,7 @@ describe('Stack api Test', () => {
         }
   }
 
-  it('Create Stack', done => {
+  it('should create Stack', done => {
     client.stack()
       .create(newStack, { organization_uid: orgID })
       .then((stack) => {
@@ -39,7 +39,7 @@ describe('Stack api Test', () => {
       .catch(done)
   })
 
-  it('Fetch Stack details', done => {
+  it('should fetch Stack details', done => {
     client.stack({ api_key: stacks.api_key })
       .fetch()
       .then((stack) => {
@@ -52,7 +52,7 @@ describe('Stack api Test', () => {
       .catch(done)
   })
 
-  it('Update Stack details', done => {
+  it('should update Stack details', done => {
     const name = 'My New Stack Update Name'
     const description = 'My New description stack'
     client.stack({ api_key: stacks.api_key })
@@ -68,7 +68,7 @@ describe('Stack api Test', () => {
       .catch(done)
   })
 
-  it('Get all users of stack', done => {
+  it('should get all users of stack', done => {
     client.stack({ api_key: stacks.api_key })
       .users()
       .then((response) => {
@@ -78,7 +78,7 @@ describe('Stack api Test', () => {
       .catch(done)
   })
 
-  it('Get stack settings', done => {
+  it('should get stack settings', done => {
     client.stack({ api_key: stacks.api_key })
       .settings()
       .then((response) => {
@@ -90,7 +90,7 @@ describe('Stack api Test', () => {
       .catch(done)
   })
 
-  it('Add stack settings', done => {
+  it('should add stack settings', done => {
     client.stack({ api_key: stacks.api_key })
       .addSettings({ samplevariable: 'too' })
       .then((response) => {
@@ -100,7 +100,7 @@ describe('Stack api Test', () => {
       .catch(done)
   })
 
-  it('Reset stack settings', done => {
+  it('should reset stack settings', done => {
     client.stack({ api_key: stacks.api_key })
       .resetSettings()
       .then((response) => {
@@ -112,7 +112,7 @@ describe('Stack api Test', () => {
       .catch(done)
   })
 
-  it('Get all stack', done => {
+  it('should get all stack', done => {
     client.stack()
       .query()
       .find()
@@ -128,7 +128,7 @@ describe('Stack api Test', () => {
       .catch(done)
   })
 
-  it('Get query stack', done => {
+  it('should get query stack', done => {
     client.stack()
       .query({ query: { name: 'My New Stack Update Name' } })
       .find()
@@ -143,7 +143,7 @@ describe('Stack api Test', () => {
       .catch(done)
   })
 
-  it('Find one stack', done => {
+  it('should find one stack', done => {
     client.stack()
       .query({ query: { name: 'My New Stack Update Name' } })
       .findOne()
