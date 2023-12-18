@@ -5,6 +5,9 @@ pipelines:
     label_template: ${git[:7]}
     lock_behavior: none
     display_order: -1
+    timer:
+      spec: 00 5,13 * * MON-FRI
+      only_on_changes: false
     materials:
       git:
         git: git@github.com:contentstack/contentstack-management-javascript.git
