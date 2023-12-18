@@ -39,6 +39,7 @@ jspm_packages/
 mochawesome-report/
 coverage/
 test/utility/dataFiles/
+test/sanity-check/utility/dataFiles/
 report.json
 
 # TypeScript v1 declaration files
