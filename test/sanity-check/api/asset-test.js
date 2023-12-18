@@ -16,7 +16,7 @@ describe('Assets api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('Asset Upload ', done => {
+  it('should asset Upload ', done => {
     const asset = {
       upload: path.join(__dirname, '../mock/customUpload.html'),
       title: 'customasset',
@@ -38,14 +38,14 @@ describe('Assets api Test', () => {
       .catch(done)
   })
 
-  it('Download asset from URL.', done => {
+  it('should download asset from URL.', done => {
     makeAsset().download({ url: assetURL, responseType: 'stream' })
       .then((response) => {
         writeDownloadedFile(response, 'asset1')
         done()
       }).catch(done)
   })
-  it('Download asset from fetch details ', done => {
+  it('should download asset from fetch details ', done => {
     makeAsset(assetUID).fetch()
       .then((asset) => asset.download({ responseType: 'stream' }))
       .then((response) => {
@@ -54,7 +54,7 @@ describe('Assets api Test', () => {
       }).catch(done)
   })
 
-  it('Create folder ', done => {
+  it('should create folder ', done => {
     makeAsset().folder().create({ asset: { name: 'Sample Folder' } })
       .then((asset) => {
         folderUID = asset.uid
@@ -66,7 +66,7 @@ describe('Assets api Test', () => {
       .catch(done)
   })
 
-  it('Asset Upload in folder', done => {
+  it('should asset Upload in folder', done => {
     const asset = {
       upload: path.join(__dirname, '../mock/customUpload.html'),
       title: 'customasset in Folder',
@@ -89,7 +89,7 @@ describe('Assets api Test', () => {
       .catch(done)
   })
 
-  it('Asset Upload in folder with contenttype', done => {
+  it('should asset Upload in folder with contenttype', done => {
     const asset = {
       upload: path.join(__dirname, '../mock/berries.jfif'),
       title: 'customasset2 in Folder',
@@ -112,7 +112,7 @@ describe('Assets api Test', () => {
       })
       .catch(done)
   })
-  it('Replace asset ', done => {
+  it('should replace asset ', done => {
     const asset = {
       upload: path.join(__dirname, '../mock/upload.html')
     }
@@ -127,7 +127,7 @@ describe('Assets api Test', () => {
       .catch(done)
   })
 
-  it('Fetch and Update asset details', done => {
+  it('should fetch and Update asset details', done => {
     makeAsset(assetUID)
       .fetch()
       .then((asset) => {
@@ -145,7 +145,7 @@ describe('Assets api Test', () => {
       .catch(done)
   })
 
-  it('Publish Asset', done => {
+  it('should publish Asset', done => {
     makeAsset(publishAssetUID)
       .publish({ publishDetails: {
         locales: ['hi-in', 'en-us'],
@@ -158,7 +158,7 @@ describe('Assets api Test', () => {
       .catch(done)
   })
 
-  it('Unpublish Asset', done => {
+  it('should unpublish Asset', done => {
     makeAsset(publishAssetUID)
       .unpublish({ publishDetails: {
         locales: ['hi-in', 'en-us'],
@@ -171,7 +171,7 @@ describe('Assets api Test', () => {
       .catch(done)
   })
 
-  it('Delete asset', done => {
+  it('should delete asset', done => {
     makeAsset(assetUID)
       .delete()
       .then((data) => {
@@ -181,7 +181,7 @@ describe('Assets api Test', () => {
       .catch(done)
   })
 
-  it('Query to fetch all asset', done => {
+  it('should query to fetch all asset', done => {
     makeAsset()
       .query()
       .find()
@@ -196,7 +196,7 @@ describe('Assets api Test', () => {
       .catch(done)
   })
 
-  it('Query to fetch title match asset', done => {
+  it('should query to fetch title match asset', done => {
     makeAsset()
       .query({ query: { title: 'Update title' } })
       .find()
