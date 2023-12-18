@@ -19,6 +19,7 @@ import { Role, Roles } from "./role";
 import { Webhook, Webhooks } from "./webhook";
 import { Workflow, Workflows } from "./workflow";
 import { Taxonomy, Taxonomies } from "./taxonomy";
+import { ManagementToken, ManagementTokens } from "./managementToken";
 
 export interface StackConfig {
     api_key:string
@@ -96,4 +97,7 @@ export interface Stack extends SystemFields {
 
     taxonomy(): Taxonomies
     taxonomy(uid: string): Taxonomy
+
+    managementToken(): ManagementTokens
+    managementToken(uid: string): ManagementToken
 }
