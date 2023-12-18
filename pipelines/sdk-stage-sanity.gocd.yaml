@@ -13,7 +13,7 @@ pipelines:
         branch: next
     stages:
       - sanity:
-          fetch_materials: false
+          fetch_materials: true
           keep_artifacts: false
           clean_workspace: false
           approval:
@@ -33,16 +33,9 @@ pipelines:
                 - exec:
                     arguments:
                       - -c
-                      - ls && pwd && sleep 900
-                    command: sh              
-                - exec:
-                    working_directory: contentstack-management-javascript
-                    arguments:
-                      - -c
                       - npm install
                     command: sh
                 - exec:
-                    working_directory: contentstack-management-javascript
                     arguments:
                       - -c
                       - npm run test:sanity
