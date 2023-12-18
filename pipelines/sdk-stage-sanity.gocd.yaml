@@ -31,7 +31,6 @@ pipelines:
               timeout: 0
               tasks:
                 - exec:
-                    working_directory: contentstack-management-javascript
                     arguments:
                       - -c
                       - ls && pwd && sleep 900
