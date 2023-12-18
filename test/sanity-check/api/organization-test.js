@@ -13,7 +13,7 @@ describe('Organization api test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('Fetch all organizations', done => {
+  it('should fetch all organizations', done => {
     client.organization().fetchAll()
       .then((response) => {
         for (const index in response.items) {
@@ -26,7 +26,7 @@ describe('Organization api test', () => {
       .catch(done)
   })
 
-  it('Get Current user info test', done => {
+  it('should get Current user info test', done => {
     client.getUser({ include_orgs: true, include_orgs_roles: true, include_stack_roles: true, include_user_settings: true }).then((user) => {
       for (const index in user.organizations) {
         const organizations = user.organizations[index]
@@ -40,7 +40,7 @@ describe('Organization api test', () => {
       .catch(done)
   })
 
-  it('Fetch organization', done => {
+  it('should fetch organization', done => {
     organization.fetch()
       .then((organizations) => {
         expect(organizations.name).to.be.equal('CLI Dev and Automation', 'Organization name dose not match')
@@ -49,7 +49,7 @@ describe('Organization api test', () => {
       .catch(done)
   })
 
-  it('Get all stacks in an Organization', done => {
+  it('should get all stacks in an Organization', done => {
     organization.stacks()
       .then((response) => {
         for (const index in response.items) {
@@ -62,7 +62,7 @@ describe('Organization api test', () => {
       .catch(done)
   })
   // need to test with transfer ownership
-  it.skip('Transfer Organization Ownership', done => {
+  it.skip('should transfer Organization Ownership', done => {
     organization.transferOwnership('em@em.com')
       .then((data) => {
         expect(data.notice).to.be.equal('Email has been successfully sent to the user.', 'Message does not match')
@@ -75,7 +75,7 @@ describe('Organization api test', () => {
       })
   })
 
-  it('Get all roles in an organization', done => {
+  it('should get all roles in an organization', done => {
     organization.roles()
       .then((roles) => {
         for (const i in roles.items) {
@@ -88,7 +88,7 @@ describe('Organization api test', () => {
       .catch(done)
   })
 
-  it('Get all invitations in an organization', done => {
+  it('should get all invitations in an organization', done => {
     organization.getInvitations({ include_count: true })
       .then((response) => {
         expect(response.count).to.not.equal(null, 'Failed Transfer Organization Ownership')
