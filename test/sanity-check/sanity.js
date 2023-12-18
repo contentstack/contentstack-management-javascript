@@ -1,3 +1,7 @@
 require('./api/user-test')
+require('./api/organization-test')
+require('./api/stack-test')
 require('./api/contentType-test')
+require('./api/asset-test')
+require('./api/entry-test')
 require('./api/contentType-delete-test')
