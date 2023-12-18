@@ -1,0 +1,42 @@
+format_version: 3
+pipelines:
+  sdk-stage-sanity:
+    group: sdk
+    label_template: ${git[:7]}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git:
+        git: git@github.com:contentstack/contentstack-management-javascript.git
+        shallow_clone: true
+        auto_update: true
+        branch: next
+    stages:
+      - sanity:
+          fetch_materials: false
+          keep_artifacts: false
+          clean_workspace: false
+          approval:
+            type: success
+            allow_only_on_success: false
+          secure_variables:
+            HOST: AES:9OPdody14ZUdz7KhJEZSFQ==:Sc766oAo+M44igMM0neq8KHHNvN/iaYp4vM7Sy6nA/8=
+            EMAIL: AES:q4TVIKCKxqj1y4ZRG3NVRg==:Aak+wwMtZqUZjIyCxz1zLffhF3HBuYaF1WqSXGGM8jU=
+            PASSWORD: AES:epwWFhOuieLEEpqXRidn/Q==:uqoIdMQPzUqDTZ8idUaNnHq9VlV0AG0iFlCGgSomVWE=
+            ORGANIZATION: AES:d710nHeFa8G20/k8YVXpAg==:mPIxDHLw8pQKNFfNb+hnPHUNUYcfEr77Bm6BcVzbW5s=
+            API_KEY: AES:sxDdzpfhRDXWaAnJVTDi5Q==:zDXsdVQW6ZR+1mGAOrddUtlaSxt95K3SPRja0YWNwyk=
+          jobs:
+            sanity:
+              elastic_profile_id: k8s-cicd-npm18-build-coverage
+              timeout: 0
+              tasks:
+                - exec:
+                    arguments:
+                      - -c
+                      - npm install
+                    command: sh
+                - exec:
+                    arguments:
+                      - -c
+                      - npm run test:sanity
+                    command: sh
