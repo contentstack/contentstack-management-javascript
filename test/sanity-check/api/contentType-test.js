@@ -15,7 +15,7 @@ describe('Content Type api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('Create Single page ContentType Schema', done => {
+  it('should create Single page ContentType Schema', done => {
     makeContentType()
       .create(singlepageCT)
       .then((contentType) => {
@@ -26,7 +26,7 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('Create Multi page ContentType Schema', done => {
+  it('should create Multi page ContentType Schema', done => {
     makeContentType()
       .create(multiPageCT)
       .then((contentType) => {
@@ -38,7 +38,7 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('Get all ContentType', done => {
+  it('should get all ContentType', done => {
     makeContentType()
       .query()
       .find()
@@ -53,7 +53,7 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('Query ContentType title', done => {
+  it('should query ContentType title', done => {
     makeContentType()
       .query({ query: { title: singlepageCT.content_type.title } })
       .find()
@@ -70,7 +70,7 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('Fetch ContentType from uid', done => {
+  it('should fetch ContentType from uid', done => {
     makeContentType(multiPageCT.content_type.uid)
       .fetch()
       .then((contentType) => {
@@ -81,7 +81,7 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('Fetch and Update ContentType schema', done => {
+  it('should fetch and Update ContentType schema', done => {
     makeContentType(multiPageCTUid)
       .fetch()
       .then((contentType) => {
@@ -95,7 +95,7 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('Import content type', done => {
+  it('should import content type', done => {
     makeContentType().import({
       content_type: path.join(__dirname, '../mock/contentType.json')
     })
@@ -107,7 +107,7 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('Delete ContentTypes', done => {
+  it('should delete ContentTypes', done => {
     makeContentType(importCTUid)
       .delete()
       .then((contentType) => {
