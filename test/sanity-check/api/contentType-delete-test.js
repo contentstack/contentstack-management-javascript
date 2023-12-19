@@ -12,7 +12,7 @@ describe('Content Type delete api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('Content Type delete', done => {
+  it('should content Type delete', done => {
     makeContentType(multiPageCT.content_type.uid)
       .delete().then((data) => {
         expect(data.notice).to.be.equal('Content Type deleted successfully.')
