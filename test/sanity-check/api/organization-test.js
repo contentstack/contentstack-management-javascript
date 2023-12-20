@@ -43,7 +43,7 @@ describe('Organization api test', () => {
   it('should fetch organization', done => {
     organization.fetch()
       .then((organizations) => {
-        expect(organizations.name).to.be.equal('CLI Dev and Automation', 'Organization name dose not match')
+        expect(organizations.name).to.be.equal('CLI Branches', 'Organization name dose not match')
         done()
       })
       .catch(done)
