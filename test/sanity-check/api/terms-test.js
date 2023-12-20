@@ -37,7 +37,6 @@ var termUid = term.term.uid
 describe('Terms API Test', () => {
   beforeEach(() => {
     const user = jsonReader('loggedinuser.json')
-    stack = jsonReader('stack.json')
     client = contentstackClient(user.authtoken)
   })
   it('should create taxonomy', async () => {
