@@ -176,7 +176,7 @@ describe('Organization Test', () => {
 
   it('Organization Transfer Ownership', done => {
     const mock = new MockAdapter(Axios)
-    mock.onPost(`/organizations/${systemUidMock.uid}/transfer_ownership`).reply(200, { ...noticeMock })
+    mock.onPost(`/organizations/${systemUidMock.uid}/transfer-ownership`).reply(200, { ...noticeMock })
     makeOrganization({
       organization: {
         ...systemUidMock,
