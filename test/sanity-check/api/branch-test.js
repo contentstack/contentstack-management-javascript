@@ -42,13 +42,28 @@ describe('Branch api Test', () => {
       .catch(done)
   })
 
-  it('should fetch stage branch from branch uid', done => {
+  it('should fetch main branch from branch uid', done => {
     makeBranch(branch.uid)
       .fetch()
       .then((response) => {
         expect(response.uid).to.be.equal(branch.uid)
         expect(response.urlPath).to.be.equal(`/stacks/branches/${branch.uid}`)
         expect(response.source).to.be.equal(branch.source)
+        expect(response.alias).to.not.equal(undefined)
+        expect(response.delete).to.not.equal(undefined)
+        expect(response.fetch).to.not.equal(undefined)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should fetch staging branch from branch uid', done => {
+    makeBranch(stageBranch.uid)
+      .fetch()
+      .then((response) => {
+        expect(response.uid).to.be.equal(stageBranch.uid)
+        expect(response.urlPath).to.be.equal(`/stacks/branches/${stageBranch.uid}`)
+        expect(response.source).to.be.equal(stageBranch.source)
         expect(response.alias).to.not.equal(undefined)
         expect(response.delete).to.not.equal(undefined)
         expect(response.fetch).to.not.equal(undefined)
