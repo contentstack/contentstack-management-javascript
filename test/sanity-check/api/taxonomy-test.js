@@ -4,7 +4,6 @@ import { jsonReader } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
-var stack = {}
 
 const taxonomy = {
   uid: 'taxonomy_testing',
@@ -17,7 +16,6 @@ var taxonomyUID = ''
 describe('taxonomy api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
-    stack = jsonReader('stack.json')
     client = contentstackClient(user.authtoken)
   })
 
@@ -82,5 +80,5 @@ describe('taxonomy api Test', () => {
 })
 
 function makeTaxonomy (uid = null) {
-  return client.stack({ api_key: stack.api_key }).taxonomy(uid)
+  return client.stack({ api_key: process.env.API_KEY }).taxonomy(uid)
 }
