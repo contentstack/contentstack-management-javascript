@@ -12,8 +12,10 @@ pipelines:
       git:
         git: git@github.com:contentstack/contentstack-management-javascript.git
         shallow_clone: true
-        auto_update: false
+        auto_update: true
         branch: next
+        blacklist:
+          - '**/*'
     stages:
       - sanity:
           fetch_materials: true
