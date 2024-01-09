@@ -12,31 +12,30 @@ describe('Branch api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('should return master branch when query is called', done => {
+  it('should create Branch from staging', done => {
     makeBranch()
-      .query()
-      .find()
+      .create({ branch: devBranch })
       .then((response) => {
-        expect(response.items.length).to.be.equal(1)
-        var item = response.items[0]
-        expect(item.urlPath).to.be.equal(`/stacks/branches/${item.uid}`)
-        expect(item.delete).to.not.equal(undefined)
-        expect(item.fetch).to.not.equal(undefined)
+        expect(response.uid).to.be.equal(devBranch.uid)
+        expect(response.urlPath).to.be.equal(`/stacks/branches/${devBranch.uid}`)
+        expect(response.source).to.be.equal(devBranch.source)
+        expect(response.alias).to.not.equal(undefined)
+        expect(response.delete).to.not.equal(undefined)
+        expect(response.fetch).to.not.equal(undefined)
         done()
       })
       .catch(done)
   })
 
-  it('should create staging branch', done => {
+  it('should return master branch when query is called', done => {
     makeBranch()
-      .create({ branch: stageBranch })
+      .query()
+      .find()
       .then((response) => {
-        expect(response.uid).to.be.equal(stageBranch.uid)
-        expect(response.urlPath).to.be.equal(`/stacks/branches/${stageBranch.uid}`)
-        expect(response.source).to.be.equal(stageBranch.source)
-        expect(response.alias).to.not.equal(undefined)
-        expect(response.delete).to.not.equal(undefined)
-        expect(response.fetch).to.not.equal(undefined)
+        var item = response.items[0]
+        expect(item.urlPath).to.be.equal(`/stacks/branches/${item.uid}`)
+        expect(item.delete).to.not.equal(undefined)
+        expect(item.fetch).to.not.equal(undefined)
         done()
       })
       .catch(done)
@@ -64,21 +63,6 @@ describe('Branch api Test', () => {
         expect(response.uid).to.be.equal(stageBranch.uid)
         expect(response.urlPath).to.be.equal(`/stacks/branches/${stageBranch.uid}`)
         expect(response.source).to.be.equal(stageBranch.source)
-        expect(response.alias).to.not.equal(undefined)
-        expect(response.delete).to.not.equal(undefined)
-        expect(response.fetch).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
-  })
-
-  it('should create Branch from staging', done => {
-    makeBranch()
-      .create({ branch: devBranch })
-      .then((response) => {
-        expect(response.uid).to.be.equal(devBranch.uid)
-        expect(response.urlPath).to.be.equal(`/stacks/branches/${devBranch.uid}`)
-        expect(response.source).to.be.equal(devBranch.source)
         expect(response.alias).to.not.equal(undefined)
         expect(response.delete).to.not.equal(undefined)
         expect(response.fetch).to.not.equal(undefined)
