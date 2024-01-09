@@ -12,7 +12,7 @@ pipelines:
       git:
         git: git@github.com:contentstack/contentstack-management-javascript.git
         shallow_clone: true
-        auto_update: true
+        auto_update: false
         branch: next
     stages:
       - sanity:
