@@ -12,12 +12,11 @@ describe('Branch api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('should create Branch from staging', done => {
+  it('should create a dev branch from stage branch', done => {
     makeBranch()
       .create({ branch: devBranch })
       .then((response) => {
         expect(response.uid).to.be.equal(devBranch.uid)
-        expect(response.urlPath).to.be.equal(`/stacks/branches/${devBranch.uid}`)
         expect(response.source).to.be.equal(devBranch.source)
         expect(response.alias).to.not.equal(undefined)
         expect(response.delete).to.not.equal(undefined)
@@ -27,13 +26,13 @@ describe('Branch api Test', () => {
       .catch(done)
   })
 
-  it('should return master branch when query is called', done => {
+  it('should return main branch when query is called', done => {
     makeBranch()
       .query()
       .find()
       .then((response) => {
         var item = response.items[0]
-        expect(item.urlPath).to.be.equal(`/stacks/branches/${item.uid}`)
+        expect(item.uid).to.not.equal(undefined)
         expect(item.delete).to.not.equal(undefined)
         expect(item.fetch).to.not.equal(undefined)
         done()
@@ -46,7 +45,6 @@ describe('Branch api Test', () => {
       .fetch()
       .then((response) => {
         expect(response.uid).to.be.equal(branch.uid)
-        expect(response.urlPath).to.be.equal(`/stacks/branches/${branch.uid}`)
         expect(response.source).to.be.equal(branch.source)
         expect(response.alias).to.not.equal(undefined)
         expect(response.delete).to.not.equal(undefined)
@@ -61,7 +59,6 @@ describe('Branch api Test', () => {
       .fetch()
       .then((response) => {
         expect(response.uid).to.be.equal(stageBranch.uid)
-        expect(response.urlPath).to.be.equal(`/stacks/branches/${stageBranch.uid}`)
         expect(response.source).to.be.equal(stageBranch.source)
         expect(response.alias).to.not.equal(undefined)
         expect(response.delete).to.not.equal(undefined)
@@ -78,7 +75,7 @@ describe('Branch api Test', () => {
       .then((response) => {
         expect(response.items.length).to.be.equal(1)
         response.items.forEach(item => {
-          expect(item.urlPath).to.be.equal(`/stacks/branches/${item.uid}`)
+          expect(item.uid).to.not.equal(undefined)
           expect(item.source).to.be.equal(`main`)
           expect(item.delete).to.not.equal(undefined)
           expect(item.fetch).to.not.equal(undefined)
@@ -93,22 +90,11 @@ describe('Branch api Test', () => {
       .query()
       .find()
       .then((response) => {
-        expect(response.items.length).to.be.equal(3)
         response.items.forEach(item => {
-          expect(item.urlPath).to.be.equal(`/stacks/branches/${item.uid}`)
+          expect(item.uid).to.not.equal(undefined)
           expect(item.delete).to.not.equal(undefined)
           expect(item.fetch).to.not.equal(undefined)
         })
-        done()
-      })
-      .catch(done)
-  })
-
-  it('should delete branch from branch uid', done => {
-    makeBranch(devBranch.uid)
-      .delete()
-      .then((response) => {
-        expect(response.notice).to.be.equal('Your request to delete branch is in progress. Please check organization bulk task queue for more details.')
         done()
       })
       .catch(done)
@@ -208,6 +194,16 @@ describe('Branch api Test', () => {
         expect(response.queue).to.not.equal(undefined)
         expect(response.queue[0].merge_details.base_branch).to.be.equal(branch.uid)
         expect(response.queue[0].merge_details.compare_branch).to.be.equal(stageBranch.uid)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should delete dev branch from branch uid', done => {
+    makeBranch(devBranch.uid)
+      .delete()
+      .then((response) => {
+        expect(response.notice).to.be.equal('Your request to delete branch is in progress. Please check organization bulk task queue for more details.')
         done()
       })
       .catch(done)

@@ -31,6 +31,7 @@
     "buildweb": "webpack --config webpack/webpack.web.js --mode production",
     "test": "npm run test:api && npm run test:unit",
     "test:sanity": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/sanity-check/sanity.js -t 30000 --reporter mochawesome --require babel-polyfill",
+    "test:sanity-report": "node sanity-report.mjs",
     "test:api": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/test.js -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:unit": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/unit/index.js -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:unit:report:json": "BABEL_ENV=test nyc --reporter=clover --reporter=text mocha --require @babel/register ./test/unit/index.js -t 30000 --reporter json --reporter-options output=report.json  --require babel-polyfill",
@@ -50,6 +51,7 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
+    "@slack/bolt": "^3.17.0",
     "axios": "^1.6.5",
     "form-data": "^3.0.1",
     "lodash": "^4.17.21",
