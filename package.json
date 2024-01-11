@@ -51,6 +51,7 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
+    "@slack/bolt": "^3.17.0",
     "axios": "^1.6.5",
     "form-data": "^3.0.1",
     "lodash": "^4.17.21",
@@ -68,7 +69,6 @@
     "@babel/preset-env": "^7.18.2",
     "@babel/register": "^7.17.7",
     "@babel/runtime": "^7.18.3",
-    "@slack/bolt": "^3.17.0",
     "@types/chai": "^4.3.11",
     "@types/jest": "^28.1.0",
     "@types/lodash": "^4.14.202",
