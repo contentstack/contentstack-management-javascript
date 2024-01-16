@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "./dist/node/contentstack-management.js",
   "browser": "./dist/web/contentstack-management.js",
@@ -31,6 +31,7 @@
     "buildweb": "webpack --config webpack/webpack.web.js --mode production",
     "test": "npm run test:api && npm run test:unit",
     "test:sanity": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/sanity-check/sanity.js -t 30000 --reporter mochawesome --require babel-polyfill",
+    "test:sanity-report": "node sanity-report.mjs",
     "test:api": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/test.js -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:unit": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/unit/index.js -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:unit:report:json": "BABEL_ENV=test nyc --reporter=clover --reporter=text mocha --require @babel/register ./test/unit/index.js -t 30000 --reporter json --reporter-options output=report.json  --require babel-polyfill",
@@ -38,7 +39,7 @@
     "test:debug": "BABEL_ENV=test mocha debug --require @babel/register ./test",
     "lint": "eslint lib test",
     "format": "eslint --fix lib test",
-    "prepare": "npm run build && npm run generate:docs",
+    "prepare": "npm run build",
     "pretest": "rimraf coverage && npm run lint",
     "precommit": "npm run lint",
     "prepush": "npm run test:unit",
@@ -50,7 +51,8 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.6.0",
+    "@slack/bolt": "^3.17.0",
+    "axios": "^1.6.5",
     "form-data": "^3.0.1",
     "lodash": "^4.17.21",
     "qs": "^6.11.2"
@@ -98,7 +100,6 @@
     "rimraf": "^2.7.1",
     "sinon": "^7.3.2",
     "string-replace-loader": "^3.1.0",
-    "taffydb": "^2.7.3",
     "ts-jest": "^28.0.3",
     "typescript": "^4.7.2",
     "webpack": "^5.72.1",
