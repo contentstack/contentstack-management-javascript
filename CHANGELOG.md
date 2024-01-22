@@ -1,8 +1,10 @@
 # Changelog
+## [v1.14.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.14.2) (2024-11-23)
+ - Fixes
+   - Fix for validating the data while updating entries with assets
 ## [v1.13.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.13.1) (2023-12-13)
  - Fixes
    - Fix for issue while updating entries with assets
-
 ## [v1.14.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.14.0) (2023-12-19)
  - Feature
    - Management token feature added
