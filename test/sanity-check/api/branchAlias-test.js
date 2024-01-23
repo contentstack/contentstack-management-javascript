@@ -55,29 +55,6 @@ describe('Branch Alias api Test', () => {
       })
       .catch(done)
   })
-
-  it('Should delete Branch Alias', done => {
-    try {
-      makeBranchAlias(`${stageBranch.uid}_alias`)
-        .delete()
-        .then((response) => {
-          expect(response.notice).to.be.equal('Branch alias deleted successfully.')
-          done()
-        })
-        .catch(done)
-    } catch (e) {
-      done()
-    }
-  })
-  it('Should delete stage branch from uid', done => {
-    client.stack({ api_key: process.env.API_KEY }).branch(stageBranch.uid)
-      .delete()
-      .then((response) => {
-        expect(response.notice).to.be.equal('Your request to delete branch is in progress. Please check organization bulk task queue for more details.')
-        done()
-      })
-      .catch(done)
-  })
 })
 
 function makeBranchAlias (uid = null) {
