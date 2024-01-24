@@ -24,7 +24,7 @@ describe('Extension api Test', () => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
   })
-  it('Create Custom field with source URL', done => {
+  it('should create Custom field with source URL', done => {
     makeExtension()
       .create(customFieldURL)
       .then((extension) => {
@@ -39,7 +39,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Create Custom field with source Code', done => {
+  it('should create Custom field with source Code', done => {
     makeExtension()
       .create(customFieldSRC)
       .then((extension) => {
@@ -54,7 +54,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Create Custom widget with source URL', done => {
+  it('should create Custom widget with source URL', done => {
     makeExtension()
       .create(customWidgetURL)
       .then((extension) => {
@@ -69,7 +69,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Create Custom widget with source Code', done => {
+  it('should create Custom widget with source Code', done => {
     makeExtension()
       .create(customWidgetSRC)
       .then((extension) => {
@@ -84,7 +84,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Create Custom dashboard with source URL', done => {
+  it('should create Custom dashboard with source URL', done => {
     makeExtension()
       .create(customDashboardURL)
       .then((extension) => {
@@ -99,7 +99,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Create Custom dashboard with source Code', done => {
+  it('should create Custom dashboard with source Code', done => {
     makeExtension()
       .create(customDashboardSRC)
       .then((extension) => {
@@ -114,7 +114,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('fetch and Update Custom fields', done => {
+  it('should fetch and Update Custom fields', done => {
     makeExtension(customFieldUID)
       .fetch()
       .then((extension) => {
@@ -136,7 +136,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('fetch and Update Custom Widget', done => {
+  it('should fetch and Update Custom Widget', done => {
     makeExtension(customWidgetUID)
       .fetch()
       .then((extension) => {
@@ -158,7 +158,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('fetch and Update Custom dashboard', done => {
+  it('should fetch and Update Custom dashboard', done => {
     makeExtension(customDashboardUID)
       .fetch()
       .then((extension) => {
@@ -180,7 +180,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Query Custom field', done => {
+  it('should query Custom field', done => {
     makeExtension()
       .query({ query: { type: 'field' } })
       .find()
@@ -195,7 +195,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Query Custom widget', done => {
+  it('should query Custom widget', done => {
     makeExtension()
       .query({ query: { type: 'widget' } })
       .find()
@@ -210,7 +210,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Query Custom dashboard', done => {
+  it('should query Custom dashboard', done => {
     makeExtension()
       .query({ query: { type: 'dashboard' } })
       .find()
@@ -218,14 +218,14 @@ describe('Extension api Test', () => {
         extensions.items.forEach(extension => {
           expect(extension.uid).to.be.not.equal(null)
           expect(extension.title).to.be.not.equal(null)
-          expect(extension.type).to.be.equal('dashboard')
+          expect(extension.type).to.be.equal('should dashboard')
         })
         done()
       })
       .catch(done)
   })
 
-  it('Upload Custom field', done => {
+  it('should upload Custom field', done => {
     makeExtension()
       .upload({
         title: 'Custom field Upload',
@@ -247,7 +247,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Upload Custom widget', done => {
+  it('should upload Custom widget', done => {
     makeExtension()
       .upload({
         title: 'Custom widget Upload',
@@ -268,7 +268,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Upload dashboard', done => {
+  it('should upload dashboard', done => {
     makeExtension()
       .upload({
         title: 'Custom dashboard Upload',
@@ -293,7 +293,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Delete Custom field', done => {
+  it('should delete Custom field', done => {
     makeExtension(customFieldUID)
       .delete()
       .then((data) => {
@@ -303,7 +303,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Delete Custom widget', done => {
+  it('should delete Custom widget', done => {
     makeExtension(customWidgetUID)
       .delete()
       .then((data) => {
@@ -313,7 +313,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Delete Custom dashboard', done => {
+  it('should delete Custom dashboard', done => {
     makeExtension(customDashboardUID)
       .delete()
       .then((data) => {
@@ -323,7 +323,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Delete Custom field created from src', done => {
+  it('should delete Custom field created from src', done => {
     makeExtension(customFieldSrcUID)
       .delete()
       .then((data) => {
@@ -333,7 +333,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Delete Custom widget created from src', done => {
+  it('should delete Custom widget created from src', done => {
     makeExtension(customWidgetSrcUID)
       .delete()
       .then((data) => {
@@ -343,7 +343,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Delete Custom dashboard created from src', done => {
+  it('should delete Custom dashboard created from src', done => {
     makeExtension(customDashboardSrcUID)
       .delete()
       .then((data) => {
@@ -353,7 +353,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Delete Custom field uploaded', done => {
+  it('should delete Custom field uploaded', done => {
     makeExtension(customFieldUploadUID)
       .delete()
       .then((data) => {
@@ -363,7 +363,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Delete Custom widget uploaded', done => {
+  it('should delete Custom widget uploaded', done => {
     makeExtension(customWidgetUploadUID)
       .delete()
       .then((data) => {
@@ -373,7 +373,7 @@ describe('Extension api Test', () => {
       .catch(done)
   })
 
-  it('Delete Custom dashboard uploaded', done => {
+  it('should delete Custom dashboard uploaded', done => {
     makeExtension(customDashboardUploadUID)
       .delete()
       .then((data) => {
