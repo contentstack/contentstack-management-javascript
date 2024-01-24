@@ -218,7 +218,7 @@ describe('Extension api Test', () => {
         extensions.items.forEach(extension => {
           expect(extension.uid).to.be.not.equal(null)
           expect(extension.title).to.be.not.equal(null)
-          expect(extension.type).to.be.equal('should dashboard')
+          expect(extension.type).to.be.equal('dashboard')
         })
         done()
       })
