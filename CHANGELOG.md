@@ -1,4 +1,7 @@
 # Changelog
+## [v1.15.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.1) (2024-01-29)
+ - Feature
+   - Taxonomy Import/Export test cases are added
 ## [v1.15.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.0) (2024-01-23)
  - Feature
    - Taxonomy Import/Export feature added
