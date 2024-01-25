@@ -24,6 +24,7 @@ describe('Extension api Test', () => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
   })
+
   it('should create Custom field with source URL', done => {
     makeExtension()
       .create(customFieldURL)
@@ -51,7 +52,13 @@ describe('Extension api Test', () => {
         expect(extension.tag).to.be.equal(customFieldSRC.extension.tag)
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(422, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension creation failed. Please try again.', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(344, 'Error code does not match')
+        done()
+      })
   })
 
   it('should create Custom widget with source URL', done => {
@@ -66,7 +73,13 @@ describe('Extension api Test', () => {
         expect(extension.tag).to.be.equal(customWidgetURL.extension.tag)
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(422, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension creation failed. Please try again.', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(344, 'Error code does not match')
+        done()
+      })
   })
 
   it('should create Custom widget with source Code', done => {
@@ -81,7 +94,13 @@ describe('Extension api Test', () => {
         expect(extension.tag).to.be.equal(customWidgetSRC.extension.tag)
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(422, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension creation failed. Please try again.', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(344, 'Error code does not match')
+        done()
+      })
   })
 
   it('should create Custom dashboard with source URL', done => {
@@ -96,7 +115,13 @@ describe('Extension api Test', () => {
         expect(extension.tag).to.be.equal(customDashboardURL.extension.tag)
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(422, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension creation failed. Please try again.', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(344, 'Error code does not match')
+        done()
+      })
   })
 
   it('should create Custom dashboard with source Code', done => {
@@ -133,7 +158,13 @@ describe('Extension api Test', () => {
         expect(extension.tag).to.be.equal(customFieldURL.extension.tag)
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should fetch and Update Custom Widget', done => {
@@ -155,7 +186,13 @@ describe('Extension api Test', () => {
         expect(extension.tag).to.be.equal(customWidgetURL.extension.tag)
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should fetch and Update Custom dashboard', done => {
@@ -177,7 +214,13 @@ describe('Extension api Test', () => {
         expect(extension.tag).to.be.equal(customDashboardURL.extension.tag)
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should query Custom field', done => {
@@ -300,7 +343,13 @@ describe('Extension api Test', () => {
         expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should delete Custom widget', done => {
@@ -310,7 +359,13 @@ describe('Extension api Test', () => {
         expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should delete Custom dashboard', done => {
@@ -320,7 +375,13 @@ describe('Extension api Test', () => {
         expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should delete Custom field created from src', done => {
@@ -330,7 +391,13 @@ describe('Extension api Test', () => {
         expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should delete Custom widget created from src', done => {
@@ -340,7 +407,13 @@ describe('Extension api Test', () => {
         expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should delete Custom dashboard created from src', done => {
@@ -350,7 +423,13 @@ describe('Extension api Test', () => {
         expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should delete Custom field uploaded', done => {
@@ -360,7 +439,13 @@ describe('Extension api Test', () => {
         expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should delete Custom widget uploaded', done => {
@@ -370,7 +455,13 @@ describe('Extension api Test', () => {
         expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 
   it('should delete Custom dashboard uploaded', done => {
@@ -380,7 +471,13 @@ describe('Extension api Test', () => {
         expect(data.notice).to.be.equal('Extension deleted successfully.')
         done()
       })
-      .catch(done)
+      .catch((error) => {
+        const jsonMessage = JSON.parse(error.message)
+        expect(jsonMessage.status).to.be.equal(404, 'Status code does not match')
+        expect(jsonMessage.errorMessage).to.not.equal('Extension was not found', 'Error message not proper')
+        expect(jsonMessage.errorCode).to.be.equal(347, 'Error code does not match')
+        done()
+      })
   })
 })
 
