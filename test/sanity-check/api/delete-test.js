@@ -121,6 +121,7 @@ describe('Branch Alias delete api Test', () => {
       .catch(done)
   })
 })
+
 function makeEnvironment (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).environment(uid)
 }
@@ -136,3 +137,4 @@ function makeDeliveryToken (uid = null) {
 function makeBranchAlias (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).branchAlias(uid)
 }
+
