@@ -8,6 +8,7 @@ import { createDeliveryToken } from '../mock/deliveryToken.js'
 import dotenv from 'dotenv'
 
 dotenv.config()
+
 let client = {}
 
 describe('Delete Environment api Test', () => {
