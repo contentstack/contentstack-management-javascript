@@ -1,9 +1,10 @@
 import Axios from 'axios'
+import path from 'path'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { Taxonomy } from '../../lib/stack/taxonomy'
-import { systemUidMock, stackHeadersMock, taxonomyMock, noticeMock, termsMock } from './mock/objects'
+import { Taxonomy, createFormData, TaxonomyCollection } from '../../lib/stack/taxonomy'
+import { systemUidMock, stackHeadersMock, taxonomyMock, noticeMock, termsMock, taxonomyImportMock } from './mock/objects'
 
 describe('Contentstack Taxonomy test', () => {
   it('taxonomy create test', done => {
@@ -121,6 +122,51 @@ describe('Contentstack Taxonomy test', () => {
     expect(taxonomy.query).to.be.equal(undefined)
     done()
   })
+
+  it('Taxonomy export test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/taxonomies/UID/export').reply(200, {
+      taxonomy: {
+        ...taxonomyImportMock
+      }
+    })
+    makeTaxonomy({
+      taxonomy: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .export()
+      .then((taxonomy) => {
+        expect(taxonomy['taxonomy']['uid']).to.be.equal('UID')
+        expect(taxonomy['taxonomy']['name']).to.be.equal('name')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Taxonomy import test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/taxonomies/import').reply(200, {
+      taxonomy: {
+        ...taxonomyMock
+      }
+    })
+    const taxonomyUpload = { taxonomy: path.join(__dirname, '../api/mock/taxonomy.json') }
+    const form = createFormData(taxonomyUpload)()
+    var boundary = form.getBoundary()
+
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.equal(50)
+    makeTaxonomy()
+      .import(taxonomyUpload)
+      .then((taxonomy) => {
+        checkTaxonomy(taxonomy)
+        done()
+      })
+      .catch(done)
+  })
+
 
   it('term create test', done => {
     var mock = new MockAdapter(Axios)
