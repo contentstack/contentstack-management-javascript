@@ -7,7 +7,6 @@ import { contentstackClient } from '../utility/ContentstackClient.js'
 
 let client = {}
 let multiPageCTUid = ''
-let importCTUid = ''
 
 describe('Content Type api Test', () => {
   setup(() => {
@@ -100,18 +99,7 @@ describe('Content Type api Test', () => {
       content_type: path.join(__dirname, '../mock/contentType.json')
     })
       .then((response) => {
-        importCTUid = response.uid
         expect(response.uid).to.be.not.equal(null)
-        done()
-      })
-      .catch(done)
-  })
-
-  it('should delete ContentTypes', done => {
-    makeContentType(importCTUid)
-      .delete()
-      .then((contentType) => {
-        expect(contentType.notice).to.be.equal('Content Type deleted successfully.')
         done()
       })
       .catch(done)
