@@ -21,6 +21,16 @@ describe('Content Type delete api Test', () => {
     makeContentType(singlepageCT.content_type.uid).delete()
       .catch(done)
   })
+
+  it('should delete ContentTypes', done => {
+    makeContentType('multi_page_from_json')
+      .delete()
+      .then((contentType) => {
+        expect(contentType.notice).to.be.equal('Content Type deleted successfully.')
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeContentType (uid = null) {
