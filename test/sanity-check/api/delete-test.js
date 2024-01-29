@@ -138,4 +138,3 @@ function makeDeliveryToken (uid = null) {
 function makeBranchAlias (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).branchAlias(uid)
 }
-
