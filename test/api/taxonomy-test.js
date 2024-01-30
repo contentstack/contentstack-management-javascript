@@ -1,4 +1,5 @@
 import { expect } from 'chai'
+import path from 'path'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
@@ -11,6 +12,8 @@ const taxonomy = {
   name: 'taxonomy testing',
   description: 'Description for Taxonomy testing'
 }
+
+const importTaxonomy = { taxonomy: path.join(__dirname, './mock/taxonomy.json') }
 
 var taxonomyUID = ''
 var taxonomyDelUID = 'taxonomy_testing'
@@ -31,6 +34,28 @@ describe('taxonomy api Test', () => {
       })
       .catch(done)
   })
+
+  it('Import taxonomy', done => {
+    makeTaxonomy()
+      .import(importTaxonomy)
+      .then((taxonomyResponse) => {
+        expect(taxonomyResponse.name).to.be.equal("name")
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Export taxonomy', done => {
+    makeTaxonomy(taxonomyUID)
+      .export()
+      .then((taxonomyResponse) => {
+        expect(taxonomyResponse.uid).to.be.equal(taxonomyUID)
+        expect(taxonomyResponse.name).to.be.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
 
   it('Fetch taxonomy from uid', done => {
     makeTaxonomy(taxonomyUID)
