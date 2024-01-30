@@ -741,6 +741,12 @@ const auditLogsMock = {
   ]
 }
 
+const taxonomyImportMock = { 
+  "uid": "UID",
+  "name": "name",
+  "description": "test"
+}
+
 const taxonomyMock = {
   uid: 'UID',
   name: 'name',
@@ -883,6 +889,7 @@ export {
   auditLogsMock,
   auditLogItemMock,
   taxonomyMock,
+  taxonomyImportMock,
   termsMock,
   teamsMock,
   teamUsersMock,
