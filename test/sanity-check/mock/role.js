@@ -15,7 +15,7 @@ const role = {
       {
         module: 'branch_alias',
         branch_aliases: [
-          'staging_alias'
+          'staging1_alias'
         ],
         acl: {
           read: true
