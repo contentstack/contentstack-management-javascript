@@ -22,7 +22,7 @@ const createManagementToken = {
       {
         module: 'branch_alias',
         branch_aliases: [
-          'sb1_alias'
+          'staging1_alias'
         ],
         acl: {
           read: true
@@ -57,7 +57,7 @@ const createManagementToken2 = {
       {
         module: 'branch_alias',
         branch_aliases: [
-          'sb1_alias'
+          'staging1_alias'
         ],
         acl: {
           read: true
