@@ -16,7 +16,7 @@ const createDeliveryToken = {
         module: 'branch',
         branches: [
           'main',
-          'staging'
+          'staging1'
         ],
         acl: {
           read: true
@@ -25,7 +25,7 @@ const createDeliveryToken = {
       {
         module: 'branch_alias',
         branch_aliases: [
-          'staging_alias'
+          'staging1_alias'
         ],
         acl: {
           read: true
@@ -52,7 +52,7 @@ const createDeliveryToken2 = {
         module: 'branch',
         branches: [
           'main',
-          'staging'
+          'staging1'
         ],
         acl: {
           read: true
@@ -61,7 +61,7 @@ const createDeliveryToken2 = {
       {
         module: 'branch_alias',
         branch_aliases: [
-          'staging_alias'
+          'staging1_alias'
         ],
         acl: {
           read: true
