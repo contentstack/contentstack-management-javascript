@@ -4,13 +4,13 @@ const branch = {
 }
 
 const stageBranch = {
-  uid: 'staging',
+  uid: 'staging1',
   source: 'main'
 }
 
 const devBranch = {
-  uid: 'merge_test',
-  source: 'staging'
+  uid: 'test_merge',
+  source: 'staging1'
 }
 
 export {
