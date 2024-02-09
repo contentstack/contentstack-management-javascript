@@ -5,12 +5,11 @@ import { Term, Terms } from "../taxonomy/terms"
 export interface Taxonomy extends SystemFields, SystemFunction<Taxonomy> {
     terms(): Terms
     terms(uid: string): Term
-}
-    
-export interface Taxonomies extends Queryable<Taxonomy, {taxonomy: TaxonomyData}> {
+    export(params?: any): Promise<AnyProperty>
 }
 
-export interface Taxonomies extends Creatable<Taxonomy, {taxonomy: TaxonomyData}> {
+export interface Taxonomies extends Creatable<Taxonomy, {taxonomy: TaxonomyData}>, Queryable<Taxonomy, {taxonomy: TaxonomyData}> {
+    import(data: TaxonomyData, params?: any): Promise<Taxonomy>
 }
 
 export interface TaxonomyData extends AnyProperty {

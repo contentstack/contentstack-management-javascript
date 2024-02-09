@@ -1,22 +1,19 @@
-const createDeliveryToken = {
+const createManagementToken = {
   token: {
-    name: 'development test',
-    description: 'This is a demo token.',
+    name: 'Dev Token',
+    description: 'This is a sample management token.',
     scope: [
       {
-        module: 'environment',
-        environments: [
-          'development'
-        ],
+        module: 'content_type',
         acl: {
-          read: true
+          read: true,
+          write: true
         }
       },
       {
         module: 'branch',
         branches: [
-          'main',
-          'staging1'
+          'main'
         ],
         acl: {
           read: true
@@ -31,28 +28,27 @@ const createDeliveryToken = {
           read: true
         }
       }
-    ]
+    ],
+    expires_on: '2024-12-10',
+    is_email_notification_enabled: true
   }
 }
-const createDeliveryToken2 = {
+const createManagementToken2 = {
   token: {
-    name: 'production test',
-    description: 'This is a demo token.',
+    name: 'Prod Token',
+    description: 'This is a sample management token.',
     scope: [
       {
-        module: 'environment',
-        environments: [
-          'production'
-        ],
+        module: 'content_type',
         acl: {
-          read: true
+          read: true,
+          write: true
         }
       },
       {
         module: 'branch',
         branches: [
-          'main',
-          'staging1'
+          'main'
         ],
         acl: {
           read: true
@@ -67,8 +63,10 @@ const createDeliveryToken2 = {
           read: true
         }
       }
-    ]
+    ],
+    expires_on: '2024-12-10',
+    is_email_notification_enabled: true
   }
 }
 
-export { createDeliveryToken, createDeliveryToken2 }
+export { createManagementToken, createManagementToken2 }
