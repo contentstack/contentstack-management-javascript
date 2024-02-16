@@ -12,7 +12,7 @@ describe('Contentstack Team Users test', () => {
     makeTeamUsers().fetchAll()
       .then((users) => {
         users.items.forEach((user) => {
-          expect(user.uidId).to.be.not.equal(null)
+          expect(user.userId).to.be.not.equal(null)
         })
         done()
       })

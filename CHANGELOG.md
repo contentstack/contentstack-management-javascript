@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.15.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.3) (2024-02-16)
+ - Fix
+   - Fix for updating entry
+## [v1.15.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.2) (2024-02-09)
+ - Fix
+   - Adds params support in taxonomy export method
+   - Adds sanity test cases
 ## [v1.15.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.1) (2024-01-29)
  - Feature
    - Taxonomy Import/Export test cases are added

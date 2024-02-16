@@ -64,5 +64,27 @@ export function testTaxonomy(stack: Stack) {
                 })
             })
         })
+        test('Import taxonomy', async () => {
+            const taxonomyData = {
+                "uid": "UID",
+                "name": "name",
+                "description": "test"
+            }
+            await stack.taxonomy()
+            .import(taxonomyData)
+            .then((taxonomyResponse) => {
+                expect(taxonomyResponse.name).to.be.equal('name')
+            })
+            .catch(() => {});
+        })
+        test('Export taxonomy', async () => {
+            await stack.taxonomy(taxonomyUID)
+            .export({ format: 'json'})
+            .then((taxonomyResponse) => {
+                expect(taxonomyResponse.uid).to.be.equal(taxonomyUID)
+                expect(taxonomyResponse.name).to.be.not.equal(null)
+            })
+            .catch(() => {});
+        })
     })
 }

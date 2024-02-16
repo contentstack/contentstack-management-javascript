@@ -39,7 +39,7 @@ describe('taxonomy api Test', () => {
     makeTaxonomy()
       .import(importTaxonomy)
       .then((taxonomyResponse) => {
-        expect(taxonomyResponse.name).to.be.equal("name")
+        expect(taxonomyResponse.name).to.be.equal('name')
         done()
       })
       .catch(done)
@@ -47,7 +47,7 @@ describe('taxonomy api Test', () => {
 
   it('Export taxonomy', done => {
     makeTaxonomy(taxonomyUID)
-      .export()
+      .export({})
       .then((taxonomyResponse) => {
         expect(taxonomyResponse.uid).to.be.equal(taxonomyUID)
         expect(taxonomyResponse.name).to.be.not.equal(null)

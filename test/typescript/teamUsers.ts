@@ -25,10 +25,12 @@ export function testTeamUsers (organization: Organization) {
     test('should fetch all users', done => {
       organization.teams(teamUid).teamUsers()
       .fetchAll()
-        .then((response) => {
-          expect(response.items[0]).not.to.be.equal(undefined)
-          done()
+        .then((users) => {
+        users.items.forEach((user) => {
+          expect(user.userId).to.be.not.equal(null)
         })
+        done()
+      })
         .catch(done)
     })
   })

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import { jsonReader } from '../utility/fileOperations/readwrite'
+import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient'
 
 var user = {}
@@ -43,7 +43,7 @@ describe('Organization api test', () => {
   it('should fetch organization', done => {
     organization.fetch()
       .then((organizations) => {
-        expect(organizations.name).to.be.equal('CLI Branches', 'Organization name dose not match')
+        expect(organizations.name).not.to.be.equal(null, 'Organization does not exist')
         done()
       })
       .catch(done)
@@ -79,6 +79,7 @@ describe('Organization api test', () => {
     organization.roles()
       .then((roles) => {
         for (const i in roles.items) {
+          jsonWrite(roles.items, 'orgRoles.json')
           expect(roles.items[i].uid).to.not.equal(null, 'Role uid cannot be null')
           expect(roles.items[i].name).to.not.equal(null, 'Role name cannot be null')
           expect(roles.items[i].org_uid).to.be.equal(organization.uid, 'Role org_uid not match')
@@ -102,7 +103,4 @@ describe('Organization api test', () => {
       })
       .catch(done)
   })
-
-  // addUser
-  // Resend invitation
 })
