@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
-import { contentstackClient } from '../../utility/ContentstackClient'
-import { jsonWrite } from '../../utility/fileOperations/readwrite'
+import { contentstackClient } from '../../sanity-check/utility/ContentstackClient'
+import { jsonWrite } from '../../sanity-check/utility/fileOperations/readwrite'
 import axios from 'axios'
 import dotenv from 'dotenv'
 

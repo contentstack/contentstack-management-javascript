@@ -50,6 +50,7 @@ describe('Entry api Test', () => {
         return entry.update({ locale: 'en-at' })
       })
       .then((entryResponse) => {
+        jsonWrite(entryResponse, 'publishEntry2.json')
         entryUTD = entryResponse.uid
         expect(entryResponse.title).to.be.equal('Sample Entry in en-at')
         expect(entryResponse.uid).to.be.not.equal(null)
@@ -182,6 +183,7 @@ describe('Entry api Test', () => {
         entry: path.join(__dirname, '../mock/entry.json')
       })
       .then((response) => {
+        jsonWrite(response, 'publishEntry1.json')
         expect(response.uid).to.be.not.equal(null)
         done()
       })
