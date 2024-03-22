@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.15.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.4) (2024-03-26)
+ - Fixes
+   - sanity test and dependency upgrades
 ## [v1.15.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.3) (2024-02-16)
  - Fix
    - Fix for updating entry
