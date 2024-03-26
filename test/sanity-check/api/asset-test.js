@@ -59,6 +59,7 @@ describe('Assets api Test', () => {
     makeAsset().folder().create({ asset: { name: 'Sample Folder' } })
       .then((asset) => {
         folderUID = asset.uid
+        jsonWrite(asset, 'folder.json')
         expect(asset.uid).to.be.not.equal(null)
         expect(asset.name).to.be.equal('Sample Folder')
         expect(asset.is_dir).to.be.equal(true)
