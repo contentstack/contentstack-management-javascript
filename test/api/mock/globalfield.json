@@ -1,0 +1,34 @@
+{
+    "title": "Upload",
+    "uid": "upload",
+    "schema": [
+    {
+        "display_name": "Name",
+        "uid": "name",
+        "data_type": "text",
+        "multiple": false,
+        "mandatory": false,
+        "unique": false,
+        "non_localizable": false
+    },
+    {
+        "display_name": "Add",
+        "uid": "add",
+        "data_type": "text",
+        "multiple": false,
+        "mandatory": false,
+        "unique": false,
+        "non_localizable": false
+    },
+    {
+        "display_name": "std",
+        "uid": "std",
+        "data_type": "text",
+        "multiple": false,
+        "mandatory": false,
+        "unique": false,
+        "non_localizable": false
+    }
+    ],
+    "description": ""
+  }
