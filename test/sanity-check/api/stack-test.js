@@ -157,6 +157,16 @@ describe('Stack api Test', () => {
       })
       .catch(done)
   })
+
+  it('should delete stack', done => {
+    client.stack({ api_key: stacks.api_key })
+      .delete()
+      .then((stack) => {
+        expect(stack.notice).to.be.equal('Stack deleted successfully!')
+        done()
+      })
+      .catch(done)
+  })
 })
 
 describe('Branch creation api Test', () => {
