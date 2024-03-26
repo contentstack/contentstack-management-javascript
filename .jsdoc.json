@@ -1,0 +1,66 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc"]
+    },
+    "source": {
+        "include": [
+            "lib/contentstack.js",
+            "lib/contentstackClient.js",
+            "lib/user/index.js",
+            "lib/organization/index.js",
+            "lib/stack/index.js",
+            "lib/stack/contentType/index.js",
+            "lib/stack/globalField/index.js",
+            "lib/query/index.js",
+            "lib/stack/contentType/entry/index.js",
+            "lib/stack/asset/index.js",
+            "lib/stack/asset/folders/index.js",
+            "lib/stack/branch/index.js",
+            "lib/stack/branch/compare.js",
+            "lib/stack/branch/mergeQueue.js",
+            "lib/stack/branchAlias/index.js",
+            "lib/stack/bulkOperation/index.js",
+            "lib/stack/extension/index.js",
+            "lib/stack/release/index.js",
+            "lib/stack/release/items/index.js",
+            "lib/stack/label/index.js",
+            "lib/stack/locale/index.js",
+            "lib/stack/auditlog/index.js",
+            "lib/stack/environment/index.js",
+            "lib/stack/deliveryToken/index.js",
+            "lib/stack/roles/index.js",
+            "lib/stack/webhook/index.js",
+            "lib/stack/workflow/index.js",
+            "lib/stack/workflow/publishRules/index.js",
+            "lib/organization/teams/index.js",
+            "lib/organization/teams/stackRoleMappings/index.js",
+            "lib/organization/teams/teamUsers/index.js"
+        ],
+        "excludePattern": "(node_modules/|jsdocs)"
+    },
+    "opts": {
+        "template": "./node_modules/docdash",
+        "destination": "./jsdocs/",
+        "encoding": "utf8",
+        "private": true,
+        "recurse": true,
+        "sort": false
+    },
+    "templates": 
+    {
+        "cleverLinks": false,
+        "monospaceLinks": true,
+        "default": 
+        {
+            "staticFiles": 
+            {
+                "include": [ "./docdash-template/favicon.ico"]
+            }
+        }
+    },
+    "docdash": {
+        "static": true,
+        "sort": false
+    }
+}
