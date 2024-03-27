@@ -123,6 +123,25 @@ describe('Branch Alias delete api Test', () => {
   })
 })
 
+describe('Delete Asset Folder api Test', () => {
+  let folderUid = ''
+  setup(() => {
+    const user = jsonReader('loggedinuser.json')
+    const folder = jsonReader('folder.json')
+    folderUid = folder.uid
+    client = contentstackClient(user.authtoken)
+  })
+  it('should delete an environment', done => {
+    makeAssetFolder(folderUid)
+      .delete()
+      .then((data) => {
+        expect(data.notice).to.be.equal('Folder deleted successfully.')
+        done()
+      })
+      .catch(done)
+  })
+})
+
 function makeEnvironment (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).environment(uid)
 }
@@ -137,4 +156,8 @@ function makeDeliveryToken (uid = null) {
 
 function makeBranchAlias (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).branchAlias(uid)
+}
+
+function makeAssetFolder (uid = null) {
+  return client.stack({ api_key: process.env.API_KEY }).asset().folder(uid)
 }
