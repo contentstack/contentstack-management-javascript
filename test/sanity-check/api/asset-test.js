@@ -1,7 +1,7 @@
 import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
-import { jsonReader, writeDownloadedFile } from '../utility/fileOperations/readwrite'
+import { jsonReader, jsonWrite, writeDownloadedFile } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
@@ -25,6 +25,7 @@ describe('Assets api Test', () => {
     }
     makeAsset().create(asset)
       .then((asset) => {
+        jsonWrite(asset, 'publishAsset2.json')
         assetUID = asset.uid
         assetURL = asset.url
         expect(asset.uid).to.be.not.equal(null)
@@ -58,6 +59,7 @@ describe('Assets api Test', () => {
     makeAsset().folder().create({ asset: { name: 'Sample Folder' } })
       .then((asset) => {
         folderUID = asset.uid
+        jsonWrite(asset, 'folder.json')
         expect(asset.uid).to.be.not.equal(null)
         expect(asset.name).to.be.equal('Sample Folder')
         expect(asset.is_dir).to.be.equal(true)
@@ -76,6 +78,7 @@ describe('Assets api Test', () => {
     }
     makeAsset().create(asset)
       .then((asset) => {
+        jsonWrite(asset, 'publishAsset1.json')
         publishAssetUID = asset.uid
         expect(asset.uid).to.be.not.equal(null)
         expect(asset.url).to.be.not.equal(null)
