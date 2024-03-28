@@ -1,11 +1,8 @@
 # Changelog
 
-## [v1.15.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.4) (2024-04-02)
- - Enhancement
+## [v1.15.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.4) (2024-03-28)
+ - Fixes and Enhancement
    - delete stack implemetation and test cases
-
-## [v1.15.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.4) (2024-03-26)
- - Fixes
    - sanity test and dependency upgrades
 ## [v1.15.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.3) (2024-02-16)
  - Fix
