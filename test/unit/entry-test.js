@@ -566,6 +566,38 @@ describe('Contentstack Entry test', () => {
     expect(result).to.deep.equal(expectedResult);
     done();
   })
+
+  it('should get languages of the given Entry uid', done => {
+    var mock = new MockAdapter(Axios)
+    const locales = [
+      {
+        code: 'en-us'
+      },
+      {
+        code: 'hi-in'
+      },
+      {
+        code: 'en-at',
+        localized: true
+      },
+      {
+        code: 'ja-jp'
+      }
+    ]
+    mock.onGet('/content_types/content_type_uid/entries/UID/locales').reply(200, {
+      locales
+    })
+
+    makeEntry({ entry: { ...systemUidMock }, stackHeaders: stackHeadersMock }).locales()
+      .then((locale) => {
+        expect(locale.locales[0].code).to.be.equal('en-us')
+        locale.locales.forEach((locales) => {
+          expect(locales.code).to.be.not.equal(null)
+        })
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeEntry (data) {
