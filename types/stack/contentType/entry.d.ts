@@ -7,6 +7,7 @@ import { Unpublishable } from "../../utility/unpublish";
 
 export interface Entry extends Publishable, Unpublishable, SystemFields, SystemFunction<Entry> {
     setWorkflowStage(data: { workflow_stage: WorkflowStage, locale?:string}): Promise<Response>
+    locales(): Promise<Locales>
 }
 
 export interface Entries extends Queryable<Entry, {entry: EntryData}> {
@@ -25,4 +26,13 @@ export interface WorkflowStage extends AnyProperty {
     notify?: boolean
     assign_to?: Array<any>
     assigned_by_roles?: Array<any>
+}
+
+export interface Locales {
+    locales: Code[];
+}
+
+export interface Code extends AnyProperty {
+    code: string;
+    localized: boolean;
 }
