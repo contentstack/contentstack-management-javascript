@@ -104,7 +104,7 @@ export function getEntries(stack: Stack) {
         })
         
         test('Fetch Entry', done => {
-            stack.contentType(singlepageCT.content_type.uid).entry(entryUTD)
+            stack.contentType('product').entry('blt7d6fae845bfc55d4')
             .fetch({include_content_type: true})
             .then((response) => {
                 expect(response.uid).to.be.not.equal(null)
@@ -128,6 +128,22 @@ export function getEntries(stack: Stack) {
                 done()
             })
             .catch(done)
+        })
+    })
+}
+
+export function getEntryLocales(stack: Stack) {
+    describe('Entry get', () => { 
+        test('to get locales of an entry', done => {
+            stack.contentType(singlepageCT.content_type.uid).entry(entryUTD).locales()
+            .then((locale) => {
+                expect(locale.locales[0].code).to.be.equal('en-us')
+                locale.locales.forEach((locales) => {
+                  expect(locales.code).to.be.not.equal(null)
+                })
+                done()
+              })
+              .catch(done)
         })
     })
 }
