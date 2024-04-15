@@ -163,6 +163,18 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
+  it('should get languages of the given Entry uid', done => {
+    makeEntry(singlepageCT.content_type.uid, entryUTD).locales()
+      .then((locale) => {
+        expect(locale.locales[0].code).to.be.equal('en-us')
+        locale.locales.forEach((locales) => {
+          expect(locales.code).to.be.not.equal(null)
+        })
+        done()
+      })
+      .catch(done)
+  })
+
   it('should unpublish localized entry', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .unpublish({ publishDetails: {
