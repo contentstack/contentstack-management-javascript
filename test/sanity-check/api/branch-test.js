@@ -203,7 +203,7 @@ describe('Branch api Test', () => {
     makeBranch(devBranch.uid)
       .delete()
       .then((response) => {
-        expect(response.notice).to.be.equal('Your request to delete branch is in progress. Please check organization bulk task queue for more details.')
+        expect(response.notice).to.be.equal('Your branch deletion is in progress. Please refresh in a while.')
         done()
       })
       .catch(done)
