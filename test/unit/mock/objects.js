@@ -426,6 +426,13 @@ const labelMock = {
   ]
 }
 
+const variantsMock1 = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  name: 'name'
+}
+
+
 const environmentMock = {
   ...systemFieldsMock,
   ...systemFieldsUserMock,
@@ -1058,6 +1065,7 @@ export {
   variantGroupsMock,
   variantMock,
   variantsMock,
+  variantsMock1,
   variantsEntryMock,
   variantsEntriesMock,
   variantsUpdateEntryMock,
