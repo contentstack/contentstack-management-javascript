@@ -866,6 +866,106 @@ const teamUsersMock = {
     userId: 'UID'
   }
 }
+
+const variantGroupMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  name: 'Test',
+  source: 'Personalize',
+  content_types: [
+    "iphone_product_page"
+  ],
+}
+
+const variantMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  name: 'Test'
+}
+
+const variantsMock = {
+  "uid": "variant_group_1",
+  "name": "Variant Group 1",
+  "content_types": [
+      "CTSTAET123"
+  ],
+  "personalize_metadata": {
+      "experience_uid": "variant_group_ex_uid",
+      "experience_short_uid": "variant_group_short_uid",
+      "project_uid": "variant_group_project_uid"
+  },
+  "variants": [ // variants inside the group
+      {
+          "uid": "UID",
+          "created_by": "user_id",
+          "updated_by": "user_id",
+          "name": "Test",
+          "personalize_metadata": {
+              "experience_uid": "exp1",
+              "experience_short_uid": "expShortUid1",
+              "project_uid": "project_uid1",
+              "variant_short_uid": "variantShort_uid1"
+          },
+          "created_at": "created_at_date",
+          "updated_at": "updated_at_date"
+      }
+  ],
+  "count": 1
+}
+
+const variantGroupsMock = {
+  count: 2,
+  variant_groups: [
+    {
+      ...systemFieldsMock,
+      ...systemFieldsUserMock,
+      "name": "Test",
+      "source": 'Personalize',
+      "content_types": [
+        "iphone_product_page"
+      ],
+      "variant_count": 1,
+      "variants": [
+        {
+          ...systemFieldsMock,
+          ...systemFieldsUserMock,
+          "name": "Test"
+        }
+      ]
+    },
+    {
+      "name": "Test",
+      "source": 'Personalize',
+      ...systemFieldsMock,
+      ...systemFieldsUserMock,
+      "content_types": [
+        "iphone_product_description"
+      ],
+      "variant_count": 1,
+      "variants": [
+        {
+          ...systemFieldsMock,
+          ...systemFieldsUserMock,
+          "name": "Test"
+        }
+      ]
+    }
+  ],
+  ungrouped_variants: [
+        {
+          "created_by": "blt6cdf4e0b02b1c446",
+          "updated_by": "blt303b74fa96e1082a",
+          "created_at": "2022-10-26T06:52:20.073Z",
+          "updated_at": "2023-09-25T04:55:56.549Z",
+          "uid": "iphone_color_red",
+          "name": "Red"
+        }
+  ],
+  ungrouped_variant_count: 1
+}
+
+
+
 const stackRoleMappingMock = {
   stackRoleMappings: [
     {
@@ -954,8 +1054,13 @@ export {
   entryMockCollection,
   checkSystemFields,
   managementTokenMock,
+  variantGroupMock,
+  variantGroupsMock,
+  variantMock,
+  variantsMock,
   variantsEntryMock,
   variantsEntriesMock,
   variantsUpdateEntryMock,
   variantBaseEntryMock
+
 }
