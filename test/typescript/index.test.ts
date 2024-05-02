@@ -25,6 +25,8 @@ import { testTerm } from './terms';
 import { testTeams } from './teams';
 import { testTeamUsers } from './teamUsers';
 import { testTeamStackRoleMapping } from './teamsStackRoleMappings';
+import { createVariants, deleteVariants, variants, queryVariants } from './ungroupedVariants';
+
 dotenv.config()
 jest.setTimeout(10000);
 
@@ -87,6 +89,10 @@ describe('Typescript API test', () => {
     managementToken(stack)
     deleteManagementToken(stack)
 
+    createVariants(stack)
+    deleteVariants(stack)
+    variants(stack.variant)
+    queryVariants(stack.variant)
     createVariantGroup(stack.VariantGroup())
     queryVariantGroup(stack.VariantGroup())
     variantGroup(stack)
@@ -96,7 +102,6 @@ describe('Typescript API test', () => {
     queryVariant(stack.VariantGroup().Variants())
     variant(stack.VariantGroup().variants())
     
-
     findAllRole(stack.role())
     createRole(stack.role())
     getRole(stack)

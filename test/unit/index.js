@@ -39,6 +39,7 @@ require('./team-test')
 require('./team-users-test')
 require('./team-stack-role-mapping-test')
 require('./managementToken-test')
+require('./ungroupedVariants-test')
 require('./variantGroup-test')
 require('./variantsWithVariantsGroup-test')
 
