@@ -18,6 +18,11 @@ const stackHeadersMock = {
   api_key: 'api_key'
 }
 
+const variantBaseEntryMock = {
+  api_key: 'api_key',
+  'x-cs-variant-uid': 'test_uid'
+}
+
 const noticeMock = {
   notice: 'Notice'
 }
@@ -353,6 +358,57 @@ const entryMock = {
   _version: 1,
   _in_progress: false,
   _rules: []
+}
+
+const variantsEntriesMock = {
+      "title": "title",
+      "url": "/url",
+      "author": "Kurt Tank",
+      "created_by": "created_by",
+      "updated_by": "updated_by",
+      "created_at": "created_at_date",
+      "updated_at": "updated_at_date",
+      "uid": "UID",
+      "locale": "en-us",
+      "_version": 1,
+      "_in_progress": false,
+      "_variant": {
+          "uid": "_variant_uid",
+          "variant_id": 'variant_id',
+          "customized_fields": ["title", "author"],
+          "base_entry_version": 1,
+    }
+}
+const variantsUpdateEntryMock = {
+  "title": "title",
+  "url": "/url",
+  "uid": "UID",
+  "locale": "en-us",
+  "_version": 1,
+  "_in_progress": false,
+  "_variant": {
+      "customized_fields": ["title", "url"],
+  },
+  "created_at": "created_at_date",
+  "updated_at": "updated_at_date",
+}
+const variantsEntryMock = {
+      "title": "title",
+      "url": "/url",
+      "locale": "en-us",
+      "uid": "UID",
+      "_version": 1,
+      "_in_progress": false,
+      "created_by": "created_by_uid",
+      "updated_by": "updated_by_uid",
+      "created_at": "created_at_date",
+      "updated_at": "updated_at_date",
+      "_variant": {
+          "uid": "_variant_uid",
+          "variant_id": 'variant_id',
+          "customized_fields": ["title"],
+          "base_entry_version": 10,
+      }
 }
 
 const labelMock = {
@@ -897,5 +953,9 @@ export {
   mockCollection,
   entryMockCollection,
   checkSystemFields,
-  managementTokenMock
+  managementTokenMock,
+  variantsEntryMock,
+  variantsEntriesMock,
+  variantsUpdateEntryMock,
+  variantBaseEntryMock
 }
