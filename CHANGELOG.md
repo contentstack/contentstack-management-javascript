@@ -1,6 +1,9 @@
 # Changelog
 
-## [v1.16.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.4) (2024-04-09)
+## [v1.16.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.1) (2024-05-08)
+ - Fix
+   - Fix for `fs` not found issue in web build
+## [v1.16.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.0) (2024-04-09)
  - Feature
    - Get languages of an entry
 ## [v1.15.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.4) (2024-03-28)
