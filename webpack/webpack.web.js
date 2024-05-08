@@ -3,10 +3,11 @@
 const path = require('path')
 const webpackMerge = require('webpack-merge')
 
-const commonConfig = require('./webpack.common.js')
+const commonConfig = require('./webpack.common.js')()
 
 module.exports = function (options) {
-  return webpackMerge(commonConfig(), {
+  delete commonConfig.externals;
+  return webpackMerge(commonConfig, {
     output: {
       libraryTarget: 'umd',
       path: path.join(__dirname, '../dist/web'),
@@ -14,7 +15,8 @@ module.exports = function (options) {
     },
     resolve: {
       fallback: {
-        os: require.resolve('os-browserify/browser')
+        os: require.resolve('os-browserify/browser'),
+        fs: false
       }
     },
     module: {
