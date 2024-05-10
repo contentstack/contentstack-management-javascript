@@ -101,7 +101,7 @@ describe('Contentstack  Variants test', () => {
     })
       .update()
       .then((variant) => {
-        checkVariants(variant)
+        checkVariants(variant.variants)
         done()
       })
       .catch(done)

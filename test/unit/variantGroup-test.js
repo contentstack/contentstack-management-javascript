@@ -13,7 +13,6 @@ describe('Contentstack VariantGroup test', () => {
     expect(variantGroup.stackHeaders).to.be.equal(undefined)
     expect(variantGroup.update).to.be.equal(undefined)
     expect(variantGroup.delete).to.be.equal(undefined)
-    expect(variantGroup.fetch).to.be.equal(undefined)
     expect(variantGroup.create).to.not.equal(undefined)
     expect(variantGroup.query).to.not.equal(undefined)
     done()
@@ -25,7 +24,6 @@ describe('Contentstack VariantGroup test', () => {
     expect(variantGroup.stackHeaders).to.be.equal(undefined)
     expect(variantGroup.update).to.not.equal(undefined)
     expect(variantGroup.delete).to.not.equal(undefined)
-    expect(variantGroup.fetch).to.not.equal(undefined)
     expect(variantGroup.create).to.be.equal(undefined)
     expect(variantGroup.query).to.be.equal(undefined)
     done()
@@ -42,7 +40,6 @@ describe('Contentstack VariantGroup test', () => {
     expect(variantGroup.stackHeaders.api_key).to.be.equal(stackHeadersMock.api_key)
     expect(variantGroup.update).to.not.equal(undefined)
     expect(variantGroup.delete).to.not.equal(undefined)
-    expect(variantGroup.fetch).to.not.equal(undefined)
     expect(variantGroup.create).to.be.equal(undefined)
     expect(variantGroup.query).to.be.equal(undefined)
     done()
@@ -107,34 +104,35 @@ describe('Contentstack VariantGroup test', () => {
       stackHeaders: stackHeadersMock
     }
     })
-      .update()
+      .update({name: 'test'})
       .then((variantGroup) => {
-        checkVariantGroup(variantGroup)
+        checkVariantGroup(variantGroup.variant_group)
         done()
       })
       .catch(done)
   })
 
-  it('VariantGroup fetch test', done => {
-    var mock = new MockAdapter(Axios)
-    mock.onGet('/variant_groups/UID').reply(200, {
-      variant_group: {
-        ...variantGroupMock
-      }
-    })
-    makeVariantGroup({
-      variant_group: {
-        ...systemUidMock
-      },
-      stackHeaders: stackHeadersMock
-    })
-      .fetch()
-      .then((variantGroup) => {
-        checkVariantGroup(variantGroup)
-        done()
-      })
-      .catch(done)
-  })
+  // Fetch API not present in the variant group
+  // it('VariantGroup fetch test', done => {
+  //   var mock = new MockAdapter(Axios)
+  //   mock.onGet('/variant_groups/UID').reply(200, {
+  //     variant_group: {
+  //       ...variantGroupMock
+  //     }
+  //   })
+  //   makeVariantGroup({
+  //     variant_group: {
+  //       ...systemUidMock
+  //     },
+  //     stackHeaders: stackHeadersMock
+  //   })
+  //     .fetch()
+  //     .then((variantGroup) => {
+  //       checkVariantGroup(variantGroup)
+  //       done()
+  //     })
+  //     .catch(done)
+  // })
 
   it('VariantGroup delete test', done => {
     var mock = new MockAdapter(Axios)
