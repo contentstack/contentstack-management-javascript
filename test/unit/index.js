@@ -42,4 +42,3 @@ require('./managementToken-test')
 require('./ungroupedVariants-test')
 require('./variantGroup-test')
 require('./variantsWithVariantsGroup-test')
-
