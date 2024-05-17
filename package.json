@@ -52,7 +52,7 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
-    "@slack/bolt": "^3.17.1",
+    "@slack/bolt": "^3.18.0",
     "axios": "^1.6.8",
     "form-data": "^3.0.1",
     "lodash": "^4.17.21",
