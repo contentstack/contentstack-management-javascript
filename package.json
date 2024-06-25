@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.16.1",
+  "version": "1.16.2",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "./dist/node/contentstack-management.js",
   "browser": "./dist/web/contentstack-management.js",
@@ -30,7 +30,7 @@
     "buildnativescript": "webpack --config webpack/webpack.nativescript.js --mode production",
     "buildweb": "webpack --config webpack/webpack.web.js --mode production",
     "test": "npm run test:api && npm run test:unit",
-    "test:sanity-test": "BABEL_ENV=test nyc --reporter=html mocha --require @babel/register ./test/sanity-check/sanity.js -t 30000 --reporter mochawesome --require babel-polyfill --reporter-options reportDir=mochawesome-report,reportFilename=mochawesome.json && marge mochawesome-report/mochawesome.json -f sanity-report.html --inline",
+    "test:sanity-test": "BABEL_ENV=test nyc --reporter=html mocha --require @babel/register ./test/sanity-check/sanity.js -t 30000 --reporter mochawesome --require babel-polyfill --reporter-options reportDir=mochawesome-report,reportFilename=mochawesome.json",
     "test:sanity": "npm run test:sanity-test || true",
     "test:sanity-report": "marge mochawesome-report/mochawesome.json -f sanity-report.html --inline && node sanity-report.mjs",
     "test:api": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/test.js -t 30000 --reporter mochawesome --require babel-polyfill",
@@ -52,11 +52,10 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
-    "@slack/bolt": "^3.17.1",
     "axios": "^1.6.8",
     "form-data": "^3.0.1",
     "lodash": "^4.17.21",
-    "qs": "^6.12.0"
+    "qs": "^6.12.1"
   },
   "keywords": [
     "contentstack management api",
@@ -70,6 +69,7 @@
     "@babel/preset-env": "^7.18.2",
     "@babel/register": "^7.17.7",
     "@babel/runtime": "^7.18.3",
+    "@slack/bolt": "^3.18.0",
     "@types/chai": "^4.3.11",
     "@types/jest": "^28.1.0",
     "@types/lodash": "^4.14.202",
