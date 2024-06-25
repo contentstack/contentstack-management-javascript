@@ -135,6 +135,27 @@ describe('Contentstack ContentType test', () => {
       .catch(done)
   })
 
+  it('ContentType update test without fetch', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPut('/content_types/UID').reply(200, {
+      content_type: {
+        ...contentTypeMock
+      }
+    })
+    makeContentType({
+      content_type: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .updateCT({})
+      .then((contentType) => {
+        checkContentType(contentType.content_type)
+        done()
+      })
+      .catch(done)
+  })
+
   it('ContentType fetch test', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet('/content_types/UID').reply(200, {

@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.16.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.2) (2024-06-24)
+ - Enhancement
+   - Added update content type without fetch method
 ## [v1.16.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.1) (2024-05-08)
  - Fix
    - Fix for `fs` not found issue in web build
