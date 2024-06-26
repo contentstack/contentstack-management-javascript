@@ -7,6 +7,7 @@ import { contentstackClient } from '../utility/ContentstackClient.js'
 
 let client = {}
 let multiPageCTUid = ''
+let multiPageUpdateCTUid = 'multi_page'
 
 describe('Content Type api Test', () => {
   setup(() => {
@@ -80,7 +81,7 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('should fetch and Update ContentType schema', done => {
+  it('should fetch and Update ContentType s chema', done => {
     makeContentType(multiPageCTUid)
       .fetch()
       .then((contentType) => {
@@ -94,12 +95,10 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
   it('should update Multi page ContentType Schema without fetch', done => {
-    makeContentType()
+    makeContentType(multiPageCT.content_type.uid)
       .updateCT(multiPageCT)
       .then((contentType) => {
-        multiPageCTUid = contentType.uid
-        expect(contentType.uid).to.be.equal(multiPageCT.content_type.uid)
-        expect(contentType.title).to.be.equal(multiPageCT.content_type.title)
+        expect(contentType.content_type.schema.length).to.be.equal(2)
         done()
       })
       .catch(done)
