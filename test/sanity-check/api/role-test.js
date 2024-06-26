@@ -146,3 +146,7 @@ describe('Role api test', () => {
 function getRole (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).role(uid)
 }
+
+function makeTerms (taxonomyUid, termUid = null) {
+  return client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomyUid).terms(termUid)
+}
