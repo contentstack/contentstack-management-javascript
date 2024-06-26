@@ -190,9 +190,5 @@ function getRole (uid = null) {
 
 function makeTerms (taxonomyUid, termUid = null) {
   return client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomyUid).terms(termUid)
-<<<<<<< Updated upstream
 }
 
-=======
-}
->>>>>>> Stashed changes

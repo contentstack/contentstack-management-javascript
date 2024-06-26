@@ -81,7 +81,7 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('should fetch and Update ContentType s chema', done => {
+  it('should fetch and Update ContentType schema', done => {
     makeContentType(multiPageCTUid)
       .fetch()
       .then((contentType) => {
