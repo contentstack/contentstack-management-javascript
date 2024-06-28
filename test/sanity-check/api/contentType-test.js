@@ -94,6 +94,7 @@ describe('Content Type api Test', () => {
       })
       .catch(done)
   })
+
   it('should update Multi page ContentType Schema without fetch', done => {
     makeContentType(multiPageCT.content_type.uid)
       .updateCT(multiPageCT)
@@ -103,6 +104,7 @@ describe('Content Type api Test', () => {
       })
       .catch(done)
   })
+
 
   it('should import content type', done => {
     makeContentType().import({
