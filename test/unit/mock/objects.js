@@ -143,6 +143,89 @@ const roleMock = {
   ...adminRoleMock,
   admin: false
 }
+const roleMockWithTaxonomy = {
+    ...systemFieldsMock,
+    ...systemFieldsUserMock,
+    name: "Admin",
+    description: "Admin Role",
+    rules: [
+      {
+        module: "branch",
+        branches: [
+          "main"
+        ],
+        acl: {
+          read: true
+        }
+      },
+      {
+        module: "environment",
+        environments: ["env_uid1", "env_uid2"],
+        acl: {
+          read: true
+        }
+      },
+      {
+        module: "locale",
+        locales: ["locales"],
+        acl: {
+          read: true
+        }
+      },
+      {
+        module: "taxonomy",
+        taxonomies: ["taxonomy_1"],
+        terms: ["taxonomy_1.term_1"],
+        content_types: [
+          {
+            uid: "$all",
+            acl: {
+              read: true,
+              sub_acl: {
+                read: true,
+                create: true,
+                update: true,
+                delete: true,
+                publish: true
+              }
+            }
+          }
+        ],
+        acl: {
+          read: true,
+          sub_acl: {
+            read: true,
+            create: true,
+            update: true,
+            delete: true,
+            publish: true
+          }
+        }
+      },
+      {
+        module: "content_type",
+        content_types: ["ct_1"],
+        acl: {
+          read: true,
+          sub_acl: {
+            read: true,
+            create: true,
+            update: true,
+            delete: true,
+            publish: true
+          }
+        }
+      }
+    ],
+    org_uid: "org_uid",
+    api_key: "api_key",
+    admin: false,
+    default: true,
+    users: [
+      'user_uid'
+    ]
+  }
+  
 const branchMock = {
   ...systemFieldsMock,
   ...systemFieldsUserMock,
@@ -897,5 +980,6 @@ export {
   mockCollection,
   entryMockCollection,
   checkSystemFields,
-  managementTokenMock
+  managementTokenMock,
+  roleMockWithTaxonomy
 }
