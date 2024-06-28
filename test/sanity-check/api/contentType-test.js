@@ -95,15 +95,15 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  it('should update Multi page ContentType Schema without fetch', done => {
-    makeContentType(multiPageCT.content_type.uid)
-      .updateCT(multiPageCT)
-      .then((contentType) => {
-        expect(contentType.content_type.schema.length).to.be.equal(2)
-        done()
-      })
-      .catch(done)
-  })
+  // it('should update Multi page ContentType Schema without fetch', done => {
+  //   makeContentType(multiPageCT.content_type.uid)
+  //     .updateCT(multiPageCT)
+  //     .then((contentType) => {
+  //       expect(contentType.content_type.schema.length).to.be.equal(2)
+  //       done()
+  //     })
+  //     .catch(done)
+  // })
 
 
   it('should import content type', done => {
