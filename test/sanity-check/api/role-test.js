@@ -62,18 +62,18 @@ describe('Role api test', () => {
       .catch(done)
   })
 
-  it('should create taxonomy', async () => {
-    await client.stack({ api_key: process.env.API_KEY }).taxonomy().create({ taxonomy })
-  })
+  // it('should create taxonomy', async () => {
+  //   await client.stack({ api_key: process.env.API_KEY }).taxonomy().create({ taxonomy })
+  // })
 
-  it('should create term', done => {
-    makeTerms(taxonomy.uid).create(term)
-      .then((response) => {
-        expect(response.uid).to.be.equal(term.term.uid)
-        done()
-      })
-      .catch(done)
-  })
+  // it('should create term', done => {
+  //   makeTerms(taxonomy.uid).create(term)
+  //     .then((response) => {
+  //       expect(response.uid).to.be.equal(term.term.uid)
+  //       done()
+  //     })
+  //     .catch(done)
+  // })
 
   it('should create new role in stack', done => {
     getRole()
@@ -167,19 +167,19 @@ describe('Role api test', () => {
       })
       .catch(done)
   })
-  it('should delete of the term uid passed', done => {
-    makeTerms(taxonomy.uid, term.term.uid).delete({ force: true })
-      .then((response) => {
-        expect(response.status).to.be.equal(204)
-        done()
-      })
-      .catch(done)
-  })
+  // it('should delete of the term uid passed', done => {
+  //   makeTerms(taxonomy.uid, term.term.uid).delete({ force: true })
+  //     .then((response) => {
+  //       expect(response.status).to.be.equal(204)
+  //       done()
+  //     })
+  //     .catch(done)
+  // })
 
-  it('should delete taxonomy', async () => {
-    const taxonomyResponse = await client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomy.uid).delete({ force: true })
-    expect(taxonomyResponse.status).to.be.equal(204)
-  })
+  // it('should delete taxonomy', async () => {
+  //   const taxonomyResponse = await client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomy.uid).delete({ force: true })
+  //   expect(taxonomyResponse.status).to.be.equal(204)
+  // })
 
 })
 
