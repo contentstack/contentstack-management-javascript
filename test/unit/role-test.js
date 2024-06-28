@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { Role, RoleCollection } from '../../lib/stack/roles'
-import { systemUidMock, stackHeadersMock, roleMock, noticeMock } from './mock/objects'
+import { systemUidMock, stackHeadersMock, roleMock, noticeMock, roleMockWithTaxonomy} from './mock/objects'
 
 describe('Contentstack Role test', () => {
   it('Role test without uid', done => {
@@ -77,6 +77,22 @@ describe('Contentstack Role test', () => {
     mock.onPost('/roles').reply(200, {
       role: {
         ...roleMock
+      }
+    })
+    makeRole()
+      .create()
+      .then((role) => {
+        checkRole(role)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Role create test with taxonomy permission', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/roles').reply(200, {
+      role: {
+        ...roleMockWithTaxonomy
       }
     })
     makeRole()
