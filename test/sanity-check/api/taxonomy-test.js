@@ -27,7 +27,7 @@ describe('taxonomy api Test', () => {
         expect(taxonomyResponse.name).to.be.equal(taxonomy.name)
         setTimeout(() => {
           done()
-        }, 1000)
+        }, 10000)
       })
       .catch(done)
   })
