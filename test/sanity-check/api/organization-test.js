@@ -6,6 +6,7 @@ import { contentstackClient } from '../utility/ContentstackClient'
 var user = {}
 var client = {}
 var organization = {}
+let organizationUID = process.env.ORGANIZATION
 
 describe('Organization api test', () => {
   setup(() => {
@@ -50,7 +51,7 @@ describe('Organization api test', () => {
   })
 
   it('should get all stacks in an Organization', done => {
-    organization.stacks()
+    client.organization(organizationUID).stacks()
       .then((response) => {
         for (const index in response.items) {
           const stack = response.items[index]
@@ -76,13 +77,13 @@ describe('Organization api test', () => {
   // })
 
   it('should get all roles in an organization', done => {
-    organization.roles()
+    client.organization(organizationUID).roles()
       .then((roles) => {
         for (const i in roles.items) {
           jsonWrite(roles.items, 'orgRoles.json')
           expect(roles.items[i].uid).to.not.equal(null, 'Role uid cannot be null')
           expect(roles.items[i].name).to.not.equal(null, 'Role name cannot be null')
-          expect(roles.items[i].org_uid).to.be.equal(organization.uid, 'Role org_uid not match')
+          expect(roles.items[i].org_uid).to.be.equal(organizationUID, 'Role org_uid not match')
         }
         done()
       })
