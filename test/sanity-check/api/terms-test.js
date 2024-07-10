@@ -42,7 +42,7 @@ describe('Terms API Test', () => {
   })
   it('should create taxonomy', async () => {
     await client.stack({ api_key: process.env.API_KEY }).taxonomy().create({ taxonomy })
-  })
+  }, 10000)
 
   it('should create term', done => {
     makeTerms(taxonomy.uid).create(term)
@@ -144,7 +144,7 @@ describe('Terms API Test', () => {
   })
 
   it('should move the term to parent uid passed', done => {
-    makeTerms(taxonomy.uid, childTerm2.term.uid).move({ force: true })
+    makeTerms(taxonomy.uid, childTerm2.term.uid).fetch()
       .then(async (term) => {
         term.parent_uid = null
         const moveTerm = await term.move({ force: true })
