@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.16.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.2) (2024-07-23)
+ - Fix
+   - Incorrect type for Releases in type support
 ## [v1.16.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.2) (2024-06-24)
  - Enhancement
    - Added update content type without fetch method
