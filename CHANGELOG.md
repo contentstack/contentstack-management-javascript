@@ -1,13 +1,10 @@
 # Changelog
+
 ## [v1.17.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.17.0) (2024-07-02)
  - Enhancement
    - Fixed package publish issue in github workflow
    - Added Taxonomy permission roles test cases
    - SNYK issues - Upgraded axios and slack/bolt packages version
-
-## [v1.16.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.2) (2024-07-23)
- - Fix
-   - Incorrect type for Releases in type support
 ## [v1.16.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.2) (2024-06-24)
  - Enhancement
    - Added update content type without fetch method
