@@ -5,7 +5,7 @@ import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { Entry, EntryCollection, createFormData } from '../../lib/stack/contentType/entry'
 import { cleanAssets } from '../../lib/entity'
-import { systemUidMock, stackHeadersMock, entryMock, noticeMock, checkSystemFields } from './mock/objects'
+import { systemUidMock, stackHeadersMock, entryMock, noticeMock, checkSystemFields, variantBaseEntryMock } from './mock/objects'
 
 describe('Contentstack Entry test', () => {
   it('Entry test without uid', done => {
@@ -286,6 +286,23 @@ describe('Contentstack Entry test', () => {
       .publishRequest({ publishing_rule, locale: 'en-us' })
       .then((response) => {
         expect(response.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry with include variants request test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/content_types/content_type_uid/entries/UID').reply(200, {
+      ...variantBaseEntryMock
+    })
+    makeEntry({ entry: { ...systemUidMock },
+      stackHeaders: stackHeadersMock
+     })
+      .includeVariants({ include_variant: 'True', variants_uid: 'test_uid' })
+      .then((response) => {
+        expect(response.api_key).to.be.equal('api_key')
+        expect(response['x-cs-variant-uid']).to.be.equal('test_uid')
         done()
       })
       .catch(done)
