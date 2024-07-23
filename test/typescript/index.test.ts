@@ -13,6 +13,8 @@ import { createLocale, deleteLocale, getLocale } from './locale';
 import { createEnvironment, deleteEnvironment, getEnvironment, updateEnvironment } from './environment';
 import { createDeliveryToken, deleteDeliveryToken, deliveryToken, queryDeliveryToken } from './deliveryToken';
 import { createManagementToken, deleteManagementToken, managementToken, queryManagementToken } from './managementToken';
+import { createVariantGroup, deleteVariantGroup, variantGroup, queryVariantGroup } from './variantGroup';
+import { createVariant, variant, queryVariant } from './variants';
 import { createRole, findAllRole, getRole, getRoleUid, queryRole } from './role';
 import { createApp, deleteApp, fetchApp, installation, updateApp, updateAuth } from './app';
 import { deployment, hosting } from './hosting';
@@ -23,6 +25,8 @@ import { testTerm } from './terms';
 import { testTeams } from './teams';
 import { testTeamUsers } from './teamUsers';
 import { testTeamStackRoleMapping } from './teamsStackRoleMappings';
+import { createVariants, deleteVariants, variants, queryVariants } from './ungroupedVariants';
+
 dotenv.config()
 jest.setTimeout(10000);
 
@@ -85,6 +89,19 @@ describe('Typescript API test', () => {
     managementToken(stack)
     deleteManagementToken(stack)
 
+    createVariants(stack)
+    deleteVariants(stack)
+    variants(stack.variant)
+    queryVariants(stack.variant)
+    createVariantGroup(stack.VariantGroup())
+    queryVariantGroup(stack.VariantGroup())
+    variantGroup(stack)
+    deleteVariantGroup(stack)
+
+    createVariant(stack.VariantGroup().Variants())
+    queryVariant(stack.VariantGroup().Variants())
+    variant(stack.VariantGroup().variants())
+    
     findAllRole(stack.role())
     createRole(stack.role())
     getRole(stack)
