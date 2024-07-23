@@ -1,9 +1,5 @@
 # Changelog
 
-## [v1.16.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.0) (2024-04-16)
- - Feature
-   - Variants Group support added
-
 ## [v1.15.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.3) (2024-02-16)
  - Fix
    - Fix for updating entry
