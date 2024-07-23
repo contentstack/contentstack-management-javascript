@@ -3,9 +3,12 @@ import { AnyProperty, SystemFields } from "../../utility/fields";
 import { Queryable, SystemFunction } from "../../utility/operations";
 import { Publishable } from "../../utility/publish";
 import { Unpublishable } from "../../utility/unpublish";
+import { Variants, Variant } from "./variants";
 
 
 export interface Entry extends Publishable, Unpublishable, SystemFields, SystemFunction<Entry> {
+    variants(): Variants
+    variants(uid: string): Variant
     setWorkflowStage(data: { workflow_stage: WorkflowStage, locale?:string}): Promise<Response>
 }
 
