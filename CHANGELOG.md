@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.17.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.17.1) (2024-08-15)
+ - Fix
+   - Fix file upload function in sanity report file
+  
 ## [v1.17.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.17.0) (2024-07-02)
  - Enhancement
    - Fixed package publish issue in github workflow
