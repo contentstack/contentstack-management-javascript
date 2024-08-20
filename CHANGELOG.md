@@ -1,5 +1,28 @@
 # Changelog
 
+## [v1.17.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.17.1) (2024-08-14)
+ - Fix
+   - Fix file upload function in sanity report file
+   - Vulnerability fix - Axios
+  
+## [v1.17.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.17.0) (2024-07-02)
+ - Enhancement
+   - Fixed package publish issue in github workflow
+   - Added Taxonomy permission roles test cases
+   - SNYK issues - Upgraded axios and slack/bolt packages version
+## [v1.16.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.2) (2024-06-24)
+ - Enhancement
+   - Added update content type without fetch method
+## [v1.16.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.1) (2024-05-08)
+ - Fix
+   - Fix for `fs` not found issue in web build
+## [v1.16.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.16.0) (2024-04-09)
+ - Feature
+   - Get languages of an entry
+## [v1.15.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.4) (2024-03-28)
+ - Fixes and Enhancement
+   - delete stack implemetation and test cases
+   - sanity test and dependency upgrades
 ## [v1.15.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.15.3) (2024-02-16)
  - Fix
    - Fix for updating entry

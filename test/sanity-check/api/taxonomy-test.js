@@ -25,7 +25,9 @@ describe('taxonomy api Test', () => {
       .then((taxonomyResponse) => {
         taxonomyUID = taxonomyResponse.uid
         expect(taxonomyResponse.name).to.be.equal(taxonomy.name)
-        done()
+        setTimeout(() => {
+          done()
+        }, 10000)
       })
       .catch(done)
   })

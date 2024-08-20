@@ -2,6 +2,7 @@ import { describe, it, beforeEach } from 'mocha'
 import { expect } from 'chai'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
+import { stageBranch } from '../mock/branch.js'
 
 var client = {}
 
@@ -41,7 +42,7 @@ describe('Terms API Test', () => {
   })
   it('should create taxonomy', async () => {
     await client.stack({ api_key: process.env.API_KEY }).taxonomy().create({ taxonomy })
-  })
+  }, 10000)
 
   it('should create term', done => {
     makeTerms(taxonomy.uid).create(term)
@@ -143,7 +144,7 @@ describe('Terms API Test', () => {
   })
 
   it('should move the term to parent uid passed', done => {
-    makeTerms(taxonomy.uid, childTerm2.term.uid).move({ force: true })
+    makeTerms(taxonomy.uid, childTerm2.term.uid).fetch()
       .then(async (term) => {
         term.parent_uid = null
         const moveTerm = await term.move({ force: true })
@@ -171,4 +172,30 @@ describe('Terms API Test', () => {
 
 function makeTerms (taxonomyUid, termUid = null) {
   return client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomyUid).terms(termUid)
+}
+
+describe('Branch creation api Test', () => {
+  beforeEach(() => {
+    const user = jsonReader('loggedinuser.json')
+    client = contentstackClient(user.authtoken)
+  })
+
+  it('should create staging branch', done => {
+    makeBranch()
+      .create({ branch: stageBranch })
+      .then((response) => {
+        expect(response.uid).to.be.equal(stageBranch.uid)
+        expect(response.urlPath).to.be.equal(`/stacks/branches/${stageBranch.uid}`)
+        expect(response.source).to.be.equal(stageBranch.source)
+        expect(response.alias).to.not.equal(undefined)
+        expect(response.delete).to.not.equal(undefined)
+        expect(response.fetch).to.not.equal(undefined)
+        done()
+      })
+      .catch(done)
+  })
+})
+
+function makeBranch (uid = null) {
+  return client.stack({ api_key: process.env.API_KEY }).branch(uid)
 }

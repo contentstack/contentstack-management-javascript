@@ -94,6 +94,16 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
+  it('Update ContentType schema without fetch', done => {
+    makeContentType(multiPageCT.content_type.uid)
+      .updateCT({content_type: {schema: schema}})
+      .then((contentType) => {
+        expect(contentType.schema.length).to.be.equal(6)
+        done()
+      })
+      .catch(done)
+  })
+
   it('Import content type', done => {
     makeContentType().import({
       content_type: path.join(__dirname, './mock/contentType.json')

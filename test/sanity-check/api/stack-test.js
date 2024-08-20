@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader, jsonWrite } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { stageBranch } from '../mock/branch.js'
 
 import dotenv from 'dotenv'
 dotenv.config()
@@ -157,30 +156,14 @@ describe('Stack api Test', () => {
       })
       .catch(done)
   })
-})
 
-describe('Branch creation api Test', () => {
-  setup(() => {
-    const user = jsonReader('loggedinuser.json')
-    client = contentstackClient(user.authtoken)
-  })
-
-  it('should create staging branch', done => {
-    makeBranch()
-      .create({ branch: stageBranch })
-      .then((response) => {
-        expect(response.uid).to.be.equal(stageBranch.uid)
-        expect(response.urlPath).to.be.equal(`/stacks/branches/${stageBranch.uid}`)
-        expect(response.source).to.be.equal(stageBranch.source)
-        expect(response.alias).to.not.equal(undefined)
-        expect(response.delete).to.not.equal(undefined)
-        expect(response.fetch).to.not.equal(undefined)
+  it('should delete stack', done => {
+    client.stack({ api_key: stacks.api_key })
+      .delete()
+      .then((stack) => {
+        expect(stack.notice).to.be.equal('Stack deleted successfully!')
         done()
       })
       .catch(done)
   })
 })
-
-function makeBranch (uid = null) {
-  return client.stack({ api_key: process.env.API_KEY }).branch(uid)
-}

@@ -12,17 +12,17 @@ const stackApiKey = process.env.API_KEY
 let userId = ''
 let teamUid1 = ''
 let teamUid2 = ''
-let orgRole1 = ''
-let stackRole1 = ''
-let stackRole2 = ''
-let stackRole3 = ''
+const orgAdminRole = ''
+let adminRole = ''
+let contentManagerRole = ''
+let developerRole = ''
 
 describe('Teams API Test', () => {
   beforeEach(() => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
     const orgRoles = jsonReader('orgRoles.json')
-    orgRole1 = orgRoles[0].uid
+    orgAdminRole = orgRoles.find(role => role.name === 'admin').uid;
   })
 
   it('should create new team 1 when required object is passed', async () => {
@@ -30,7 +30,7 @@ describe('Teams API Test', () => {
       name: 'test_team1',
       users: [],
       stackRoleMapping: [],
-      organizationRole: orgRole1 })
+      organizationRole: orgAdminRole })
     teamUid1 = response.uid
     expect(response.uid).not.to.be.equal(null)
     expect(response.name).not.to.be.equal(null)
@@ -43,7 +43,7 @@ describe('Teams API Test', () => {
       name: 'test_team2',
       users: [],
       stackRoleMapping: [],
-      organizationRole: orgRole1 })
+      organizationRole: orgAdminRole })
     teamUid2 = response.uid
     expect(response.uid).not.to.be.equal(null)
     expect(response.name).not.to.be.equal(null)
@@ -76,7 +76,7 @@ describe('Teams API Test', () => {
           email: process.env.EMAIL
         }
       ],
-      organizationRole: orgRole1,
+      organizationRole: '',
       stackRoleMapping: []
     }
     await makeTeams(teamUid1).update(updateData)
@@ -98,16 +98,16 @@ describe('Teams Stack Role Mapping API Test', () => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
     const stackRoles = jsonReader('roles.json')
-    stackRole1 = stackRoles[0].uid
-    stackRole2 = stackRoles[1].uid
-    stackRole3 = stackRoles[2].uid
+    adminRole = stackRoles.find(role => role.name === 'Admin').uid;
+    contentManagerRole = stackRoles.find(role => role.name === 'Content Manager').uid;
+    developerRole = stackRoles.find(role => role.name === 'Developer').uid;
   })
 
   it('should add roles', done => {
     const stackRoleMappings = {
       stackApiKey: stackApiKey,
       roles: [
-        stackRole1
+        adminRole
       ]
     }
     makestackRoleMappings(teamUid2).add(stackRoleMappings).then((response) => {
@@ -130,9 +130,9 @@ describe('Teams Stack Role Mapping API Test', () => {
   it('should update roles', done => {
     const stackRoleMappings = {
       roles: [
-        stackRole1,
-        stackRole2,
-        stackRole3
+        adminRole,
+        contentManagerRole,
+        developerRole
       ]
     }
     makestackRoleMappings(teamUid2, stackApiKey).update(stackRoleMappings).then((response) => {
