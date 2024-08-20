@@ -50,6 +50,7 @@ describe('Entry api Test', () => {
         return entry.update({ locale: 'en-at' })
       })
       .then((entryResponse) => {
+        jsonWrite(entryResponse, 'publishEntry2.json')
         entryUTD = entryResponse.uid
         expect(entryResponse.title).to.be.equal('Sample Entry in en-at')
         expect(entryResponse.uid).to.be.not.equal(null)
@@ -162,6 +163,18 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
+  it('should get languages of the given Entry uid', done => {
+    makeEntry(singlepageCT.content_type.uid, entryUTD).locales()
+      .then((locale) => {
+        expect(locale.locales[0].code).to.be.equal('en-us')
+        locale.locales.forEach((locales) => {
+          expect(locales.code).to.be.not.equal(null)
+        })
+        done()
+      })
+      .catch(done)
+  })
+
   it('should unpublish localized entry', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .unpublish({ publishDetails: {
@@ -182,6 +195,7 @@ describe('Entry api Test', () => {
         entry: path.join(__dirname, '../mock/entry.json')
       })
       .then((response) => {
+        jsonWrite(response, 'publishEntry1.json')
         expect(response.uid).to.be.not.equal(null)
         done()
       })
