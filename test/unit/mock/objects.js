@@ -1152,6 +1152,6 @@ export {
   variantsEntryMock,
   variantsEntriesMock,
   variantsUpdateEntryMock,
-  variantBaseEntryMock
+  variantBaseEntryMock,
   roleMockWithTaxonomy
 }
