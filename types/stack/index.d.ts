@@ -20,6 +20,9 @@ import { Webhook, Webhooks } from "./webhook";
 import { Workflow, Workflows } from "./workflow";
 import { Taxonomy, Taxonomies } from "./taxonomy";
 import { ManagementToken, ManagementTokens } from "./managementToken";
+import { Variant, Variants } from "./variants";
+import { VariantGroup, VariantGroups } from "./VariantGroup";
+import { Variant, Variants } from "./VariantGroup/variants";
 
 export interface StackConfig {
     api_key:string
@@ -100,4 +103,13 @@ export interface Stack extends SystemFields {
 
     managementToken(): ManagementTokens
     managementToken(uid: string): ManagementToken
+
+    variants(): Variants
+    variants(uid: string): Variant
+  
+    variantGroup(): VariantGroups
+    variantGroup(uid: string): VariantGroup
+
+    variant(): Variants
+    variant(uid: string): Variant
 }
