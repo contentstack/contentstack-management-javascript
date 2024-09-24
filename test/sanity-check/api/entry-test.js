@@ -64,7 +64,6 @@ describe('Entry api Test', () => {
     makeEntry(multiPageCT.content_type.uid)
       .create({ entry: entryFirst })
       .then((entry) => {
-        console.log("🚀 ~ .then ~ entry:", entry)
         expect(entry.uid).to.be.not.equal(null)
         expect(entry.title).to.be.equal(entryFirst.title)
         expect(entry.url).to.be.equal(`/${entryFirst.title.toLowerCase().replace(/ /g, '-')}`)
