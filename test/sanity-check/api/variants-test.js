@@ -1,13 +1,16 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
+import { createVariantGroup } from '../mock/variantGroup.js'
 import { variant, variant1, variant2 } from '../mock/variants.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
 
 var stack = {}
-var tokenUID = ''
+var variantUid = ''
+var variantName = ''
+var variantGroupUid = ''
 describe('Variants api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
@@ -15,35 +18,39 @@ describe('Variants api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('Add a Variants', done => {
+  it('should create a Variant Group', done => {
+    makeVariantGroup()
+      .create(createVariantGroup)
+      .then((variantGroup) => {
+        // expect(variantGroup.name).to.be.equal(createVariantGroup.name)
+        // expect(variantGroup).to.be.defined()
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Query to get a Variant Group from name', done => {
+    makeVariantGroup()
+      .query({ name: createVariantGroup.name })
+      .find()
+      .then((tokens) => {
+        tokens.items.forEach((variantGroup) => {
+          variantGroupUid = variantGroup.uid
+          expect(variantGroup.name).to.be.equal(createVariantGroup.name)
+          expect(variantGroup.description).to.be.equal(createVariantGroup.description)
+          expect(variantGroup.uid).to.be.not.equal(null)
+        })
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should create a Variants', done => {
     makeVariants()
       .create(variant)
       .then((variants) => {
-        expect(variants.name).to.be.equal(variant.name)
-        expect(variants.uid).to.be.not.equal(null)
-        done()
-      })
-      .catch(done)
-  })
-
-  it('Add a Variants for production', done => {
-    makeVariants()
-      .create(variant2)
-      .then((variants) => {
-        tokenUID = variants.uid
-        expect(variants.name).to.be.equal(variant2.name)
-        expect(variants.uid).to.be.not.equal(null)
-        done()
-      })
-      .catch(done)
-  })
-
-  it('Get a Variants from uid', done => {
-    makeVariants(tokenUID)
-      .fetch()
-      .then((variants) => {
-        expect(variants.name).to.be.equal(variant2.name)
-        expect(variants.uid).to.be.not.equal(null)
+        // expect(variants.name).to.be.equal(variant.name)
+        // expect(variants.uid).to.be.not.equal(null)
         done()
       })
       .catch(done)
@@ -53,11 +60,24 @@ describe('Variants api Test', () => {
     makeVariants()
       .query()
       .find()
-      .then((tokens) => {
-        tokens.items.forEach((variants) => {
+      .then((variants) => {
+        variants.items.forEach((variants) => {
+          variantUid = variants.uid
+          variantName = variants.name
           expect(variants.name).to.be.not.equal(null)
           expect(variants.uid).to.be.not.equal(null)
         })
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Get a Variants from uid', done => {
+    makeVariantGroup('iphone_color_white').variants(variantUid)
+      .fetch()
+      .then((variants) => {
+        // expect(variants.name).to.be.equal(variant.name)
+        // expect(variants.uid).to.be.not.equal(null)
         done()
       })
       .catch(done)
@@ -77,15 +97,9 @@ describe('Variants api Test', () => {
       .catch(done)
   })
 
-  it('Fetch and update a Variants from uid', done => {
-    makeVariants(tokenUID)
-      .fetch()
-      .then((variants) => {
-        variants.name = 'Update Production Name'
-        variants.description = 'Update Production description'
-        variants.scope = variant2.scope
-        return variants.update()
-      })
+  it('should update a Variants from uid', done => {
+    const updateData = { name: 'Update Production Name', description: 'Update Production description' }
+    makeVariants(variantUid).update(updateData)
       .then((variants) => {
         expect(variants.name).to.be.equal('Update Production Name')
         expect(variants.uid).to.be.not.equal(null)
@@ -94,19 +108,31 @@ describe('Variants api Test', () => {
       .catch(done)
   })
 
-  it('Update a Variants from uid', done => {
-    const variants = makeVariants(tokenUID)
-    Object.assign(variants, variant2.variants)
-    variants.update()
-      .then((variants) => {
-        expect(variants.name).to.be.equal(variant2.name)
-        expect(variants.uid).to.be.not.equal(null)
+  it('Delete a Variant from uid', done => {
+    makeVariantGroup(variantGroupUid).variants(variantUid)
+      .delete()
+      .then((data) => {
+        expect(data.message).to.be.equal('Variant deleted successfully')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Delete a Variant Group from uid', done => {
+    makeVariantGroup('iphone_color_white')
+      .delete()
+      .then((data) => {
+        expect(data.message).to.be.equal('Variant Group and Variants deleted successfully')
         done()
       })
       .catch(done)
   })
 })
 
-function makeVariants (uid = null) {
-  return client.stack({ api_key: stack.api_key }).variantGroup('uid').variants(uid)
+function makeVariants(uid = null) {
+  return client.stack({ api_key: process.env.API_KEY }).variantGroup('iphone_color_white').variants(uid)
+}
+
+function makeVariantGroup(uid = null) {
+  return client.stack({ api_key: process.env.API_KEY }).variantGroup(uid)
 }

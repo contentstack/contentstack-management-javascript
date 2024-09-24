@@ -1,5 +1,5 @@
 const variant = {
-    "uid": "iphone_color_white", // optional
+    "uid": "white", // optional
     "name": "White",
     "personalize_metadata": {   // optional sent from personalize while creating variant
         "experience_uid": "exp1",

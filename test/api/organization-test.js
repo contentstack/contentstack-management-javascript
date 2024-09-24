@@ -41,7 +41,7 @@ describe('Organization api test', () => {
   })
 
   it('Fetch organization', done => {
-    organization.fetch()
+    client.organization(organization).fetch()
       .then((organizations) => {
         expect(organizations.name).to.be.equal('SDK org', 'Organization name dose not match')
         done()
@@ -50,7 +50,7 @@ describe('Organization api test', () => {
   })
 
   it('Get all stacks in an Organization', done => {
-    organization.stacks()
+    client.organization(organization).stacks()
       .then((response) => {
         for (const index in response.items) {
           const stack = response.items[index]
