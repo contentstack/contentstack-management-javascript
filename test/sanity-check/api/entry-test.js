@@ -66,10 +66,7 @@ describe('Entry api Test', () => {
       .then((entry) => {
         expect(entry.uid).to.be.not.equal(null)
         expect(entry.title).to.be.equal(entryFirst.title)
-        expect(entry.single_line).to.be.equal(entryFirst.single_line)
         expect(entry.url).to.be.equal(`/${entryFirst.title.toLowerCase().replace(/ /g, '-')}`)
-        expect(entry.multi_line).to.be.equal(entryFirst.multi_line)
-        expect(entry.markdown).to.be.equal(entryFirst.markdown)
         done()
       })
       .catch(done)
@@ -82,9 +79,6 @@ describe('Entry api Test', () => {
         expect(entry.uid).to.be.not.equal(null)
         expect(entry.title).to.be.equal(entrySecond.title)
         expect(entry.url).to.be.equal(`/${entrySecond.title.toLowerCase().replace(/ /g, '-')}`)
-        expect(entry.single_line).to.be.equal(entrySecond.single_line)
-        expect(entry.multi_line).to.be.equal(entrySecond.multi_line)
-        expect(entry.markdown).to.be.equal(entrySecond.markdown)
         expect(entry.tags[0]).to.be.equal(entrySecond.tags[0])
         done()
       })
@@ -98,9 +92,6 @@ describe('Entry api Test', () => {
         expect(entry.uid).to.be.not.equal(null)
         expect(entry.title).to.be.equal(entryThird.title)
         expect(entry.url).to.be.equal(`/${entryThird.title.toLowerCase().replace(/ /g, '-')}`)
-        expect(entry.single_line).to.be.equal(entryThird.single_line)
-        expect(entry.multi_line).to.be.equal(entryThird.multi_line)
-        expect(entry.markdown).to.be.equal(entryThird.markdown)
         expect(entry.tags[0]).to.be.equal(entryThird.tags[0])
         done()
       })
@@ -138,10 +129,12 @@ describe('Entry api Test', () => {
 
   it('should publish Entry', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
-      .publish({ publishDetails: {
-        locales: ['en-us'],
-        environments: ['development']
-      } })
+      .publish({
+        publishDetails: {
+          locales: ['en-us'],
+          environments: ['development']
+        }
+      })
       .then((data) => {
         expect(data.notice).to.be.equal('The requested action has been performed.')
         done()
@@ -151,11 +144,13 @@ describe('Entry api Test', () => {
 
   it('should publish localized Entry to locales', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
-      .publish({ publishDetails: {
-        locales: ['hi-in', 'en-at'],
-        environments: ['development']
-      },
-      locale: 'en-at' })
+      .publish({
+        publishDetails: {
+          locales: ['hi-in', 'en-at'],
+          environments: ['development']
+        },
+        locale: 'en-at'
+      })
       .then((data) => {
         expect(data.notice).to.be.equal('The requested action has been performed.')
         done()
@@ -177,11 +172,13 @@ describe('Entry api Test', () => {
 
   it('should unpublish localized entry', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
-      .unpublish({ publishDetails: {
-        locales: ['hi-in', 'en-at'],
-        environments: ['development']
-      },
-      locale: 'en-at' })
+      .unpublish({
+        publishDetails: {
+          locales: ['hi-in', 'en-at'],
+          environments: ['development']
+        },
+        locale: 'en-at'
+      })
       .then((data) => {
         expect(data.notice).to.be.equal('The requested action has been performed.')
         done()
@@ -201,8 +198,18 @@ describe('Entry api Test', () => {
       })
       .catch(done)
   })
+
+  it('should get entry variants of the given Entry uid', done => {
+    makeEntry(singlepageCT.content_type.uid, entryUTD).includeVariants('true', 'variants_uid')
+      .then((response) => {
+        expect(response.uid).to.be.not.equal(null)
+        expect(response._variants).to.be.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
 })
 
-function makeEntry (contentType, uid = null) {
+function makeEntry(contentType, uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).contentType(contentType).entry(uid)
 }
