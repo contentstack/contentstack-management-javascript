@@ -2,7 +2,7 @@ import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite.js'
-import { singlepageCT, multiPageCT, schema } from '../mock/content-type.js'
+import { singlepageCT, multiPageCT, multiPageVarCT, schema } from '../mock/content-type.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 let client = {}
@@ -33,6 +33,16 @@ describe('Content Type api Test', () => {
         multiPageCTUid = contentType.uid
         expect(contentType.uid).to.be.equal(multiPageCT.content_type.uid)
         expect(contentType.title).to.be.equal(multiPageCT.content_type.title)
+        done()
+      })
+      .catch(done)
+  })
+  it('should create Multi page ContentType Schema for creating variants group', done => {
+    makeContentType()
+      .create(multiPageVarCT)
+      .then((contentType) => {
+        expect(contentType.uid).to.be.equal(multiPageVarCT.content_type.uid)
+        expect(contentType.title).to.be.equal(multiPageVarCT.content_type.title)
         done()
       })
       .catch(done)
@@ -95,15 +105,15 @@ describe('Content Type api Test', () => {
       .catch(done)
   })
 
-  // it('should update Multi page ContentType Schema without fetch', done => {
-  //   makeContentType(multiPageCT.content_type.uid)
-  //     .updateCT(multiPageCT)
-  //     .then((contentType) => {
-  //       expect(contentType.content_type.schema.length).to.be.equal(2)
-  //       done()
-  //     })
-  //     .catch(done)
-  // })
+  it('should update Multi page ContentType Schema without fetch', done => {
+    makeContentType(multiPageCT.content_type.uid)
+      .updateCT(multiPageCT)
+      .then((contentType) => {
+        expect(contentType.content_type.schema.length).to.be.equal(2)
+        done()
+      })
+      .catch(done)
+  })
 
 
   it('should import content type', done => {
