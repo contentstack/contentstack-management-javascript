@@ -65,7 +65,6 @@ describe('Ungrouped Variants api Test', () => {
     makeVariants()
       .fetchByUIDs([variantsUID])
       .then((variantsResponse) => {
-        console.log("🚀 ~ .then ~ variantsResponse:", variantsResponse)
         expect(variantsResponse.variants.length).to.be.equal(1)
         done()
       })
