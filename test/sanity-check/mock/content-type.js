@@ -78,6 +78,47 @@ const multiPageCT = {
   prevcreate: true
 }
 
+const multiPageVarCT = {
+  content_type:
+    {
+      options:
+        {
+          is_page: true,
+          singleton: false,
+          title: 'title',
+          sub_title: [],
+          url_pattern: '/:title'
+        },
+      title: 'Iphone Product Description',
+      uid: 'iphone_prod_desc',
+      schema:
+        [
+          {
+            display_name: 'Title',
+            uid: 'title',
+            data_type: 'text',
+            mandatory: true,
+            unique: true,
+            field_metadata:
+                {
+                  _default: true
+                }
+          },
+          {
+            display_name: 'URL',
+            uid: 'url',
+            data_type: 'text',
+            mandatory: false,
+            field_metadata:
+                {
+                  _default: true
+                }
+          }
+        ]
+    },
+  prevcreate: true
+}
+
 const schema = [
   {
     display_name: 'Title',
@@ -176,4 +217,4 @@ const schema = [
     class: 'high-lighter',
     fldUid: 'modular_blocks' }]
 
-export { singlepageCT, multiPageCT, schema }
+export { singlepageCT, multiPageCT, multiPageVarCT, schema }

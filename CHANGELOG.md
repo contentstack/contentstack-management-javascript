@@ -1,4 +1,10 @@
 # Changelog
+## [v1.18.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.18.1) (2024-09-27)
+ - Fix
+    - Variants testcases Added
+## [v1.18.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.18.0) (2024-09-12)
+ - Feature
+   - Variants Support Added
 ## [v1.17.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.17.2) (2024-08-28)
  - Fix
    - QS version bump
