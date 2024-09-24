@@ -61,6 +61,15 @@ describe('Ungrouped Variants api Test', () => {
       })
       .catch(done)
   })
+  it('Should fetch variants from array of uids', done => {
+    makeVariants()
+      .fetchByUIDs(['variantsUID'])
+      .then((variantsResponse) => {
+        expect(variantsResponse.variants.length).to.be.equal(1)
+        done()
+      })
+      .catch(done)
+  })
 
   it('Should Query to get all ungrouped variants', done => {
     makeVariants()
