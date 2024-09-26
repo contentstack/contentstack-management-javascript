@@ -31,6 +31,16 @@ describe('Content Type delete api Test', () => {
       })
       .catch(done)
   })
+
+  it('should delete Variant ContentTypes', done => {
+    makeContentType('iphone_prod_desc')
+      .delete()
+      .then((contentType) => {
+        expect(contentType.notice).to.be.equal('Content Type deleted successfully.')
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeContentType (uid = null) {

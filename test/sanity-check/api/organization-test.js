@@ -42,7 +42,7 @@ describe('Organization api test', () => {
   })
 
   it('should fetch organization', done => {
-    organization.fetch()
+    client.organization(organizationUID).fetch()
       .then((organizations) => {
         expect(organizations.name).not.to.be.equal(null, 'Organization does not exist')
         done()
@@ -91,7 +91,7 @@ describe('Organization api test', () => {
   })
 
   it('should get all invitations in an organization', done => {
-    organization.getInvitations({ include_count: true })
+    client.organization(organizationUID).getInvitations({ include_count: true })
       .then((response) => {
         expect(response.count).to.not.equal(null, 'Failed Transfer Organization Ownership')
         for (const i in response.items) {

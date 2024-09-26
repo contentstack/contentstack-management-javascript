@@ -1029,7 +1029,7 @@ const variantGroupsMock = {
       ...systemFieldsMock,
       ...systemFieldsUserMock,
       "content_types": [
-        "iphone_product_description"
+        "iphone_prod_desc"
       ],
       "variant_count": 1,
       "variants": [
@@ -1054,8 +1054,6 @@ const variantGroupsMock = {
   ungrouped_variant_count: 1
 }
 
-
-
 const stackRoleMappingMock = {
   stackRoleMappings: [
     {
@@ -1066,6 +1064,44 @@ const stackRoleMappingMock = {
     }
   ]
 }
+
+const varinatsEntryMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  title: 'title',
+  url: '/url',
+  locale: 'en-us',
+  content_type_uid: 'content_type_uid',
+  stackHeaders: {},
+  ACL: {},
+  _version: 1,
+  _in_progress: false,
+  _rules: [],
+  _variant: {
+       _uid: "variant uid",
+       _instance_uid: "entry_variant uid",
+       _change_set: [],
+       _base_entry_version: 'version number of base entry',
+    }
+}
+
+const variantEntryVersion = {
+  "versions": [
+      {
+          "_version": 3,
+          "locale": "en-us"
+      },
+      {
+          "_version": 2,
+          "locale": "en-us"
+      },
+      {
+          "_version": 1,
+          "locale": "en-us"
+      }
+  ]
+}
+
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -1153,5 +1189,7 @@ export {
   variantsEntriesMock,
   variantsUpdateEntryMock,
   variantBaseEntryMock,
-  roleMockWithTaxonomy
+  roleMockWithTaxonomy,
+  varinatsEntryMock,
+  variantEntryVersion
 }

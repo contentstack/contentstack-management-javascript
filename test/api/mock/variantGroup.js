@@ -51,7 +51,7 @@ const createVariantGroup2 = {
         "created_at": "2022-10-26T06:52:20.073Z",
         "updated_at": "2023-09-25T04:55:56.549Z",
         "content_types": [
-          "iphone_product_description"
+          "iphone_prod_desc"
         ],
         "variant_count": 1,
         "variants": [
