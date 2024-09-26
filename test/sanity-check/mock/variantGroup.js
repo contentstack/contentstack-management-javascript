@@ -1,7 +1,7 @@
 const createVariantGroup = {
     "name": "Colors",
     "content_types": [
-      "iphone_product_page"
+      "multi_page"
     ],
     "uid": "iphone_color_white", 
   }
@@ -11,10 +11,10 @@ const createVariantGroup1 = {
     "updated_by": "updated_by_uid",
     "created_at": "2022-10-26T06:52:20.073Z",
     "updated_at": "2023-09-25T04:55:56.549Z",
-    "uid": "uid",
+    "uid": "uid11",
     "name": "iPhone Colors",
     "content_types": [
-      "iphone_product_page"
+      "multi_page"
     ],
     "source" : "Personalize"
   }
@@ -22,14 +22,14 @@ const createVariantGroup2 = {
     count: 2,
     variant_groups: [
       {
-        "uid": "uid",
+        "uid": "uid21",
         "name": "iPhone Colors",
         "created_by": "created_by_uid",
         "updated_by": "updated_by_uid",
         "created_at": "2022-10-26T06:52:20.073Z",
         "updated_at": "2023-09-25T04:55:56.549Z",
         "content_types": [
-          "iphone_product_page"
+          "multi_page"
         ],
         "variant_count": 1,
         "variants": [
@@ -44,14 +44,14 @@ const createVariantGroup2 = {
         ]
       },
       {
-        "uid": "uid",
+        "uid": "uid22",
         "name": "iPhone",
         "created_by": "created_by_uid",
         "updated_by": "updated_by_uid",
         "created_at": "2022-10-26T06:52:20.073Z",
         "updated_at": "2023-09-25T04:55:56.549Z",
         "content_types": [
-          "iphone_product_description"
+          "iphone_prod_desc"
         ],
         "variant_count": 1,
         "variants": [
