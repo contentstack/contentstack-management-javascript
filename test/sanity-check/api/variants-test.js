@@ -22,14 +22,14 @@ describe('Variants api Test', () => {
     makeVariantGroup()
       .create(createVariantGroup)
       .then((variantGroup) => {
-        // expect(variantGroup.name).to.be.equal(createVariantGroup.name)
-        // expect(variantGroup).to.be.defined()
+        expect(variantGroup.name).to.be.equal(createVariantGroup.name)
+        expect(variantGroup.uid).to.be.equal(createVariantGroup.uid)
         done()
       })
       .catch(done)
   })
 
-  it('Query to get a Variant Group from name', done => {
+  it('Query to get a Variant from name', done => {
     makeVariantGroup()
       .query({ name: createVariantGroup.name })
       .find()
@@ -49,8 +49,8 @@ describe('Variants api Test', () => {
     makeVariants()
       .create(variant)
       .then((variants) => {
-        // expect(variants.name).to.be.equal(variant.name)
-        // expect(variants.uid).to.be.not.equal(null)
+        expect(variants.name).to.be.equal(variant.name)
+        expect(variants.uid).to.be.not.equal(null)
         done()
       })
       .catch(done)
@@ -73,11 +73,11 @@ describe('Variants api Test', () => {
   })
 
   it('Get a Variants from uid', done => {
-    makeVariantGroup('iphone_color_white').variants(variantUid)
+    makeVariants(variantUid)
       .fetch()
       .then((variants) => {
-        // expect(variants.name).to.be.equal(variant.name)
-        // expect(variants.uid).to.be.not.equal(null)
+        expect(variants.name).to.be.equal(variant.name)
+        expect(variants.uid).to.be.not.equal(null)
         done()
       })
       .catch(done)
@@ -130,7 +130,7 @@ describe('Variants api Test', () => {
 })
 
 function makeVariants(uid = null) {
-  return client.stack({ api_key: process.env.API_KEY }).variantGroup('iphone_color_white').variants(uid)
+  return client.stack({ api_key: process.env.API_KEY }).variantGroup(variantGroupUid).variants(uid)
 }
 
 function makeVariantGroup(uid = null) {
