@@ -19,8 +19,8 @@ describe('Variant Group api Test', () => {
     makeVariantGroup()
       .create(createVariantGroup)
       .then((variantGroup) => {
-        // expect(variantGroup.name).to.be.equal(createVariantGroup.name)
-        // expect(variantGroup).to.be.defined()
+        expect(variantGroup.name).to.be.equal(createVariantGroup.name)
+        expect(variantGroup.uid).to.be.equal(createVariantGroup.uid)
         done()
       })
       .catch(done)

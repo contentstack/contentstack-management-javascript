@@ -162,6 +162,9 @@ function makeVariants (data = {}) {
 }
 
 function checkVariants (variants) {
+  if(variants.variants){
+    variants = variants.variants
+  }
   checkSystemFields(variants)
   expect(variants.name).to.be.equal('name')
 }
