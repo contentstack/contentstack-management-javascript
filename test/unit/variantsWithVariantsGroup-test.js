@@ -135,6 +135,9 @@ function makeVariants (data = {}) {
 }
 
 function checkVariants (variant) {
+  if(variant.variants){
+    variant = variant.variants
+  }
   checkSystemFields(variant)
   expect(variant.name).to.be.equal('Test')
   expect(variant.uid).to.be.equal('UID')
