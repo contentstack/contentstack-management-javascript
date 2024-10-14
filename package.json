@@ -25,7 +25,7 @@
     "build:es5": "BABEL_ENV=es5 babel lib -d dist/es5",
     "build:es-modules": "BABEL_ENV=es-modules babel lib -d dist/es-modules",
     "buildall": "npm run buildnode && npm run buildweb && npm run buildreactnative && npm run buildnativescript",
-    "buildnode": "webpack --config webpack/webpack.node.js --mode development",
+    "buildnode": "webpack --config webpack/webpack.node.js --mode production",
     "buildreactnative": "webpack --config webpack/webpack.react-native.js --mode production",
     "buildnativescript": "webpack --config webpack/webpack.nativescript.js --mode production",
     "buildweb": "webpack --config webpack/webpack.web.js --mode production",
