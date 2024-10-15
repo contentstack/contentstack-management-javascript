@@ -26,8 +26,9 @@ export interface BulkOperationItem {
 }
 
 export interface BulkDeleteConfig {
-    entries: Array<BulkDeleteEntry>
-    assets: Array<BulkDeleteAsset>
+    entries?: Array<BulkDeleteEntry>
+    assets?: Array<BulkDeleteAsset>
+    details?: PublishDetails
 }
 
 export interface BulkDeleteEntry {
