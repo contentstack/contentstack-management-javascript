@@ -32,7 +32,7 @@ describe('taxonomy api Test', () => {
       .catch(done)
   })
 
-  it('should fetch taxonomy of the uid passe', done => {
+  it('should fetch taxonomy of the uid passed', done => {
     makeTaxonomy(taxonomyUID)
       .fetch()
       .then((taxonomyResponse) => {
@@ -51,6 +51,7 @@ describe('taxonomy api Test', () => {
         return taxonomyResponse.update()
       })
       .then((taxonomyResponse) => {
+        console.log("🚀 ~ .then ~ taxonomyResponse:", taxonomyResponse)
         expect(taxonomyResponse.uid).to.be.equal(taxonomyUID)
         expect(taxonomyResponse.name).to.be.equal('Updated Name')
         done()
