@@ -51,7 +51,6 @@ describe('taxonomy api Test', () => {
         return taxonomyResponse.update()
       })
       .then((taxonomyResponse) => {
-        console.log("🚀 ~ .then ~ taxonomyResponse:", taxonomyResponse)
         expect(taxonomyResponse.uid).to.be.equal(taxonomyUID)
         expect(taxonomyResponse.name).to.be.equal('Updated Name')
         done()
