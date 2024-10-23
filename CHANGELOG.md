@@ -1,4 +1,7 @@
 # Changelog
+## [v1.18.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.18.3) (2024-10-28)
+ - Fix
+    Incorrect input type for bulk delete operation
 ## [v1.18.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.18.2) (2024-10-3)
  - Fix
     - Variants testcases Added
