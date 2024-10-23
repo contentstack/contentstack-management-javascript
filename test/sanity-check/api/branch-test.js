@@ -12,19 +12,15 @@ describe('Branch api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('should create a dev branch from stage branch', done => {
-    makeBranch()
-      .create({ branch: devBranch })
-      .then((response) => {
-        expect(response.uid).to.be.equal(devBranch.uid)
-        expect(response.source).to.be.equal(devBranch.source)
-        expect(response.alias).to.not.equal(undefined)
-        expect(response.delete).to.not.equal(undefined)
-        expect(response.fetch).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
-  })
+  it('should create a dev branch from stage branch',async () => {
+    const response = await makeBranch().create({ branch: devBranch });
+    expect(response.uid).to.be.equal(devBranch.uid);
+    expect(response.source).to.be.equal(devBranch.source);
+    expect(response.alias).to.not.equal(undefined);
+    expect(response.delete).to.not.equal(undefined);
+    expect(response.fetch).to.not.equal(undefined);
+    await new Promise(resolve => setTimeout(resolve, 15000));
+  });
 
   it('should return main branch when query is called', done => {
     makeBranch()

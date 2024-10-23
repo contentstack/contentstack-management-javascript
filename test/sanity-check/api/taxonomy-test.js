@@ -32,7 +32,7 @@ describe('taxonomy api Test', () => {
       .catch(done)
   })
 
-  it('should fetch taxonomy of the uid passe', done => {
+  it('should fetch taxonomy of the uid passed', done => {
     makeTaxonomy(taxonomyUID)
       .fetch()
       .then((taxonomyResponse) => {

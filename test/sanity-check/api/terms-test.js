@@ -44,31 +44,22 @@ describe('Terms API Test', () => {
     await client.stack({ api_key: process.env.API_KEY }).taxonomy().create({ taxonomy })
   }, 10000)
 
-  it('should create term', done => {
-    makeTerms(taxonomy.uid).create(term)
-      .then((response) => {
-        expect(response.uid).to.be.equal(term.term.uid)
-        done()
-      })
-      .catch(done)
+  it('should create term', async () => {
+    const response = await makeTerms(taxonomy.uid).create(term)
+    expect(response.uid).to.be.equal(term.term.uid)
+    await new Promise(resolve => setTimeout(resolve, 15000));
   })
 
-  it('should create child term 1', done => {
-    makeTerms(taxonomy.uid).create(childTerm1)
-      .then((response) => {
-        expect(response.uid).to.be.equal(childTerm1.term.uid)
-        done()
-      })
-      .catch(done)
+  it('should create child term 1', async () => {
+    const response = await makeTerms(taxonomy.uid).create(childTerm1)
+    expect(response.uid).to.be.equal(childTerm1.term.uid)
+    await new Promise(resolve => setTimeout(resolve, 15000));
   })
 
-  it('should create child term 2', done => {
-    makeTerms(taxonomy.uid).create(childTerm2)
-      .then((response) => {
-        expect(response.uid).to.be.equal(childTerm2.term.uid)
-        done()
-      })
-      .catch(done)
+  it('should create child term 2', async () => {
+    const response = await makeTerms(taxonomy.uid).create(childTerm2)
+    expect(response.uid).to.be.equal(childTerm2.term.uid)
+    await new Promise(resolve => setTimeout(resolve, 15000));
   })
 
   it('should query and get all terms', done => {
@@ -180,20 +171,16 @@ describe('Branch creation api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('should create staging branch', done => {
-    makeBranch()
-      .create({ branch: stageBranch })
-      .then((response) => {
-        expect(response.uid).to.be.equal(stageBranch.uid)
-        expect(response.urlPath).to.be.equal(`/stacks/branches/${stageBranch.uid}`)
-        expect(response.source).to.be.equal(stageBranch.source)
-        expect(response.alias).to.not.equal(undefined)
-        expect(response.delete).to.not.equal(undefined)
-        expect(response.fetch).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
-  })
+  it('should create staging branch', async () => {
+    const response = await makeBranch().create({ branch: stageBranch });
+    expect(response.uid).to.be.equal(stageBranch.uid);
+    expect(response.urlPath).to.be.equal(`/stacks/branches/${stageBranch.uid}`);
+    expect(response.source).to.be.equal(stageBranch.source);
+    expect(response.alias).to.not.equal(undefined);
+    expect(response.fetch).to.not.equal(undefined);
+    expect(response.delete).to.not.equal(undefined);
+    await new Promise(resolve => setTimeout(resolve, 15000));
+  });
 })
 
 function makeBranch (uid = null) {
