@@ -18,13 +18,17 @@ const resultMessage =
     ? `:white_check_mark: Success (${passedTests} / ${totalTests} Passed)`
     : `:x: Failure (${passedTests} / ${totalTests} Passed)`;
 
+const pipelineName = process.env.GOCD_PIPELINE_NAME;
+const buildNumber = process.env.GOCD_PIPELINE_LABEL;
+const goCdServer = process.env.GOCD_SERVER;
+
+const reportUrl = `http://${goCdServer}/go/files/${pipelineName}/${buildNumber}/sanity/1/sanity/test-results/mochawesome-report/sanity-report.html`;
+
 const slackMessage = {
-  text: `
-    *Dev11, CMA SDK Full Sanity*
-    Result: ${resultMessage}
-    Failed Tests: ${failedTests}
-    View Report: <file://${process.cwd()}/mochawesome-report/sanity-report.html>
-  `,
+  text: `Dev11, CMA SDK Full Sanity
+*Result:* ${resultMessage}
+*Failed Tests:* ${failedTests}
+<${reportUrl}|View Report>`,
 };
 
 const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
