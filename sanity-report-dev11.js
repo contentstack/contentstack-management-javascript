@@ -18,11 +18,11 @@ const resultMessage =
     ? `:white_check_mark: Success (${passedTests} / ${totalTests} Passed)`
     : `:x: Failure (${passedTests} / ${totalTests} Passed)`;
 
-const pipelineName = process.env.GOCD_PIPELINE_NAME;
-const buildNumber = process.env.GOCD_PIPELINE_LABEL;
+const pipelineName = process.env.GO_PIPELINE_NAME;
+const pipelineCounter = process.env.GO_PIPELINE_COUNTER;
 const goCdServer = process.env.GOCD_SERVER;
 
-const reportUrl = `http://${goCdServer}/go/files/${pipelineName}/${buildNumber}/sanity/1/sanity/test-results/mochawesome-report/sanity-report.html`;
+const reportUrl = `http://${goCdServer}/go/files/${pipelineName}/${pipelineCounter}/sanity/1/sanity/test-results/mochawesome-report/sanity-report.html`;
 
 const slackMessage = {
   text: `Dev11, CMA SDK Full Sanity
