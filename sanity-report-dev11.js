@@ -13,6 +13,10 @@ const totalTests = mochawesomeReport.stats.tests;
 const passedTests = mochawesomeReport.stats.passes;
 const failedTests = mochawesomeReport.stats.failures;
 
+let durationInSeconds = Math.floor(mochawesomeReport.stats.duration / 1000)
+const durationInMinutes = Math.floor(durationInSeconds / 60)
+durationInSeconds %= 60
+
 const resultMessage =
   passedTests === totalTests
     ? `:white_check_mark: Success (${passedTests} / ${totalTests} Passed)`
@@ -26,7 +30,7 @@ const reportUrl = `http://${goCdServer}/go/files/${pipelineName}/${pipelineCount
 
 const slackMessage = {
   text: `Dev11, CMA SDK Full Sanity
-*Result:* ${resultMessage}
+*Result:* ${resultMessage}. ${durationInMinutes}m ${durationInSeconds}s
 *Failed Tests:* ${failedTests}
 <${reportUrl}|View Report>`,
 };
