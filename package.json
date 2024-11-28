@@ -52,10 +52,10 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.7.4",
-    "form-data": "^3.0.1",
+    "axios": "^1.7.8",
+    "form-data": "^3.0.2",
     "lodash": "^4.17.21",
-    "qs": "^6.13.0"
+    "qs": "^6.13.1"
   },
   "keywords": [
     "contentstack management api",
@@ -63,16 +63,16 @@
     "management api"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.25.7",
-    "@babel/core": "^7.25.8",
-    "@babel/plugin-transform-runtime": "^7.25.7",
-    "@babel/preset-env": "^7.25.8",
-    "@babel/register": "^7.25.7",
-    "@babel/runtime": "^7.25.7",
+    "@babel/cli": "^7.25.9",
+    "@babel/core": "^7.26.0",
+    "@babel/plugin-transform-runtime": "^7.25.9",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/register": "^7.25.9",
+    "@babel/runtime": "^7.26.0",
     "@slack/bolt": "^3.22.0",
     "@types/chai": "^4.3.20",
     "@types/jest": "^28.1.8",
-    "@types/lodash": "^4.17.12",
+    "@types/lodash": "^4.17.13",
     "@types/mocha": "^7.0.2",
     "axios-mock-adapter": "^1.22.0",
     "babel-loader": "^8.4.1",
