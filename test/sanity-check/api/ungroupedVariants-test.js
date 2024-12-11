@@ -23,14 +23,13 @@ describe('Ungrouped Variants api Test', () => {
     stack = jsonReader('stack.json')
     client = contentstackClient(user.authtoken)
   })
-
   it('Should create ungrouped variants create', done => {
     makeVariants()
       .create(variants)
       .then((variantsResponse) => {
-        // variantsUID = variantsResponse.uid
-        // expect(variantsResponse.uid).to.be.not.equal(null)
-        // expect(variantsResponse.name).to.be.equal(variants.name)
+        variantsUID = variantsResponse.uid
+        expect(variantsResponse.uid).to.be.not.equal(null)
+        expect(variantsResponse.name).to.be.equal(variants.name)
         done()
       })
       .catch(done)
@@ -55,8 +54,7 @@ describe('Ungrouped Variants api Test', () => {
     makeVariants(variantsUID)
       .fetch()
       .then((variantsResponse) => {
-        // expect(variantsResponse.uid).to.be.equal(variantsUID)
-        // expect(variantsResponse.name).to.be.equal(variants.name)
+        expect(variantsResponse.name).to.be.equal(variants.name)
         done()
       })
       .catch(done)
