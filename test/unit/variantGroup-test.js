@@ -159,6 +159,9 @@ function makeVariantGroup (data = {}) {
 }
 
 function checkVariantGroup (variantGroup) {
+  if(variantGroup.variant_group){
+    variantGroup = variantGroup.variant_group
+  }
   checkSystemFields(variantGroup)
   expect(variantGroup.name).to.be.equal('Test')
   expect(variantGroup.source).to.be.equal('Personalize')
