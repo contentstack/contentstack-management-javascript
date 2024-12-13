@@ -213,6 +213,38 @@ describe('Relases api Test', () => {
       .catch(done)
   })
 
+  it('Bulk Operation: should add items to a release', done => {
+    const items = {
+      release: releaseUID,
+      action: 'publish',
+      locale: ['en-us'],
+      reference: true,
+      items: [
+        {
+          version: entries[1]._version,
+          uid: entries[1].uid,
+          content_type_uid: multiPageCT.content_type.uid,
+          locale: 'en-us',
+          title: entries[1].title
+        },
+        {
+          version: entries[2]._version,
+          uid: entries[2].uid,
+          content_type_uid: multiPageCT.content_type.uid,
+          locale: 'en-us',
+          title: entries[2].title
+        },
+      ],
+    }
+    doBulkOperation().addItems({ data: items, bulk_version: '2.0' })
+    .then((response) => {
+      expect(response.notice).to.equal('Your add to release request is in progress.')
+      expect(response.job_id).to.not.equal(undefined)
+      done()
+    })
+    .catch(done)
+  })
+
   it('should delete specific Releases with Uid ', done => {
     makeRelease(releaseUID)
       .delete()
@@ -236,4 +268,8 @@ describe('Relases api Test', () => {
 
 function makeRelease (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).release(uid)
+}
+
+function doBulkOperation(uid = null) {
+  return client.stack({ api_key: process.env.API_KEY }).bulkOperation()
 }
