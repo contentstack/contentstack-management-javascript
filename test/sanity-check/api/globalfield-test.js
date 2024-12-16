@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { cloneDeep } from 'lodash'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { createGlobalField } from '../mock/globalfield'
+import { createGlobalField, createNestedGlobalField } from '../mock/globalfield'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import dotenv from 'dotenv'
 
@@ -155,8 +155,8 @@ describe("Global Field api Test", () => {
       .catch(done);
   });
 
-  it("should get all nested global field from Query", (done) => {
-    makeGlobalField({ api_version: "3.2" })
+  it("should get all nested global fields from Query", (done) => {
+    makeGlobalField({ api_version: '3.2' })
       .query()
       .find()
       .then((collection) => {
@@ -171,18 +171,7 @@ describe("Global Field api Test", () => {
   });
 
   it('should create nested global field', done => {
-    const payload = {
-        global_field: {
-            title: 'Nested Global Field',
-            uid: 'nested_global_field222',
-            schema: [
-                { data_type: 'text', display_name: 'Single Line Textbox', uid: 'single_line' },
-                { data_type: 'global_field', display_name: 'Global', uid: 'global_field', reference_to: 'first' },
-            ],
-        },
-    };
-
-    makeGlobalField({ api_version: '3.2' }).create(payload)
+    makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalField)
         .then(globalField => {
             console.log('Response:', globalField);
             expect(globalField.uid).to.be.equal(payload.global_field.uid);
@@ -195,7 +184,7 @@ describe("Global Field api Test", () => {
   });
 
   it('should fetch nested global field', done => {
-    makeGlobalField('nested_global_field222').fetch()
+    makeGlobalField('nested_global_field333', { api_version: '3.2' }).fetch()
         .then(globalField => {
             console.log('Response:', globalField);
             expect(globalField.uid).to.be.equal('nested_global_field222');
@@ -207,8 +196,18 @@ describe("Global Field api Test", () => {
         });
   });
 
+  it('should update nested global fields without fetch', done => {
+    makeGlobalField(createNestedGlobalField.global_field.uid, { headers: { api_version: '3.2' }})
+      .updateNestedGlobalField(createNestedGlobalField)
+      .then((globalField) => {
+        expect(globalField.global_field.schema.length).to.be.equal(2)
+        done()
+      })
+      .catch(done)
+  })
+
   it("should delete nested global field", (done) => {
-    makeGlobalField("nested_global_field222")
+    makeGlobalField("nested_global_field333", { api_version: '3.2' })
       .delete()
       .then((data) => {
         console.log("Response:", data);
@@ -245,16 +244,12 @@ describe("Global Field api Test", () => {
 function makeGlobalField(globalFieldUid = null, options = {}) {
   let uid = null;
   let finalOptions = options;
-  // If globalFieldUid is an object, treat it as options
   if (typeof globalFieldUid === "object") {
     finalOptions = globalFieldUid;
   } else {
     uid = globalFieldUid;
   }
-  // Ensure finalOptions is always an object with default values
   finalOptions = finalOptions || {};
-
   return client
-    .stack({ api_key: process.env.API_KEY })
-    .globalField(uid, finalOptions);
+    .stack({ api_key: process.env.API_KEY }).globalField(uid, finalOptions);
 }
