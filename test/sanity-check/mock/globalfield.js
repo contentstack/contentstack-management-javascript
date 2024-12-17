@@ -29,67 +29,43 @@ const createGlobalField = {
 };
 
 const createNestedGlobalField = {
-  global_field: {
-    title: "Nested Global Field",
-    uid: "nested_global_field222",
-    description: "",
-    schema: [
-      {
-        data_type: "text",
-        display_name: "Single Line Textbox",
-        uid: "single_line",
-        field_metadata: {
-          description: "",
-          default_value: "",
-          version: 3,
-        },
-        format: "",
-        error_messages: {
-          format: "",
-        },
-        mandatory: false,
-        multiple: false,
-        non_localizable: false,
-        unique: false,
-        indexed: false,
-        inbuilt_model: false,
-      },
-      {
-        data_type: "global_field",
-        display_name: "Global",
-        reference_to: "first",
-        field_metadata: {
-          description: "",
-        },
-        uid: "global_field",
-        mandatory: false,
-        multiple: false,
-        non_localizable: false,
-        unique: false,
-        indexed: false,
-        inbuilt_model: false,
-      },
-    ],
-    referred_content_types: [
-      {
-        uid: "first",
-        title: "First",
-      },
-    ],
-    global_field_refs: [
-      {
-        uid: "first",
-        occurrence_count: 3,
-        isChild: true,
-        paths: ["schema.1", "schema.3.schema.4", "schema.4.blocks.0.schema.2"],
-      },
-      {
-        uid: "first",
-        occurrence_count: 1,
-        isChild: false,
-      },
-    ],
-  },
-};
+  "global_field": {
+      "title": "Nested Global Fields9",
+      "uid": "nested_global_field9",
+      "schema": [
+          {
+              "data_type": "text",
+              "display_name": "Single Line Textbox",
+              "uid": "single_line"
+          },
+          {
+              "data_type": "global_field",
+              "display_name": "Global",
+              "uid": "global_field",
+              "reference_to": "nested_global_field33"
+          }
+      ]
+  }
+}
 
-export { createGlobalField, createNestedGlobalField };
+const createNestedGlobalFieldForReference = {
+  "global_field": {
+      "title": "nested global field for reference",
+      "uid": "nested_global_field33",
+      "schema": [
+          {
+              "data_type": "text",
+              "display_name": "Single Line Textbox",
+              "uid": "single_line"
+          },
+          {
+              "data_type": "global_field",
+              "display_name": "Global",
+              "uid": "global_field",
+              "reference_to": "first"
+          }
+      ]
+  }
+}
+
+export { createGlobalField, createNestedGlobalField, createNestedGlobalFieldForReference };
