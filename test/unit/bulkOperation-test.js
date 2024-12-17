@@ -179,6 +179,23 @@ describe('Contentstack BulkOperation test', () => {
     expect(response.notice).to.equal('Your update request is in progress.');
     expect(response.job_id).to.not.equal(undefined);
   });
+
+  it('should fetch job status', async () => {
+    const jobId = 'job_id';
+    const jobStatusDetails = {
+      job_id: jobId,
+    };
+
+    var mock = new MockAdapter(Axios);
+    mock.onGet(`/bulk/jobs/${jobId}`).reply(200, {
+      notice: 'Your job status request is successful.',
+      status: 'completed',
+    });
+
+    const response = await makeBulkOperation().jobStatus(jobStatusDetails);
+    expect(response.notice).to.equal('Your job status request is successful.');
+    expect(response.status).to.equal('completed');
+  });
 });
 
 function makeBulkOperation(data) {
