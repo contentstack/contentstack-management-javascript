@@ -13,6 +13,7 @@ let releaseUID = ''
 let releaseUID2 = ''
 let entries = {}
 const itemToDelete = {}
+const jobId = ''
 
 describe('Relases api Test', () => {
   setup(() => {
@@ -238,8 +239,19 @@ describe('Relases api Test', () => {
     }
     doBulkOperation().addItems({ data: items, bulk_version: '2.0' })
     .then((response) => {
+      jobId = response.job_id
       expect(response.notice).to.equal('Your add to release request is in progress.')
       expect(response.job_id).to.not.equal(undefined)
+      done()
+    })
+    .catch(done)
+  })
+
+  it('Bulk Operation: should fetch job status details', done => {
+    doBulkOperation().jobStatus({ job_id: jobId, bulk_version: '2.0' })
+    .then((response) => {
+      expect(response.job).to.not.equal(undefined)
+      expect(response.job._id).to.equal(jobId)
       done()
     })
     .catch(done)
