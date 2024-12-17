@@ -7,6 +7,8 @@ export interface BulkOperation extends SystemFields {
     unpublish(config: BulkOperationConfig): Promise<Response>
     delete(config: BulkDeleteConfig): Promise<Response>
     addItems(config: AddItemsConfig): Promise<Response>
+
+    jobStatus(config: BulkJobStatus): Promise<Response>
 }
 export interface BulkOperationConfig {
     details: PublishItems
@@ -49,5 +51,10 @@ export interface BranchData extends AnyProperty {
 
 export interface BulkAddItemsConfig {
     data: AnyProperty;
+    bulk_version?: string;
+}
+
+export interface BulkJobStatus {
+    job_id: AnyProperty;
     bulk_version?: string;
 }
