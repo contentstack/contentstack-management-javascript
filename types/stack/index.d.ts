@@ -22,7 +22,6 @@ import { Taxonomy, Taxonomies } from "./taxonomy";
 import { ManagementToken, ManagementTokens } from "./managementToken";
 import { Variant, Variants } from "./variants";
 import { VariantGroup, VariantGroups } from "./VariantGroup";
-import { Variant, Variants } from "./VariantGroup/variants";
 
 export interface StackConfig {
     api_key:string
