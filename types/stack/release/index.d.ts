@@ -32,6 +32,7 @@ export interface ReleaseDeploy extends AnyProperty {
 export interface ReleaseItem extends SystemFields, Creatable<Release, { item?: ReleaseItemData; items?: Array<ReleaseItemData> }> {
     delete(param?: { items: Array<ReleaseItemData> }): Promise<void>; // Changed return type to Promise<void>
     findAll(param?: AnyProperty): Promise<ContentstackCollection<ReleaseItemData>>;
+    move(param: { param: MoveReleaseItems, release_version?: string }): Promise<any>;
 }
 
 // Data structure for Release item properties
@@ -41,4 +42,15 @@ export interface ReleaseItemData extends AnyProperty {
     locale: string;
     content_type_uid: string;
     action: 'publish' | 'unpublish';
+}
+
+export interface MoveReleaseItems extends AnyProperty {
+    release_uid: string;
+    items: Array<ReleaseItemData>;
+}
+
+export interface MoveItemData extends AnyProperty {
+    uid: string;
+    locale: string;
+    variant_id?: string;
 }
