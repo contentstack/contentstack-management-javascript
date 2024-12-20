@@ -101,7 +101,7 @@ describe('Relases api Test', () => {
   it('should fetch a Release items from Uid', done => {
     makeRelease(releaseUID)
       .item()
-      .findAll()
+      .findAll({release_version: '2.0'})
       .then((collection) => {
         const itemdelete = collection.items[0]
         itemToDelete['version'] = itemdelete.version
@@ -252,6 +252,26 @@ describe('Relases api Test', () => {
     .then((response) => {
       expect(response.job).to.not.equal(undefined)
       expect(response.job._id).to.equal(jobId)
+      done()
+    })
+    .catch(done)
+  })
+
+
+  it('Bulk Operation: should update items to a release', done => {
+    const items = {
+      release: releaseUID,
+      action: 'publish',
+      locale: ['en-us'],
+      reference: true,
+      items: [
+        '$all'
+      ],
+    }
+    doBulkOperation().updateItems({ data: items, bulk_version: '2.0' })
+    .then((response) => {
+      expect(response.notice).to.equal('Your update release items to latest version request is in progress.')
+      expect(response.job_id).to.not.equal(undefined)
       done()
     })
     .catch(done)
