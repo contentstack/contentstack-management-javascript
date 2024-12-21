@@ -31,14 +31,14 @@ describe('Contentstack BulkOperation test', () => {
 
   it('should add items to a release', async () => {
     const items = {
-      release: 'blt05e951e5f3a1d342',
+      release: 'release_uid',
       action: 'publish',
       locale: ['en-us'],
       reference: true,
       items: [
         {
           content_type_uid: 'ct_1',
-          uid: 'bltf6e197a18a11ec5f',
+          uid: 'entry_uid',
           version: 2,
           locale: 'en-us',
           title: 'validation test',
@@ -54,6 +54,28 @@ describe('Contentstack BulkOperation test', () => {
 
     const response = await makeBulkOperation().addItems({ data: items, bulk_version: '2.0' });
     expect(response.notice).to.equal('Your add to release request is in progress.');
+    expect(response.job_id).to.not.equal(undefined);
+  });
+
+  it('should update items to a release', async () => {
+    const items = {
+      release: 'release_uid',
+      action: 'publish',
+      locale: ['en-us'],
+      reference: true,
+      items: [
+        '$all'
+      ],
+    };
+
+    var mock = new MockAdapter(Axios);
+    mock.onPut('/bulk/release/update_items').reply(200, {
+      notice: 'Your update release items to latest version request is in progress.',
+      job_id: 'job_id',
+    });
+
+    const response = await makeBulkOperation().updateItems({ data: items, bulk_version: '2.0' });
+    expect(response.notice).to.equal('Your update release items to latest version request is in progress.');
     expect(response.job_id).to.not.equal(undefined);
   });
 

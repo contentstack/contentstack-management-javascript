@@ -7,7 +7,7 @@ export interface BulkOperation extends SystemFields {
     unpublish(config: BulkOperationConfig): Promise<Response>
     delete(config: BulkDeleteConfig): Promise<Response>
     addItems(config: AddItemsConfig): Promise<Response>
-
+    updateItems(config: AddItemsConfig): Promise<Response>
     jobStatus(config: BulkJobStatus): Promise<Response>
 }
 export interface BulkOperationConfig {

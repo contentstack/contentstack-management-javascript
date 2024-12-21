@@ -1,6 +1,6 @@
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite.js'
-import { releaseCreate } from '../mock/release.js'
+import { releaseCreate, releaseCreate2 } from '../mock/release.js'
 import { expect } from 'chai'
 import { cloneDeep } from 'lodash'
 import { contentstackClient } from '../utility/ContentstackClient.js'
@@ -11,6 +11,7 @@ dotenv.config()
 let client = {}
 let releaseUID = ''
 let releaseUID2 = ''
+let releaseUID3 = ''
 let entries = {}
 const itemToDelete = {}
 const jobId = ''
@@ -29,6 +30,19 @@ describe('Relases api Test', () => {
         releaseUID = release.uid
         expect(release.name).to.be.equal(releaseCreate.release.name)
         expect(release.description).to.be.equal(releaseCreate.release.description)
+        expect(release.uid).to.be.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should create a Release 2', done => {
+    makeRelease()
+      .create(releaseCreate2)
+      .then((release) => {
+        releaseUID2 = release.uid
+        expect(release.name).to.be.equal(releaseCreate2.release.name)
+        expect(release.description).to.be.equal(releaseCreate2.release.description)
         expect(release.uid).to.be.not.equal(null)
         done()
       })
@@ -101,7 +115,7 @@ describe('Relases api Test', () => {
   it('should fetch a Release items from Uid', done => {
     makeRelease(releaseUID)
       .item()
-      .findAll()
+      .findAll({release_version: '2.0'})
       .then((collection) => {
         const itemdelete = collection.items[0]
         itemToDelete['version'] = itemdelete.version
@@ -110,6 +124,26 @@ describe('Relases api Test', () => {
         itemToDelete.locale = itemdelete.locale
         itemToDelete.content_type_uid = itemdelete.content_type_uid
         expect(collection.items.length).to.be.equal(3)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should move release items from release1 to release2', done => {
+    const data = {
+      release_uid: releaseUID2,
+      items: [
+       { 
+          uid: entries[1].uid,
+          locale: 'en-us'
+        }
+      ]
+    }
+    makeRelease(releaseUID)
+      .item()
+      .move({ param: data, release_version: '2.0' })
+      .then((release) => {
+        expect(release.notice).to.be.equal('Release items moved successfully!')
         done()
       })
       .catch(done)
@@ -205,7 +239,7 @@ describe('Relases api Test', () => {
     makeRelease(releaseUID)
       .clone({ name: 'New Clone Name', description: 'New Desc' })
       .then((release) => {
-        releaseUID2 = release.uid
+        releaseUID3 = release.uid
         expect(release.name).to.be.equal('New Clone Name')
         expect(release.description).to.be.equal('New Desc')
         expect(release.uid).to.be.not.equal(null)
@@ -257,6 +291,25 @@ describe('Relases api Test', () => {
     .catch(done)
   })
 
+  it('Bulk Operation: should update items to a release', done => {
+    const items = {
+      release: releaseUID,
+      action: 'publish',
+      locale: ['en-us'],
+      reference: true,
+      items: [
+        '$all'
+      ],
+    }
+    doBulkOperation().updateItems({ data: items, bulk_version: '2.0' })
+    .then((response) => {
+      expect(response.notice).to.equal('Your update release items to latest version request is in progress.')
+      expect(response.job_id).to.not.equal(undefined)
+      done()
+    })
+    .catch(done)
+  })
+
   it('should delete specific Releases with Uid ', done => {
     makeRelease(releaseUID)
       .delete()
@@ -267,8 +320,18 @@ describe('Relases api Test', () => {
       .catch(done)
   })
 
-  it('should delete cloned Release with Uid', done => {
+  it('should delete specific Releases with Uid 2', done => {
     makeRelease(releaseUID2)
+      .delete()
+      .then((data) => {
+        expect(data.notice).to.be.equal('Release deleted successfully.')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should delete cloned Release with Uid', done => {
+    makeRelease(releaseUID3)
       .delete()
       .then((data) => {
         expect(data.notice).to.be.equal('Release deleted successfully.')
