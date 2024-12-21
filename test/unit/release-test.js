@@ -221,6 +221,26 @@ describe('Contentstack Release test', () => {
       })
       .catch(done)
   })
+
+  it('Release move test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPut('/releases/UID/items/move').reply(200, {
+      ...noticeMock
+    })
+    makeRelease({
+      release: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+    .item()
+      .move({ data: { release_uid: 'UID2', items: ['$all'] }, release_version: '2.0' })
+      .then((response) => {
+        expect(response.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeRelease (data) {
