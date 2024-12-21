@@ -75,7 +75,6 @@ describe('Contentstack BulkOperation test', () => {
     });
 
     const response = await makeBulkOperation().updateItems({ data: items, bulk_version: '2.0' });
-    console.log("🚀 ~ it ~ response:", response)
     expect(response.notice).to.equal('Your update release items to latest version request is in progress.');
     expect(response.job_id).to.not.equal(undefined);
   });
