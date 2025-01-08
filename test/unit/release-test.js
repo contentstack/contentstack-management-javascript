@@ -241,6 +241,75 @@ describe('Contentstack Release test', () => {
       })
       .catch(done)
   })
+
+  it('Release delete item test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onDelete('/releases/UID/item').reply(200, 
+      { ...noticeMock }
+    )
+    makeRelease({
+      release: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .item()
+      .delete({ item: { uid: 'UID2', locale: 'en-us' }, release_version: '2.0' })
+      .then((response) => {
+        expect(response.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
+
+  it("should delete specific item for v2", (done) => {
+    var mock = new MockAdapter(Axios)
+    mock.onDelete('/releases/UID/item').reply(200, {
+      notice: 'Notice'
+    })
+    makeRelease({
+      release: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .item()
+      .delete({
+        item: { uid: 'uid', locale: "en-us" },
+        release_version: "2.0",
+      })
+      .then((response) => {
+        expect(response.notice).to.be.equal('Notice');
+        done();
+      })
+      .catch(done);
+  });
+  
+  it("should delete specific items for v2", (done) => {
+    var mock = new MockAdapter(Axios)
+    mock.onDelete('/releases/UID/items').reply(200, {
+      notice: 'Notice'
+    })
+    makeRelease({
+      release: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .item()
+      .delete({
+        items: [
+          { uid: 'uid1', locale: "en-us" },
+          { uid: 'uid2', locale: "en-us" },
+        ],
+        release_version: "2.0",
+      })
+      .then((response) => {
+        expect(response.notice).to.be.equal('Notice');
+        done();
+      })
+      .catch(done);
+  });
 })
 
 function makeRelease (data) {
