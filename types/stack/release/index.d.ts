@@ -30,9 +30,10 @@ export interface ReleaseDeploy extends AnyProperty {
 
 // Represents a Release item with various operations
 export interface ReleaseItem extends SystemFields, Creatable<Release, { item?: ReleaseItemData; items?: Array<ReleaseItemData> }> {
-    delete(param?: { items: Array<ReleaseItemData> }): Promise<void>; // Changed return type to Promise<void>
+    delete(param?: { item?: ReleaseItemData; items?: Array<ReleaseItemData>; release_version?: string }): Promise<any>; // Changed return type to Promise<void>
     findAll(param?: AnyProperty): Promise<ContentstackCollection<ReleaseItemData>>;
     move(param: { param: MoveReleaseItems, release_version?: string }): Promise<any>;
+    create(param: { item?: ReleaseItemData; items?: Array<ReleaseItemData>; release_version?: string }): Promise<Release>;
 }
 
 // Data structure for Release item properties
