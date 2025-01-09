@@ -64,7 +64,7 @@ const createManagementToken2 = {
         }
       }
     ],
-    expires_on: '2024-12-10',
+    expires_on: '2025-12-10',
     is_email_notification_enabled: true
   }
 }
