@@ -1,4 +1,8 @@
 # Changelog
+
+## [v1.19.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.0) (2025-01-13)
+ - Feature
+   - Release 2.0 feature
 ## [v1.18.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.18.4) (2024-11-22)
  - Enhancement
     - Added support for response headers.
