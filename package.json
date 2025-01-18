@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.19.0",
+  "version": "1.19.1",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "./dist/node/contentstack-management.js",
   "browser": "./dist/web/contentstack-management.js",
@@ -52,10 +52,10 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.7.8",
-    "form-data": "^3.0.2",
+    "axios": "^1.7.9",
+    "form-data": "^4.0.1",
     "lodash": "^4.17.21",
-    "qs": "^6.13.1"
+    "qs": "^6.14.0"
   },
   "keywords": [
     "contentstack management api",
@@ -63,16 +63,16 @@
     "management api"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.25.9",
+    "@babel/cli": "^7.26.4",
     "@babel/core": "^7.26.0",
     "@babel/plugin-transform-runtime": "^7.25.9",
     "@babel/preset-env": "^7.26.0",
     "@babel/register": "^7.25.9",
     "@babel/runtime": "^7.26.0",
-    "@slack/bolt": "^3.22.0",
+    "@slack/bolt": "^4.2.0",
     "@types/chai": "^4.3.20",
     "@types/jest": "^28.1.8",
-    "@types/lodash": "^4.17.13",
+    "@types/lodash": "^4.17.14",
     "@types/mocha": "^7.0.2",
     "axios-mock-adapter": "^1.22.0",
     "babel-loader": "^8.4.1",
@@ -83,7 +83,7 @@
     "chai": "^4.5.0",
     "clean-webpack-plugin": "^4.0.0",
     "docdash": "^1.2.0",
-    "dotenv": "^8.6.0",
+    "dotenv": "^16.4.7",
     "eslint": "^8.57.1",
     "eslint-config-standard": "^13.0.1",
     "eslint-plugin-import": "^2.31.0",
@@ -99,14 +99,14 @@
     "nock": "^10.0.6",
     "nyc": "^15.1.0",
     "os-browserify": "^0.3.0",
-    "rimraf": "^2.7.1",
+    "rimraf": "^6.0.1",
     "sinon": "^7.5.0",
     "string-replace-loader": "^3.1.0",
     "ts-jest": "^28.0.8",
     "typescript": "^4.9.5",
-    "webpack": "^5.96.1",
-    "webpack-cli": "^4.10.0",
-    "webpack-merge": "4.2.2"
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-merge": "6.0.1"
   },
   "homepage": "https://www.contentstack.com"
 }
