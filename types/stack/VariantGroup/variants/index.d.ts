@@ -1,11 +1,11 @@
 import { AnyProperty, SystemFields } from "../../../utility/fields";
 import { Queryable, SystemFunction } from "../../../utility/operations";
 
-export interface Variant extends SystemFields, SystemFunction<Variants> {
+export interface VariantGroupVariant extends SystemFields, SystemFunction<VariantGroupVariants> {
     
 }
     
-export interface Variants extends Queryable<Variants, {variant: VariantData}> {
+export interface VariantGroupVariants extends Queryable<VariantGroupVariants, {variant: VariantData}> {
 
 }
 
