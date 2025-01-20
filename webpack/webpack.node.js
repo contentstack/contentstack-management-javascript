@@ -1,9 +1,9 @@
 const path = require('path')
-const webpackMerge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const commonConfig = require('./webpack.common')
 
 module.exports = function (options) {
-  return webpackMerge(commonConfig(), {
+  return merge(commonConfig(), {
     output: {
       libraryTarget: 'commonjs2',
       path: path.join(__dirname, '../dist/node'),
