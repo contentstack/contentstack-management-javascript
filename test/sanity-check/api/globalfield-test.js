@@ -115,9 +115,24 @@ describe("Global Field api Test", () => {
       .catch(done);
   });
 
+
   it("should get global field title matching Upload", (done) => {
     makeGlobalField()
       .query({ query: { title: "Upload" } })
+      .find()
+      .then((collection) => {
+        collection.items.forEach((globalField) => {
+          expect(globalField.uid).to.be.not.equal(null);
+          expect(globalField.title).to.be.equal("Upload");
+        });
+        done();
+      })
+      .catch(done);
+  });
+
+  it("should get all nested global fields from Query", (done) => {
+    makeGlobalField({ api_version: '3.2' })
+      .query()
       .find()
       .then((collection) => {
         collection.items.forEach((globalField) => {
@@ -148,7 +163,19 @@ describe("Global Field api Test", () => {
   it('should create nested global field for reference', done => {
     makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalFieldForReference)
         .then(globalField => {
-            expect(globalField.global_field.uid).to.be.equal(createNestedGlobalFieldForReference.global_field.uid);
+            expect(globalField.global_field.uid).to.be.equal(createNestedGlobalFieldForReference.global_field.uid);      
+            done();
+        })
+        .catch(err => {
+            console.error('Error:', err.response?.data || err.message);
+            done(err);
+        });
+  });
+
+  it('should create nested global field', done => {
+    makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalField)
+        .then(globalField => {
+            expect(globalField.uid).to.be.equal(createNestedGlobalField.global_field.uid);
             done();
         })
         .catch(err => {
