@@ -20,6 +20,7 @@ describe("Global Field api Test", () => {
     makeGlobalField()
       .create(createGlobalField)
       .then((globalField) => {
+        globalField = globalField.global_field;
         expect(globalField.uid).to.be.equal(createGlobalField.global_field.uid);
         expect(globalField.title).to.be.equal(
           createGlobalField.global_field.title
@@ -42,6 +43,7 @@ describe("Global Field api Test", () => {
     makeGlobalField(createGlobalField.global_field.uid)
       .fetch()
       .then((globalField) => {
+        globalField = globalField.global_field;
         expect(globalField.uid).to.be.equal(createGlobalField.global_field.uid);
         expect(globalField.title).to.be.equal(
           createGlobalField.global_field.title
@@ -60,38 +62,11 @@ describe("Global Field api Test", () => {
       .catch(done);
   });
 
-  it("should fetch and update global Field", (done) => {
-    makeGlobalField(createGlobalField.global_field.uid)
-      .fetch()
-      .then((globalField) => {
-        globalField.title = "Update title";
-        return globalField.update();
-      })
-      .then((updateGlobal) => {
-        expect(updateGlobal.uid).to.be.equal(
-          createGlobalField.global_field.uid
-        );
-        expect(updateGlobal.title).to.be.equal("Update title");
-        expect(updateGlobal.schema[0].uid).to.be.equal(
-          createGlobalField.global_field.schema[0].uid
-        );
-        expect(updateGlobal.schema[0].data_type).to.be.equal(
-          createGlobalField.global_field.schema[0].data_type
-        );
-        expect(updateGlobal.schema[0].display_name).to.be.equal(
-          createGlobalField.global_field.schema[0].display_name
-        );
-        done();
-      })
-      .catch(done);
-  });
-
   it("should update global Field", (done) => {
-    const globalField = makeGlobalField(createGlobalField.global_field.uid);
-    Object.assign(globalField, cloneDeep(createGlobalField.global_field));
-    globalField
-      .update()
+    makeGlobalField(createGlobalField.global_field.uid)
+      .update(createGlobalField)
       .then((updateGlobal) => {
+        updateGlobal = updateGlobal.global_field;
         expect(updateGlobal.uid).to.be.equal(
           createGlobalField.global_field.uid
         );
@@ -173,7 +148,7 @@ describe("Global Field api Test", () => {
   it('should create nested global field for reference', done => {
     makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalFieldForReference)
         .then(globalField => {
-            expect(globalField.uid).to.be.equal(createNestedGlobalFieldForReference.global_field.uid);
+            expect(globalField.global_field.uid).to.be.equal(createNestedGlobalFieldForReference.global_field.uid);
             done();
         })
         .catch(err => {
@@ -185,7 +160,7 @@ describe("Global Field api Test", () => {
   it('should create nested global field', done => {
     makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalField)
         .then(globalField => {
-            expect(globalField.uid).to.be.equal(createNestedGlobalField.global_field.uid);
+            expect(globalField.global_field.uid).to.be.equal(createNestedGlobalField.global_field.uid);
             done();
         })
         .catch(err => {
@@ -197,7 +172,7 @@ describe("Global Field api Test", () => {
   it('should fetch nested global field', done => {
     makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' }).fetch()
         .then(globalField => {
-            expect(globalField.uid).to.be.equal(createNestedGlobalField.global_field.uid);
+            expect(globalField.global_field.uid).to.be.equal(createNestedGlobalField.global_field.uid);
             done();
         })
         .catch(err => {
@@ -207,8 +182,8 @@ describe("Global Field api Test", () => {
   });
 
   it('should update nested global fields without fetch', done => {
-    makeGlobalField(createNestedGlobalField.global_field.uid, { headers: { api_version: '3.2' }})
-      .updateNestedGlobalField(createNestedGlobalField)
+    makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' })
+      .update(createNestedGlobalField)
       .then((globalField) => {
         expect(globalField.global_field.schema.length).to.be.equal(2)
         done()
