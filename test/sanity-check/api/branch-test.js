@@ -10,21 +10,18 @@ describe('Branch api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
+    console.log("🚀 ~ setup ~ user.authtoken:", user.authtoken)
   })
 
-  it('should create a dev branch from stage branch', done => {
-    makeBranch()
-      .create({ branch: devBranch })
-      .then((response) => {
-        expect(response.uid).to.be.equal(devBranch.uid)
-        expect(response.source).to.be.equal(devBranch.source)
-        expect(response.alias).to.not.equal(undefined)
-        expect(response.delete).to.not.equal(undefined)
-        expect(response.fetch).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
-  })
+  it('should create a dev branch from stage branch',async () => {
+    const response = await makeBranch().create({ branch: devBranch });
+    expect(response.uid).to.be.equal(devBranch.uid);
+    expect(response.source).to.be.equal(devBranch.source);
+    expect(response.alias).to.not.equal(undefined);
+    expect(response.delete).to.not.equal(undefined);
+    expect(response.fetch).to.not.equal(undefined);
+    await new Promise(resolve => setTimeout(resolve, 15000));
+  });
 
   it('should return main branch when query is called', done => {
     makeBranch()
@@ -90,6 +87,7 @@ describe('Branch api Test', () => {
       .query()
       .find()
       .then((response) => {
+        console.log("🚀 ~ .then ~ response:", response)
         response.items.forEach(item => {
           expect(item.uid).to.not.equal(undefined)
           expect(item.delete).to.not.equal(undefined)
