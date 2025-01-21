@@ -22,7 +22,7 @@ import { Taxonomy, Taxonomies } from "./taxonomy";
 import { ManagementToken, ManagementTokens } from "./managementToken";
 import { Variant, Variants } from "./variants";
 import { VariantGroup, VariantGroups } from "./VariantGroup";
-import { Variant, Variants } from "./VariantGroup/variants";
+import { VariantGroupVariant, VariantGroupVariants } from "./VariantGroup/variants";
 
 export interface StackConfig {
     api_key:string
@@ -110,6 +110,6 @@ export interface Stack extends SystemFields {
     variantGroup(): VariantGroups
     variantGroup(uid: string): VariantGroup
 
-    variant(): Variants
-    variant(uid: string): Variant
+    variant(): VariantGroupVariants
+    variant(uid: string): VariantGroupVariant
 }
