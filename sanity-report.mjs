@@ -1,4 +1,5 @@
-import { App } from '@slack/bolt'
+import Slack from '@slack/bolt'
+const { App } = Slack
 import dotenv from 'dotenv'
 import fs from 'fs'
 
