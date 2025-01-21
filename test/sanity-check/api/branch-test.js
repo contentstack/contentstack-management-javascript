@@ -10,7 +10,6 @@ describe('Branch api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
-    console.log("🚀 ~ setup ~ user.authtoken:", user.authtoken)
   })
 
   it('should create a dev branch from stage branch',async () => {
@@ -87,7 +86,6 @@ describe('Branch api Test', () => {
       .query()
       .find()
       .then((response) => {
-        console.log("🚀 ~ .then ~ response:", response)
         response.items.forEach(item => {
           expect(item.uid).to.not.equal(undefined)
           expect(item.delete).to.not.equal(undefined)
