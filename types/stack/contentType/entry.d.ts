@@ -11,6 +11,7 @@ export interface Entry extends Publishable, Unpublishable, SystemFields, SystemF
     variants(uid: string): Variant
     setWorkflowStage(data: { workflow_stage: WorkflowStage, locale?:string}): Promise<Response>
     locales(): Promise<Locales>
+    references(param: object): Promise<References>
 }
 
 export interface Entries extends Queryable<Entry, {entry: EntryData}> {
@@ -38,4 +39,16 @@ export interface Locales {
 export interface Code extends AnyProperty {
     code: string;
     localized: boolean;
+}
+
+export interface References {
+    references: EntryReferences[];
+}
+
+export interface EntryReferences extends AnyProperty {
+    title: string;
+    entry_uid: string;
+    locale: string;
+    content_type_uid: string;
+    content_type_title: string;
 }
