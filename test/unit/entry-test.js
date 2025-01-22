@@ -615,6 +615,31 @@ describe('Contentstack Entry test', () => {
       })
       .catch(done)
   })
+  it('should get references of the given Entry uid', done => {
+    var mock = new MockAdapter(Axios)
+    const references = [
+      {
+        entry_uid: "entry_uid",
+        content_type_uid: "referred_content_type",
+        locale: "en-us",
+        title: "Jeff Goins",
+        content_type_title: "Referred Content Type"
+      }
+    ]
+    mock.onGet('/content_types/content_type_uid/entries/UID/references').reply(200, {
+      references
+    })
+
+    makeEntry({ entry: { ...systemUidMock }, stackHeaders: stackHeadersMock }).references()
+      .then((reference) => {
+        expect(reference.references[0].entry_uid).to.be.equal('entry_uid')
+        reference.references.forEach((references) => {
+          expect(references.entry_uid).to.be.not.equal(null)
+        })
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeEntry (data) {
