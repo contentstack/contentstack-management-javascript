@@ -170,6 +170,19 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
+  it('should get references of the given Entry uid', done => {
+    makeEntry(singlepageCT.content_type.uid, entryUTD).references()
+      .then((reference) => {
+        reference.references.forEach((references) => {
+          expect(references.entry_uid).to.be.not.equal(null)
+          expect(references.content_type_uid).to.be.not.equal(null)
+          expect(references.content_type_title).to.be.not.equal(null)
+        })
+        done()
+      })
+      .catch(done)
+  })
+
   it('should unpublish localized entry', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .unpublish({
