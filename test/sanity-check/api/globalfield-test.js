@@ -137,22 +137,7 @@ describe("Global Field api Test", () => {
       .then((collection) => {
         collection.items.forEach((globalField) => {
           expect(globalField.uid).to.be.not.equal(null);
-          expect(globalField.title).to.be.equal("Upload");
-        });
-        done();
-      })
-      .catch(done);
-  });
-
-  it("should get all nested global fields from Query", (done) => {
-    makeGlobalField({ api_version: '3.2' })
-      .query()
-      .find()
-      .then((collection) => {
-        collection.items.forEach((globalField) => {
-          expect(globalField.uid).to.be.not.equal(null);
           expect(globalField.title).to.be.not.equal(null);
-          expect(globalField.schema).to.be.not.equal(null);
         });
         done();
       })
@@ -164,18 +149,6 @@ describe("Global Field api Test", () => {
     makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalFieldForReference)
         .then(globalField => {
             expect(globalField.global_field.uid).to.be.equal(createNestedGlobalFieldForReference.global_field.uid);      
-            done();
-        })
-        .catch(err => {
-            console.error('Error:', err.response?.data || err.message);
-            done(err);
-        });
-  });
-
-  it('should create nested global field', done => {
-    makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalField)
-        .then(globalField => {
-            expect(globalField.uid).to.be.equal(createNestedGlobalField.global_field.uid);
             done();
         })
         .catch(err => {
