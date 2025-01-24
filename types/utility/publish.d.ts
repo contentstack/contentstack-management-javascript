@@ -9,7 +9,7 @@ export interface PublishDetails {
 export interface PublishConfig {
     publishDetails: PublishDetails
     locale?: string
-    version?: string
+    version?: number
     scheduledAt?: string
 }
 
