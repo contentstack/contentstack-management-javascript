@@ -1,4 +1,5 @@
 import Slack from '@slack/bolt'
+const { App } = Slack
 import dotenv from 'dotenv'
 import fs from 'fs'
 
@@ -34,7 +35,7 @@ const slackMessage = `
 • Total Duration: *${durationInMinutes}m ${durationInSeconds.toFixed(2)}s*
 `
 
-const app = new Slack.App({
+const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET
 })
