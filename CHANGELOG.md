@@ -2,6 +2,16 @@
 ## [v1.19.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.2) (2025-01-27)
  - Enhancement
     - Added support for nested global fields.
+
+## [v1.19.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.1) (2025-01-27)
+ - Feature
+   - Added support for get entry references
+   - Added delay sanity testcases
+   - Axios, webpack, form-data, qs version bump
+
+## [v1.19.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.0) (2025-01-13)
+ - Feature
+   - Release 2.0 feature
 ## [v1.18.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.18.4) (2024-11-22)
  - Enhancement
     - Added support for response headers.
