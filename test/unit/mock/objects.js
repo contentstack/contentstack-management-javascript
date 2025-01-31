@@ -431,6 +431,93 @@ const globalFieldMock = {
   ]
 }
 
+const nestedGlobalFieldMock = {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  title: 'title',
+  schema:
+  [
+    {
+      display_name: 'Title',
+      uid: 'title',
+      data_type: 'text',
+      mandatory: true,
+      unique: true,
+      field_metadata:
+          {
+            _default: true
+          }
+    },
+    {
+      display_name: 'URL',
+      uid: 'url',
+      data_type: 'text',
+      mandatory: false,
+      field_metadata:
+          {
+            _default: true
+          }
+    }
+  ]
+}
+const nestedGlobalFieldPayload = {
+  global_field: {
+    title: 'Nested Global Field 12345',
+    uid: 'nested_global_field_12345',
+    description: '',
+    schema: [
+      {
+        data_type: 'text',
+        display_name: 'Single Line Textbox',
+        uid: 'single_line',
+        field_metadata: {
+          description: '',
+          default_value: '',
+          version: 3,
+        },
+        format: '',
+        error_messages: {
+          format: '',
+        },
+        mandatory: false,
+        multiple: false,
+        non_localizable: false,
+        unique: false,
+      },
+      {
+        data_type: 'global_field',
+        display_name: 'Global',
+        reference_to: 'nested_global_field1234',
+        field_metadata: {
+          description: '',
+        },
+        uid: 'global_field',
+        mandatory: false,
+        multiple: false,
+        non_localizable: false,
+        unique: false,
+      },
+    ],
+    global_field_refs: [
+      {
+        uid: 'nested_global_field_1234',
+        occurrence_count: 3,
+        isChild: true,
+        paths: [
+          'schema.1',
+          'schema.3.schema.4',
+          'schema.4.blocks.0.schema.2',
+        ],
+      },
+      {
+        uid: 'nested_global_field_123',
+        occurrence_count: 1,
+        isChild: false,
+      },
+    ],
+  },
+}
+
 const entryMock = {
   ...systemFieldsMock,
   ...systemFieldsUserMock,
@@ -1191,5 +1278,7 @@ export {
   variantBaseEntryMock,
   roleMockWithTaxonomy,
   varinatsEntryMock,
-  variantEntryVersion
+  variantEntryVersion,
+  nestedGlobalFieldMock,
+  nestedGlobalFieldPayload
 }
