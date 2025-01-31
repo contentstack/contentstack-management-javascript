@@ -1,4 +1,7 @@
 # Changelog
+## [v1.19.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.2) (2025-01-27)
+ - Enhancement
+    - Added support for nested global fields.
 ## [v1.18.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.18.4) (2024-11-22)
  - Enhancement
     - Added support for response headers.
