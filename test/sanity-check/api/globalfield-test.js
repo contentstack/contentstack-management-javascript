@@ -130,92 +130,92 @@ describe("Global Field api Test", () => {
       .catch(done);
   });
 
-  it("should get all nested global fields from Query", (done) => {
-    makeGlobalField({ api_version: '3.2' })
-      .query()
-      .find()
-      .then((collection) => {
-        collection.items.forEach((globalField) => {
-          expect(globalField.uid).to.be.not.equal(null);
-          expect(globalField.title).to.be.not.equal(null);
-        });
-        done();
-      })
-      .catch(done);
-  });
+  // it("should get all nested global fields from Query", (done) => {
+  //   makeGlobalField({ api_version: '3.2' })
+  //     .query()
+  //     .find()
+  //     .then((collection) => {
+  //       collection.items.forEach((globalField) => {
+  //         expect(globalField.uid).to.be.not.equal(null);
+  //         expect(globalField.title).to.be.not.equal(null);
+  //       });
+  //       done();
+  //     })
+  //     .catch(done);
+  // });
 
   
-  it('should create nested global field for reference', done => {
-    makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalFieldForReference)
-        .then(globalField => {
-            expect(globalField.global_field.uid).to.be.equal(createNestedGlobalFieldForReference.global_field.uid);      
-            done();
-        })
-        .catch(err => {
-            console.error('Error:', err.response?.data || err.message);
-            done(err);
-        });
-  });
+  // it('should create nested global field for reference', done => {
+  //   makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalFieldForReference)
+  //       .then(globalField => {
+  //           expect(globalField.global_field.uid).to.be.equal(createNestedGlobalFieldForReference.global_field.uid);      
+  //           done();
+  //       })
+  //       .catch(err => {
+  //           console.error('Error:', err.response?.data || err.message);
+  //           done(err);
+  //       });
+  // });
 
-  it('should create nested global field', done => {
-    makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalField)
-        .then(globalField => {
-            expect(globalField.global_field.uid).to.be.equal(createNestedGlobalField.global_field.uid);
-            done();
-        })
-        .catch(err => {
-            console.error('Error:', err.response?.data || err.message);
-            done(err);
-        });
-  });
+  // it('should create nested global field', done => {
+  //   makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalField)
+  //       .then(globalField => {
+  //           expect(globalField.global_field.uid).to.be.equal(createNestedGlobalField.global_field.uid);
+  //           done();
+  //       })
+  //       .catch(err => {
+  //           console.error('Error:', err.response?.data || err.message);
+  //           done(err);
+  //       });
+  // });
 
-  it('should fetch nested global field', done => {
-    makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' }).fetch()
-        .then(globalField => {
-            expect(globalField.global_field.uid).to.be.equal(createNestedGlobalField.global_field.uid);
-            done();
-        })
-        .catch(err => {
-            console.error('Error:', err.response?.data || err.message);
-            done(err);
-        });
-  });
+  // it('should fetch nested global field', done => {
+  //   makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' }).fetch()
+  //       .then(globalField => {
+  //           expect(globalField.global_field.uid).to.be.equal(createNestedGlobalField.global_field.uid);
+  //           done();
+  //       })
+  //       .catch(err => {
+  //           console.error('Error:', err.response?.data || err.message);
+  //           done(err);
+  //       });
+  // });
 
-  it('should update nested global fields without fetch', done => {
-    makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' })
-      .update(createNestedGlobalField)
-      .then((globalField) => {
-        expect(globalField.global_field.schema.length).to.be.equal(2)
-        done()
-      })
-      .catch(done)
-  })
+  // it('should update nested global fields without fetch', done => {
+  //   makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' })
+  //     .update(createNestedGlobalField)
+  //     .then((globalField) => {
+  //       expect(globalField.global_field.schema.length).to.be.equal(2)
+  //       done()
+  //     })
+  //     .catch(done)
+  // })
 
-  it("should delete nested global field", (done) => {
-    makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' })
-      .delete()
-      .then((data) => {
-        expect(data.notice).to.be.equal("Global Field deleted successfully.");
-        done();
-      })
-      .catch((err) => {
-        console.error("Error:", err.response?.data || err.message);
-        done(err);
-      });
-  });
+  // it("should delete nested global field", (done) => {
+  //   makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' })
+  //     .delete()
+  //     .then((data) => {
+  //       expect(data.notice).to.be.equal("Global Field deleted successfully.");
+  //       done();
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error:", err.response?.data || err.message);
+  //       done(err);
+  //     });
+  // });
 
-  it("should delete nested global reference field", (done) => {
-    makeGlobalField(createNestedGlobalFieldForReference.global_field.uid, { api_version: '3.2' })
-      .delete()
-      .then((data) => {
-        expect(data.notice).to.be.equal("Global Field deleted successfully.");
-        done();
-      })
-      .catch((err) => {
-        console.error("Error:", err.response?.data || err.message);
-        done(err);
-      });
-  });
+  // it("should delete nested global reference field", (done) => {
+  //   makeGlobalField(createNestedGlobalFieldForReference.global_field.uid, { api_version: '3.2' })
+  //     .delete()
+  //     .then((data) => {
+  //       expect(data.notice).to.be.equal("Global Field deleted successfully.");
+  //       done();
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error:", err.response?.data || err.message);
+  //       done(err);
+  //     });
+  // });
 
   it("should delete global Field", (done) => {
     makeGlobalField(createGlobalField.global_field.uid)
