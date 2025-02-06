@@ -1,6 +1,7 @@
 import { expect } from "chai"
 import path from "path"
 import { Stack } from "../../types/stack";
+import { Variant, Variants } from "../../types/stack/VariantGroup/variants";
 import { variantEntry, variantEntry2 } from "./mock/variants";
 var tokenUID = ''
 export function createVariant(stack: Stack) {
