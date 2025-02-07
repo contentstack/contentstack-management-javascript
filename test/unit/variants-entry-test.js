@@ -199,6 +199,46 @@ describe("Contentstack Variants entry test", () => {
       })
       .catch(done);
   });
+
+  it("Variants update test", (done) => {
+    var mock = new MockAdapter(Axios);
+    const updatedData = {
+      entry: {
+        title: "Updated Variant Title",
+        url: "/updated-variant-url",
+      },
+    };
+    const variantEntryMock = {
+      uid: 'variant_uid',
+      title: 'Variant Title',
+      content_type: 'content_type_uid',
+      locale: 'en-us',
+      _version: 1,
+      _in_progress: false
+    }
+
+    mock
+      .onPut(`/content_types/content_type_uid/entries/entry_uid/variants/variant_uid`)
+      .reply(200, {
+        entry: {
+          ...variantEntryMock,
+          ...updatedData.entry,
+        },
+      });
+
+      makeEntryVariants({
+      content_type_uid: "content_type_uid",
+      entry_uid: "entry_uid",
+      variants_uid: "variant_uid",
+    })
+      .update(updatedData)
+      .then((response) => {
+        expect(response.entry.title).to.be.equal("Updated Variant Title");
+        expect(response.entry.url).to.be.equal("/updated-variant-url");
+        done();
+      })
+      .catch(done);
+  });
 });
 
 function makeEntryVariants(data) {

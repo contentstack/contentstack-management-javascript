@@ -315,6 +315,67 @@ describe('Contentstack Asset test', () => {
       })
       .catch(done)
   })
+
+
+  it('Asset download test', done => {
+    var mock = new MockAdapter(Axios)
+    const downloadResponse = new Blob(['file content'], { type: 'text/plain' })
+
+    mock.onGet('/assets/download_url').reply(200, downloadResponse)
+
+    makeAsset({
+      asset: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .download({ url: '/assets/download_url', responseType: 'blob' })
+      .then((response) => {
+        expect(response.data).to.be.instanceOf(Blob)
+        expect(response.data.type).to.be.equal('text/plain')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Asset download test without url', done => {
+    var mock = new MockAdapter(Axios)
+    const downloadResponse = new Blob(['file content'], { type: 'text/plain' })
+
+    mock.onGet(`/assets/${systemUidMock.uid}`).reply(200, downloadResponse)
+
+    makeAsset({
+      asset: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .download({ responseType: 'blob' })
+      .then((response) => {
+        console.log("🚀 ~ .then ~ response:", response)
+        expect(response.data).to.be.instanceOf(Blob)
+        expect(response.data.type).to.be.equal('text/plain')
+        done()
+      })
+      .catch((err) => {
+        expect(err.message).to.be.equal('Asset URL can not be empty')
+        done()
+      })
+  })
+
+  it('Asset download test with missing url', done => {
+    makeAsset({
+      asset: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .download({ responseType: 'blob' })
+      .catch((err) => {
+        expect(err.message).to.be.equal('Asset URL can not be empty')
+        done()
+      })
+  })
 })
 
 function makeAsset (data) {
