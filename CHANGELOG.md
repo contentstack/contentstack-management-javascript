@@ -1,7 +1,8 @@
 # Changelog
-## [v1.19.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.2) (2025-01-27)
+## [v1.19.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.2) (2025-02-11)
  - Enhancement
     - Added support for nested global fields.
+    - Added api_version support for variants
 
 ## [v1.19.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.1) (2025-01-27)
  - Feature
