@@ -640,6 +640,37 @@ describe('Contentstack Entry test', () => {
       })
       .catch(done)
   })
+
+  it('should fetch variants of an Entry', done => {
+    var mock = new MockAdapter(Axios)
+    const variantsResponse = {
+      variants: [
+        {
+          uid: 'variant_uid',
+          title: 'Variant Title',
+          content_type: 'content_type_uid'
+        }
+      ]
+    }
+
+    mock.onGet(`/content_types/content_type_uid/entries/UID/variants/variantUid`).reply(200, variantsResponse)
+
+    makeEntry({
+      entry: {
+        ...systemUidMock
+      }
+    })
+      .variants('variantUid')
+      .fetch()
+      .then((response) => {
+        expect(response.variants).to.be.an('array')
+        expect(response.variants[0].uid).to.be.equal('variant_uid')
+        expect(response.variants[0].title).to.be.equal('Variant Title')
+        expect(response.variants[0].content_type).to.be.equal('content_type_uid')
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeEntry (data) {
