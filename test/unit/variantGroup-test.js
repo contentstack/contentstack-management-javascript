@@ -152,6 +152,18 @@ describe('Contentstack VariantGroup test', () => {
       })
       .catch(done)
   })
+
+  it('should fetch variants of a VariantGroup', done => {
+    const variants = makeVariantGroup({
+      variant_group: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+    .variants()
+    expect(variants.variant_group_uid).to.be.equal(systemUidMock.uid)
+    done()
+  })
 })
 
 function makeVariantGroup (data = {}) {

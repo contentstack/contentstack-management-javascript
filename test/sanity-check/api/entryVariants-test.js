@@ -3,27 +3,29 @@ import { describe, it, setup } from "mocha";
 import { jsonReader } from "../utility/fileOperations/readwrite";
 import { createVariantGroup } from "../mock/variantGroup.js";
 import { variant } from "../mock/variants.js";
-import { variantEntryFirst } from "../mock/variantEntry.js";
+import {
+  variantEntryFirst,
+  publishVariantEntryFirst,
+  unpublishVariantEntryFirst,
+} from "../mock/variantEntry.js";
 import { contentstackClient } from "../utility/ContentstackClient.js";
 
 var client = {};
 
 var stack = {};
 var variantUid = "";
-var variantName = "";
 var variantGroupUid = "";
 var contentTypeUid = "";
 var entryUid = "";
-
-const entry = jsonReader("entry.json");
-entryUid = entry[2].uid;
-contentTypeUid = entry[2].content_type_uid;
 
 describe("Entry Variants api Test", () => {
   setup(() => {
     const user = jsonReader("loggedinuser.json");
     stack = jsonReader("stack.json");
     client = contentstackClient(user.authtoken);
+    const entry = jsonReader("entry.json");
+    entryUid = entry[2].uid;
+    contentTypeUid = entry[2].content_type_uid;
   });
 
   it("should create a Variant Group", (done) => {
@@ -76,24 +78,8 @@ describe("Entry Variants api Test", () => {
   });
 
   it("should publish entry variant", (done) => {
-    var publishVariantEntryFirst = {
-      entry: {
-        environments: ["development"],
-        locales: ["en-us", "en-at"],
-        variants: [
-          {
-            uid: variantUid,
-            version: 1,
-          },
-        ],
-        variant_rules: {
-          publish_latest_base: false,
-          publish_latest_base_conditionally: true,
-        },
-      },
-      locale: "en-us",
-      version: 1,
-    };
+    publishVariantEntryFirst.entry.variants[0].uid = variantUid;
+
     makeEntry()
       .entry(entryUid)
       .publish({
@@ -111,24 +97,7 @@ describe("Entry Variants api Test", () => {
   });
 
   it("should unpublish entry variant", (done) => {
-    var publishVariantEntryFirst = {
-      entry: {
-        environments: ["development"],
-        locales: ["en-at"],
-        variants: [
-          {
-            uid: variantUid,
-            version: 1,
-          },
-        ],
-        variant_rules: {
-          publish_latest_base: false,
-          publish_latest_base_conditionally: true,
-        },
-      },
-      locale: "en-us",
-      version: 1,
-    };
+    unpublishVariantEntryFirst.entry.variants[0].uid = variantUid;
     makeEntry()
       .entry(entryUid)
       .unpublish({
@@ -145,6 +114,41 @@ describe("Entry Variants api Test", () => {
       .catch(done);
   });
 
+  it("should publish entry variant using api_version", (done) => {
+    publishVariantEntryFirst.entry.variants[0].uid = variantUid;
+    makeEntry()
+      .entry(entryUid, { api_version: "3.2" })
+      .publish({
+        publishDetails: publishVariantEntryFirst.entry,
+        locale: publishVariantEntryFirst.locale,
+      })
+      .then((data) => {
+        expect(data.notice).to.be.equal(
+          "The requested action has been performed."
+        );
+        expect(data.job_id).to.be.not.equal(null);
+        done();
+      })
+      .catch(done);
+  });
+
+  it("should unpublish entry variant using api_version", (done) => {
+    unpublishVariantEntryFirst.entry.variants[0].uid = variantUid;
+    makeEntry()
+      .entry(entryUid, { api_version: "3.2" })
+      .unpublish({
+        publishDetails: unpublishVariantEntryFirst.entry,
+        locale: unpublishVariantEntryFirst.locale,
+      })
+      .then((data) => {
+        expect(data.notice).to.be.equal(
+          "The requested action has been performed."
+        );
+        expect(data.job_id).to.be.not.equal(null);
+        done();
+      })
+      .catch(done);
+  });
   it("should get all entry variants", (done) => {
     makeEntryVariants()
       .query({})

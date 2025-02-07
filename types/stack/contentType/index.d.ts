@@ -4,10 +4,8 @@ import { Entries, Entry } from "./entry";
 
 export interface ContentType extends SystemFields, SystemFunction<ContentType> {
     entry(): Entries
-    entry(uid: string): Entry
+    entry(uid: string, options?: { api_version : number | string }): Entry
 }
-    
-
 
 export interface ContentTypes extends Queryable<ContentType, {content_type: ContentTypeData}> {
     import(data: {content_type: string}, params?: any): Promise<ContentType>
