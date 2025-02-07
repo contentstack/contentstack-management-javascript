@@ -438,6 +438,39 @@ describe("Contentstack GlobalField test (API Version 3.2)", () => {
       })
       .catch(done);
   });
+
+  it("should update nested global field", (done) => {
+    var mock = new MockAdapter(Axios);
+    const updatedData = {
+      global_field: {
+        title: "Updated Nested Global Field Title",
+        schema: nestedGlobalFieldPayload,
+      },
+    };
+
+    mock
+      .onPut(`/global_fields/${systemUidMock.uid}`)
+      .reply(200, {
+        global_field: {
+          ...nestedGlobalFieldMock,
+          ...updatedData.global_field,
+        },
+      });
+
+    makeGlobalField({
+      global_field: {
+        ...systemUidMock,
+      },
+      stackHeaders: stackHeadersMock,
+    })
+      .updateNestedGlobalField(updatedData)
+      .then((response) => {
+        expect(response.global_field.title).to.be.equal("Updated Nested Global Field Title");
+        expect(response.global_field.schema).to.deep.equal(nestedGlobalFieldPayload);
+        done();
+      })
+      .catch(done);
+  });
 });
 
 function makeGlobalField (data) {
