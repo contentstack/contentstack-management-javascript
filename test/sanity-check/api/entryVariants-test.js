@@ -137,8 +137,8 @@ describe("Entry Variants api Test", () => {
     makeEntry()
       .entry(entryUid, { api_version: "3.2" })
       .unpublish({
-        publishDetails: publishVariantEntryFirst.entry,
-        locale: publishVariantEntryFirst.locale,
+        publishDetails: unpublishVariantEntryFirst.entry,
+        locale: unpublishVariantEntryFirst.locale,
       })
       .then((data) => {
         expect(data.notice).to.be.equal(
