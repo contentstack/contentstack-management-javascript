@@ -39,7 +39,7 @@ if (failedTests > 0) {
 }
 
 const slackMessage = {
-  text: `Dev11, CMA SDK Full Sanity
+  text: `Dev11, SDK-CMA Sanity
 *Result:* ${resultMessage}. ${durationInMinutes}m ${durationInSeconds}s
 *Failed Tests:* ${failedTests}
 <${reportUrl}|View Report>
