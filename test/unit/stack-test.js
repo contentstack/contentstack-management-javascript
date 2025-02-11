@@ -2,7 +2,7 @@ import { describe, it } from 'mocha'
 import { Stack, StackCollection } from '../../lib/stack/index'
 import Axios from 'axios'
 import { expect } from 'chai'
-import { stackMock, noticeMock, systemUidMock } from './mock/objects'
+import { stackMock, noticeMock, systemUidMock, stackHeadersMock } from './mock/objects'
 import MockAdapter from 'axios-mock-adapter'
 
 describe('Contentstack Stack test', () => {
@@ -997,6 +997,93 @@ describe('Contentstack Stack test', () => {
         done()
       })
       .catch(done)
+  })
+
+  it('Global fields initialization without uid', done => {
+    const global_field = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+    .globalField()
+    expect(global_field.uid).to.be.equal(undefined)
+    expect(global_field.stackHeaders).to.not.equal(undefined)
+    expect(global_field.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('Management token initialization without uid', done => {
+    const management_token = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+    .managementToken()
+    expect(management_token.uid).to.be.equal(undefined)
+    expect(management_token.stackHeaders).to.not.equal(undefined)
+    expect(management_token.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('Global fields initialization uid', done => {
+    const global_field = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+    .globalField(systemUidMock.uid)
+    expect(global_field.uid).to.be.equal(systemUidMock.uid)
+    expect(global_field.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+
+  it('Management token initialization uid', done => {
+    const management_token = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+    .managementToken(systemUidMock.uid)
+    expect(management_token.uid).to.be.equal(systemUidMock.uid)
+    expect(management_token.stackHeaders.api_key).to.be.equal('stack_api_key')
+    done()
+  })
+  
+  it('should update users roles', done => {
+    var mock = new MockAdapter(Axios)
+    const usersRolesData = {
+      user_uid: ['role_uid_1', 'role_uid_2']
+    }
+
+    mock.onPost('/stacks/users/roles').reply(200, {
+      notice: 'Roles updated successfully'
+    })
+
+    makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .updateUsersRoles(usersRolesData)
+      .then((response) => {
+        expect(response.notice).to.be.equal('Roles updated successfully')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should fetch variants of a stack', done => {
+    var mock = new MockAdapter(Axios)
+    const variantsResponse = makeStack({
+      stack: {
+        api_key: 'stack_api_key'
+      }
+    })
+      .variants()
+      expect(variantsResponse.create).to.be.not.equal(undefined)
+      expect(variantsResponse.query).to.be.not.equal(undefined)
+      expect(variantsResponse.fetchByUIDs).to.be.not.equal(undefined)
+      done()
   })
 })
 

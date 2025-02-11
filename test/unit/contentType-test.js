@@ -280,6 +280,34 @@ describe('Contentstack ContentType test', () => {
         done()
       })
   })
+  it('should fetch references of a ContentType', done => {
+    var mock = new MockAdapter(Axios)
+    const referencesResponse = {
+      references: [
+        {
+          uid: 'entry_uid',
+          title: 'Entry Title',
+          content_type: 'UID'
+        }
+      ]
+    }
+    mock.onGet(`/content_types/UID/references`).reply(200, referencesResponse)
+    makeContentType({
+      content_type: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .references()
+      .then((response) => {
+        expect(response.references).to.be.an('array')
+        expect(response.references[0].uid).to.be.equal('entry_uid')
+        expect(response.references[0].title).to.be.equal('Entry Title')
+        expect(response.references[0].content_type).to.be.equal('UID')
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeContentType (data) {

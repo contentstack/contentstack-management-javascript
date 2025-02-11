@@ -22,7 +22,7 @@ import { Taxonomy, Taxonomies } from "./taxonomy";
 import { ManagementToken, ManagementTokens } from "./managementToken";
 import { Variant, Variants } from "./variants";
 import { VariantGroup, VariantGroups } from "./VariantGroup";
-import { VariantGroupVariant, VariantGroupVariants } from "./VariantGroup/variants";
+import { Variant, Variants } from "./VariantGroup/variants";
 
 export interface StackConfig {
     api_key:string
@@ -62,7 +62,9 @@ export interface Stack extends SystemFields {
     contentType(uid: string): ContentType
 
     globalField(): GlobalFields
+    globalField({}): GlobalFields
     globalField(uid: string): GlobalField
+    globalField(uid: string, option: object): GlobalField
 
     asset(): Assets
     asset(uid: string): Asset
@@ -110,6 +112,6 @@ export interface Stack extends SystemFields {
     variantGroup(): VariantGroups
     variantGroup(uid: string): VariantGroup
 
-    variant(): VariantGroupVariants
-    variant(uid: string): VariantGroupVariant
+    variant(): Variants
+    variant(uid: string): Variant
 }
