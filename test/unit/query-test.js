@@ -72,6 +72,57 @@ describe('Contentstack Query test', () => {
       })
       .catch(done)
   })
+
+  it('should handle failed query due to server error', function(done) {
+    const mock = new MockAdapter(Axios);
+    mock.onGet('query').reply(500, {
+      message: 'Internal Server Error'
+    });
+  
+    makeQuery({}, stackHeadersMock)
+      .find()
+      .then(() => {
+        done(new Error('Expected error response'));
+      })
+      .catch((error) => {
+        expect(error.status).to.equal(500);
+        done();
+      });
+  });
+
+  it('should handle 400 Bad Request error', async () => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('query').reply(400, {
+      message: 'Bad Request'
+    })
+  
+    try {
+      await makeQuery({}, stackHeadersMock).find()
+      throw new Error('Expected error response') // This should not be reached
+    } catch (error) {
+      expect(error.status).to.equal(400)
+      expect(error.message).to.equal('Bad Request')
+    }
+  })
+  
+  it('should handle 404 Not Found error', done => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('query').reply(404, {
+      message: 'Not Found'
+    })
+  
+    makeQuery({}, stackHeadersMock)
+      .find()
+      .then(() => {
+        done(new Error('Expected error response'))
+      })
+      .catch((error) => {
+        expect(error.status).to.equal(404)
+        expect(error.message).to.equal('Not Found')
+        done()
+      })
+  })
+  
 })
 
 function makeQuery (param = null, stackHeaders = null) {
