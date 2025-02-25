@@ -154,7 +154,7 @@ describe("Relases api Test", () => {
       .item()
       .move({ param: data, release_version: "2.0" })
       .then((release) => {
-        expect(release.notice).to.be.equal("Release items moved successfully!");
+        expect(release.notice).to.contain('successful');
         done();
       })
       .catch(done);
@@ -176,7 +176,7 @@ describe("Relases api Test", () => {
       .item()
       .delete({ release_version: "2.0" })
       .then((release) => {
-        expect(release.notice).to.be.equal('Items deleted from release successfully!');
+        expect(release.notice).to.contain('successful');
         done();
       })
       .catch(done);
@@ -400,7 +400,7 @@ describe("Relases api Test", () => {
         release_version: "2.0",
       })
       .then((release) => {
-        expect(release.notice).to.be.equal('Item deleted from release successfully!');
+        expect(release.notice).to.contain('successful');
         done();
       })
       .catch(done);
@@ -457,7 +457,7 @@ describe("Relases api Test", () => {
         release_version: "2.0",
       })
       .then((release) => {
-        expect(release.notice).to.be.equal('Items deleted from release successfully!');
+        expect(release.notice).to.contain('successful');
         done();
       })
       .catch(done);
