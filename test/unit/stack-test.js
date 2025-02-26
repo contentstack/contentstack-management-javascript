@@ -860,7 +860,6 @@ describe('Contentstack Stack test', () => {
   //   .catch(done)
   // })
 
-
   it('Stack transfer ownership test', done => {
     const mock = new MockAdapter(Axios)
     mock.onPost('/stacks/transfer_ownership').reply(200, {
@@ -1005,7 +1004,7 @@ describe('Contentstack Stack test', () => {
         api_key: 'stack_api_key'
       }
     })
-    .globalField()
+      .globalField()
     expect(global_field.uid).to.be.equal(undefined)
     expect(global_field.stackHeaders).to.not.equal(undefined)
     expect(global_field.stackHeaders.api_key).to.be.equal('stack_api_key')
@@ -1018,7 +1017,7 @@ describe('Contentstack Stack test', () => {
         api_key: 'stack_api_key'
       }
     })
-    .managementToken()
+      .managementToken()
     expect(management_token.uid).to.be.equal(undefined)
     expect(management_token.stackHeaders).to.not.equal(undefined)
     expect(management_token.stackHeaders.api_key).to.be.equal('stack_api_key')
@@ -1031,7 +1030,7 @@ describe('Contentstack Stack test', () => {
         api_key: 'stack_api_key'
       }
     })
-    .globalField(systemUidMock.uid)
+      .globalField(systemUidMock.uid)
     expect(global_field.uid).to.be.equal(systemUidMock.uid)
     expect(global_field.stackHeaders.api_key).to.be.equal('stack_api_key')
     done()
@@ -1043,12 +1042,12 @@ describe('Contentstack Stack test', () => {
         api_key: 'stack_api_key'
       }
     })
-    .managementToken(systemUidMock.uid)
+      .managementToken(systemUidMock.uid)
     expect(management_token.uid).to.be.equal(systemUidMock.uid)
     expect(management_token.stackHeaders.api_key).to.be.equal('stack_api_key')
     done()
   })
-  
+
   it('should update users roles', done => {
     var mock = new MockAdapter(Axios)
     const usersRolesData = {
@@ -1080,10 +1079,10 @@ describe('Contentstack Stack test', () => {
       }
     })
       .variants()
-      expect(variantsResponse.create).to.be.not.equal(undefined)
-      expect(variantsResponse.query).to.be.not.equal(undefined)
-      expect(variantsResponse.fetchByUIDs).to.be.not.equal(undefined)
-      done()
+    expect(variantsResponse.create).to.be.not.equal(undefined)
+    expect(variantsResponse.query).to.be.not.equal(undefined)
+    expect(variantsResponse.fetchByUIDs).to.be.not.equal(undefined)
+    done()
   })
 })
 

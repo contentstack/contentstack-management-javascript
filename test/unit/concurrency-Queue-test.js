@@ -302,18 +302,20 @@ describe('Concurrency queue test', () => {
     const client = Axios.create({
       baseURL: `${host}:${port}`
     })
-    const concurrency = new ConcurrencyQueue({ axios: client, config: { retryCondition: (error) => {
-      if (error.response.status === 408) {
-        return true
-      }
-      return false
-    },
-    logHandler: logHandlerStub,
-    retryDelayOptions: {
-      base: retryDelayOptionsStub()
-    },
-    retryLimit: 2,
-    retryOnError: true, timeout: 250 } })
+    const concurrency = new ConcurrencyQueue({ axios: client,
+      config: { retryCondition: (error) => {
+        if (error.response.status === 408) {
+          return true
+        }
+        return false
+      },
+      logHandler: logHandlerStub,
+      retryDelayOptions: {
+        base: retryDelayOptionsStub()
+      },
+      retryLimit: 2,
+      retryOnError: true,
+      timeout: 250 } })
     client.get('http://localhost:4444/timeout', {
       timeout: 250
     }).then(function (res) {

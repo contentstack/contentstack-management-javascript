@@ -67,8 +67,7 @@ describe('Branch Alias api Test', () => {
           done()
         })
         .catch(done)
-    }
-    catch (e) {
+    } catch (e) {
       done()
     }
   })

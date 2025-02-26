@@ -167,7 +167,6 @@ describe('Contentstack Taxonomy test', () => {
       .catch(done)
   })
 
-
   it('term create test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost(`/taxonomies/taxonomy_uid/terms`).reply(200, {

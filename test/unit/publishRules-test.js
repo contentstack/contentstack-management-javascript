@@ -65,7 +65,7 @@ describe('Contentstack PublishRule test', () => {
   it('PublishRule create test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost('/workflows/publishing_rules').reply(200, {
-        publishing_rule: {
+      publishing_rule: {
         ...publishRulesMock
       }
     })
@@ -129,12 +129,12 @@ describe('Contentstack PublishRule test', () => {
   it('PublishRule update test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPut('/workflows/publishing_rules/UID').reply(200, {
-        publishing_rule: {
+      publishing_rule: {
         ...publishRulesMock
       }
     })
     makePublishRule({
-        publishing_rule: {
+      publishing_rule: {
         ...systemUidMock
       },
       stackHeaders: stackHeadersMock
@@ -186,19 +186,16 @@ describe('Contentstack PublishRule test', () => {
       })
       .catch(done)
   })
-
 })
 
-
-function makePublishRule(data) {
-    return new PublishRules(Axios, data)
+function makePublishRule (data) {
+  return new PublishRules(Axios, data)
 }
 
 function checkPublishRules (publishRules) {
   checkSystemFields(publishRules)
   expect(publishRules.locale).to.be.equal('en-us')
   expect(publishRules.action).to.be.equal('publish')
-  expect(publishRules.environment).to.be.equal("env")
-  expect(publishRules.workflow_stage).to.be.equal("stage")
+  expect(publishRules.environment).to.be.equal('env')
+  expect(publishRules.workflow_stage).to.be.equal('stage')
 }
-  
