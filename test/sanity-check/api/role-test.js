@@ -180,15 +180,12 @@ describe('Role api test', () => {
   //   const taxonomyResponse = await client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomy.uid).delete({ force: true })
   //   expect(taxonomyResponse.status).to.be.equal(204)
   // })
-
 })
 
 function getRole (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).role(uid)
 }
 
-
 function makeTerms (taxonomyUid, termUid = null) {
   return client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomyUid).terms(termUid)
 }
-

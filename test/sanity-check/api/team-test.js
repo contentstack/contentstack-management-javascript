@@ -22,7 +22,7 @@ describe('Teams API Test', () => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
     const orgRoles = jsonReader('orgRoles.json')
-    orgAdminRole = orgRoles.find(role => role.name === 'admin').uid;
+    orgAdminRole = orgRoles.find(role => role.name === 'admin').uid
   })
 
   it('should create new team 1 when required object is passed', async () => {
@@ -98,9 +98,9 @@ describe('Teams Stack Role Mapping API Test', () => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
     const stackRoles = jsonReader('roles.json')
-    adminRole = stackRoles.find(role => role.name === 'Admin').uid;
-    contentManagerRole = stackRoles.find(role => role.name === 'Content Manager').uid;
-    developerRole = stackRoles.find(role => role.name === 'Developer').uid;
+    adminRole = stackRoles.find(role => role.name === 'Admin').uid
+    contentManagerRole = stackRoles.find(role => role.name === 'Content Manager').uid
+    developerRole = stackRoles.find(role => role.name === 'Developer').uid
   })
 
   it('should add roles', done => {

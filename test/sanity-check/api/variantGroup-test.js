@@ -80,6 +80,6 @@ describe('Variant Group api Test', () => {
   })
 })
 
-function makeVariantGroup(uid = null) {
+function makeVariantGroup (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).variantGroup(uid)
 }

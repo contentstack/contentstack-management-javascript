@@ -6,7 +6,7 @@ import { contentstackClient } from '../utility/ContentstackClient'
 var user = {}
 var client = {}
 var organization = {}
-let organizationUID = process.env.ORGANIZATION
+const organizationUID = process.env.ORGANIZATION
 
 describe('Organization api test', () => {
   setup(() => {
