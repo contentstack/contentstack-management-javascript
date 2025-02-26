@@ -1,24 +1,20 @@
 module.exports = {
-  // "env": {
-  //     "browser": true,
-  //     "amd": true
-  // },
-  extends: 'standard',
-  // "globals": {
-  //     "Atomics": "readonly",
-  //     "SharedArrayBuffer": "readonly"
-  // },
-  // "parserOptions": {
-  //     "ecmaFeatures": {
-  //         "jsx": true
-  //     },
-  //     "ecmaVersion": 2015,
-  //     "sourceType": "module"
-  // },
-  plugins: [
-    'standard',
-    'promise'
-  ],
-  rules: {
-  }
+    root: true,
+    env: {
+        browser: true,
+        commonjs: true,
+        node: true,
+        es6: true,
+        amd: true,
+    },
+    extends: 'standard',
+    parserOptions: {
+        sourceType: "module"
+    },
+    // plugins: [
+    //     'standard',
+    //     'promise'
+    // ],
+    rules: {
+    }
 }
