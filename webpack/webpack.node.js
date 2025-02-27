@@ -10,6 +10,22 @@ module.exports = function (options) {
       filename: 'contentstack-management.js'
     },
     target: 'node',
+    resolve: {
+      fallback: {
+        os: require.resolve('os-browserify/browser'),
+        fs: false,
+        crypto: require.resolve('crypto-browserify'),
+        stream: require.resolve('stream-browserify'),
+        assert: require.resolve('assert'),
+        buffer: require.resolve('buffer')
+      },
+      alias:{
+        crypto: require.resolve('crypto-browserify'),
+        stream: require.resolve('stream-browserify'),
+        assert: require.resolve('assert'),
+        buffer: require.resolve('buffer')
+      }
+    },
     module: {
       rules: [{
         test: /\.js?$/,
