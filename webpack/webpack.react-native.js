@@ -13,7 +13,7 @@ module.exports = function (options) {
     resolve: {
       fallback: {
         os: false,
-        crypto: require.resolve('crypto-browserify'),
+        crypto: false,
         stream: require.resolve('stream-browserify'),
         assert: require.resolve('assert'),
         buffer: require.resolve('buffer')
