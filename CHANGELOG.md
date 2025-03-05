@@ -1,4 +1,14 @@
 # Changelog
+
+## [v1.19.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.4) (2025-03-10)
+ - Fix
+    - added fix for variants import
+    - excludec stackHeaders from entry data assignment
+
+## [v1.19.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.3) (2025-02-24)
+ - Fix
+    - Added proper assertions for test cases
+
 ## [v1.19.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.2) (2025-02-11)
  - Enhancement
     - Added support for nested global fields.
