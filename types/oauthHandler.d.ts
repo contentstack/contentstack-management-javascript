@@ -5,11 +5,11 @@ interface OAuthResponse {
   expires_in: number;
   organization_uid: string;
   user_uid: string;
-  token_type: string,
-  location: string,
-  region: string,
-  authorization_type: string,
-  stack_api_key: string
+  token_type: string;
+  location: string;
+  region: string;
+  authorization_type: string;
+  stack_api_key: string;
 }
 
 export default class OAuthHandler {
@@ -44,6 +44,60 @@ export default class OAuthHandler {
    * @returns The access token
    */
   getAccessToken(): string;
+
+  /**
+   * Get the current refresh token
+   * @returns The refresh token
+   */
+  getRefreshToken(): string;
+
+  /**
+   * Get the current organization UID
+   * @returns The organization UID
+   */
+  getOrganizationUID(): string;
+
+  /**
+   * Get the current user UID
+   * @returns The user UID
+   */
+  getUserUID(): string;
+
+  /**
+   * Get the token expiry time
+   * @returns The token expiry time
+   */
+  getTokenExpiryTime(): string;
+
+  /**
+   * Set the access token
+   * @param token - The access token
+   */
+  setAccessToken(token: string): void;
+
+  /**
+   * Set the refresh token
+   * @param token - The refresh token
+   */
+  setRefreshToken(token: string): void;
+
+  /**
+   * Set organization UID
+   * @param organizationUID - The organization UID
+   */
+  setOrganizationUID(organizationUID: string): void;
+
+  /**
+   * Set user UID
+   * @param userUID - The user UID
+   */
+  setUserUID(userUID: string): void;
+
+  /**
+   * Set expiry time
+   * @param expiryTime - The expiry time
+   */
+  setTokenExpiryTime(expiryTime: Date): void;
 
   /**
    * Handle the OAuth redirect URL and exchange the authorization code for a token
