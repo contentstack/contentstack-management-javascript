@@ -158,7 +158,7 @@ describe('Branch api Test', () => {
         }
       ]
     }
-    const response = makeBranch().merge(mergeObj, params)
+    const response = await makeBranch().merge(mergeObj, params)
     mergeJobUid = response.uid
     expect(response.merge_details.base_branch).to.be.equal(branch.uid)
     expect(response.merge_details.compare_branch).to.be.equal(stageBranch.uid)
