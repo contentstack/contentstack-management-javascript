@@ -6,7 +6,6 @@ import * as contentstack from '../../lib/contentstack.js'
 
 dotenv.config()
 
-let stack = {}
 const orgID = process.env.ORGANIZATION
 let client = {}
 let appUid = ''
@@ -22,7 +21,6 @@ describe('Apps api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
     client = contentstack.client({ host: process.env.APP_HOST, defaultHostName: process.env.DEFAULTHOST, authtoken: user.authtoken })
-    stack = jsonReader('stack.json')
   })
 
   it('Fetch all apps test', done => {

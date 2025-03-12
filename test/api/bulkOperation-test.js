@@ -17,21 +17,21 @@ describe('BulkOperation api test', () => {
     const publishDetails = {
       entries: [
         {
-          uid: "blte6542a9aac484405",
-          content_type: "bye",
+          uid: 'blte6542a9aac484405',
+          content_type: 'bye',
           version: 1,
-          locale: "en-us"
+          locale: 'en-us'
         }
       ],
       locales: [
-        "en-us"
+        'en-us'
       ],
       environments: [
-        "dev"
+        'dev'
       ]
     }
     doBulkOperation()
-      .publish({details:publishDetails, api_version:'3.2'})
+      .publish({ details: publishDetails, api_version: '3.2' })
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
         expect(response.job_id).to.not.equal(undefined)
@@ -44,18 +44,18 @@ describe('BulkOperation api test', () => {
     const publishDetails = {
       assets: [
         {
-          uid: "blt9f8e5aa45ac36455"
+          uid: 'blt9f8e5aa45ac36455'
         }
       ],
       locales: [
-        "en-us"
+        'en-us'
       ],
       environments: [
-        "dev"
+        'dev'
       ]
     }
     doBulkOperation()
-      .publish({details:publishDetails, api_version:'3.2'})
+      .publish({ details: publishDetails, api_version: '3.2' })
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
         expect(response.job_id).to.not.equal(undefined)
@@ -68,33 +68,33 @@ describe('BulkOperation api test', () => {
     const publishDetails = {
       entries: [
         {
-          uid: "blt077157784a170bab",
-          content_type: "bye",
+          uid: 'blt077157784a170bab',
+          content_type: 'bye',
           version: 1,
-          locale: "en-us"
+          locale: 'en-us'
         }, {
-          uid: "blta519039712ca2b8a",
-          content_type: "bye",
+          uid: 'blta519039712ca2b8a',
+          content_type: 'bye',
           version: 1,
-          locale: "en-us"
+          locale: 'en-us'
         }
       ],
       assets: [
         {
-          uid: "blt9f8e5aa45ac36455"
+          uid: 'blt9f8e5aa45ac36455'
         }, {
-          uid: "blt3b097cc58475b0a3"
+          uid: 'blt3b097cc58475b0a3'
         }
       ],
       locales: [
-        "en-us"
+        'en-us'
       ],
       environments: [
-        "dev"
+        'dev'
       ]
     }
     doBulkOperation()
-      .publish({details:publishDetails, api_version:'3.2'})
+      .publish({ details: publishDetails, api_version: '3.2' })
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
         expect(response.job_id).to.not.equal(undefined)
