@@ -4,7 +4,6 @@ import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { VariantGroup, VariantGroupCollection } from '../../lib/stack/variantGroup'
 import { systemUidMock, stackHeadersMock, variantGroupMock, noticeMock, checkSystemFields, variantGroupsMock } from './mock/objects'
-import { checkEnvironment } from './variantGroup-test'
 
 describe('Contentstack VariantGroup test', () => {
   it('VariantGroup test without uid', done => {
@@ -19,7 +18,7 @@ describe('Contentstack VariantGroup test', () => {
   })
 
   it('VariantGroup test with uid', done => {
-    const variantGroup = makeVariantGroup({variant_group: {...systemUidMock}})
+    const variantGroup = makeVariantGroup({ variant_group: { ...systemUidMock } })
     expect(variantGroup.urlPath).to.be.equal(`/variant_groups/${systemUidMock.uid}`)
     expect(variantGroup.stackHeaders).to.be.equal(undefined)
     expect(variantGroup.update).to.not.equal(undefined)
@@ -30,8 +29,8 @@ describe('Contentstack VariantGroup test', () => {
   })
 
   it('VariantGroup test with Stack Headers', done => {
-    const variantGroup = makeVariantGroup({ variant_group:{
-        ...systemUidMock,
+    const variantGroup = makeVariantGroup({ variant_group: {
+      ...systemUidMock,
       stackHeaders: stackHeadersMock
     }
     })
@@ -80,7 +79,7 @@ describe('Contentstack VariantGroup test', () => {
 
   it('VariantGroup Query test', done => {
     var mock = new MockAdapter(Axios)
-    mock.onGet('/variant_groups').reply(200, { ...variantGroupsMock 
+    mock.onGet('/variant_groups').reply(200, { ...variantGroupsMock
     })
     makeVariantGroup()
       .query()
@@ -99,12 +98,12 @@ describe('Contentstack VariantGroup test', () => {
         ...variantGroupMock
       }
     })
-    makeVariantGroup({variant_group:{
-        ...systemUidMock,
+    makeVariantGroup({ variant_group: {
+      ...systemUidMock,
       stackHeaders: stackHeadersMock
     }
     })
-      .update({name: 'test'})
+      .update({ name: 'test' })
       .then((variantGroup) => {
         checkVariantGroup(variantGroup.variant_group)
         done()
@@ -160,7 +159,7 @@ describe('Contentstack VariantGroup test', () => {
       },
       stackHeaders: stackHeadersMock
     })
-    .variants()
+      .variants()
     expect(variants.variant_group_uid).to.be.equal(systemUidMock.uid)
     done()
   })
@@ -171,7 +170,7 @@ function makeVariantGroup (data = {}) {
 }
 
 function checkVariantGroup (variantGroup) {
-  if(variantGroup.variant_group){
+  if (variantGroup.variant_group) {
     variantGroup = variantGroup.variant_group
   }
   checkSystemFields(variantGroup)

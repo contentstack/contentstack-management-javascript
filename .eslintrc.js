@@ -1,8 +1,7 @@
 module.exports = {
-  // "env": {
-  //     "browser": true,
-  //     "amd": true
-  // },
+  env: {
+    "es2020": true
+  },
   extends: 'standard',
   // "globals": {
   //     "Atomics": "readonly",
@@ -15,6 +14,7 @@ module.exports = {
   //     "ecmaVersion": 2015,
   //     "sourceType": "module"
   // },
+  parser: "@babel/eslint-parser", // Use Babel parser to handle modern JS syntax
   plugins: [
     'standard',
     'promise'
