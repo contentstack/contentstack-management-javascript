@@ -1,4 +1,4 @@
-import { expect, use } from 'chai'
+import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
@@ -67,8 +67,7 @@ describe('Branch Alias api Test', () => {
           done()
         })
         .catch(done)
-    }
-    catch (e) {
+    } catch (e) {
       done()
     }
   })

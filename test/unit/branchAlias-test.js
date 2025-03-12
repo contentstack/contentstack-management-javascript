@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { branchAliasMock, checkSystemFields, noticeMock, stackHeadersMock, systemUidMock } from './mock/objects'
-import { BranchAlias, BranchAliasCollection } from '../../lib/stack/branchAlias'
+import { BranchAlias } from '../../lib/stack/branchAlias'
 
 describe('Contentstack BranchAlias test', () => {
   it('BranchAlias test without uid', done => {

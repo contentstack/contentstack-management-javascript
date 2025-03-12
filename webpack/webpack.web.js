@@ -6,7 +6,7 @@ const { merge } = require('webpack-merge')
 const commonConfig = require('./webpack.common.js')()
 
 module.exports = function (options) {
-  delete commonConfig.externals;
+  delete commonConfig.externals
   return merge(commonConfig, {
     output: {
       libraryTarget: 'umd',

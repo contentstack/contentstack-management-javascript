@@ -5,8 +5,7 @@ import { contentstackClient } from '../utility/ContentstackClient'
 
 var user = {}
 var client = {}
-var organization = {}
-let organizationUID = process.env.ORGANIZATION
+const organizationUID = process.env.ORGANIZATION
 
 describe('Organization api test', () => {
   setup(() => {
@@ -32,7 +31,6 @@ describe('Organization api test', () => {
       for (const index in user.organizations) {
         const organizations = user.organizations[index]
         if (organizations.org_roles && (organizations.org_roles.filter(function (role) { return role.admin === true }).length > 0)) {
-          organization = organizations
           break
         }
       }
