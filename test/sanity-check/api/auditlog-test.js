@@ -23,7 +23,6 @@ describe('Audit Log api Test', () => {
 
   it('Should Fetch a single audit log', async () => {
     const response = await makeAuditLog(uid).fetch()
-    console.log(response)
     expect(response.log.uid).to.be.equal(uid)
   })
 })
