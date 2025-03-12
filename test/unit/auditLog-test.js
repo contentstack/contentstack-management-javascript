@@ -58,8 +58,8 @@ describe('Contentstack AuditLog test', () => {
     makeAuditLog({ stackHeaders: stackHeadersMock, logs: { uid: 'UID' } })
       .fetch()
       .then((response) => {
-        expect(response.created_at).to.be.equal('created_at_date')
-        expect(response.uid).to.be.equal('UID')
+        expect(response.logs.created_at).to.be.equal('created_at_date')
+        expect(response.logs.uid).to.be.equal('UID')
         done()
       })
       .catch(done)
