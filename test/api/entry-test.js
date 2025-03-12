@@ -193,16 +193,16 @@ describe('Entry api Test', () => {
 
   it('Create and update an entry with asset', done => {
     // get asset
-    let asset;
+    let asset
     makeAsset()
-    .query()
-    .find()
-    .then((collection) => {
-        asset = collection.items[0];
+      .query()
+      .find()
+      .then((collection) => {
+        asset = collection.items[0]
         // create entry
-        let entry = {
+        const entry = {
           ...entryFirst,
-          title: "uniqueTitle45",
+          title: 'uniqueTitle45',
           modular_blocks: [
             {
               block1: {
@@ -210,19 +210,19 @@ describe('Entry api Test', () => {
               }
             }
           ]
-        };
+        }
         makeEntry(multiPageCT.content_type.uid)
-        .create({entry: entry})
-        .then(entry => {
-          const newTitle = "updated title";
-          entry.title = newTitle;
-          entry.update().then(updatedEntry => {
-            expect(updatedEntry.title).to.be.equal(newTitle);
-            done();
+          .create({ entry: entry })
+          .then(entry => {
+            const newTitle = 'updated title'
+            entry.title = newTitle
+            entry.update().then(updatedEntry => {
+              expect(updatedEntry.title).to.be.equal(newTitle)
+              done()
+            })
           })
-        })
       })
-    });
+  })
 })
 
 function makeEntry (contentType, uid = null) {

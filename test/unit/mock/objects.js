@@ -149,88 +149,88 @@ const roleMock = {
   admin: false
 }
 const roleMockWithTaxonomy = {
-    ...systemFieldsMock,
-    ...systemFieldsUserMock,
-    name: "Admin",
-    description: "Admin Role",
-    rules: [
-      {
-        module: "branch",
-        branches: [
-          "main"
-        ],
-        acl: {
-          read: true
-        }
-      },
-      {
-        module: "environment",
-        environments: ["env_uid1", "env_uid2"],
-        acl: {
-          read: true
-        }
-      },
-      {
-        module: "locale",
-        locales: ["locales"],
-        acl: {
-          read: true
-        }
-      },
-      {
-        module: "taxonomy",
-        taxonomies: ["taxonomy_1"],
-        terms: ["taxonomy_1.term_1"],
-        content_types: [
-          {
-            uid: "$all",
-            acl: {
+  ...systemFieldsMock,
+  ...systemFieldsUserMock,
+  name: 'Admin',
+  description: 'Admin Role',
+  rules: [
+    {
+      module: 'branch',
+      branches: [
+        'main'
+      ],
+      acl: {
+        read: true
+      }
+    },
+    {
+      module: 'environment',
+      environments: ['env_uid1', 'env_uid2'],
+      acl: {
+        read: true
+      }
+    },
+    {
+      module: 'locale',
+      locales: ['locales'],
+      acl: {
+        read: true
+      }
+    },
+    {
+      module: 'taxonomy',
+      taxonomies: ['taxonomy_1'],
+      terms: ['taxonomy_1.term_1'],
+      content_types: [
+        {
+          uid: '$all',
+          acl: {
+            read: true,
+            sub_acl: {
               read: true,
-              sub_acl: {
-                read: true,
-                create: true,
-                update: true,
-                delete: true,
-                publish: true
-              }
+              create: true,
+              update: true,
+              delete: true,
+              publish: true
             }
           }
-        ],
-        acl: {
-          read: true,
-          sub_acl: {
-            read: true,
-            create: true,
-            update: true,
-            delete: true,
-            publish: true
-          }
         }
-      },
-      {
-        module: "content_type",
-        content_types: ["ct_1"],
-        acl: {
+      ],
+      acl: {
+        read: true,
+        sub_acl: {
           read: true,
-          sub_acl: {
-            read: true,
-            create: true,
-            update: true,
-            delete: true,
-            publish: true
-          }
+          create: true,
+          update: true,
+          delete: true,
+          publish: true
         }
       }
-    ],
-    org_uid: "org_uid",
-    api_key: "api_key",
-    admin: false,
-    default: true,
-    users: [
-      'user_uid'
-    ]
-  }
-  
+    },
+    {
+      module: 'content_type',
+      content_types: ['ct_1'],
+      acl: {
+        read: true,
+        sub_acl: {
+          read: true,
+          create: true,
+          update: true,
+          delete: true,
+          publish: true
+        }
+      }
+    }
+  ],
+  org_uid: 'org_uid',
+  api_key: 'api_key',
+  admin: false,
+  default: true,
+  users: [
+    'user_uid'
+  ]
+}
+
 const branchMock = {
   ...systemFieldsMock,
   ...systemFieldsUserMock,
@@ -473,30 +473,30 @@ const nestedGlobalFieldPayload = {
         field_metadata: {
           description: '',
           default_value: '',
-          version: 3,
+          version: 3
         },
         format: '',
         error_messages: {
-          format: '',
+          format: ''
         },
         mandatory: false,
         multiple: false,
         non_localizable: false,
-        unique: false,
+        unique: false
       },
       {
         data_type: 'global_field',
         display_name: 'Global',
         reference_to: 'nested_global_field1234',
         field_metadata: {
-          description: '',
+          description: ''
         },
         uid: 'global_field',
         mandatory: false,
         multiple: false,
         non_localizable: false,
-        unique: false,
-      },
+        unique: false
+      }
     ],
     global_field_refs: [
       {
@@ -506,16 +506,16 @@ const nestedGlobalFieldPayload = {
         paths: [
           'schema.1',
           'schema.3.schema.4',
-          'schema.4.blocks.0.schema.2',
-        ],
+          'schema.4.blocks.0.schema.2'
+        ]
       },
       {
         uid: 'nested_global_field_123',
         occurrence_count: 1,
-        isChild: false,
-      },
-    ],
-  },
+        isChild: false
+      }
+    ]
+  }
 }
 
 const entryMock = {
@@ -531,54 +531,54 @@ const entryMock = {
 }
 
 const variantsEntriesMock = {
-      "title": "title",
-      "url": "/url",
-      "author": "Kurt Tank",
-      "created_by": "created_by",
-      "updated_by": "updated_by",
-      "created_at": "created_at_date",
-      "updated_at": "updated_at_date",
-      "uid": "UID",
-      "locale": "en-us",
-      "_version": 1,
-      "_in_progress": false,
-      "_variant": {
-          "uid": "_variant_uid",
-          "variant_id": 'variant_id',
-          "customized_fields": ["title", "author"],
-          "base_entry_version": 1,
-    }
+  title: 'title',
+  url: '/url',
+  author: 'Kurt Tank',
+  created_by: 'created_by',
+  updated_by: 'updated_by',
+  created_at: 'created_at_date',
+  updated_at: 'updated_at_date',
+  uid: 'UID',
+  locale: 'en-us',
+  _version: 1,
+  _in_progress: false,
+  _variant: {
+    uid: '_variant_uid',
+    variant_id: 'variant_id',
+    customized_fields: ['title', 'author'],
+    base_entry_version: 1
+  }
 }
 const variantsUpdateEntryMock = {
-  "title": "title",
-  "url": "/url",
-  "uid": "UID",
-  "locale": "en-us",
-  "_version": 1,
-  "_in_progress": false,
-  "_variant": {
-      "customized_fields": ["title", "url"],
+  title: 'title',
+  url: '/url',
+  uid: 'UID',
+  locale: 'en-us',
+  _version: 1,
+  _in_progress: false,
+  _variant: {
+    customized_fields: ['title', 'url']
   },
-  "created_at": "created_at_date",
-  "updated_at": "updated_at_date",
+  created_at: 'created_at_date',
+  updated_at: 'updated_at_date'
 }
 const variantsEntryMock = {
-      "title": "title",
-      "url": "/url",
-      "locale": "en-us",
-      "uid": "UID",
-      "_version": 1,
-      "_in_progress": false,
-      "created_by": "created_by_uid",
-      "updated_by": "updated_by_uid",
-      "created_at": "created_at_date",
-      "updated_at": "updated_at_date",
-      "_variant": {
-          "uid": "_variant_uid",
-          "variant_id": 'variant_id',
-          "customized_fields": ["title"],
-          "base_entry_version": 10,
-      }
+  title: 'title',
+  url: '/url',
+  locale: 'en-us',
+  uid: 'UID',
+  _version: 1,
+  _in_progress: false,
+  created_by: 'created_by_uid',
+  updated_by: 'updated_by_uid',
+  created_at: 'created_at_date',
+  updated_at: 'updated_at_date',
+  _variant: {
+    uid: '_variant_uid',
+    variant_id: 'variant_id',
+    customized_fields: ['title'],
+    base_entry_version: 10
+  }
 }
 
 const labelMock = {
@@ -601,7 +601,6 @@ const variantsMock1 = {
   ...systemFieldsUserMock,
   name: 'name'
 }
-
 
 const environmentMock = {
   ...systemFieldsMock,
@@ -974,10 +973,10 @@ const auditLogsMock = {
   ]
 }
 
-const taxonomyImportMock = { 
-  "uid": "UID",
-  "name": "name",
-  "description": "test"
+const taxonomyImportMock = {
+  uid: 'UID',
+  name: 'name',
+  description: 'test'
 }
 
 const taxonomyMock = {
@@ -1050,8 +1049,8 @@ const variantGroupMock = {
   name: 'Test',
   source: 'Personalize',
   content_types: [
-    "iphone_product_page"
-  ],
+    'iphone_product_page'
+  ]
 }
 
 const variantMock = {
@@ -1061,33 +1060,33 @@ const variantMock = {
 }
 
 const variantsMock = {
-  "uid": "variant_group_1",
-  "name": "Variant Group 1",
-  "content_types": [
-      "CTSTAET123"
+  uid: 'variant_group_1',
+  name: 'Variant Group 1',
+  content_types: [
+    'CTSTAET123'
   ],
-  "personalize_metadata": {
-      "experience_uid": "variant_group_ex_uid",
-      "experience_short_uid": "variant_group_short_uid",
-      "project_uid": "variant_group_project_uid"
+  personalize_metadata: {
+    experience_uid: 'variant_group_ex_uid',
+    experience_short_uid: 'variant_group_short_uid',
+    project_uid: 'variant_group_project_uid'
   },
-  "variants": [ // variants inside the group
-      {
-          "uid": "UID",
-          "created_by": "user_id",
-          "updated_by": "user_id",
-          "name": "Test",
-          "personalize_metadata": {
-              "experience_uid": "exp1",
-              "experience_short_uid": "expShortUid1",
-              "project_uid": "project_uid1",
-              "variant_short_uid": "variantShort_uid1"
-          },
-          "created_at": "created_at_date",
-          "updated_at": "updated_at_date"
-      }
+  variants: [ // variants inside the group
+    {
+      uid: 'UID',
+      created_by: 'user_id',
+      updated_by: 'user_id',
+      name: 'Test',
+      personalize_metadata: {
+        experience_uid: 'exp1',
+        experience_short_uid: 'expShortUid1',
+        project_uid: 'project_uid1',
+        variant_short_uid: 'variantShort_uid1'
+      },
+      created_at: 'created_at_date',
+      updated_at: 'updated_at_date'
+    }
   ],
-  "count": 1
+  count: 1
 }
 
 const variantGroupsMock = {
@@ -1096,47 +1095,47 @@ const variantGroupsMock = {
     {
       ...systemFieldsMock,
       ...systemFieldsUserMock,
-      "name": "Test",
-      "source": 'Personalize',
-      "content_types": [
-        "iphone_product_page"
+      name: 'Test',
+      source: 'Personalize',
+      content_types: [
+        'iphone_product_page'
       ],
-      "variant_count": 1,
-      "variants": [
+      variant_count: 1,
+      variants: [
         {
           ...systemFieldsMock,
           ...systemFieldsUserMock,
-          "name": "Test"
+          name: 'Test'
         }
       ]
     },
     {
-      "name": "Test",
-      "source": 'Personalize',
+      name: 'Test',
+      source: 'Personalize',
       ...systemFieldsMock,
       ...systemFieldsUserMock,
-      "content_types": [
-        "iphone_prod_desc"
+      content_types: [
+        'iphone_prod_desc'
       ],
-      "variant_count": 1,
-      "variants": [
+      variant_count: 1,
+      variants: [
         {
           ...systemFieldsMock,
           ...systemFieldsUserMock,
-          "name": "Test"
+          name: 'Test'
         }
       ]
     }
   ],
   ungrouped_variants: [
-        {
-          "created_by": "blt6cdf4e0b02b1c446",
-          "updated_by": "blt303b74fa96e1082a",
-          "created_at": "2022-10-26T06:52:20.073Z",
-          "updated_at": "2023-09-25T04:55:56.549Z",
-          "uid": "iphone_color_red",
-          "name": "Red"
-        }
+    {
+      created_by: 'blt6cdf4e0b02b1c446',
+      updated_by: 'blt303b74fa96e1082a',
+      created_at: '2022-10-26T06:52:20.073Z',
+      updated_at: '2023-09-25T04:55:56.549Z',
+      uid: 'iphone_color_red',
+      name: 'Red'
+    }
   ],
   ungrouped_variant_count: 1
 }
@@ -1165,27 +1164,27 @@ const varinatsEntryMock = {
   _in_progress: false,
   _rules: [],
   _variant: {
-       _uid: "variant uid",
-       _instance_uid: "entry_variant uid",
-       _change_set: [],
-       _base_entry_version: 'version number of base entry',
-    }
+    _uid: 'variant uid',
+    _instance_uid: 'entry_variant uid',
+    _change_set: [],
+    _base_entry_version: 'version number of base entry'
+  }
 }
 
 const variantEntryVersion = {
-  "versions": [
-      {
-          "_version": 3,
-          "locale": "en-us"
-      },
-      {
-          "_version": 2,
-          "locale": "en-us"
-      },
-      {
-          "_version": 1,
-          "locale": "en-us"
-      }
+  versions: [
+    {
+      _version: 3,
+      locale: 'en-us'
+    },
+    {
+      _version: 2,
+      locale: 'en-us'
+    },
+    {
+      _version: 1,
+      locale: 'en-us'
+    }
   ]
 }
 

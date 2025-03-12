@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { Role, RoleCollection } from '../../lib/stack/roles'
-import { systemUidMock, stackHeadersMock, roleMock, noticeMock, roleMockWithTaxonomy} from './mock/objects'
+import { systemUidMock, stackHeadersMock, roleMock, noticeMock, roleMockWithTaxonomy } from './mock/objects'
 
 describe('Contentstack Role test', () => {
   it('Role test without uid', done => {

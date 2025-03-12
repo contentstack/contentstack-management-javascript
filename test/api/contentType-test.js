@@ -96,7 +96,7 @@ describe('Content Type api Test', () => {
 
   it('Update ContentType schema without fetch', done => {
     makeContentType(multiPageCT.content_type.uid)
-      .updateCT({content_type: {schema: schema}})
+      .updateCT({ content_type: { schema: schema } })
       .then((contentType) => {
         expect(contentType.schema.length).to.be.equal(6)
         done()
