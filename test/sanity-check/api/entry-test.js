@@ -223,6 +223,6 @@ describe('Entry api Test', () => {
   })
 })
 
-function makeEntry(contentType, uid = null) {
+function makeEntry (contentType, uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).contentType(contentType).entry(uid)
 }

@@ -1,17 +1,14 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { createVariantGroup, createVariantGroup1, createVariantGroup2 } from '../mock/variantGroup.js'
+import { createVariantGroup } from '../mock/variantGroup.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
 
-var stack = {}
-var tokenUID = ''
 describe('Variant Group api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
-    stack = jsonReader('stack.json')
     client = contentstackClient(user.authtoken)
   })
 
@@ -80,6 +77,6 @@ describe('Variant Group api Test', () => {
   })
 })
 
-function makeVariantGroup(uid = null) {
+function makeVariantGroup (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).variantGroup(uid)
 }

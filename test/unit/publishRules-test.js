@@ -65,14 +65,14 @@ describe('Contentstack PublishRule test', () => {
   it('PublishRule create test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost('/workflows/publishing_rules').reply(200, {
-        publishing_rule: {
+      publishing_rule: {
         ...publishRulesMock
       }
     })
     makePublishRule()
       .create()
-      .then((publish_rule) => {
-        checkPublishRules(publish_rule)
+      .then((publishRule) => {
+        checkPublishRules(publishRule)
         done()
       })
       .catch(done)
@@ -87,8 +87,8 @@ describe('Contentstack PublishRule test', () => {
     })
     makePublishRule()
       .fetchAll()
-      .then((publish_rule) => {
-        checkPublishRules(publish_rule.items[0])
+      .then((publishRule) => {
+        checkPublishRules(publishRule.items[0])
         done()
       })
       .catch(done)
@@ -103,8 +103,8 @@ describe('Contentstack PublishRule test', () => {
     })
     makePublishRule({ stackHeaders: stackHeadersMock })
       .fetchAll({})
-      .then((publish_rule) => {
-        checkPublishRules(publish_rule.items[0])
+      .then((publishRule) => {
+        checkPublishRules(publishRule.items[0])
         done()
       })
       .catch(done)
@@ -119,8 +119,8 @@ describe('Contentstack PublishRule test', () => {
     })
     makePublishRule({ stackHeaders: stackHeadersMock })
       .fetchAll(null)
-      .then((publish_rule) => {
-        checkPublishRules(publish_rule.items[0])
+      .then((publishRule) => {
+        checkPublishRules(publishRule.items[0])
         done()
       })
       .catch(done)
@@ -129,19 +129,19 @@ describe('Contentstack PublishRule test', () => {
   it('PublishRule update test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPut('/workflows/publishing_rules/UID').reply(200, {
-        publishing_rule: {
+      publishing_rule: {
         ...publishRulesMock
       }
     })
     makePublishRule({
-        publishing_rule: {
+      publishing_rule: {
         ...systemUidMock
       },
       stackHeaders: stackHeadersMock
     })
       .update()
-      .then((publish_rule) => {
-        checkPublishRules(publish_rule)
+      .then((publishRule) => {
+        checkPublishRules(publishRule)
         done()
       })
       .catch(done)
@@ -161,8 +161,8 @@ describe('Contentstack PublishRule test', () => {
       stackHeaders: stackHeadersMock
     })
       .fetch()
-      .then((publish_rule) => {
-        checkPublishRules(publish_rule)
+      .then((publishRule) => {
+        checkPublishRules(publishRule)
         done()
       })
       .catch(done)
@@ -180,25 +180,22 @@ describe('Contentstack PublishRule test', () => {
       stackHeaders: stackHeadersMock
     })
       .delete()
-      .then((publish_rule) => {
-        expect(publish_rule.notice).to.be.equal(noticeMock.notice)
+      .then((publishRule) => {
+        expect(publishRule.notice).to.be.equal(noticeMock.notice)
         done()
       })
       .catch(done)
   })
-
 })
 
-
-function makePublishRule(data) {
-    return new PublishRules(Axios, data)
+function makePublishRule (data) {
+  return new PublishRules(Axios, data)
 }
 
 function checkPublishRules (publishRules) {
   checkSystemFields(publishRules)
   expect(publishRules.locale).to.be.equal('en-us')
   expect(publishRules.action).to.be.equal('publish')
-  expect(publishRules.environment).to.be.equal("env")
-  expect(publishRules.workflow_stage).to.be.equal("stage")
+  expect(publishRules.environment).to.be.equal('env')
+  expect(publishRules.workflow_stage).to.be.equal('stage')
 }
-  

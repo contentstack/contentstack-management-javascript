@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { variant, variant1, variant2 } from './mock/variants.js'
+import { variant, variant2 } from './mock/variants.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
