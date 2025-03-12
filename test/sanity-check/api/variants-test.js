@@ -2,19 +2,17 @@ import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { createVariantGroup } from '../mock/variantGroup.js'
-import { variant, variant1, variant2 } from '../mock/variants.js'
+import { variant } from '../mock/variants.js'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
 
-var stack = {}
 var variantUid = ''
-var variantName = ''
+let variantName = ''
 var variantGroupUid = ''
 describe('Variants api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
-    stack = jsonReader('stack.json')
     client = contentstackClient(user.authtoken)
   })
 
@@ -64,7 +62,7 @@ describe('Variants api Test', () => {
         variants.items.forEach((variants) => {
           variantUid = variants.uid
           variantName = variants.name
-          expect(variants.name).to.be.not.equal(null)
+          expect(variantName).to.be.not.equal(null)
           expect(variants.uid).to.be.not.equal(null)
         })
         done()
@@ -129,10 +127,10 @@ describe('Variants api Test', () => {
   })
 })
 
-function makeVariants(uid = null) {
+function makeVariants (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).variantGroup(variantGroupUid).variants(uid)
 }
 
-function makeVariantGroup(uid = null) {
+function makeVariantGroup (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).variantGroup(uid)
 }
