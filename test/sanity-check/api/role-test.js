@@ -9,19 +9,6 @@ dotenv.config()
 let client = {}
 let roleUID = ''
 
-const taxonomy = {
-  uid: 'taxonomy_testing1',
-  name: 'taxonomy testing1',
-  description: 'Description for Taxonomy testing'
-}
-const term = {
-  term: {
-    uid: 'term_test1',
-    name: 'Term test1',
-    parent_uid: null
-  }
-}
-
 describe('Role api test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
@@ -180,15 +167,8 @@ describe('Role api test', () => {
   //   const taxonomyResponse = await client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomy.uid).delete({ force: true })
   //   expect(taxonomyResponse.status).to.be.equal(204)
   // })
-
 })
 
 function getRole (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).role(uid)
 }
-
-
-function makeTerms (taxonomyUid, termUid = null) {
-  return client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomyUid).terms(termUid)
-}
-
