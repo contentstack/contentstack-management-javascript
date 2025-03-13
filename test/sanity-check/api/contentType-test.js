@@ -7,7 +7,6 @@ import { contentstackClient } from '../utility/ContentstackClient.js'
 
 let client = {}
 let multiPageCTUid = ''
-let multiPageUpdateCTUid = 'multi_page'
 
 describe('Content Type api Test', () => {
   setup(() => {
@@ -114,7 +113,6 @@ describe('Content Type api Test', () => {
       })
       .catch(done)
   })
-
 
   it('should import content type', done => {
     makeContentType().import({

@@ -108,7 +108,7 @@ describe('Contentstack Variants test', () => {
       ]
     })
     makeVariants()
-      .fetchByUIDs(['uid1','uid2'])
+      .fetchByUIDs(['uid1', 'uid2'])
       .then((variants) => {
         checkVariants(variants.variants[0])
         done()
@@ -162,7 +162,7 @@ function makeVariants (data = {}) {
 }
 
 function checkVariants (variants) {
-  if(variants.variants){
+  if (variants.variants) {
     variants = variants.variants
   }
   checkSystemFields(variants)
