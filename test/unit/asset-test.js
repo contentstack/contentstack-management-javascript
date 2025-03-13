@@ -316,7 +316,6 @@ describe('Contentstack Asset test', () => {
       .catch(done)
   })
 
-
   it('Asset download test', done => {
     var mock = new MockAdapter(Axios)
     const downloadResponse = new Blob(['file content'], { type: 'text/plain' })
@@ -352,7 +351,7 @@ describe('Contentstack Asset test', () => {
     })
       .download({ responseType: 'blob' })
       .then((response) => {
-        console.log("🚀 ~ .then ~ response:", response)
+        console.log('🚀 ~ .then ~ response:', response)
         expect(response.data).to.be.instanceOf(Blob)
         expect(response.data.type).to.be.equal('text/plain')
         done()
