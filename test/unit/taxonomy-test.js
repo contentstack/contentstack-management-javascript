@@ -3,7 +3,7 @@ import path from 'path'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
-import { Taxonomy, createFormData, TaxonomyCollection } from '../../lib/stack/taxonomy'
+import { Taxonomy, createFormData } from '../../lib/stack/taxonomy'
 import { systemUidMock, stackHeadersMock, taxonomyMock, noticeMock, termsMock, taxonomyImportMock } from './mock/objects'
 
 describe('Contentstack Taxonomy test', () => {
@@ -166,7 +166,6 @@ describe('Contentstack Taxonomy test', () => {
       })
       .catch(done)
   })
-
 
   it('term create test', done => {
     var mock = new MockAdapter(Axios)

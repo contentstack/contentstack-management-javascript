@@ -275,7 +275,7 @@ describe('Contentstack Entry test', () => {
       ...noticeMock
     })
 
-    const publishing_rule = {
+    const publishingRule = {
       uid: 'uid',
       action: 'publish', // (‘publish’, ‘unpublish’, or ’both’)
       status: 1, // (this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
@@ -283,7 +283,7 @@ describe('Contentstack Entry test', () => {
       comment: 'Please review this.'
     }
     makeEntry({ entry: { ...systemUidMock } })
-      .publishRequest({ publishing_rule, locale: 'en-us' })
+      .publishRequest({ publishing_rule: publishingRule, locale: 'en-us' })
       .then((response) => {
         expect(response.notice).to.be.equal(noticeMock.notice)
         done()
@@ -298,7 +298,7 @@ describe('Contentstack Entry test', () => {
     })
     makeEntry({ entry: { ...systemUidMock },
       stackHeaders: stackHeadersMock
-     })
+    })
       .includeVariants({ include_variant: 'True', variants_uid: 'test_uid' })
       .then((response) => {
         expect(response.api_key).to.be.equal('api_key')
@@ -315,7 +315,7 @@ describe('Contentstack Entry test', () => {
       ...noticeMock
     })
 
-    const workflow_stage = {
+    const workflowStage = {
       uid: 'uid',
       comment: 'Please review this.',
       due_date: 'Thu Dec 01 2018',
@@ -332,7 +332,7 @@ describe('Contentstack Entry test', () => {
     }
 
     makeEntry({ entry: { ...systemUidMock } })
-      .setWorkflowStage({ workflow_stage, locale: 'en-us' })
+      .setWorkflowStage({ workflow_stage: workflowStage, locale: 'en-us' })
       .then((response) => {
         expect(response.notice).to.be.equal(noticeMock.notice)
         done()
@@ -347,7 +347,7 @@ describe('Contentstack Entry test', () => {
       ...noticeMock
     })
 
-    const workflow_stage = {
+    const workflowStage = {
       uid: 'uid',
       comment: 'Please review this.',
       due_date: 'Thu Dec 01 2018',
@@ -364,7 +364,7 @@ describe('Contentstack Entry test', () => {
     }
 
     makeEntry({ entry: { ...systemUidMock }, stackHeaders: stackHeadersMock })
-      .setWorkflowStage({ workflow_stage, locale: 'en-us' })
+      .setWorkflowStage({ workflow_stage: workflowStage, locale: 'en-us' })
       .then((response) => {
         expect(response.notice).to.be.equal(noticeMock.notice)
         done()
@@ -378,7 +378,7 @@ describe('Contentstack Entry test', () => {
       ...noticeMock
     })
 
-    const publishing_rule = {
+    const publishingRule = {
       uid: 'uid',
       action: 'publish', // (‘publish’, ‘unpublish’, or ’both’)
       status: 1, // (this could be ‘0’ for Approval Requested, ‘1’ for ‘Approval Accepted’, and ‘-1’ for ‘Approval Rejected’),
@@ -386,7 +386,7 @@ describe('Contentstack Entry test', () => {
       comment: 'Please review this.'
     }
     makeEntry({ entry: { ...systemUidMock }, stackHeaders: stackHeadersMock })
-      .publishRequest({ publishing_rule, locale: 'en-us' })
+      .publishRequest({ publishing_rule: publishingRule, locale: 'en-us' })
       .then((response) => {
         expect(response.notice).to.be.equal(noticeMock.notice)
         done()
@@ -407,19 +407,19 @@ describe('Contentstack Entry test', () => {
       array_file: [
         { file_size: 69420, uid: 'array_file_1' },
         { file_size: 69420, uid: 'array_file_2' },
-        { file_size: 69420, uid: 'array_file_3' },
+        { file_size: 69420, uid: 'array_file_3' }
       ],
       wrapper1: {
         something: 'something',
         something_else: 'something_else',
-        file_inside_wrapper : {
-            file_size: 69420,
-            uid: 'single_file'
+        file_inside_wrapper: {
+          file_size: 69420,
+          uid: 'single_file'
         },
-        file_array_wrapper : [
+        file_array_wrapper: [
           { file_size: 69420, uid: 'array_file_wrap_1' },
           { file_size: 69420, uid: 'array_file_wrap_2' },
-          { file_size: 69420, uid: 'array_file_wrap_3' },
+          { file_size: 69420, uid: 'array_file_wrap_3' }
         ],
         array_wrapper: [
           {
@@ -451,11 +451,11 @@ describe('Contentstack Entry test', () => {
           array_of_array_wrapper: [
             {
               something: 'something',
-              oneMoreWrapper : {
-                file_array_wrapper : [
+              oneMoreWrapper: {
+                file_array_wrapper: [
                   { file_size: 69420, uid: 'array_file_wrap_1' },
                   { file_size: 69420, uid: 'array_file_wrap_2' },
-                  { file_size: 69420, uid: 'array_file_wrap_3' },
+                  { file_size: 69420, uid: 'array_file_wrap_3' }
                 ],
                 array_wrapper: [
                   {
@@ -482,25 +482,25 @@ describe('Contentstack Entry test', () => {
                     },
                     something_else: 'something_else'
                   }
-                ],     
+                ]
               },
               something_else: 'something_else'
             },
             {
               something: 'something',
-              file_array_wrapper : [
+              file_array_wrapper: [
                 { file_size: 69420, uid: 'array_file_wrap_1' },
                 { file_size: 69420, uid: 'array_file_wrap_2' },
-                { file_size: 69420, uid: 'array_file_wrap_3' },
+                { file_size: 69420, uid: 'array_file_wrap_3' }
               ],
               something_else: 'something_else'
             },
             {
               something: 'something',
-              file_array_wrapper : [
+              file_array_wrapper: [
                 { file_size: 69420, uid: 'array_file_wrap_1' },
                 { file_size: 69420, uid: 'array_file_wrap_2' },
-                { file_size: 69420, uid: 'array_file_wrap_3' },
+                { file_size: 69420, uid: 'array_file_wrap_3' }
               ],
               something_else: 'something_else'
             }
@@ -508,7 +508,7 @@ describe('Contentstack Entry test', () => {
         }
       },
       ...systemUidMock
-    };
+    }
     const expectedResult = {
       empty_array: [],
       empty_object: {},
@@ -519,8 +519,8 @@ describe('Contentstack Entry test', () => {
       wrapper1: {
         something: 'something',
         something_else: 'something_else',
-        file_inside_wrapper : 'single_file',
-        file_array_wrapper : ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
+        file_inside_wrapper: 'single_file',
+        file_array_wrapper: ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
         array_wrapper: [
           {
             something: 'something',
@@ -542,8 +542,8 @@ describe('Contentstack Entry test', () => {
           array_of_array_wrapper: [
             {
               something: 'something',
-              oneMoreWrapper : {
-                file_array_wrapper : ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
+              oneMoreWrapper: {
+                file_array_wrapper: ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
                 array_wrapper: [
                   {
                     something: 'something',
@@ -560,28 +560,28 @@ describe('Contentstack Entry test', () => {
                     single_file: 'single_file_3',
                     something_else: 'something_else'
                   }
-                ],     
+                ]
               },
               something_else: 'something_else'
             },
             {
               something: 'something',
-              file_array_wrapper : ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
+              file_array_wrapper: ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
               something_else: 'something_else'
             },
             {
               something: 'something',
-              file_array_wrapper : ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
+              file_array_wrapper: ['array_file_wrap_1', 'array_file_wrap_2', 'array_file_wrap_3'],
               something_else: 'something_else'
             }
           ]
         }
       },
       ...systemUidMock
-    };
-    const result = cleanAssets(entry);
-    expect(result).to.deep.equal(expectedResult);
-    done();
+    }
+    const result = cleanAssets(entry)
+    expect(result).to.deep.equal(expectedResult)
+    done()
   })
 
   it('should get languages of the given Entry uid', done => {
@@ -619,11 +619,11 @@ describe('Contentstack Entry test', () => {
     var mock = new MockAdapter(Axios)
     const references = [
       {
-        entry_uid: "entry_uid",
-        content_type_uid: "referred_content_type",
-        locale: "en-us",
-        title: "Jeff Goins",
-        content_type_title: "Referred Content Type"
+        entry_uid: 'entry_uid',
+        content_type_uid: 'referred_content_type',
+        locale: 'en-us',
+        title: 'Jeff Goins',
+        content_type_title: 'Referred Content Type'
       }
     ]
     mock.onGet('/content_types/content_type_uid/entries/UID/references').reply(200, {
