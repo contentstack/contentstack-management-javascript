@@ -56,7 +56,6 @@ describe('taxonomy api Test', () => {
       .catch(done)
   })
 
-
   it('Fetch taxonomy from uid', done => {
     makeTaxonomy(taxonomyUID)
       .fetch()

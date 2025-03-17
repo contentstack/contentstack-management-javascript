@@ -2,7 +2,7 @@ import Axios from 'axios'
 import sinon from 'sinon'
 import { expect } from 'chai'
 import http from 'http'
-import { describe, it } from 'mocha'
+import { describe, it, before, beforeEach, after } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { ConcurrencyQueue } from '../../lib/core/concurrency-queue'
 import FormData from 'form-data'
@@ -185,6 +185,7 @@ describe('Concurrency queue test', () => {
 
   it('Initialize with bad axios instance', done => {
     try {
+      // eslint-disable-next-line no-new
       new ConcurrencyQueue({ axios: undefined })
       expect.fail('Undefined axios should fail')
     } catch (error) {
@@ -302,18 +303,20 @@ describe('Concurrency queue test', () => {
     const client = Axios.create({
       baseURL: `${host}:${port}`
     })
-    const concurrency = new ConcurrencyQueue({ axios: client, config: { retryCondition: (error) => {
-      if (error.response.status === 408) {
-        return true
-      }
-      return false
-    },
-    logHandler: logHandlerStub,
-    retryDelayOptions: {
-      base: retryDelayOptionsStub()
-    },
-    retryLimit: 2,
-    retryOnError: true, timeout: 250 } })
+    const concurrency = new ConcurrencyQueue({ axios: client,
+      config: { retryCondition: (error) => {
+        if (error.response.status === 408) {
+          return true
+        }
+        return false
+      },
+      logHandler: logHandlerStub,
+      retryDelayOptions: {
+        base: retryDelayOptionsStub()
+      },
+      retryLimit: 2,
+      retryOnError: true,
+      timeout: 250 } })
     client.get('http://localhost:4444/timeout', {
       timeout: 250
     }).then(function (res) {
@@ -328,7 +331,7 @@ describe('Concurrency queue test', () => {
   })
 
   it('Concurrency with 100 failing requests retry on error with no retry condition tests', done => {
-    reconfigureQueue({ retryCondition: (error) => false })
+    reconfigureQueue({ retryCondition: () => false })
     Promise.all(sequence(100).map(() => wrapPromise(api.get('/fail'))))
       .then((responses) => {
         return responses.map(r => r.data)

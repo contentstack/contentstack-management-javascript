@@ -3,12 +3,11 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { Variants, VariantsCollection } from '../../lib/stack/variantGroup/variants'
-import { systemUidMock, stackHeadersMock, variantMock, noticeMock, checkSystemFields, variantsMock } from './mock/objects'
-import { checkEnvironment } from './variantsWithVariantsGroup-test'
+import { systemUidMock, stackHeadersMock, variantMock, checkSystemFields, variantsMock } from './mock/objects'
 
 describe('Contentstack  Variants test', () => {
   it(' Variants test without uid', done => {
-     const variants =  makeVariants({variant_group_uid: systemUidMock.uid})
+    const variants = makeVariants({ variant_group_uid: systemUidMock.uid })
     expect(variants.urlPath).to.be.equal(`/variant_groups/${systemUidMock.uid}/variants`)
     expect(variants.stackHeaders).to.be.equal(undefined)
     expect(variants.update).to.be.equal(undefined)
@@ -20,7 +19,7 @@ describe('Contentstack  Variants test', () => {
   })
 
   it(' Variants test with uid', done => {
-     const variants =  makeVariants({variant_group_uid: systemUidMock.uid, variants: {uid: systemUidMock.uid}})
+    const variants = makeVariants({ variant_group_uid: systemUidMock.uid, variants: { uid: systemUidMock.uid } })
     expect(variants.urlPath).to.be.equal(`/variant_groups/${systemUidMock.uid}/variants/${systemUidMock.uid}`)
     expect(variants.stackHeaders).to.be.equal(undefined)
     expect(variants.update).to.not.equal(undefined)
@@ -31,7 +30,7 @@ describe('Contentstack  Variants test', () => {
   })
 
   it(' Variants test with Stack Headers', done => {
-     const variants =  makeVariants({ variant_group_uid: systemUidMock.uid, 
+    const variants = makeVariants({ variant_group_uid: systemUidMock.uid,
       stackHeaders: stackHeadersMock
     })
     expect(variants.urlPath).to.be.equal(`/variant_groups/${systemUidMock.uid}/variants`)
@@ -41,13 +40,13 @@ describe('Contentstack  Variants test', () => {
   })
 
   it(' Variants Collection test with blank data', done => {
-     const variants = new  VariantsCollection(Axios, {})
+    const variants = new VariantsCollection(Axios, {})
     expect(variants.length).to.be.equal(0)
     done()
   })
 
   it(' Variants Collection test with data', done => {
-     const variants = new  VariantsCollection(Axios, { variant_group_uid: systemUidMock.uid,
+    const variants = new VariantsCollection(Axios, { variant_group_uid: systemUidMock.uid,
       variants: [
         variantMock
       ]
@@ -64,7 +63,7 @@ describe('Contentstack  Variants test', () => {
         ...variantMock
       }
     })
-     makeVariants({variant_group_uid: systemUidMock.uid})
+    makeVariants({ variant_group_uid: systemUidMock.uid })
       .create()
       .then((variant) => {
         checkVariants(variant)
@@ -75,9 +74,9 @@ describe('Contentstack  Variants test', () => {
 
   it(' Variants Query test', done => {
     var mock = new MockAdapter(Axios)
-    mock.onGet('/variant_groups/UID/variants').reply(200, { variant_group_uid: systemUidMock.uid, ...variantsMock 
+    mock.onGet('/variant_groups/UID/variants').reply(200, { variant_group_uid: systemUidMock.uid, ...variantsMock
     })
-     makeVariants({variant_group_uid: systemUidMock.uid})
+    makeVariants({ variant_group_uid: systemUidMock.uid })
       .query()
       .find()
       .then((variants) => {
@@ -90,14 +89,15 @@ describe('Contentstack  Variants test', () => {
   it(' Variants update test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPut('/variant_groups/UID/variants/UID').reply(200, { variant_group_uid: systemUidMock.uid,
-        variants: {
+      variants: {
         ...variantMock
       }
     })
-     makeVariants({variant_group_uid: systemUidMock.uid, variants:{
+    makeVariants({ variant_group_uid: systemUidMock.uid,
+      variants: {
         ...systemUidMock,
-      stackHeaders: stackHeadersMock
-    }
+        stackHeaders: stackHeadersMock
+      }
     })
       .update()
       .then((variant) => {
@@ -110,12 +110,12 @@ describe('Contentstack  Variants test', () => {
   it(' Variants fetch test', done => {
     var mock = new MockAdapter(Axios)
     mock.onGet('/variant_groups/UID/variants/UID').reply(200, { variant_group_uid: systemUidMock.uid,
-        variants: {
+      variants: {
         ...variantMock
       }
     })
-     makeVariants({ variant_group_uid: systemUidMock.uid,
-        variants: {
+    makeVariants({ variant_group_uid: systemUidMock.uid,
+      variants: {
         ...systemUidMock
       },
       stackHeaders: stackHeadersMock
@@ -127,7 +127,6 @@ describe('Contentstack  Variants test', () => {
       })
       .catch(done)
   })
-
 })
 
 function makeVariants (data = {}) {
@@ -135,7 +134,7 @@ function makeVariants (data = {}) {
 }
 
 function checkVariants (variant) {
-  if(variant.variants){
+  if (variant.variants) {
     variant = variant.variants
   }
   checkSystemFields(variant)

@@ -4,23 +4,21 @@ import { jsonReader } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 
 var client = {}
-var stack = {}
 
 const variants = {
-  "uid": "iphone_color_white", // optional
-  "name": "White",
-  "personalize_metadata": {
-    "experience_uid": "exp1",
-    "experience_short_uid": "expShortUid1",
-    "project_uid": "project_uid1",
-    "variant_short_uid": "variantShort_uid1"
-  },
+  uid: 'iphone_color_white', // optional
+  name: 'White',
+  personalize_metadata: {
+    experience_uid: 'exp1',
+    experience_short_uid: 'expShortUid1',
+    project_uid: 'project_uid1',
+    variant_short_uid: 'variantShort_uid1'
+  }
 }
 var variantsUID = ''
 describe('Ungrouped Variants api Test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
-    stack = jsonReader('stack.json')
     client = contentstackClient(user.authtoken)
   })
   it('Should create ungrouped variants create', done => {
@@ -94,6 +92,6 @@ describe('Ungrouped Variants api Test', () => {
   })
 })
 
-function makeVariants(uid = null) {
+function makeVariants (uid = null) {
   return client.stack({ api_key: process.env.API_KEY }).variants(uid)
 }
