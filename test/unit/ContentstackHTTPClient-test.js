@@ -112,7 +112,7 @@ describe('Contentstack HTTP Client', () => {
 
   it('Contentstack retryDelayOption base test', done => {
     const client = contentstackHTTPClient({
-      retryDelayOptions: { base: 200 },
+      retryDelayOptions: { base: 200 }
     })
     expect(client.defaults.retryDelayOptions).to.not.equal(undefined)
     expect(client.defaults.retryDelayOptions.base).to.be.equal(200)
