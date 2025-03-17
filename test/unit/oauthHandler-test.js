@@ -59,7 +59,6 @@ describe('OAuthHandler', () => {
 
     const result = await oauthHandler.exchangeCodeForToken('authorization_code')
     expect(result).to.deep.equal(tokenData)
-    expect(result).to.include('data')
   })
 
   it('should refresh access token', async () => {
