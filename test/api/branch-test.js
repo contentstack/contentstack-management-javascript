@@ -157,25 +157,25 @@ describe('Branch api Test', () => {
     const params = {
       base_branch: branch.uid,
       compare_branch: devBranch.uid,
-      default_merge_strategy: "ignore",
-      merge_comment: "Merging dev into main",
+      default_merge_strategy: 'ignore',
+      merge_comment: 'Merging dev into main'
     }
     const mergeObj = {
       item_merge_strategies: [
         {
-          "uid": "global_field_uid", 
-          "type": "global_field", 
-          "merge_strategy": "merge_prefer_base"
+          uid: 'global_field_uid',
+          type: 'global_field',
+          merge_strategy: 'merge_prefer_base'
         },
         {
-          "uid": "ct5", 
-          "type": "content_type",
-          "merge_strategy": "merge_prefer_compare"
+          uid: 'ct5',
+          type: 'content_type',
+          merge_strategy: 'merge_prefer_compare'
         },
         {
-          "uid": "bot_all", 
-          "type": "content_type",
-          "merge_strategy": "merge_prefer_base"
+          uid: 'bot_all',
+          type: 'content_type',
+          merge_strategy: 'merge_prefer_base'
         }
       ]
     }

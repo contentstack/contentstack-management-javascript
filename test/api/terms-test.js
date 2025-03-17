@@ -6,8 +6,8 @@ import { contentstackClient } from '../utility/ContentstackClient.js'
 var client = {}
 var stack = {}
 
-const taxonomy_uid = ''
-const term_uid = ''
+const taxonomyUid = ''
+const termUid = ''
 const term = {
   term: {
     uid: 'term_test',
@@ -25,7 +25,7 @@ describe('Terms API Test', () => {
 
   it('Create term', async () => {
     try {
-      const response = await makeTerms(taxonomy_uid).create(term)
+      const response = await makeTerms(taxonomyUid).create(term)
       expect(response.notice).to.be.equal('Term created successfully.')
       expect(response.uid).to.be.equal(term.term.uid)
     } catch (err) {
@@ -35,7 +35,7 @@ describe('Terms API Test', () => {
 
   it('Query and get all terms', async () => {
     try {
-      const response = await makeTerms(taxonomy_uid).query().find()
+      const response = await makeTerms(taxonomyUid).query().find()
       expect(response.items).to.be.an('array')
       expect(response.items[0].uid).not.to.be.equal(null)
       expect(response.items[0].name).not.to.be.equal(null)
@@ -46,8 +46,8 @@ describe('Terms API Test', () => {
 
   it('Fetch term from UID', async () => {
     try {
-      const response = await makeTerms(taxonomy_uid, term_uid).fetch()
-      expect(response.uid).to.be.equal(term_uid)
+      const response = await makeTerms(taxonomyUid, termUid).fetch()
+      expect(response.uid).to.be.equal(termUid)
       expect(response.name).not.to.be.equal(null)
       expect(response.created_by).not.to.be.equal(null)
       expect(response.updated_by).not.to.be.equal(null)
@@ -58,13 +58,13 @@ describe('Terms API Test', () => {
 
   it('Update term', async () => {
     try {
-      const response = await makeTerms(taxonomy_uid, term_uid).fetch()
+      const response = await makeTerms(taxonomyUid, termUid).fetch()
         .then((term) => {
           term.name = 'fashion'
           return term.update()
         })
       expect(response.notice).to.be.equal('Term updated successfully.')
-      expect(response.uid).to.be.equal(term_uid)
+      expect(response.uid).to.be.equal(termUid)
       expect(response.name).to.be.equal('fashion')
       expect(response.created_by).not.to.be.equal(null)
       expect(response.updated_by).not.to.be.equal(null)
@@ -75,7 +75,7 @@ describe('Terms API Test', () => {
 
   it('Delete term from UID', async () => {
     try {
-      const response = await makeTerms(term_uid).delete()
+      const response = await makeTerms(termUid).delete()
       expect(response.notice).to.be.equal('')
     } catch (err) {
       console.log(err)
@@ -84,7 +84,7 @@ describe('Terms API Test', () => {
 
   it('Ancestors of the term given', async () => {
     try {
-      const response = await makeTerms(taxonomy_uid, term_uid).ancestors()
+      const response = await makeTerms(taxonomyUid, termUid).ancestors()
       expect(response.terms[0].uid).not.to.be.equal(null)
       expect(response.terms[0].name).not.to.be.equal(null)
       expect(response.terms[0].created_by).not.to.be.equal(null)
@@ -96,7 +96,7 @@ describe('Terms API Test', () => {
 
   it('Descendants of the term given', async () => {
     try {
-      const response = await makeTerms(taxonomy_uid, term_uid).descendants()
+      const response = await makeTerms(taxonomyUid, termUid).descendants()
       expect(response.terms.uid).not.to.be.equal(null)
       expect(response.terms.name).not.to.be.equal(null)
       expect(response.terms.created_by).not.to.be.equal(null)
@@ -106,9 +106,9 @@ describe('Terms API Test', () => {
     }
   })
   it('search term', async () => {
-    term_string = ''
+    const termString = ''
     try {
-      const response = await makeTerms(taxonomy_uid).search(term_string)
+      const response = await makeTerms(taxonomyUid).search(termString)
       expect(response.terms).to.be.an('array')
     } catch (err) {
       console.log(err)
@@ -120,7 +120,7 @@ describe('Terms API Test', () => {
         parent_uid: 'parent_uid',
         order: 2
       }
-      await makeTerms(taxonomy_uid, term_uid).move({ term })
+      await makeTerms(taxonomyUid, termUid).move({ term })
         .then((term) => {
           term.parent_uid = 'parent_uid'
           console.log(term.move())
@@ -132,6 +132,6 @@ describe('Terms API Test', () => {
   })
 })
 
-function makeTerms (taxonomy_uid, term_uid = null) {
-  return client.stack({ api_key: stack.api_key }).taxonomy(taxonomy_uid).terms(term_uid)
+function makeTerms (taxonomyUid, termUid = null) {
+  return client.stack({ api_key: stack.api_key }).taxonomy(taxonomyUid).terms(termUid)
 }

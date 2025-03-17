@@ -12,15 +12,15 @@ describe('Branch api Test', () => {
     client = contentstackClient(user.authtoken)
   })
 
-  it('should create a dev branch from stage branch',async () => {
-    const response = await makeBranch().create({ branch: devBranch });
-    expect(response.uid).to.be.equal(devBranch.uid);
-    expect(response.source).to.be.equal(devBranch.source);
-    expect(response.alias).to.not.equal(undefined);
-    expect(response.delete).to.not.equal(undefined);
-    expect(response.fetch).to.not.equal(undefined);
-    await new Promise(resolve => setTimeout(resolve, 15000));
-  });
+  it('should create a dev branch from stage branch', async () => {
+    const response = await makeBranch().create({ branch: devBranch })
+    expect(response.uid).to.be.equal(devBranch.uid)
+    expect(response.source).to.be.equal(devBranch.source)
+    expect(response.alias).to.not.equal(undefined)
+    expect(response.delete).to.not.equal(undefined)
+    expect(response.fetch).to.not.equal(undefined)
+    await new Promise(resolve => setTimeout(resolve, 15000))
+  })
 
   it('should return main branch when query is called', done => {
     makeBranch()
@@ -132,7 +132,7 @@ describe('Branch api Test', () => {
       .catch(done)
   })
 
-  it('should merge given two branches', done => {
+  it('should merge given two branches', async () => {
     const params = {
       base_branch: branch.uid,
       compare_branch: stageBranch.uid,
@@ -158,15 +158,11 @@ describe('Branch api Test', () => {
         }
       ]
     }
-    makeBranch()
-      .merge(mergeObj, params)
-      .then((response) => {
-        mergeJobUid = response.uid
-        expect(response.merge_details.base_branch).to.be.equal(branch.uid)
-        expect(response.merge_details.compare_branch).to.be.equal(stageBranch.uid)
-        done()
-      })
-      .catch(done)
+    const response = await makeBranch().merge(mergeObj, params)
+    mergeJobUid = response.uid
+    expect(response.merge_details.base_branch).to.be.equal(branch.uid)
+    expect(response.merge_details.compare_branch).to.be.equal(stageBranch.uid)
+    await new Promise(resolve => setTimeout(resolve, 15000))
   })
 
   it('should list all recent merge jobs', done => {
