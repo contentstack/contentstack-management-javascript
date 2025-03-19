@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.19.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.6) (2025-03-24)
+ - Fix
+    - Added stack headers in global fields response
 ## [v1.19.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.5) (2025-03-17)
  - Fix
     - Added AuditLog in the stack class
