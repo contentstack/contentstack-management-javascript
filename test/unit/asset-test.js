@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs'
 import path from 'path'
 import Axios from 'axios'
 import { expect } from 'chai'
@@ -173,7 +173,7 @@ describe('Contentstack Asset test', () => {
   })
 
   it('should upload asset from buffer', (done) => {
-    const mock = new MockAdapter(Axios);
+    const mock = new MockAdapter(Axios)
     mock.onPost('/assets').reply(200, {
       asset: {
         uid: 'mock-uid',
@@ -185,35 +185,35 @@ describe('Contentstack Asset test', () => {
         tags: ['Buffer'],
         parent_uid: 'UID'
       }
-    });
-    const filePath = path.join(__dirname, '../api/mock/customUpload.html');
-    const fileBuffer = fs.readFileSync(filePath); 
+    })
+    const filePath = path.join(__dirname, '../api/mock/customUpload.html')
+    const fileBuffer = fs.readFileSync(filePath)
     const assetUpload = {
-      upload: fileBuffer,                  // Buffer upload
-      filename: 'customUpload.html',       // Filename to identify the file
-      content_type: 'text/html',           // MIME type
+      upload: fileBuffer, // Buffer upload
+      filename: 'customUpload.html', // Filename to identify the file
+      content_type: 'text/html', // MIME type
       title: 'buffer-asset',
       description: 'Buffer Asset Desc',
       tags: ['Buffer'],
       parent_uid: 'UID'
-    };
-    const form = createFormData(assetUpload)(); // Create FormData for Buffer upload
-    const boundary = form.getBoundary();
-    expect(boundary).to.be.equal(form.getBoundary());
-    expect(boundary.length).to.be.greaterThan(30);
+    }
+    const form = createFormData(assetUpload)() // Create FormData for Buffer upload
+    const boundary = form.getBoundary()
+    expect(boundary).to.be.equal(form.getBoundary())
+    expect(boundary.length).to.be.greaterThan(30)
     makeAsset()
       .create(assetUpload)
       .then((asset) => {
-        expect(asset.uid).to.be.equal('mock-uid');
-        expect(asset.filename).to.be.equal('customUpload.html');
-        expect(asset.title).to.be.equal('buffer-asset');
-        expect(asset.description).to.be.equal('Buffer Asset Desc');
-        expect(asset.content_type).to.be.equal('text/html');
-        expect(asset.tags).to.include('Buffer');
-        done();
+        expect(asset.uid).to.be.equal('mock-uid')
+        expect(asset.filename).to.be.equal('customUpload.html')
+        expect(asset.title).to.be.equal('buffer-asset')
+        expect(asset.description).to.be.equal('Buffer Asset Desc')
+        expect(asset.content_type).to.be.equal('text/html')
+        expect(asset.tags).to.include('Buffer')
+        done()
       })
-      .catch(done);
-  });
+      .catch(done)
+  })
 
   it('Asset replace test', done => {
     var mock = new MockAdapter(Axios)
