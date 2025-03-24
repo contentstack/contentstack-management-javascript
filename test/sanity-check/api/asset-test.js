@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path'
 import { expect } from 'chai'
 import { describe, it, setup } from 'mocha'
@@ -38,6 +39,31 @@ describe('Assets api Test', () => {
       })
       .catch(done)
   })
+  
+  it('should upload asset from buffer', (done) => {
+    const filePath = path.join(__dirname, '../mock/customUpload.html');
+    const fileBuffer = fs.readFileSync(filePath);  // Read file into Buffer
+    const asset = {
+      upload: fileBuffer,                  // Buffer upload
+      filename: 'customUpload.html',       // Ensure filename is provided
+      content_type: 'text/html',           // Set content type
+      title: 'buffer-asset',
+      description: 'Buffer Asset Desc',
+      tags: ['Buffer']
+    };
+    makeAsset().create(asset)
+      .then((asset) => {
+        jsonWrite(asset, 'bufferAsset.json');
+        expect(asset.uid).to.be.not.equal(null);
+        expect(asset.url).to.be.not.equal(null);
+        expect(asset.filename).to.be.equal('customUpload.html');
+        expect(asset.title).to.be.equal('buffer-asset');
+        expect(asset.description).to.be.equal('Buffer Asset Desc');
+        expect(asset.content_type).to.be.equal('text/html');
+        done();
+      })
+      .catch(done);
+  });
 
   it('should download asset from URL.', done => {
     makeAsset().download({ url: assetURL, responseType: 'stream' })
