@@ -6,9 +6,7 @@
     - Added the Unit Test cases and added sanity test case for OAuth
     - Handle retry the requests that were pending due to token expiration
     - Updated Axios Version
-
-## [v1.19.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.6) (2025-03-24)
- - Enhancement
+  - Enhancement
     - Added stack headers in global fields response
     - Added buffer upload in assets
 
