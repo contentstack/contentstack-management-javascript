@@ -61,10 +61,12 @@ export interface Stack extends SystemFields {
     contentType(): ContentTypes
     contentType(uid: string): ContentType
 
-    globalField(): GlobalFields
-    globalField({}): GlobalFields
-    globalField(uid: string): GlobalField
-    globalField(uid: string, option: object): GlobalField
+    globalField(): GlobalFields;
+    globalField(uid: string, option?: object): GlobalField;
+    globalField(options: { api_version: string }): GlobalFields;
+    globalField(uidOrOptions?: string | { api_version: string }, option?: object): GlobalFields | GlobalField;
+
+    
 
     asset(): Assets
     asset(uid: string): Asset

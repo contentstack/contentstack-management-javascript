@@ -7,6 +7,11 @@
     - Handle retry the requests that were pending due to token expiration
     - Updated Axios Version
 
+## [v1.19.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.6) (2025-03-24)
+ - Enhancement
+    - Added stack headers in global fields response
+    - Added buffer upload in assets
+
 ## [v1.19.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.5) (2025-03-17)
  - Fix
     - Added AuditLog in the stack class
