@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.20.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.0) (2025-04-01)
+ - Feature
+    - Added OAuth support
+    - Added the Unit Test cases and added sanity test case for OAuth
+    - Handle retry the requests that were pending due to token expiration
+    - Updated Axios Version
+  - Enhancement
+    - Added stack headers in global fields response
+    - Added buffer upload in assets
+
 ## [v1.19.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.19.5) (2025-03-17)
  - Fix
     - Added AuditLog in the stack class
