@@ -1,7 +1,6 @@
-import Slack from "@slack/bolt";
-const { App } = Slack;
-import dotenv from "dotenv";
-import fs from "fs";
+const { App } = require("@slack/bolt");
+const dotenv = require("dotenv");
+const fs = require("fs");
 
 dotenv.config();
 
@@ -56,7 +55,7 @@ const sendSlackMessage = async (message) => {
     });
 
     if (failedTests > 0) {
-      await sendFailureDetails(result.ts); 
+      await sendFailureDetails(result.ts);
     }
   } catch (error) {
     console.error("Error sending Slack message:", error);
@@ -76,7 +75,7 @@ const sendFailureDetails = async (threadTs) => {
   try {
     await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
-      channel: process.env.SLACK_CHANNEL,
+      channel: process.env.SLACK_CHANNEL2,
       text: failureDetails,
       thread_ts: threadTs,
     });
