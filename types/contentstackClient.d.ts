@@ -6,6 +6,7 @@ import { Response } from './contentstackCollection'
 import { Stack, StackConfig, StackDetails } from './stack'
 import { Organization, Organizations } from './organization'
 import { Queryable } from './utility/operations'
+import OAuthHandler from './oauthHandler'
 
 export interface ProxyConfig {
     host: string
@@ -67,6 +68,8 @@ export interface ContentstackClient {
     
     organization(): Organizations
     organization(uid: string): Organization
+    
+    oauth(params?: any): OAuthHandler
 }
 
 export function client(config?: ContentstackConfig): ContentstackClient
