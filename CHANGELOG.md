@@ -1,4 +1,7 @@
 # Changelog
+## [v1.20.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.1) (2025-04-07)
+ - Fix
+    - Ensure 'api' is replaced with 'app' in uiHostName regardless of position
 
 ## [v1.20.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.0) (2025-04-01)
  - Feature
