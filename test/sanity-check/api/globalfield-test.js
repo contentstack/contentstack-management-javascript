@@ -19,7 +19,6 @@ describe('Global Field api Test', () => {
     makeGlobalField()
       .create(createGlobalField)
       .then((globalField) => {
-        globalField = globalField.global_field
         expect(globalField.uid).to.be.equal(createGlobalField.global_field.uid)
         expect(globalField.title).to.be.equal(
           createGlobalField.global_field.title
@@ -42,7 +41,6 @@ describe('Global Field api Test', () => {
     makeGlobalField(createGlobalField.global_field.uid)
       .fetch()
       .then((globalField) => {
-        globalField = globalField.global_field
         expect(globalField.uid).to.be.equal(createGlobalField.global_field.uid)
         expect(globalField.title).to.be.equal(
           createGlobalField.global_field.title
@@ -65,7 +63,6 @@ describe('Global Field api Test', () => {
     makeGlobalField(createGlobalField.global_field.uid)
       .update(createGlobalField)
       .then((updateGlobal) => {
-        updateGlobal = updateGlobal.global_field
         expect(updateGlobal.uid).to.be.equal(
           createGlobalField.global_field.uid
         )
