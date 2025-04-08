@@ -1,6 +1,6 @@
 import { expect } from "chai"
 import { Extensions } from "../../types/stack/extension";
-import { customFieldURL, customFieldSRC, customWidgetURL, customWidgetSRC, customDashboardURL, customDashboardSRC } from "../api/mock/extension";
+import { customFieldURL, customFieldSRC, customWidgetURL, customWidgetSRC, customDashboardURL, customDashboardSRC } from "../sanity-check/mock/extension";
 
 var customFieldUID = ''
 var customWidgetUID = ''

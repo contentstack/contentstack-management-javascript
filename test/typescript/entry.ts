@@ -197,7 +197,7 @@ export function importEntry(stack: Stack){
     describe('Import Entry', () => {
         test('Entry import from path', done => {
             stack.contentType(multiPageCT.content_type.uid).entry()
-            .import({ entry: path.join(__dirname, '../api/mock/entry.json')})
+            .import({ entry: path.join(__dirname, '../sanity-check/mock/entry.json')})
             .then((response) => {
                 expect(response.uid).to.be.not.equal(null)
                 done()

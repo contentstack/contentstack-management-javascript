@@ -113,7 +113,7 @@ describe('Contentstack Asset test', () => {
       }
     })
     makeAsset()
-      .create({ upload: path.join(__dirname, '../api/mock/customUpload.html') })
+      .create({ upload: path.join(__dirname, '../sanity-check/mock/customUpload.html') })
       .then((asset) => {
         checkAsset(asset)
         done()
@@ -128,7 +128,7 @@ describe('Contentstack Asset test', () => {
         ...assetMock
       }
     })
-    const assetUpload = { upload: path.join(__dirname, '../api/mock/customUpload.html'), tags: 'tags' }
+    const assetUpload = { upload: path.join(__dirname, '../sanity-check/mock/customUpload.html'), tags: 'tags' }
     const form = createFormData(assetUpload)()
     var boundary = form.getBoundary()
 
@@ -151,7 +151,7 @@ describe('Contentstack Asset test', () => {
       }
     })
     const assetUpload = {
-      upload: path.join(__dirname, '../api/mock/customUpload.html'),
+      upload: path.join(__dirname, '../sanity-check/mock/customUpload.html'),
       title: 'customasset',
       description: 'Custom Asset Desc',
       tags: ['Custom'],
@@ -186,7 +186,7 @@ describe('Contentstack Asset test', () => {
         parent_uid: 'UID'
       }
     })
-    const filePath = path.join(__dirname, '../api/mock/customUpload.html')
+    const filePath = path.join(__dirname, '../sanity-check/mock/customUpload.html')
     const fileBuffer = fs.readFileSync(filePath)
     const assetUpload = {
       upload: fileBuffer, // Buffer upload
@@ -223,7 +223,7 @@ describe('Contentstack Asset test', () => {
       }
     })
     const assetUpload = {
-      upload: path.join(__dirname, '../api/mock/customUpload.html'),
+      upload: path.join(__dirname, '../sanity-check/mock/customUpload.html'),
       title: 'customasset',
       description: 'Custom Asset Desc',
       tags: ['Custom'],
