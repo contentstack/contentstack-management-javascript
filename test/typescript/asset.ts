@@ -9,7 +9,7 @@ export function createAsset(stack: Stack) {
     describe('Asset create', () => {
         test('Asset Upload', done => {
             const asset = {
-                upload:  path.join(__dirname, '../api/mock/customUpload.html'),
+                upload:  path.join(__dirname, '../sanity-check/mock/customUpload.html'),
                 title: 'customasset',
                 description: 'Custom Asset Desc',
                 tags: ['custom']
@@ -45,7 +45,7 @@ export function createAsset(stack: Stack) {
 
          test('Upload asset in folder', done => {
             const asset = {
-                upload: path.join(__dirname, '../api/mock/customUpload.html'),
+                upload: path.join(__dirname, '../sanity-check/mock/customUpload.html'),
                 title: 'customasset in Folder',
                 description: 'Custom Asset Desc in Folder',
                 parent_uid: folderUID,
@@ -93,7 +93,7 @@ export function replaceAsset(stack: Stack) {
     describe('Asset replace', () => {
         test('Replace Asset', done => {
             const asset = {
-                upload: path.join(__dirname, '../api/mock/upload.html')
+                upload: path.join(__dirname, '../sanity-check/mock/upload.html')
             }
 
             stack.asset(assetUID)

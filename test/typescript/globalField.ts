@@ -23,7 +23,7 @@ export function createGlobalField(globalField: GlobalFields) {
 
         test('Import global field', done => {
             globalField.import({
-                global_field: path.join(__dirname, '../api/mock/globalfield.json')
+                global_field: path.join(__dirname, '../sanity-check/mock/globalfield.json')
             })
             .then((response) => {
                 expect(response.uid).to.be.not.equal(null)

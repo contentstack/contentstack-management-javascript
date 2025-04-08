@@ -222,7 +222,7 @@ describe('Contentstack Entry test', () => {
         ...entryMock
       }
     })
-    const entryUpload = { entry: path.join(__dirname, '../api/mock/entry.json') }
+    const entryUpload = { entry: path.join(__dirname, '../sanity-check/mock/entry.json') }
     const form = createFormData(entryUpload.entry)()
     var boundary = form.getBoundary()
 
@@ -245,7 +245,7 @@ describe('Contentstack Entry test', () => {
       }
     })
     makeEntry()
-      .import({ entry: path.join(__dirname, '../api/mock/entry.json'), overwrite: true })
+      .import({ entry: path.join(__dirname, '../sanity-check/mock/entry.json'), overwrite: true })
       .then((entry) => {
         checkEntry(entry)
         done()
@@ -261,7 +261,7 @@ describe('Contentstack Entry test', () => {
       }
     })
     makeEntry()
-      .import({ entry: path.join(__dirname, '../api/mock/entry.json'), locale: 'en-us' })
+      .import({ entry: path.join(__dirname, '../sanity-check/mock/entry.json'), locale: 'en-us' })
       .then((entry) => {
         checkEntry(entry)
         done()

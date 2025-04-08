@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.20.1",
+  "version": "1.20.2",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "./dist/node/contentstack-management.js",
   "browser": "./dist/web/contentstack-management.js",
@@ -33,7 +33,6 @@
     "test:sanity-test": "BABEL_ENV=test nyc --reporter=html mocha --require @babel/register ./test/sanity-check/sanity.js -t 30000 --reporter mochawesome --require babel-polyfill --reporter-options reportDir=mochawesome-report,reportFilename=mochawesome.json",
     "test:sanity": "npm run test:sanity-test || true",
     "test:sanity-report": "marge mochawesome-report/mochawesome.json -f sanity-report.html --inline && node sanity-report.mjs",
-    "test:api": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/test.js -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:unit": "BABEL_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./test/unit/index.js -t 30000 --reporter mochawesome --require babel-polyfill",
     "test:unit:report:json": "BABEL_ENV=test nyc --reporter=clover --reporter=text mocha --require @babel/register ./test/unit/index.js -t 30000 --reporter json --reporter-options output=report.json  --require babel-polyfill",
     "test:typescript": "jest --testPathPattern=test/typescript --config ./jest.config.js --coverage",
