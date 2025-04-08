@@ -3,7 +3,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import { GlobalField, GlobalFieldCollection, createFormData } from '../../lib/stack/globalField'
-import { systemUidMock, checkSystemFields, globalFieldMock, stackHeadersMock, noticeMock, nestedGlobalFieldMock, nestedGlobalFieldPayload } from './mock/objects'
+import { systemUidMock, checkSystemFields, globalFieldMock, stackHeadersMock, noticeMock, nestedGlobalFieldMock } from './mock/objects'
 import MockAdapter from 'axios-mock-adapter'
 
 describe('Contentstack GlobalField test', () => {
