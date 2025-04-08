@@ -152,7 +152,7 @@ describe('Contentstack Taxonomy test', () => {
         ...taxonomyMock
       }
     })
-    const taxonomyUpload = { taxonomy: path.join(__dirname, '../api/mock/taxonomy.json') }
+    const taxonomyUpload = { taxonomy: path.join(__dirname, '../sanity-check/mock/taxonomy.json') }
     const form = createFormData(taxonomyUpload)()
     var boundary = form.getBoundary()
 

@@ -29,7 +29,7 @@ export function createContentType(contentType: ContentTypes) {
 
         test('Import Content type', done => {
             contentType.import({
-                content_type: path.join(__dirname, '../api/mock/contentType.json')
+                content_type: path.join(__dirname, '../sanity-check/mock/contentType.json')
             })
             .then((response) => {
                 expect(response.uid).to.be.not.equal(null)
