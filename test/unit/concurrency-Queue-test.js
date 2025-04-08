@@ -377,7 +377,7 @@ describe('Concurrency queue test', () => {
     const fuc = (pathcontent) => {
       return () => {
         const formData = new FormData()
-        const uploadStream = createReadStream(path.join(__dirname, '../api/mock/upload.html'))
+        const uploadStream = createReadStream(path.join(__dirname, '../sanity-check/mock/upload.html'))
         formData.append('asset[upload]', uploadStream)
         return formData
       }

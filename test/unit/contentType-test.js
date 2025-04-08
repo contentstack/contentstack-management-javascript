@@ -241,7 +241,7 @@ describe('Contentstack ContentType test', () => {
         ...contentTypeMock
       }
     })
-    const contentTypeUpload = { content_type: path.join(__dirname, '../api/mock/contentType.json') }
+    const contentTypeUpload = { content_type: path.join(__dirname, '../sanity-check/mock/contentType.json') }
     const form = createFormData(contentTypeUpload)()
     var boundary = form.getBoundary()
 
@@ -263,7 +263,7 @@ describe('Contentstack ContentType test', () => {
         ...contentTypeMock
       }
     })
-    const contentTypeUpload = { content_type: path.join(__dirname, '../api/mock/contentType.json') }
+    const contentTypeUpload = { content_type: path.join(__dirname, '../sanity-check/mock/contentType.json') }
     const form = createFormData(contentTypeUpload)()
     var boundary = form.getBoundary()
 
