@@ -3,6 +3,7 @@
 ## [v1.20.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.2) (2025-04-21)
  - Fix
     - Handle the sanity tests when ENVs are not provided
+    - Handle api_version chaining and ensure backward compatibility
 ## [v1.20.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.1) (2025-04-07)
  - Fix
     - Ensure 'api' is replaced with 'app' in uiHostName regardless of position
