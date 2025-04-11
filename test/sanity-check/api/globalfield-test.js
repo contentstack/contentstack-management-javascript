@@ -1,8 +1,9 @@
 import path from 'path'
 import { expect } from 'chai'
+import { cloneDeep } from 'lodash'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { createGlobalField } from '../mock/globalfield'
+import { createGlobalField, createNestedGlobalField, createNestedGlobalFieldForReference } from '../mock/globalfield'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import dotenv from 'dotenv'
 
@@ -59,25 +60,16 @@ describe('Global Field api Test', () => {
       .catch(done)
   })
 
-  it('should update global Field', (done) => {
-    makeGlobalField(createGlobalField.global_field.uid)
-      .update(createGlobalField)
+  it('should update global Field', done => {
+    const globalField = makeGlobalField(createGlobalField.global_field.uid)
+    Object.assign(globalField, cloneDeep(createGlobalField.global_field))
+    globalField.update()
       .then((updateGlobal) => {
-        expect(updateGlobal.uid).to.be.equal(
-          createGlobalField.global_field.uid
-        )
-        expect(updateGlobal.title).to.be.equal(
-          createGlobalField.global_field.title
-        )
-        expect(updateGlobal.schema[0].uid).to.be.equal(
-          createGlobalField.global_field.schema[0].uid
-        )
-        expect(updateGlobal.schema[0].data_type).to.be.equal(
-          createGlobalField.global_field.schema[0].data_type
-        )
-        expect(updateGlobal.schema[0].display_name).to.be.equal(
-          createGlobalField.global_field.schema[0].display_name
-        )
+        expect(updateGlobal.uid).to.be.equal(createGlobalField.global_field.uid)
+        expect(updateGlobal.title).to.be.equal(createGlobalField.global_field.title)
+        expect(updateGlobal.schema[0].uid).to.be.equal(createGlobalField.global_field.schema[0].uid)
+        expect(updateGlobal.schema[0].data_type).to.be.equal(createGlobalField.global_field.schema[0].data_type)
+        expect(updateGlobal.schema[0].display_name).to.be.equal(createGlobalField.global_field.schema[0].display_name)
         done()
       })
       .catch(done)
@@ -142,7 +134,7 @@ describe('Global Field api Test', () => {
   // it('should create nested global field for reference', done => {
   //   makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalFieldForReference)
   //       .then(globalField => {
-  //           expect(globalField.global_field.uid).to.be.equal(createNestedGlobalFieldForReference.global_field.uid);
+  //           expect(globalField.uid).to.be.equal(createNestedGlobalFieldForReference.global_field.uid);
   //           done();
   //       })
   //       .catch(err => {
@@ -154,7 +146,7 @@ describe('Global Field api Test', () => {
   // it('should create nested global field', done => {
   //   makeGlobalField({ api_version: '3.2' }).create(createNestedGlobalField)
   //       .then(globalField => {
-  //           expect(globalField.global_field.uid).to.be.equal(createNestedGlobalField.global_field.uid);
+  //           expect(globalField.uid).to.be.equal(createNestedGlobalField.global_field.uid);
   //           done();
   //       })
   //       .catch(err => {
@@ -166,7 +158,7 @@ describe('Global Field api Test', () => {
   // it('should fetch nested global field', done => {
   //   makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' }).fetch()
   //       .then(globalField => {
-  //           expect(globalField.global_field.uid).to.be.equal(createNestedGlobalField.global_field.uid);
+  //           expect(globalField.uid).to.be.equal(createNestedGlobalField.global_field.uid);
   //           done();
   //       })
   //       .catch(err => {
@@ -175,15 +167,38 @@ describe('Global Field api Test', () => {
   //       });
   // });
 
-  // it('should update nested global fields without fetch', done => {
-  //   makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' })
-  //     .update(createNestedGlobalField)
+  // it('should fetch and update nested global Field', done => {
+  //   makeGlobalField(createGlobalField.global_field.uid, { api_version: '3.2' }).fetch()
   //     .then((globalField) => {
-  //       expect(globalField.global_field.schema.length).to.be.equal(2)
+  //       globalField.title = 'Update title'
+  //       return globalField.update()
+  //     })
+  //     .then((updateGlobal) => {
+  //       expect(updateGlobal.uid).to.be.equal(createGlobalField.global_field.uid)
+  //       expect(updateGlobal.title).to.be.equal('Update title')
+  //       expect(updateGlobal.schema[0].uid).to.be.equal(createGlobalField.global_field.schema[0].uid)
+  //       expect(updateGlobal.schema[0].data_type).to.be.equal(createGlobalField.global_field.schema[0].data_type)
+  //       expect(updateGlobal.schema[0].display_name).to.be.equal(createGlobalField.global_field.schema[0].display_name)
   //       done()
   //     })
   //     .catch(done)
   // })
+
+  // it('should update nested global Field', done => {
+  //   const globalField = makeGlobalField(createGlobalField.global_field.uid, { api_version: '3.2' })
+  //   Object.assign(globalField, cloneDeep(createGlobalField.global_field))
+  //   globalField.update()
+  //     .then((updateGlobal) => {
+  //       expect(updateGlobal.uid).to.be.equal(createGlobalField.global_field.uid)
+  //       expect(updateGlobal.title).to.be.equal(createGlobalField.global_field.title)
+  //       expect(updateGlobal.schema[0].uid).to.be.equal(createGlobalField.global_field.schema[0].uid)
+  //       expect(updateGlobal.schema[0].data_type).to.be.equal(createGlobalField.global_field.schema[0].data_type)
+  //       expect(updateGlobal.schema[0].display_name).to.be.equal(createGlobalField.global_field.schema[0].display_name)
+  //       done()
+  //     })
+  //     .catch(done)
+  // })
+
 
   // it("should delete nested global field", (done) => {
   //   makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' })
