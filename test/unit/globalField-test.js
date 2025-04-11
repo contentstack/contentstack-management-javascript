@@ -221,8 +221,8 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
       stackHeaders: stackHeadersMock,
       api_version: '3.2' })
     expect(globalField.urlPath).to.be.equal('/global_fields')
-    expect(globalField.apiVersion).to.be.equal('3.2')
-    expect(globalField.stackHeaders).to.deep.equal({ api_key: 'api_key' })
+    expect(globalField.stackHeaders.api_version).to.be.equal('3.2')
+    expect(globalField.stackHeaders).to.deep.equal({ api_key: 'api_key', api_version: '3.2' })
     done()
   })
 
@@ -237,7 +237,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
     expect(globalField.urlPath).to.be.equal(
       `/global_fields/${systemUidMock.uid}`
     )
-    expect(globalField.apiVersion).to.be.equal('3.2')
+    expect(globalField.stackHeaders.api_version).to.be.equal('3.2')
     expect(globalField.update).to.not.equal(undefined)
     expect(globalField.delete).to.not.equal(undefined)
     expect(globalField.fetch).to.not.equal(undefined)
@@ -257,7 +257,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
     expect(globalField.urlPath).to.be.equal(
       `/global_fields/${systemUidMock.uid}`
     )
-    expect(globalField.apiVersion).to.be.equal('3.2')
+    expect(globalField.stackHeaders.api_version).to.be.equal('3.2')
     expect(globalField.stackHeaders).to.not.equal(undefined)
     expect(globalField.stackHeaders.api_key).to.be.equal(
       stackHeadersMock.api_key
