@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { cloneDeep } from 'lodash'
 import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../utility/fileOperations/readwrite'
-import { createGlobalField, createNestedGlobalField, createNestedGlobalFieldForReference } from '../mock/globalfield'
+import { createGlobalField } from '../mock/globalfield'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import dotenv from 'dotenv'
 
@@ -198,7 +198,6 @@ describe('Global Field api Test', () => {
   //     })
   //     .catch(done)
   // })
-
 
   // it("should delete nested global field", (done) => {
   //   makeGlobalField(createNestedGlobalField.global_field.uid, { api_version: '3.2' })
