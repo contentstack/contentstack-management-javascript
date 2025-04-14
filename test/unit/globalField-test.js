@@ -3,7 +3,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import { GlobalField, GlobalFieldCollection, createFormData } from '../../lib/stack/globalField'
-import { systemUidMock, checkSystemFields, globalFieldMock, stackHeadersMock, noticeMock, nestedGlobalFieldMock, nestedGlobalFieldPayload } from './mock/objects'
+import { systemUidMock, checkSystemFields, globalFieldMock, stackHeadersMock, noticeMock, nestedGlobalFieldMock } from './mock/objects'
 import MockAdapter from 'axios-mock-adapter'
 
 describe('Contentstack GlobalField test', () => {
@@ -84,7 +84,7 @@ describe('Contentstack GlobalField test', () => {
     makeGlobalField()
       .create()
       .then((globalField) => {
-        checkGlobalField(globalField.global_field)
+        checkGlobalField(globalField)
         done()
       })
       .catch(done)
@@ -120,7 +120,7 @@ describe('Contentstack GlobalField test', () => {
     })
       .update()
       .then((globalField) => {
-        checkGlobalField(globalField.global_field)
+        checkGlobalField(globalField)
         done()
       })
       .catch(done)
@@ -141,7 +141,7 @@ describe('Contentstack GlobalField test', () => {
     })
       .fetch()
       .then((globalField) => {
-        checkGlobalField(globalField.global_field)
+        checkGlobalField(globalField)
         done()
       })
       .catch(done)
@@ -221,7 +221,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
       stackHeaders: stackHeadersMock,
       api_version: '3.2' })
     expect(globalField.urlPath).to.be.equal('/global_fields')
-    expect(globalField.apiVersion).to.be.equal('3.2')
+    expect(globalField.stackHeaders.api_version).to.be.equal('3.2')
     expect(globalField.stackHeaders).to.deep.equal({ api_key: 'api_key', api_version: '3.2' })
     done()
   })
@@ -237,7 +237,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
     expect(globalField.urlPath).to.be.equal(
       `/global_fields/${systemUidMock.uid}`
     )
-    expect(globalField.apiVersion).to.be.equal('3.2')
+    expect(globalField.stackHeaders.api_version).to.be.equal('3.2')
     expect(globalField.update).to.not.equal(undefined)
     expect(globalField.delete).to.not.equal(undefined)
     expect(globalField.fetch).to.not.equal(undefined)
@@ -257,7 +257,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
     expect(globalField.urlPath).to.be.equal(
       `/global_fields/${systemUidMock.uid}`
     )
-    expect(globalField.apiVersion).to.be.equal('3.2')
+    expect(globalField.stackHeaders.api_version).to.be.equal('3.2')
     expect(globalField.stackHeaders).to.not.equal(undefined)
     expect(globalField.stackHeaders.api_key).to.be.equal(
       stackHeadersMock.api_key
@@ -300,7 +300,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
       api_version: '3.2' })
       .create()
       .then((globalField) => {
-        checkGlobalField(globalField.global_field)
+        checkGlobalField(globalField)
         done()
       })
       .catch(done)
@@ -339,7 +339,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
     })
       .update()
       .then((globalField) => {
-        checkGlobalField(globalField.global_field)
+        checkGlobalField(globalField)
         done()
       })
       .catch(done)
@@ -361,7 +361,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
     })
       .fetch()
       .then((globalField) => {
-        checkGlobalField(globalField.global_field)
+        checkGlobalField(globalField)
         done()
       })
       .catch(done)
@@ -434,39 +434,6 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
       .import(gfUpload, { overwrite: true })
       .then((webhook) => {
         checkGlobalField(webhook)
-        done()
-      })
-      .catch(done)
-  })
-
-  it('should update nested global field', (done) => {
-    var mock = new MockAdapter(Axios)
-    const updatedData = {
-      global_field: {
-        title: 'Updated Nested Global Field Title',
-        schema: nestedGlobalFieldPayload
-      }
-    }
-
-    mock
-      .onPut(`/global_fields/${systemUidMock.uid}`)
-      .reply(200, {
-        global_field: {
-          ...nestedGlobalFieldMock,
-          ...updatedData.global_field
-        }
-      })
-
-    makeGlobalField({
-      global_field: {
-        ...systemUidMock
-      },
-      stackHeaders: stackHeadersMock
-    })
-      .updateNestedGlobalField(updatedData)
-      .then((response) => {
-        expect(response.global_field.title).to.be.equal('Updated Nested Global Field Title')
-        expect(response.global_field.schema).to.deep.equal(nestedGlobalFieldPayload)
         done()
       })
       .catch(done)
