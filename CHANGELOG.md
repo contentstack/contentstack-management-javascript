@@ -1,10 +1,10 @@
 # Changelog
 
-## [v1.20.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.3) (2025-04-28)
+## [v1.20.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.3) (2025-04-21)
  - Fix
     - Handle the sanity tests when ENVs are not provided
 
-## [v1.20.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.2) (2025-04-21)
+## [v1.20.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.2) (2025-04-14)
  - Fix
     - Handle api_version chaining and ensure backward compatibility
 
