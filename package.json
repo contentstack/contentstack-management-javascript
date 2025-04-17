@@ -39,7 +39,7 @@
     "test:debug": "BABEL_ENV=test mocha debug --require @babel/register ./test",
     "lint": "eslint lib test",
     "format": "eslint --fix lib test",
-    "prepare": "npm run build",
+    "prepare": "npm run build && husky && chmod +x .husky/pre-commit",
     "pretest": "rimraf coverage && npm run lint",
     "precommit": "npm run lint",
     "prepush": "npm run test:unit",
@@ -55,6 +55,7 @@
     "axios": "^1.8.4",
     "buffer": "^6.0.3",
     "form-data": "^4.0.2",
+    "husky": "^9.1.7",
     "lodash": "^4.17.21",
     "qs": "^6.14.0",
     "stream-browserify": "^3.0.0"
