@@ -21,7 +21,7 @@
   },
   "scripts": {
     "clean": "rimraf coverage && rimraf dist",
-    "build": "husky && chmod +x .husky/pre-commit && npm run clean && npm run build:es5 && npm run build:es-modules && npm run buildall",
+    "build": "npm run clean && npm run build:es5 && npm run build:es-modules && npm run buildall",
     "build:es5": "BABEL_ENV=es5 babel lib -d dist/es5",
     "build:es-modules": "BABEL_ENV=es-modules babel lib -d dist/es-modules",
     "buildall": "npm run buildnode && npm run buildweb && npm run buildreactnative && npm run buildnativescript",
@@ -39,7 +39,7 @@
     "test:debug": "BABEL_ENV=test mocha debug --require @babel/register ./test",
     "lint": "eslint lib test",
     "format": "eslint --fix lib test",
-    "prepare": "npm run build",
+    "prepare": "npm run build && husky && chmod +x .husky/pre-commit",
     "pretest": "rimraf coverage && npm run lint",
     "precommit": "npm run lint",
     "prepush": "npm run test:unit",
