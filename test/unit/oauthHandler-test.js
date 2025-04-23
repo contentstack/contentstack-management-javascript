@@ -62,7 +62,8 @@ describe('OAuthHandler', () => {
   })
 
   it('should refresh access token', async () => {
-    const tokenData = { access_token: 'newAccessToken', refresh_token: 'newRefreshToken', expires_in: 3600 }
+    // NAT = 'newAccessToken'
+    const tokenData = { access_token: 'NAT', refresh_token: 'newRefreshToken', expires_in: 3600 }
     sandbox.stub(axiosInstance, 'post').resolves({ data: tokenData })
 
     const result = await oauthHandler.refreshAccessToken('refreshToken')

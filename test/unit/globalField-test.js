@@ -174,7 +174,7 @@ describe('Contentstack GlobalField test', () => {
       }
     })
     const gfUpload = {
-      global_field: path.join(__dirname, '../api/mock/globalfield.json')
+      global_field: path.join(__dirname, '../sanity-check/mock/globalfield.json')
     }
     const form = createFormData(gfUpload)()
     var boundary = form.getBoundary()
@@ -198,7 +198,7 @@ describe('Contentstack GlobalField test', () => {
       }
     })
     const gfUpload = {
-      global_field: path.join(__dirname, '../api/mock/globalfield.json')
+      global_field: path.join(__dirname, '../sanity-check/mock/globalfield.json')
     }
     const form = createFormData(gfUpload)()
     var boundary = form.getBoundary()
@@ -395,7 +395,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
       }
     })
     const gfUpload = {
-      global_field: path.join(__dirname, '../api/mock/globalfield.json')
+      global_field: path.join(__dirname, '../sanity-check/mock/globalfield.json')
     }
     const form = createFormData(gfUpload)()
     var boundary = form.getBoundary()
@@ -421,7 +421,7 @@ describe('Contentstack GlobalField test (API Version 3.2)', () => {
       }
     })
     const gfUpload = {
-      global_field: path.join(__dirname, '../api/mock/globalfield.json')
+      global_field: path.join(__dirname, '../sanity-check/mock/globalfield.json')
     }
     const form = createFormData(gfUpload)()
     var boundary = form.getBoundary()
