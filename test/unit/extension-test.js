@@ -170,7 +170,7 @@ describe('Contentstack Extension test', () => {
       }
     })
 
-    const extensionUpload = { upload: path.join(__dirname, '../api/mock/customUpload.html') }
+    const extensionUpload = { upload: path.join(__dirname, '../sanity-check/mock/customUpload.html') }
     const form = createExtensionFormData(extensionUpload)()
     var boundary = form.getBoundary()
 
@@ -195,7 +195,7 @@ describe('Contentstack Extension test', () => {
       }
     })
 
-    const extensionUpload = { upload: path.join(__dirname, '../api/mock/customUpload.html'), tags: 'tag1, tag2' }
+    const extensionUpload = { upload: path.join(__dirname, '../sanity-check/mock/customUpload.html'), tags: 'tag1, tag2' }
     const form = createExtensionFormData(extensionUpload)()
     var boundary = form.getBoundary()
 
@@ -225,7 +225,7 @@ describe('Contentstack Extension test', () => {
       tags: extensionMock.tags,
       enable: true,
       default_width: extensionMock.default_width,
-      upload: path.join(__dirname, '../api/mock/customUpload.html'),
+      upload: path.join(__dirname, '../sanity-check/mock/customUpload.html'),
       scope: {},
       multiple: true
     }
