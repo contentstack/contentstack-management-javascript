@@ -303,7 +303,7 @@ describe('Contentstack Webhook test', () => {
         ...webhookMock
       }
     })
-    const webhookUpload = { webhook: path.join(__dirname, '../api/mock/customUpload.html') }
+    const webhookUpload = { webhook: path.join(__dirname, '../sanity-check/mock/customUpload.html') }
     const form = createFormData(webhookUpload)()
     var boundary = form.getBoundary()
 

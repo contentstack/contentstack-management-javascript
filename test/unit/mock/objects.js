@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep'
-import { singlepageCT } from '../../api/mock/content-type'
+import { singlepageCT } from '../../sanity-check/mock/content-type'
 import { expect } from 'chai'
 
 const errorMock = {
