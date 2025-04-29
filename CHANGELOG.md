@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.21.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.0) (2025-05-05)
+ - Enhancement
+    - Region support added
+    
 ## [v1.20.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.20.3) (2025-04-21)
  - Fix
     - Handle the sanity tests when ENVs are not provided
