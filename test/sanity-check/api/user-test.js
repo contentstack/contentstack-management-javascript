@@ -125,7 +125,6 @@ describe('Contentstack User Session api Test', () => {
     done()
   })
 
-
   it('should throw error for invalid region', done => {
     try {
       contentstack.client({ region: 'DUMMYREGION' })
@@ -135,6 +134,4 @@ describe('Contentstack User Session api Test', () => {
       done()
     }
   })
-  
-
 })
