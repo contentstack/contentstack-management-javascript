@@ -4,6 +4,7 @@ import { contentstackClient } from '../../sanity-check/utility/ContentstackClien
 import { jsonWrite } from '../../sanity-check/utility/fileOperations/readwrite'
 import axios from 'axios'
 import dotenv from 'dotenv'
+import * as contentstack from '../../../lib/contentstack.js'
 
 dotenv.config()
 var authtoken = ''
@@ -74,4 +75,66 @@ describe('Contentstack User Session api Test', () => {
       })
       .catch(done)
   })
+
+  it('should get host for NA region by default', done => {
+    const client = contentstack.client()
+    const baseUrl = client.axiosInstance.defaults.baseURL
+    expect(baseUrl).to.include('api.contentstack.io', 'region NA set correctly by default')
+    done()
+  })
+
+  it('should get host for NA region', done => {
+    const client = contentstack.client({ region: 'NA' })
+    const baseUrl = client.axiosInstance.defaults.baseURL
+    expect(baseUrl).to.include('api.contentstack.io', 'region NA set correctly')
+    done()
+  })
+
+  it('should get host for NA region on priority', done => {
+    const client = contentstack.client({ region: 'NA', host: 'dev11-api.csnonprod.com' })
+    const baseUrl = client.axiosInstance.defaults.baseURL
+    expect(baseUrl).to.include('api.contentstack.io', 'region NA set correctly with priority')
+    done()
+  })
+
+  it('should get custom host', done => {
+    const client = contentstack.client({ host: 'dev11-api.csnonprod.com' })
+    const baseUrl = client.axiosInstance.defaults.baseURL
+    expect(baseUrl).to.include('dev11-api.csnonprod.com', 'custom host set correctly')
+    done()
+  })
+
+  it('should get host for EU region', done => {
+    const client = contentstack.client({ region: 'EU' })
+    const baseUrl = client.axiosInstance.defaults.baseURL
+    expect(baseUrl).to.include('eu-api.contentstack.com', 'region EU set correctly')
+    done()
+  })
+
+  it('should get host for AZURE_NA region', done => {
+    const client = contentstack.client({ region: 'AZURE_NA' })
+    const baseUrl = client.axiosInstance.defaults.baseURL
+    expect(baseUrl).to.include('azure-na-api.contentstack.com', 'region AZURE_NA set correctly')
+    done()
+  })
+
+  it('should get host for GCP_NA region', done => {
+    const client = contentstack.client({ region: 'GCP_NA' })
+    const baseUrl = client.axiosInstance.defaults.baseURL
+    expect(baseUrl).to.include('gcp-na-api.contentstack.com', 'region GCP_NA set correctly')
+    done()
+  })
+
+
+  it('should throw error for invalid region', done => {
+    try {
+      contentstack.client({ region: 'DUMMYREGION' })
+      done(new Error('Expected error was not thrown for invalid region'))
+    } catch (error) {
+      expect(error.message).to.include('Invalid region', 'Error message should indicate invalid region')
+      done()
+    }
+  })
+  
+
 })
