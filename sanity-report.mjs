@@ -5,7 +5,7 @@ import fs from 'fs'
 
 dotenv.config()
 
-const mochawesomeJsonOutput = fs.readFileSync('./mochawesome-report/mochawesome.json', 'utf-8')
+const mochawesomeJsonOutput = fs.readFileSync('./mochawesome-report/mochawesome.json', 'utf8')
 const mochawesomeReport = JSON.parse(mochawesomeJsonOutput)
 const report = `./mochawesome-report/sanity-report.html`
 
@@ -26,7 +26,7 @@ console.log(`Pending Tests: ${pendingTests}`)
 console.log(`Total Duration: ${durationInMinutes}m ${durationInSeconds.toFixed(2)}s`)
 
 const slackMessage = `
-*JavaScript CMA Report*
+*JavaScript CMA Report DX-2896 (fallback locale update) *
 • Total Suites: *${totalSuites}*
 • Total Tests: *${totalTests}*
 • Passed Tests: *${passedTests}*
