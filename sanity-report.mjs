@@ -26,7 +26,7 @@ console.log(`Pending Tests: ${pendingTests}`)
 console.log(`Total Duration: ${durationInMinutes}m ${durationInSeconds.toFixed(2)}s`)
 
 const slackMessage = `
-*JavaScript CMA Report DX-2896 (fallback locale update) *
+*JavaScript CMA Report*
 • Total Suites: *${totalSuites}*
 • Total Tests: *${totalTests}*
 • Passed Tests: *${passedTests}*
