@@ -99,7 +99,7 @@ describe('Locale api Test', () => {
       .fetch()
       .then((locale) => {
         // locale.fallback_locale = 'en-at'
-        return locale.update({locale:{ fallback_locale: 'en-at' }})
+        return locale.update({ locale: { fallback_locale: 'en-at' } })
       })
       .then((locale) => {
         expect(locale.code).to.be.equal('hi-in')
