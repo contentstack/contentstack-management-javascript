@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.20.3",
+  "version": "1.21.0",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "./dist/node/contentstack-management.js",
   "browser": "./dist/web/contentstack-management.js",
@@ -43,7 +43,8 @@
     "pretest": "rimraf coverage && npm run lint",
     "precommit": "npm run lint",
     "prepush": "npm run test:unit",
-    "generate:docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --readme README.md --verbose"
+    "generate:docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --readme README.md --verbose",
+    "husky-check": "npx husky && chmod +x .husky/pre-commit"
   },
   "engines": {
     "node": ">=8.0.0"
@@ -52,9 +53,10 @@
   "license": "MIT",
   "dependencies": {
     "assert": "^2.1.0",
-    "axios": "^1.8.4",
+    "axios": "^1.9.0",
     "buffer": "^6.0.3",
     "form-data": "^4.0.2",
+    "husky": "^9.1.7",
     "lodash": "^4.17.21",
     "qs": "^6.14.0",
     "stream-browserify": "^3.0.0"
@@ -65,18 +67,18 @@
     "management api"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.26.4",
-    "@babel/core": "^7.26.9",
-    "@babel/eslint-parser": "^7.26.8",
-    "@babel/plugin-transform-runtime": "^7.26.9",
+    "@babel/cli": "^7.27.0",
+    "@babel/core": "^7.26.10",
+    "@babel/eslint-parser": "^7.27.0",
+    "@babel/plugin-transform-runtime": "^7.26.10",
     "@babel/preset-env": "^7.26.9",
     "@babel/register": "^7.25.9",
-    "@babel/runtime": "^7.26.9",
+    "@babel/runtime": "^7.27.0",
     "@slack/bolt": "^4.2.1",
     "@types/chai": "^4.3.20",
     "@types/jest": "^28.1.8",
     "@types/lodash": "^4.17.16",
-    "@types/mocha": "^7.0.2",
+    "@types/mocha": "^8.2.3",
     "axios-mock-adapter": "^1.22.0",
     "babel-loader": "^8.4.1",
     "babel-plugin-add-module-exports": "^1.0.4",
@@ -86,7 +88,7 @@
     "chai": "^4.5.0",
     "clean-webpack-plugin": "^4.0.0",
     "docdash": "^1.2.0",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "eslint": "^8.57.1",
     "eslint-config-standard": "^13.0.1",
     "eslint-plugin-import": "^2.31.0",
