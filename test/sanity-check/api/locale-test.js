@@ -94,17 +94,34 @@ describe('Locale api Test', () => {
       .catch(done)
   })
 
-  it('should get and update a language Hindi - India', done => {
+  it('should get and update a language Hindi - India with fallback locale en-at', done => {
     makeLocale('hi-in')
       .fetch()
       .then((locale) => {
-        locale.fallback_locale = 'en-at'
-        return locale.update()
+        // locale.fallback_locale = 'en-at'
+        return locale.update({ locale: { fallback_locale: 'en-at' } })
       })
       .then((locale) => {
         expect(locale.code).to.be.equal('hi-in')
         expect(locale.name).to.be.equal('Hindi - India')
         expect(locale.fallback_locale).to.be.equal('en-at')
+        expect(locale.uid).to.be.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should get and update a language Hindi - India with fallback locale en-us', done => {
+    makeLocale('hi-in')
+      .fetch()
+      .then((locale) => {
+        locale.fallback_locale = 'en-us'
+        return locale.update()
+      })
+      .then((locale) => {
+        expect(locale.code).to.be.equal('hi-in')
+        expect(locale.name).to.be.equal('Hindi - India')
+        expect(locale.fallback_locale).to.be.equal('en-us')
         expect(locale.uid).to.be.not.equal(null)
         done()
       })
