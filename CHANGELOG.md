@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.21.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.1) (2025-05-12)
+ - Fix
+   - Fixed unexpected fallback_locale behavior during direct locale updates.
+
 ## [v1.21.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.0) (2025-05-05)
  - Enhancement
     - Region support added
