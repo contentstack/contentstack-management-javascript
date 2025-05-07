@@ -5,7 +5,7 @@ import fs from 'fs'
 
 dotenv.config()
 
-const mochawesomeJsonOutput = fs.readFileSync('./mochawesome-report/mochawesome.json', 'utf-8')
+const mochawesomeJsonOutput = fs.readFileSync('./mochawesome-report/mochawesome.json', 'utf8')
 const mochawesomeReport = JSON.parse(mochawesomeJsonOutput)
 const report = `./mochawesome-report/sanity-report.html`
 
