@@ -25,8 +25,16 @@ console.log(`Failed Tests: ${failedTests}`)
 console.log(`Pending Tests: ${pendingTests}`)
 console.log(`Total Duration: ${durationInMinutes}m ${durationInSeconds.toFixed(2)}s`)
 
+const host = process.env.HOST || ''
+let region = 'UNKNOWN REGION'
+
+const match = host.match(/^([^-]+(?:-[^-]+)*)-api/)
+if (match && match[1]) {
+  region = match[1].toUpperCase()
+}
+
 const slackMessage = `
-*JavaScript CMA Report*
+*JavaScript CMA Report - ${region}*
 • Total Suites: *${totalSuites}*
 • Total Tests: *${totalTests}*
 • Passed Tests: *${passedTests}*
