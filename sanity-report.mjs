@@ -26,7 +26,7 @@ console.log(`Pending Tests: ${pendingTests}`)
 console.log(`Total Duration: ${durationInMinutes}m ${durationInSeconds.toFixed(2)}s`)
 
 const host = process.env.HOST || ''
-let region = 'UNKNOWN REGION'
+let region = 'NA'
 
 const match = host.match(/^([^-]+(?:-[^-]+)*)-api/)
 if (match && match[1]) {
