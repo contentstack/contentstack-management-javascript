@@ -1,4 +1,7 @@
 # Changelog
+## [v1.21.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.2) (2025-05-19)
+ - Enhancement
+   - Added preview token generation.
 
 ## [v1.21.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.1) (2025-05-12)
  - Fix
