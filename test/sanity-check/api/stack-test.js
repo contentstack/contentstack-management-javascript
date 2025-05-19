@@ -95,24 +95,24 @@ describe('Stack api Test', () => {
     const variables = {
       stack_variables: {
         enforce_unique_urls: true,
-        sys_rte_allowed_tags: "style,figure,script",
-        sys_rte_skip_format_on_paste: "GD:font-size",
-        samplevariable: "too"
+        sys_rte_allowed_tags: 'style,figure,script',
+        sys_rte_skip_format_on_paste: 'GD:font-size',
+        samplevariable: 'too'
       }
-    };
+    }
 
     client.stack({ api_key: stacks.api_key })
       .addSettings(variables)
       .then((response) => {
-        const vars = response.stack_variables;
-        expect(vars.enforce_unique_urls).to.equal(true);
-        expect(vars.sys_rte_allowed_tags).to.equal("style,figure,script");
-        expect(vars.sys_rte_skip_format_on_paste).to.equal("GD:font-size");
-        expect(vars.samplevariable).to.equal("too");
-        done();
+        const vars = response.stack_variables
+        expect(vars.enforce_unique_urls).to.equal(true)
+        expect(vars.sys_rte_allowed_tags).to.equal('style,figure,script')
+        expect(vars.sys_rte_skip_format_on_paste).to.equal('GD:font-size')
+        expect(vars.samplevariable).to.equal('too')
+        done()
       })
-      .catch(done);
-  });
+      .catch(done)
+  })
 
   it('should set rte settings correctly', done => {
     const variables = {
@@ -120,80 +120,90 @@ describe('Stack api Test', () => {
         cs_breakline_on_enter: true,
         cs_only_breakline: true
       }
-    };
+    }
 
     client.stack({ api_key: stacks.api_key })
       .addSettings(variables)
       .then((response) => {
-        const rte = response.rte;
-        expect(rte.cs_breakline_on_enter).to.equal(true);
-        expect(rte.cs_only_breakline).to.equal(true);
-        done();
+        const rte = response.rte
+        expect(rte.cs_breakline_on_enter).to.equal(true)
+        expect(rte.cs_only_breakline).to.equal(true)
+        done()
       })
-      .catch(done);
-  });
+      .catch(done)
+  })
 
   it('should set live_preview settings correctly', done => {
     const variables = {
       live_preview: {
         enabled: true,
-        "default-env": "",
-        "default-url": "https://preview.example.com"
+        'default-env': '',
+        'default-url': 'https://preview.example.com'
       }
-    };
+    }
 
     client.stack({ api_key: stacks.api_key })
       .addSettings(variables)
       .then((response) => {
-        const preview = response.live_preview;
-        expect(preview.enabled).to.equal(true);
-        expect(preview["default-env"]).to.equal("");
-        expect(preview["default-url"]).to.equal("https://preview.example.com");
-        done();
+        const preview = response.live_preview
+        expect(preview.enabled).to.equal(true)
+        expect(preview['default-env']).to.equal('')
+        expect(preview['default-url']).to.equal('https://preview.example.com')
+        done()
       })
-      .catch(done);
-  });
+      .catch(done)
+  })
+
+  it('should add simple stack variable', done => {
+    client.stack({ api_key: stacks.api_key })
+      .addSettings({ samplevariable: 'too' })
+      .then((response) => {
+        expect(response.stack_variables.samplevariable).to.be.equal('too', 'samplevariable must set to \'too\' ')
+        done()
+      })
+      .catch(done)
+  })
 
   it('should add stack settings', done => {
-  const variables = {
-    stack_variables: {
-      enforce_unique_urls: true,
-      sys_rte_allowed_tags: "style,figure,script",
-      sys_rte_skip_format_on_paste: "GD:font-size",
-      samplevariable: "too"
-    },
-    rte: {
-      cs_breakline_on_enter: true,
-      cs_only_breakline: true
-    },
-    live_preview: {
-      enabled: true,
-      "default-env": "",
-      "default-url": "https://preview.example.com"
+    const variables = {
+      stack_variables: {
+        enforce_unique_urls: true,
+        sys_rte_allowed_tags: 'style,figure,script',
+        sys_rte_skip_format_on_paste: 'GD:font-size',
+        samplevariable: 'too'
+      },
+      rte: {
+        cs_breakline_on_enter: true,
+        cs_only_breakline: true
+      },
+      live_preview: {
+        enabled: true,
+        'default-env': '',
+        'default-url': 'https://preview.example.com'
+      }
     }
-  };
 
-  client.stack({ api_key: stacks.api_key })
-    .addSettings(variables)    .then((response) => {
-      const vars = response.stack_variables;
-      expect(vars.enforce_unique_urls).to.equal(true, 'enforce_unique_urls must be true');
-      expect(vars.sys_rte_allowed_tags).to.equal("style,figure,script", 'sys_rte_allowed_tags must match');
-      expect(vars.sys_rte_skip_format_on_paste).to.equal("GD:font-size", 'sys_rte_skip_format_on_paste must match');
-      expect(vars.samplevariable).to.equal("too", 'samplevariable must be "too"');
+    client.stack({ api_key: stacks.api_key })
+      .addSettings(variables).then((response) => {
+        const vars = response.stack_variables
+        expect(vars.enforce_unique_urls).to.equal(true, 'enforce_unique_urls must be true')
+        expect(vars.sys_rte_allowed_tags).to.equal('style,figure,script', 'sys_rte_allowed_tags must match')
+        expect(vars.sys_rte_skip_format_on_paste).to.equal('GD:font-size', 'sys_rte_skip_format_on_paste must match')
+        expect(vars.samplevariable).to.equal('too', 'samplevariable must be "too"')
 
-      const rte = response.rte;
-      expect(rte.cs_breakline_on_enter).to.equal(true, 'cs_breakline_on_enter must be true');
-      expect(rte.cs_only_breakline).to.equal(true, 'cs_only_breakline must be true');
+        const rte = response.rte
+        expect(rte.cs_breakline_on_enter).to.equal(true, 'cs_breakline_on_enter must be true')
+        expect(rte.cs_only_breakline).to.equal(true, 'cs_only_breakline must be true')
 
-      const preview = response.live_preview;
-      expect(preview.enabled).to.equal(true, 'live_preview.enabled must be true');
-      expect(preview["default-env"]).to.equal("", 'default-env must match');
-      expect(preview["default-url"]).to.equal("https://preview.example.com", 'default-url must match');
+        const preview = response.live_preview
+        expect(preview.enabled).to.equal(true, 'live_preview.enabled must be true')
+        expect(preview['default-env']).to.equal('', 'default-env must match')
+        expect(preview['default-url']).to.equal('https://preview.example.com', 'default-url must match')
 
-      done();
-    })
-    .catch(done);
-});
+        done()
+      })
+      .catch(done)
+  })
 
   it('should reset stack settings', done => {
     client.stack({ api_key: stacks.api_key })
