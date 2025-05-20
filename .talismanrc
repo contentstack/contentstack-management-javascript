@@ -11,3 +11,7 @@ fileignoreconfig:
 - filename: lib/stack/index.js
   checksum: 6aab5edf85efb17951418b4dc4402889cd24c8d786c671185074aeb4d50f0242
 version: ""
+fileignoreconfig:
+- filename: test/unit/globalField-test.js
+  checksum: 25185e3400a12e10a043dc47502d8f30b7e1c4f2b6b4d3b8b55cdc19850c48bf
+version: "1.0"
