@@ -715,14 +715,13 @@ const contentTypeDiff = [{
   title: 'Content Type 1 Title',
   type: 'content_type',
   status: 'compare_only'
-  },
-  {
-    uid: 'content_type_uid_2',
-    title: 'Content Type 2 Title',
-    type: 'content_type',
-    status: 'modified'
-  }
-]
+},
+{
+  uid: 'content_type_uid_2',
+  title: 'Content Type 2 Title',
+  type: 'content_type',
+  status: 'modified'
+}]
 
 const branchCompareAllMock = {
   branches: {
