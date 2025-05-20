@@ -8,4 +8,6 @@ fileignoreconfig:
   checksum: 5baabd7d2c391648163f9371f0e5e9484f8fb90fa2284cfc378732ec3192c193
 - filename: test/sanity-check/api/stack-test.js
   checksum: 198d5cf7ead33b079249dc3ecdee61a9c57453e93f1073ed0341400983e5aa53
+- filename: lib/stack/index.js
+  checksum: 6aab5edf85efb17951418b4dc4402889cd24c8d786c671185074aeb4d50f0242
 version: ""
