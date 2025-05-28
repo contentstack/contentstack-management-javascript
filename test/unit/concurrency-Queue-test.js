@@ -506,6 +506,76 @@ describe('Concurrency queue test', () => {
       })
       .catch(done)
   })
+
+  it('should not retry when rate limit remaining is 0', done => {
+    const mock = new MockAdapter(api)
+    mock.onGet('/ratelimit').reply(429, { errorCode: 429 }, {
+      'x-ratelimit-remaining': '0'
+    })
+
+    reconfigureQueue({
+      retryOnError: true,
+      retryLimit: 3,
+      retryDelay: 300
+    })
+
+    api.get('/ratelimit')
+      .catch(error => {
+        expect(error.response.status).to.equal(429)
+        expect(error.config.retryCount).to.equal(0) // Should not have retried
+        expect(logHandlerStub.callCount).to.equal(0) // No retry logs
+        mock.restore()
+        done()
+      })
+  })
+
+  it('should retry when rate limit remaining is greater than 0', done => {
+    const mock = new MockAdapter(api)
+    mock.onGet('/ratelimit').reply(429, { errorCode: 429 }, {
+      'x-ratelimit-remaining': '5'
+    })
+    mock.onGet('/ratelimit').reply(200, { success: true })
+
+    reconfigureQueue({
+      retryOnError: true,
+      retryLimit: 3,
+      retryDelay: 300
+    })
+
+    api.get('/ratelimit')
+      .then(response => {
+        /* eslint-disable no-unused-expressions */
+        expect(response.status).to.equal(200)
+        expect(response.data.success).to.be.true
+        /* eslint-enable no-unused-expressions */
+        mock.restore()
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should retry when rate limit remaining header is not present', done => {
+    const mock = new MockAdapter(api)
+    mock.onGet('/ratelimit').reply(429, { errorCode: 429 })
+    mock.onGet('/ratelimit').reply(200, { success: true })
+
+    reconfigureQueue({
+      retryOnError: true,
+      retryLimit: 3,
+      retryDelay: 300
+    })
+
+    api.get('/ratelimit')
+      .then(response => {
+        /* eslint-disable no-unused-expressions */
+        expect(response.status).to.equal(200)
+        expect(response.data.success).to.be.true
+        /* eslint-enable no-unused-expressions */
+        mock.restore()
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeConcurrencyQueue (config) {

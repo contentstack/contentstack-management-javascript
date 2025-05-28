@@ -1,4 +1,8 @@
 # Changelog
+## [v1.21.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.4) (2025-06-02)
+ - Enhancement
+   - Retry Logic modification on x-ratelimit-remaining Header
+
 ## [v1.21.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.3) (2025-05-26)
  - Enhancement
    - Update addSettings Method to Support Generic Stack Settings Update
