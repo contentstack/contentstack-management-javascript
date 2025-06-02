@@ -17,3 +17,7 @@ fileignoreconfig:
 - filename: test/sanity-check/api/stack-test.js
   checksum: 198d5cf7ead33b079249dc3ecdee61a9c57453e93f1073ed0341400983e5aa53
 version: "1.0"
+fileignoreconfig:
+- filename: test/sanity-check/api/previewToken-test.js
+  checksum: 9a42e079b7c71f76932896a0d2390d86ac626678ab20d36821dcf962820a886c
+version: "1.0"
