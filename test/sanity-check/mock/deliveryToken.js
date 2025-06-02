@@ -70,5 +70,31 @@ const createDeliveryToken2 = {
     ]
   }
 }
+const createDeliveryToken3 = {
+  token: {
+    name: 'preview token test',
+    description: 'This is a demo token.',
+    scope: [
+      {
+        module: 'environment',
+        environments: [
+          'development'
+        ],
+        acl: {
+          read: true
+        }
+      },
+      {
+        module: 'branch',
+        branches: [
+          'main',
+        ],
+        acl: {
+          read: true
+        }
+      }
+    ]
+  }
+}
 
-export { createDeliveryToken, createDeliveryToken2 }
+export { createDeliveryToken, createDeliveryToken2, createDeliveryToken3 }
