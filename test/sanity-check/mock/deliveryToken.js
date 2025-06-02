@@ -87,7 +87,7 @@ const createDeliveryToken3 = {
       {
         module: 'branch',
         branches: [
-          'main',
+          'main'
         ],
         acl: {
           read: true
