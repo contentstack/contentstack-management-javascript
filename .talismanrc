@@ -20,4 +20,8 @@ version: "1.0"
 fileignoreconfig:
 - filename: test/sanity-check/api/previewToken-test.js
   checksum: 9a42e079b7c71f76932896a0d2390d86ac626678ab20d36821dcf962820a886c
+- filename: lib/stack/deliveryToken/index.js
+  checksum: 51ae00f07f4cc75c1cd832b311c2e2482f04a8467a0139da6013ceb88fbdda2f
+- filename: lib/stack/deliveryToken/previewToken/index.js
+  checksum: b506f33bffdd20dfc701f964370707f5d7b28a2c05c70665f0edb7b3c53c165b
 version: "1.0"
