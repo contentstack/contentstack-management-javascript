@@ -66,9 +66,6 @@ export interface Stack extends SystemFields {
     globalField(options: object): GlobalFields;
     globalField(uidOrOptions?: string | object, option?: object): GlobalFields | GlobalField;
 
-
-    
-
     asset(): Assets
     asset(uid: string): Asset
 
