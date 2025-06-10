@@ -1,4 +1,9 @@
 # Changelog
+
+## [v1.21.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.6) (2025-06-11)
+ - Fix
+   - Revert Retry Logic modification on x-ratelimit-remaining Header
+
 ## [v1.21.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.5) (2025-06-09)
  - Enhancement
    - Preview token support added
