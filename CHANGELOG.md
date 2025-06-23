@@ -1,4 +1,7 @@
 # Changelog
+## [v1.21.7](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.7) (2025-06-30)
+ - Fix
+   - Fixed Request-URI Too Large error
 
 ## [v1.21.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.6) (2025-06-11)
  - Fix
