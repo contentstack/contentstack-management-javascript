@@ -1,5 +1,7 @@
 # Changelog
-## [v1.21.8](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.8) (2025-07-07)
+## [v1.22.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.22.0) (2025-07-07)
+ - Enhancement
+    - AWS-AU Region support added
  - Fix
    - Fixed branch header conflits
 ## [v1.21.7](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.7) (2025-06-30)
