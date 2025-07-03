@@ -135,13 +135,14 @@ describe('Terms API Test', () => {
   })
 
   it('should move the term to parent uid passed', done => {
-    makeTerms(taxonomy.uid, childTerm2.term.uid).fetch()
+    const term = {
+      parent_uid: 'term_test_child1',
+      order: 1
+    }
+    makeTerms(taxonomy.uid, childTerm2.term.uid).move({ term, force: true })
       .then(async (term) => {
-        term.parent_uid = null
-        const moveTerm = await term.move({ force: true })
-        expect(moveTerm.parent_uid).to.be.equal(null)
+        expect(term.parent_uid).to.not.equal(null)
         done()
-        return moveTerm
       })
       .catch(done)
   })
