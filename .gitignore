@@ -68,3 +68,4 @@ tsconfig.json
 .dccache
 dist
 jsdocs
+.early.coverage
