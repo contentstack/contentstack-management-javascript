@@ -111,6 +111,13 @@ describe('Contentstack User Session api Test', () => {
     done()
   })
 
+  it('should get host for AU region', done => {
+    const client = contentstack.client({ region: 'AU' })
+    const baseUrl = client.axiosInstance.defaults.baseURL
+    expect(baseUrl).to.include('au-api.contentstack.com', 'region AU set correctly')
+    done()
+  })
+
   it('should get host for AZURE_NA region', done => {
     const client = contentstack.client({ region: 'AZURE_NA' })
     const baseUrl = client.axiosInstance.defaults.baseURL
