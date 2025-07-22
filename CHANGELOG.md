@@ -1,4 +1,10 @@
 # Changelog
+## [v1.23.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.23.0) (2025-07-28)
+ - Feature
+   - Added new getReferences method to Asset class for retrieving asset references
+   - Added comprehensive test coverage for Asset getReferences method across all test suites
+   - Dependency updates
+
 ## [v1.22.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.22.0) (2025-07-07)
  - Enhancement
     - AWS-AU Region support added
