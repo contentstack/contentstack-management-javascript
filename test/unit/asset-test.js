@@ -436,7 +436,7 @@ describe('Contentstack Asset test', () => {
         expect(references).to.deep.equal(assetReferencesResponse)
         expect(references.references).to.be.an('array')
         expect(references.references.length).to.be.equal(2)
-        expect(references.references[0].uid).to.be.equal('entry_uid_1')
+        expect(references.references[0].entry_uid).to.be.equal('entry_uid_1')
         expect(references.references[0].content_type_uid).to.be.equal('blog_post')
         done()
       })
