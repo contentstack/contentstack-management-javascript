@@ -5,7 +5,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { Asset, AssetCollection, createFormData } from '../../lib/stack/asset'
-import { systemUidMock, stackHeadersMock, assetMock, checkSystemFields, noticeMock } from './mock/objects'
+import { systemUidMock, stackHeadersMock, assetMock, checkSystemFields, noticeMock, assetReferencesResponse, assetReferencesWithPublishDetails } from './mock/objects'
 
 describe('Contentstack Asset test', () => {
   it('Asset test without uid', done => {
@@ -418,6 +418,50 @@ describe('Contentstack Asset test', () => {
         expect(err.message).to.be.equal('Asset URL can not be empty')
         done()
       })
+  })
+
+  it('Asset getReferences test', done => {
+    var mock = new MockAdapter(Axios)
+
+    mock.onGet('/assets/UID/references').reply(200, assetReferencesResponse)
+
+    makeAsset({
+      asset: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .getReferences()
+      .then((references) => {
+        expect(references).to.deep.equal(assetReferencesResponse)
+        expect(references.references).to.be.an('array')
+        expect(references.references.length).to.be.equal(2)
+        expect(references.references[0].uid).to.be.equal('entry_uid_1')
+        expect(references.references[0].content_type_uid).to.be.equal('blog_post')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Asset getReferences test with parameters', done => {
+    var mock = new MockAdapter(Axios)
+
+    mock.onGet('/assets/UID/references').reply(200, assetReferencesWithPublishDetails)
+
+    makeAsset({
+      asset: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .getReferences({ include_publish_details: true })
+      .then((references) => {
+        expect(references).to.deep.equal(assetReferencesWithPublishDetails)
+        expect(references.references).to.be.an('array')
+        expect(references.references[0].publish_details).to.be.not.equal(undefined)
+        done()
+      })
+      .catch(done)
   })
 })
 
