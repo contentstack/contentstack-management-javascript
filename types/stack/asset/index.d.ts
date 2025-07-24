@@ -8,6 +8,7 @@ import { Folder, Folders } from "./folder";
 export interface Asset extends Publishable, Unpublishable, SystemFields, SystemFunction<Asset> {
     replace(param: AssetData): Promise<Asset>
     download(data: {responseType: AssetResponseType, param?: AnyProperty}): Promise<any>
+    getReferences(param?: AnyProperty): Promise<any>
 }
 
 export interface Assets extends Queryable<Asset, AssetData> {
