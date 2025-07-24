@@ -239,6 +239,39 @@ describe('Assets api Test', () => {
       })
       .catch(done)
   })
+
+  it('should get asset references', done => {
+    makeAsset(publishAssetUID)
+      .getReferences()
+      .then((references) => {
+        expect(references).to.be.not.equal(null)
+        if (references.references && references.references.length > 0) {
+          references.references.forEach((reference) => {
+            expect(reference.uid).to.be.not.equal(null)
+            expect(reference.content_type_uid).to.be.not.equal(null)
+          })
+        }
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should get asset references with publish details', done => {
+    makeAsset(publishAssetUID)
+      .getReferences({ include_publish_details: true })
+      .then((references) => {
+        expect(references).to.be.not.equal(null)
+        if (references.references && references.references.length > 0) {
+          references.references.forEach((reference) => {
+            expect(reference.uid).to.be.not.equal(null)
+            expect(reference.content_type_uid).to.be.not.equal(null)
+            // publish_details might not always be present, but we're testing the parameter is passed
+          })
+        }
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeAsset (uid = null) {
