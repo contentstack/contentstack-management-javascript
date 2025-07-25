@@ -7,4 +7,6 @@ fileignoreconfig:
     checksum: 9d592c580a6890473e007c339d2f91c2d94ad936be1740dcef5ac500fde0cdb4
   - filename: lib/stack/asset/index.js
     checksum: b3358310e9cb2fb493d70890b7219db71e2202360be764465d505ef71907eefe
+  - filename: examples/robust-error-handling.js
+    checksum: e8a32ffbbbdba2a15f3d327273f0a5b4eb33cf84cd346562596ab697125bbbc6
 version: ""
