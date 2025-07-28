@@ -4,7 +4,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/user-test.js
     checksum: 6bb8251aad584e09f4d963a913bd0007e5f6e089357a44c3fb1529e3fda5509d
   - filename: package-lock.json
-    checksum: 9d592c580a6890473e007c339d2f91c2d94ad936be1740dcef5ac500fde0cdb4
+    checksum: b9068b76378f5cedcae28adfff14b961289b3a0ddcd026fe3d026cfd877178a4
   - filename: lib/stack/asset/index.js
     checksum: b3358310e9cb2fb493d70890b7219db71e2202360be764465d505ef71907eefe
 version: ""
