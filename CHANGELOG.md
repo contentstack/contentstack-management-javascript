@@ -1,4 +1,9 @@
 # Changelog
+
+## [v1.23.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.24.0) (2025-07-28)
+ - Fix
+   - Add asset types support in bulk operations
+
 ## [v1.23.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.23.0) (2025-07-28)
  - Feature
    - Added new getReferences method to Asset class for retrieving asset references
