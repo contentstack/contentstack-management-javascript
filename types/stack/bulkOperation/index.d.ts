@@ -20,7 +20,8 @@ export interface BulkOperationConfig {
 }
 
 export interface PublishItems extends PublishDetails {
-    entries: Array<BulkOperationItem>
+    entries?: Array<BulkOperationItem>
+    assets?: Array<BulkOperationItem>
 }
 
 export interface BulkOperationItem {
