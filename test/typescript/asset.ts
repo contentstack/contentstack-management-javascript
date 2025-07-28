@@ -209,3 +209,42 @@ export function queryOnAsset(stack: Stack) {
         })
     })
 }
+
+export function getAssetReferences(stack: Stack) {
+    describe('Asset references', () => {
+        it('Get asset references', done => {
+            stack.asset(assetUID)
+            .getReferences()
+            .then((references) => {
+                expect(references).to.be.not.equal(null)
+                if (references.references && references.references.length > 0) {
+                    references.references.forEach((reference: any) => {
+                        expect(reference.uid).to.be.not.equal(null)
+                        expect(reference.content_type_uid).to.be.not.equal(null)
+                        expect(reference.locale).to.be.not.equal(null)
+                    })
+                }
+                done()
+            })
+            .catch(done)
+        })
+
+        it('Get asset references with publish details', done => {
+            stack.asset(assetUID)
+            .getReferences({ include_publish_details: true })
+            .then((references) => {
+                expect(references).to.be.not.equal(null)
+                if (references.references && references.references.length > 0) {
+                    references.references.forEach((reference: any) => {
+                        expect(reference.uid).to.be.not.equal(null)
+                        expect(reference.content_type_uid).to.be.not.equal(null)
+                        expect(reference.locale).to.be.not.equal(null)
+                        // publish_details might not always be present
+                    })
+                }
+                done()
+            })
+            .catch(done)
+        })
+    })
+}
