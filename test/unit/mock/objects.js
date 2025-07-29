@@ -1059,6 +1059,34 @@ const variantEntryVersion = {
   ]
 }
 
+const assetReferencesResponse = {
+  references: [
+    {
+      entry_uid: 'entry_uid_1',
+      content_type_uid: 'blog_post',
+      locale: 'en-us'
+    },
+    {
+      entry_uid: 'entry_uid_2',
+      content_type_uid: 'article',
+      locale: 'en-us'
+    }
+  ]
+}
+
+const assetReferencesWithPublishDetails = {
+  references: [
+    {
+      uid: 'entry_uid_1',
+      content_type_uid: 'blog_post',
+      locale: 'en-us',
+      publish_details: {
+        environment: 'development'
+      }
+    }
+  ]
+}
+
 function mockCollection (mockData, type) {
   const mock = {
     ...cloneDeep(noticeMock),
@@ -1146,5 +1174,7 @@ export {
   varinatsEntryMock,
   variantEntryVersion,
   nestedGlobalFieldMock,
-  nestedGlobalFieldPayload
+  nestedGlobalFieldPayload,
+  assetReferencesResponse,
+  assetReferencesWithPublishDetails
 }
