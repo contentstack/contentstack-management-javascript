@@ -1,4 +1,36 @@
 # Changelog
+
+## [v1.23.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.24.0) (2025-07-28)
+ - Fix
+   - Add asset types support in bulk operations
+
+## [v1.23.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.23.0) (2025-07-28)
+ - Feature
+   - Added new getReferences method to Asset class for retrieving asset references
+   - Added comprehensive test coverage for Asset getReferences method across all test suites
+   - Dependency updates
+
+## [v1.22.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.22.0) (2025-07-07)
+ - Enhancement
+    - AWS-AU Region support added
+ - Fix
+   - Fixed branch header conflits
+## [v1.21.7](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.7) (2025-06-30)
+ - Fix
+   - Fixed Request-URI Too Large error
+
+## [v1.21.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.6) (2025-06-11)
+ - Fix
+   - Revert Retry Logic modification on x-ratelimit-remaining Header
+
+## [v1.21.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.5) (2025-06-09)
+ - Enhancement
+   - Preview token support added
+
+## [v1.21.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.4) (2025-06-02)
+ - Enhancement
+   - Retry Logic modification on x-ratelimit-remaining Header
+
 ## [v1.21.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.21.3) (2025-05-26)
  - Enhancement
    - Update addSettings Method to Support Generic Stack Settings Update

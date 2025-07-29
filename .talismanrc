@@ -9,7 +9,17 @@ fileignoreconfig:
   ignore_detectors:
     - filecontent
 - filename: package-lock.json
-  checksum: 2f7e068e1479bf9a9acbba8ec797caa5cfbce0b435acb3b714e023aa44467e72
+  checksum: a184b5573183d051dc4f75af776a6b152e272eceef7b56fd3e1c80d88b392a58
 - filename: .husky/pre-commit
-  checksum: 5baabd7d2c391648163f9371f0e5e9484f8fb90fa2284cfc378732ec3192c193
+  checksum: 52a664f536cf5d1be0bea19cb6031ca6e8107b45b6314fe7d47b7fad7d800632
+- filename: test/sanity-check/api/user-test.js
+  checksum: 6bb8251aad584e09f4d963a913bd0007e5f6e089357a44c3fb1529e3fda5509d
+- filename: lib/stack/asset/index.js
+  checksum: b3358310e9cb2fb493d70890b7219db71e2202360be764465d505ef71907eefe
+- filename: test/sanity-check/api/previewToken-test.js
+  checksum: 9a42e079b7c71f76932896a0d2390d86ac626678ab20d36821dcf962820a886c
+- filename: lib/stack/deliveryToken/index.js
+  checksum: 51ae00f07f4cc75c1cd832b311c2e2482f04a8467a0139da6013ceb88fbdda2f
+- filename: lib/stack/deliveryToken/previewToken/index.js
+  checksum: b506f33bffdd20dfc701f964370707f5d7b28a2c05c70665f0edb7b3c53c165b
 version: "1.0"
