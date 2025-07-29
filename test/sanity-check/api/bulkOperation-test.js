@@ -274,13 +274,16 @@ describe('BulkOperation api test', () => {
 })
 
 function doBulkOperation (uid = null) {
+  // @ts-ignore-next-line secret-detection
   return client.stack({ api_key: process.env.API_KEY }).bulkOperation()
 }
 
 function doBulkOperationWithManagementToken (tokenUidDev) {
+  // @ts-ignore-next-line secret-detection
   return clientWithManagementToken.stack({ api_key: process.env.API_KEY, management_token: tokenUidDev }).bulkOperation()
 }
 
 function makeManagementToken (uid = null) {
+  // @ts-ignore-next-line secret-detection
   return client.stack({ api_key: process.env.API_KEY }).managementToken(uid)
 }
