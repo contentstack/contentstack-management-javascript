@@ -141,7 +141,7 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
-    it('should get job status for the first publish job', done => {
+  it('should get job status for the first publish job', done => {
     doBulkOperationWithManagementToken(tokenUidDev)
       .jobStatus({ job_id: jobId1, api_version: '3.2' })
       .then((response) => {
@@ -175,14 +175,14 @@ describe('BulkOperation api test', () => {
         expect(response.action).to.not.equal(undefined)
         expect(response.api_key).to.not.equal(undefined)
         expect(response.status).to.not.equal(undefined)
-        
+
         // Validate body structure
         expect(response.body).to.not.equal(undefined)
         expect(response.body.branch).to.not.equal(undefined)
         expect(response.body.locales).to.be.an('array')
         expect(response.body.environments).to.be.an('array')
         expect(response.body.published_at).to.not.equal(undefined)
-        
+
         // Validate summary structure
         expect(response.summary).to.not.equal(undefined)
         expect(response.summary.approvals).to.be.a('number')
@@ -191,7 +191,7 @@ describe('BulkOperation api test', () => {
         expect(response.summary.success).to.be.a('number')
         expect(response.summary.total_processed).to.be.a('number')
         expect(response.summary.unsuccess).to.be.a('number')
-        
+
         done()
       })
       .catch((error) => {
@@ -254,7 +254,7 @@ describe('BulkOperation api test', () => {
       .catch((error) => {
         console.log('Job status endpoint error (expected for invalid job ID):', error.message)
         // This is expected to fail with invalid job ID, but should not be an auth error
-        if (error.message && error.message.includes('authentication') || error.message.includes('401')) {
+        if (error.message && (error.message.includes('authentication') || error.message.includes('401'))) {
           done(error)
         } else {
           done() // Expected error for invalid job ID
