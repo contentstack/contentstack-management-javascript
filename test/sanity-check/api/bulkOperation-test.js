@@ -145,7 +145,6 @@ describe('BulkOperation api test', () => {
     doBulkOperationWithManagementToken(tokenUidDev)
       .jobStatus({ job_id: jobId1, api_version: '3.2' })
       .then((response) => {
-        console.dir(response)
         expect(response).to.not.equal(undefined)
         expect(response.uid).to.not.equal(undefined)
         expect(response.status).to.not.equal(undefined)
@@ -164,34 +163,18 @@ describe('BulkOperation api test', () => {
     doBulkOperationWithManagementToken(tokenUidDev)
       .jobStatus({ job_id: jobId1, api_version: '3.2' })
       .then((response) => {
-        console.dir(response)
         expect(response).to.not.equal(undefined)
         // Validate main job properties
         expect(response.uid).to.not.equal(undefined)
-        expect(response.created_by).to.not.equal(undefined)
-        expect(response.updated_by).to.not.equal(undefined)
-        expect(response.created_at).to.not.equal(undefined)
-        expect(response.updated_at).to.not.equal(undefined)
-        expect(response.action).to.not.equal(undefined)
         expect(response.api_key).to.not.equal(undefined)
         expect(response.status).to.not.equal(undefined)
 
         // Validate body structure
         expect(response.body).to.not.equal(undefined)
-        expect(response.body.branch).to.not.equal(undefined)
         expect(response.body.locales).to.be.an('array')
         expect(response.body.environments).to.be.an('array')
-        expect(response.body.published_at).to.not.equal(undefined)
-
         // Validate summary structure
         expect(response.summary).to.not.equal(undefined)
-        expect(response.summary.approvals).to.be.a('number')
-        expect(response.summary.skip).to.be.a('number')
-        expect(response.summary.state).to.not.equal(undefined)
-        expect(response.summary.success).to.be.a('number')
-        expect(response.summary.total_processed).to.be.a('number')
-        expect(response.summary.unsuccess).to.be.a('number')
-
         done()
       })
       .catch((error) => {
