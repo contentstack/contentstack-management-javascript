@@ -22,4 +22,6 @@ fileignoreconfig:
     checksum: 51ae00f07f4cc75c1cd832b311c2e2482f04a8467a0139da6013ceb88fbdda2f
   - filename: lib/stack/deliveryToken/previewToken/index.js
     checksum: b506f33bffdd20dfc701f964370707f5d7b28a2c05c70665f0edb7b3c53c165b
+  - filename: examples/robust-error-handling.js
+    checksum: e8a32ffbbbdba2a15f3d327273f0a5b4eb33cf84cd346562596ab697125bbbc6
 version: "1.0"
