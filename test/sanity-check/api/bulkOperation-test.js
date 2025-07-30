@@ -19,16 +19,16 @@ let jobId3 = ''
 let tokenUidDev = ''
 let tokenUid = ''
 
-function delay(ms) {
+function delay (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-async function waitForJobReady(jobId, maxAttempts = 10) {
+async function waitForJobReady (jobId, maxAttempts = 10) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       const response = await doBulkOperationWithManagementToken(tokenUidDev)
         .jobStatus({ job_id: jobId, api_version: '3.2' })
-      
+
       if (response && response.status) {
         return response
       }
@@ -168,7 +168,7 @@ describe('BulkOperation api test', () => {
 
   it('should wait for jobs to be ready and get job status for the first publish job', async () => {
     const response = await waitForJobReady(jobId1)
-    
+
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -179,7 +179,7 @@ describe('BulkOperation api test', () => {
 
   it('should validate detailed job status response structure', async () => {
     const response = await waitForJobReady(jobId1)
-    
+
     expect(response).to.not.equal(undefined)
     // Validate main job properties
     expect(response.uid).to.not.equal(undefined)
@@ -196,7 +196,7 @@ describe('BulkOperation api test', () => {
 
   it('should get job status for the second publish job', async () => {
     const response = await waitForJobReady(jobId2)
-    
+
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -207,7 +207,7 @@ describe('BulkOperation api test', () => {
 
   it('should get job status for the third publish job', async () => {
     const response = await waitForJobReady(jobId3)
-    
+
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -218,10 +218,10 @@ describe('BulkOperation api test', () => {
 
   it('should get job status with bulk_version parameter', async () => {
     await waitForJobReady(jobId1)
-    
+
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .jobStatus({ job_id: jobId1, bulk_version: 'v3', api_version: '3.2' })
-    
+
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
