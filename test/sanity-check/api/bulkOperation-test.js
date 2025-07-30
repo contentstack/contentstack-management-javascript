@@ -19,6 +19,27 @@ let jobId3 = ''
 let tokenUidDev = ''
 let tokenUid = ''
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+async function waitForJobReady(jobId, maxAttempts = 10) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const response = await doBulkOperationWithManagementToken(tokenUidDev)
+        .jobStatus({ job_id: jobId, api_version: '3.2' })
+      
+      if (response && response.status) {
+        return response
+      }
+    } catch (error) {
+      console.log(`Attempt ${attempt}: Job not ready yet, retrying...`)
+    }
+    await delay(2000)
+  }
+  throw new Error(`Job ${jobId} did not become ready after ${maxAttempts} attempts`)
+}
+
 describe('BulkOperation api test', () => {
   setup(() => {
     const user = jsonReader('loggedinuser.json')
@@ -141,91 +162,72 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
-  it('should get job status for the first publish job', done => {
-    doBulkOperationWithManagementToken(tokenUidDev)
-      .jobStatus({ job_id: jobId1, api_version: '3.2' })
-      .then((response) => {
-        expect(response).to.not.equal(undefined)
-        expect(response.uid).to.not.equal(undefined)
-        expect(response.status).to.not.equal(undefined)
-        expect(response.action).to.not.equal(undefined)
-        expect(response.summary).to.not.equal(undefined)
-        expect(response.body).to.not.equal(undefined)
-        done()
-      })
-      .catch((error) => {
-        console.error('Job status error:', error)
-        done(error)
-      })
+  it('should wait for all jobs to be processed before checking status', async () => {
+    await delay(5000) // Wait 5 seconds for jobs to be processed
   })
 
-  it('should validate detailed job status response structure', done => {
-    doBulkOperationWithManagementToken(tokenUidDev)
-      .jobStatus({ job_id: jobId1, api_version: '3.2' })
-      .then((response) => {
-        expect(response).to.not.equal(undefined)
-        // Validate main job properties
-        expect(response.uid).to.not.equal(undefined)
-        expect(response.api_key).to.not.equal(undefined)
-        expect(response.status).to.not.equal(undefined)
-
-        // Validate body structure
-        expect(response.body).to.not.equal(undefined)
-        expect(response.body.locales).to.be.an('array')
-        expect(response.body.environments).to.be.an('array')
-        // Validate summary structure
-        expect(response.summary).to.not.equal(undefined)
-        done()
-      })
-      .catch((error) => {
-        console.error('Detailed job status error:', error)
-        done(error)
-      })
+  it('should wait for jobs to be ready and get job status for the first publish job', async () => {
+    const response = await waitForJobReady(jobId1)
+    
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for the second publish job', done => {
-    doBulkOperationWithManagementToken(tokenUidDev)
-      .jobStatus({ job_id: jobId2, api_version: '3.2' })
-      .then((response) => {
-        expect(response).to.not.equal(undefined)
-        expect(response.uid).to.not.equal(undefined)
-        expect(response.status).to.not.equal(undefined)
-        expect(response.action).to.not.equal(undefined)
-        expect(response.summary).to.not.equal(undefined)
-        expect(response.body).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
+  it('should validate detailed job status response structure', async () => {
+    const response = await waitForJobReady(jobId1)
+    
+    expect(response).to.not.equal(undefined)
+    // Validate main job properties
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.api_key).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+
+    // Validate body structure
+    expect(response.body).to.not.equal(undefined)
+    expect(response.body.locales).to.be.an('array')
+    expect(response.body.environments).to.be.an('array')
+    // Validate summary structure
+    expect(response.summary).to.not.equal(undefined)
   })
 
-  it('should get job status for the third publish job', done => {
-    doBulkOperationWithManagementToken(tokenUidDev)
-      .jobStatus({ job_id: jobId3, api_version: '3.2' })
-      .then((response) => {
-        expect(response).to.not.equal(undefined)
-        expect(response.uid).to.not.equal(undefined)
-        expect(response.status).to.not.equal(undefined)
-        expect(response.action).to.not.equal(undefined)
-        expect(response.summary).to.not.equal(undefined)
-        expect(response.body).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
+  it('should get job status for the second publish job', async () => {
+    const response = await waitForJobReady(jobId2)
+    
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status with bulk_version parameter', done => {
-    doBulkOperationWithManagementToken(tokenUidDev)
+  it('should get job status for the third publish job', async () => {
+    const response = await waitForJobReady(jobId3)
+    
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status with bulk_version parameter', async () => {
+    await waitForJobReady(jobId1)
+    
+    const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .jobStatus({ job_id: jobId1, bulk_version: 'v3', api_version: '3.2' })
-      .then((response) => {
-        expect(response).to.not.equal(undefined)
-        expect(response.uid).to.not.equal(undefined)
-        expect(response.status).to.not.equal(undefined)
-        expect(response.action).to.not.equal(undefined)
-        expect(response.summary).to.not.equal(undefined)
-        expect(response.body).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
+    
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
   })
 
   it('should delete a Management Token', done => {
