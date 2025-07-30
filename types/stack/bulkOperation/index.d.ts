@@ -20,7 +20,8 @@ export interface BulkOperationConfig {
 }
 
 export interface PublishItems extends PublishDetails {
-    entries: Array<BulkOperationItem>
+    entries?: Array<BulkOperationItem>
+    assets?: Array<BulkOperationItem>
 }
 
 export interface BulkOperationItem {
@@ -57,4 +58,5 @@ export interface BulkAddItemsConfig {
 export interface BulkJobStatus {
     job_id: AnyProperty;
     bulk_version?: string;
+    api_version?: string;
 }
