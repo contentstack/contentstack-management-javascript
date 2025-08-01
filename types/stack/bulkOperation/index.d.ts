@@ -58,4 +58,5 @@ export interface BulkAddItemsConfig {
 export interface BulkJobStatus {
     job_id: AnyProperty;
     bulk_version?: string;
+    api_version?: string;
 }

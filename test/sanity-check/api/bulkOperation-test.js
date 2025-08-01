@@ -3,14 +3,42 @@ import { describe, it, setup } from 'mocha'
 import { jsonReader } from '../../sanity-check/utility/fileOperations/readwrite'
 import { contentstackClient } from '../../sanity-check/utility/ContentstackClient'
 import { singlepageCT, multiPageCT } from '../mock/content-type.js'
+import { createManagementToken } from '../mock/managementToken.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
 let client = {}
+let clientWithManagementToken = {}
 let entryUid1 = ''
 let assetUid1 = ''
 let entryUid2 = ''
 let assetUid2 = ''
+let jobId1 = ''
+let jobId2 = ''
+let jobId3 = ''
+let tokenUidDev = ''
+let tokenUid = ''
+
+function delay (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+async function waitForJobReady (jobId, maxAttempts = 10) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const response = await doBulkOperationWithManagementToken(tokenUidDev)
+        .jobStatus({ job_id: jobId, api_version: '3.2' })
+
+      if (response && response.status) {
+        return response
+      }
+    } catch (error) {
+      console.log(`Attempt ${attempt}: Job not ready yet, retrying...`)
+    }
+    await delay(2000)
+  }
+  throw new Error(`Job ${jobId} did not become ready after ${maxAttempts} attempts`)
+}
 
 describe('BulkOperation api test', () => {
   setup(() => {
@@ -24,6 +52,22 @@ describe('BulkOperation api test', () => {
     entryUid2 = entryRead2.uid
     assetUid2 = assetRead2.uid
     client = contentstackClient(user.authtoken)
+    clientWithManagementToken = contentstackClient()
+  })
+
+  it('should create a Management Token for get job status', done => {
+    makeManagementToken()
+      .create(createManagementToken)
+      .then((token) => {
+        tokenUidDev = token.token
+        tokenUid = token.uid
+        expect(token.name).to.be.equal(createManagementToken.token.name)
+        expect(token.description).to.be.equal(createManagementToken.token.description)
+        expect(token.scope[0].module).to.be.equal(createManagementToken.token.scope[0].module)
+        expect(token.uid).to.be.not.equal(null)
+        done()
+      })
+      .catch(done)
   })
 
   it('should publish one entry when publishDetails of an entry is passed', done => {
@@ -47,6 +91,7 @@ describe('BulkOperation api test', () => {
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
         expect(response.job_id).to.not.equal(undefined)
+        jobId1 = response.job_id
         done()
       })
       .catch(done)
@@ -71,6 +116,7 @@ describe('BulkOperation api test', () => {
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
         expect(response.job_id).to.not.equal(undefined)
+        jobId2 = response.job_id
         done()
       })
       .catch(done)
@@ -110,6 +156,85 @@ describe('BulkOperation api test', () => {
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
         expect(response.job_id).to.not.equal(undefined)
+        jobId3 = response.job_id
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should wait for all jobs to be processed before checking status', async () => {
+    await delay(5000) // Wait 5 seconds for jobs to be processed
+  })
+
+  it('should wait for jobs to be ready and get job status for the first publish job', async () => {
+    const response = await waitForJobReady(jobId1)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should validate detailed job status response structure', async () => {
+    const response = await waitForJobReady(jobId1)
+
+    expect(response).to.not.equal(undefined)
+    // Validate main job properties
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.api_key).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+
+    // Validate body structure
+    expect(response.body).to.not.equal(undefined)
+    expect(response.body.locales).to.be.an('array')
+    expect(response.body.environments).to.be.an('array')
+    // Validate summary structure
+    expect(response.summary).to.not.equal(undefined)
+  })
+
+  it('should get job status for the second publish job', async () => {
+    const response = await waitForJobReady(jobId2)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status for the third publish job', async () => {
+    const response = await waitForJobReady(jobId3)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status with bulk_version parameter', async () => {
+    await waitForJobReady(jobId1)
+
+    const response = await doBulkOperationWithManagementToken(tokenUidDev)
+      .jobStatus({ job_id: jobId1, bulk_version: 'v3', api_version: '3.2' })
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should delete a Management Token', done => {
+    makeManagementToken(tokenUid)
+      .delete()
+      .then((data) => {
+        expect(data.notice).to.be.equal('Management Token deleted successfully.')
         done()
       })
       .catch(done)
@@ -117,5 +242,16 @@ describe('BulkOperation api test', () => {
 })
 
 function doBulkOperation (uid = null) {
+  // @ts-ignore-next-line secret-detection
   return client.stack({ api_key: process.env.API_KEY }).bulkOperation()
+}
+
+function doBulkOperationWithManagementToken (tokenUidDev) {
+  // @ts-ignore-next-line secret-detection
+  return clientWithManagementToken.stack({ api_key: process.env.API_KEY, management_token: tokenUidDev }).bulkOperation()
+}
+
+function makeManagementToken (uid = null) {
+  // @ts-ignore-next-line secret-detection
+  return client.stack({ api_key: process.env.API_KEY }).managementToken(uid)
 }
