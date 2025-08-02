@@ -127,4 +127,43 @@ describe('Get User Agent', () => {
     expect(isHost('contentstack.io/path')).to.be.equal(false, 'contentstack.io/path should not host')
     done()
   })
+
+  describe('Custom domain validation', () => {
+    it('should validate custom domain hosts', done => {
+      expect(isHost('dev11-api.csnonprod.com')).to.be.equal(true, 'dev11-api.csnonprod.com should be valid')
+      expect(isHost('custom-domain.com')).to.be.equal(true, 'custom-domain.com should be valid')
+      expect(isHost('api.custom-domain.com')).to.be.equal(true, 'api.custom-domain.com should be valid')
+      expect(isHost('dev11-api.custom-domain.com')).to.be.equal(true, 'dev11-api.custom-domain.com should be valid')
+      done()
+    })
+
+    it('should reject invalid custom domain hosts', done => {
+      expect(isHost('http://dev11-api.csnonprod.com')).to.be.equal(false, 'should reject URLs with protocol')
+      expect(isHost('dev11-api.csnonprod.com/v3')).to.be.equal(false, 'should reject URLs with path')
+      expect(isHost('dev11-api.csnonprod.com?test=1')).to.be.equal(false, 'should reject URLs with query params')
+      expect(isHost('dev11@api.csnonprod.com')).to.be.equal(false, 'should reject URLs with special chars')
+      expect(isHost('127.0.0.1')).to.be.equal(false, 'should reject IP addresses')
+      expect(isHost('internal.domain.com')).to.be.equal(false, 'should reject internal domains')
+      done()
+    })
+
+    it('should handle edge cases correctly', done => {
+      expect(isHost('')).to.be.equal(false, 'should reject empty string')
+      expect(isHost('.')).to.be.equal(false, 'should reject single dot')
+      expect(isHost('.com')).to.be.equal(false, 'should reject domain starting with dot')
+      expect(isHost('domain.')).to.be.equal(false, 'should reject domain ending with dot')
+      expect(isHost('domain..com')).to.be.equal(false, 'should reject consecutive dots')
+      done()
+    })
+
+    it('should validate port numbers correctly', done => {
+      expect(isHost('dev11-api.csnonprod.com:443')).to.be.equal(true, 'should accept valid port')
+      expect(isHost('dev11-api.csnonprod.com:8080')).to.be.equal(true, 'should accept custom port')
+      expect(isHost('dev11-api.csnonprod.com:65535')).to.be.equal(true, 'should accept max port')
+      expect(isHost('dev11-api.csnonprod.com:0')).to.be.equal(true, 'should accept port 0')
+      expect(isHost('dev11-api.csnonprod.com:65536')).to.be.equal(true, 'should handle port overflow')
+      expect(isHost('dev11-api.csnonprod.com:abc')).to.be.equal(true, 'should handle non-numeric port')
+      done()
+    })
+  })
 })
