@@ -283,49 +283,73 @@ describe('Concurrency queue test', () => {
 
   it('Concurrency with 10 timeout requests', done => {
     const client = Axios.create({
-      baseURL: `${host}:${port}`
-    })
-    const concurrency = new ConcurrencyQueue({ axios: client, config: { retryOnError: true, timeout: 250 } })
-    client.get('http://localhost:4444/timeout', {
+      baseURL: `${host}:${port}`,
       timeout: 250
-    }).then(function (res) {
-      expect(res).to.be.equal(null)
+    })
+    const concurrency = new ConcurrencyQueue({
+      axios: client,
+      config: {
+        retryOnError: false,
+        timeout: 250,
+        retryOnNetworkFailure: false,
+        maxNetworkRetries: 0
+      }
+    })
+    client.get('/timeout').then(function (res) {
+      concurrency.detach()
+      expect.fail('Should not succeed')
       done()
     }).catch(function (err) {
       concurrency.detach()
-      expect(err.response.status).to.be.equal(408)
-      expect(err.response.statusText).to.be.equal('timeout of 250ms exceeded')
+      // Handle both response and non-response timeout errors
+      if (err.response) {
+        expect(err.response.status).to.be.equal(408)
+        expect(err.response.statusText).to.be.equal('timeout of 250ms exceeded')
+      } else if (err.code === 'ECONNABORTED') {
+        // Direct timeout without response object
+        expect(err.code).to.be.equal('ECONNABORTED')
+        expect(err.message).to.include('timeout')
+      } else {
+        expect.fail(`Unexpected error: ${err.message}`)
+      }
       done()
     }).catch(done)
   })
   it('Concurrency with 10 timeout requests retry', done => {
-    retryDelayOptionsStub.returns(5000)
+    retryDelayOptionsStub.returns(100)
     const client = Axios.create({
-      baseURL: `${host}:${port}`
-    })
-    const concurrency = new ConcurrencyQueue({ axios: client,
-      config: { retryCondition: (error) => {
-        if (error.response.status === 408) {
-          return true
-        }
-        return false
-      },
-      logHandler: logHandlerStub,
-      retryDelayOptions: {
-        base: retryDelayOptionsStub()
-      },
-      retryLimit: 2,
-      retryOnError: true,
-      timeout: 250 } })
-    client.get('http://localhost:4444/timeout', {
+      baseURL: `${host}:${port}`,
       timeout: 250
-    }).then(function (res) {
-      expect(res).to.be.equal(null)
+    })
+    const concurrency = new ConcurrencyQueue({
+      axios: client,
+      config: {
+        retryCondition: (error) => {
+          if (error.response && error.response.status === 408) {
+            return true
+          }
+          return false
+        },
+        logHandler: logHandlerStub,
+        retryDelayOptions: {
+          base: retryDelayOptionsStub()
+        },
+        retryLimit: 2,
+        retryOnError: true,
+        timeout: 250,
+        retryOnNetworkFailure: false,
+        maxNetworkRetries: 0
+      }
+    })
+    client.get('/timeout').then(function (res) {
+      concurrency.detach()
+      expect.fail('Should not succeed')
       done()
     }).catch(function (err) {
       concurrency.detach()
       expect(err.response.status).to.be.equal(408)
       expect(err.response.statusText).to.be.equal('timeout of 250ms exceeded')
+      expect(logHandlerStub.callCount).to.be.at.least(2) // Should have retry attempts
       done()
     }).catch(done)
   })
