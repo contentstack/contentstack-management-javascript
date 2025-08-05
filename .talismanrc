@@ -24,4 +24,6 @@ fileignoreconfig:
     checksum: b506f33bffdd20dfc701f964370707f5d7b28a2c05c70665f0edb7b3c53c165b
   - filename: examples/robust-error-handling.js
     checksum: e8a32ffbbbdba2a15f3d327273f0a5b4eb33cf84cd346562596ab697125bbbc6
+  - filename: test/sanity-check/api/bulkOperation-test.js
+    checksum: f40a14c84ab9a194aaf830ca68e14afde2ef83496a07d4a6393d7e0bed15fb0e
 version: "1.0"
