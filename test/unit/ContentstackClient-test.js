@@ -202,6 +202,233 @@ describe('Contentstack Client', () => {
     done()
   })
 
+  describe('Enhanced Login Tests', () => {
+    let mock
+
+    beforeEach(() => {
+      mock = new MockAdapter(axios)
+    })
+
+    it('should handle direct login with tfa_token', done => {
+      mock.onPost('/user-session').reply(config => {
+        const data = JSON.parse(config.data)
+        expect(data.user).to.deep.equal({
+          email: 'test@example.com',
+          password: 'password123',
+          tfa_token: '654321'
+        })
+        return [200, {
+          user: {
+            authtoken: 'Test Auth With TFA',
+            email: 'test@example.com'
+          }
+        }]
+      })
+
+      ContentstackClient({ http: axios })
+        .login({
+          email: 'test@example.com',
+          password: 'password123',
+          tfa_token: '654321'
+        })
+        .then(response => {
+          expect(response.user.authtoken).to.equal('Test Auth With TFA')
+          expect(response.user.email).to.equal('test@example.com')
+          done()
+        })
+        .catch(done)
+    })
+
+    it('should handle login with TOTP secret', done => {
+      const mfaSecret = 'JBSWY3DPEHPK3PXP'
+
+      mock.onPost('/user-session').reply(config => {
+        const data = JSON.parse(config.data)
+        expect(data.user.email).to.equal('test@example.com')
+        expect(data.user.password).to.equal('password123')
+        expect(data.user.tfa_token).to.have.lengthOf(6)
+        expect(data.user.tfa_token).to.match(/^\d{6}$/)
+        expect(data.user.mfaSecret).to.equal(undefined)
+        return [200, {
+          user: {
+            authtoken: 'Test Auth With TOTP',
+            email: 'test@example.com'
+          }
+        }]
+      })
+
+      ContentstackClient({ http: axios })
+        .login({
+          email: 'test@example.com',
+          password: 'password123',
+          mfaSecret: mfaSecret
+        })
+        .then(response => {
+          expect(response.user.authtoken).to.equal('Test Auth With TOTP')
+          expect(response.user.email).to.equal('test@example.com')
+          done()
+        })
+        .catch(done)
+    })
+
+    it('should prioritize tfa_token over mfaSecret', done => {
+      mock.onPost('/user-session').reply(config => {
+        const data = JSON.parse(config.data)
+        console.log(data)
+        expect(data.user).to.deep.equal({
+          email: 'test@example.com',
+          password: 'password123',
+          tfa_token: '654321' // Should use this directly instead of generating from mfaSecret
+        })
+        return [200, {
+          user: {
+            authtoken: 'Test Auth Direct TFA',
+            email: 'test@example.com'
+          }
+        }]
+      })
+
+      ContentstackClient({ http: axios })
+        .login({
+          email: 'test@example.com',
+          password: 'password123',
+          tfa_token: '654321',
+          mfaSecret: 'JBSWY3DPEHPK3PXP' // This should be ignored
+        })
+        .then(response => {
+          expect(response.user.authtoken).to.equal('Test Auth Direct TFA')
+          expect(response.user.email).to.equal('test@example.com')
+          done()
+        })
+        .catch(done)
+    })
+
+    it('should handle 2FA requirement response', done => {
+      mock.onPost('/user-session').reply(function (config) {
+        const data = JSON.parse(config.data)
+        expect(data.user).to.deep.equal({
+          email: 'test@example.com',
+          password: 'password123'
+        })
+        return [422, {
+          error_message: 'Please login using the Two-Factor verification Token',
+          error_code: 294,
+          errors: [],
+          tfa_type: 'totp_authenticator'
+        }]
+      })
+
+      ContentstackClient({ http: axios })
+        .login({
+          email: 'test@example.com',
+          password: 'password123'
+        })
+        .then(() => {
+          done(new Error('Expected 2FA error was not thrown'))
+        })
+        .catch(error => {
+          try {
+            const errorData = JSON.parse(error.message)
+            expect(errorData.errorCode).to.equal(294)
+            expect(errorData.errorMessage).to.include('Two-Factor verification')
+            expect(errorData.errors).to.be.an('array').with.lengthOf(0)
+            expect(errorData.tfa_type).to.equal('totp_authenticator')
+            done()
+          } catch (e) {
+            done(e)
+          }
+        })
+    })
+
+    it('should handle invalid 2FA token', done => {
+      mock.onPost('/user-session').reply(config => {
+        const data = JSON.parse(config.data)
+        expect(data.user.tfa_token).to.equal('111111')
+        return [422, {
+          error_message: 'Invalid verification code',
+          error_code: 295,
+          errors: []
+        }]
+      })
+
+      ContentstackClient({ http: axios })
+        .login({
+          email: 'test@example.com',
+          password: 'password123',
+          tfa_token: '111111'
+        })
+        .then(() => {
+          done(new Error('Expected invalid token error was not thrown'))
+        })
+        .catch(error => {
+          expect(error.errorCode).to.equal(295)
+          expect(error.errorMessage).to.include('Invalid verification code')
+          expect(error.errors).to.be.an('array').with.lengthOf(0)
+          done()
+        })
+    })
+
+    it('should handle both tfa_token and mfaSecret with tfa_token taking precedence', done => {
+      mock.onPost('/user-session').reply(config => {
+        const data = JSON.parse(config.data)
+        expect(data.user).to.deep.equal({
+          email: 'test@example.com',
+          password: 'password123',
+          tfa_token: '123456' // Should use provided tfa_token, not generate from mfaSecret
+        })
+        return [200, {
+          user: {
+            authtoken: 'Test Auth',
+            email: 'test@example.com'
+          }
+        }]
+      })
+
+      ContentstackClient({ http: axios })
+        .login({
+          email: 'test@example.com',
+          password: 'password123',
+          tfa_token: '123456',
+          mfaSecret: 'JBSWY3DPEHPK3PXP' // This should be ignored
+        })
+        .then(response => {
+          expect(response.user.authtoken).to.equal('Test Auth')
+          expect(response.user.email).to.equal('test@example.com')
+          done()
+        })
+        .catch(done)
+    })
+
+    it('should generate tfa_token from mfaSecret when no tfa_token provided', done => {
+      mock.onPost('/user-session').reply(config => {
+        const data = JSON.parse(config.data)
+        expect(data.user.email).to.equal('test@example.com')
+        expect(data.user.password).to.equal('password123')
+        expect(data.user.tfa_token).to.match(/^\d{6}$/) // Should be 6-digit number
+        expect(data.user.mfaSecret).to.equal(undefined) // Should not be in request
+        return [200, {
+          user: {
+            authtoken: 'Test Auth',
+            email: 'test@example.com'
+          }
+        }]
+      })
+
+      ContentstackClient({ http: axios })
+        .login({
+          email: 'test@example.com',
+          password: 'password123',
+          mfaSecret: 'JBSWY3DPEHPK3PXP'
+        })
+        .then(response => {
+          expect(response.user.authtoken).to.equal('Test Auth')
+          expect(response.user.email).to.equal('test@example.com')
+          done()
+        })
+        .catch(done)
+    })
+  })
+
   it('Contentstack Client Stack with API key and management token test', done => {
     const stack = ContentstackClient({ http: axios }).stack({ api_key: 'stack_api_key', management_token: 'stack_management_token' })
     expect(stack.urlPath).to.be.equal('/stacks')

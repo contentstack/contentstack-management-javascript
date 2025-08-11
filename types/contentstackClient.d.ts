@@ -51,6 +51,8 @@ export interface LoginDetails {
     email: string,
     password: string,
     token?: string
+    tfa_token?: string
+    mfaSecret?: string
 }
 
 export interface LoginResponse extends Response {
