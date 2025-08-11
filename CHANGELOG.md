@@ -1,6 +1,10 @@
 # Changelog
 
-## [v1.23.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.24.0) (2025-07-28)
+## [v1.24.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.24.0) (2025-08-18)
+ - Feat
+   - Added Support for MFA
+
+## [v1.23.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.23.1) (2025-07-28)
  - Fix
    - Add asset types support in bulk operations
 
