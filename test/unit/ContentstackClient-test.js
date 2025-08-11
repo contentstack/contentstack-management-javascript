@@ -34,7 +34,6 @@ describe('Contentstack Client', () => {
       })
       .catch(done)
   })
-  // Thi
   it('Contentstack Client get user info', done => {
     var mock = new MockAdapter(axios)
     mock.onGet('/user').reply(200, {
