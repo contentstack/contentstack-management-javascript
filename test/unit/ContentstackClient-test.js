@@ -34,7 +34,7 @@ describe('Contentstack Client', () => {
       })
       .catch(done)
   })
-
+  // Thi
   it('Contentstack Client get user info', done => {
     var mock = new MockAdapter(axios)
     mock.onGet('/user').reply(200, {
@@ -215,7 +215,7 @@ describe('Contentstack Client', () => {
         expect(data.user).to.deep.equal({
           email: 'test@example.com',
           password: 'password123',
-          tfa_token: '654321'
+          tfa_token: '123456'
         })
         return [200, {
           user: {
@@ -229,7 +229,7 @@ describe('Contentstack Client', () => {
         .login({
           email: 'test@example.com',
           password: 'password123',
-          tfa_token: '654321'
+          tfa_token: '123456'
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth With TFA')
@@ -240,7 +240,7 @@ describe('Contentstack Client', () => {
     })
 
     it('should handle login with TOTP secret', done => {
-      const mfaSecret = 'JBSWY3DPEHPK3PXP'
+      const mfaSecret = 'MFASECRET'
 
       mock.onPost('/user-session').reply(config => {
         const data = JSON.parse(config.data)
@@ -278,7 +278,7 @@ describe('Contentstack Client', () => {
         expect(data.user).to.deep.equal({
           email: 'test@example.com',
           password: 'password123',
-          tfa_token: '654321' // Should use this directly instead of generating from mfaSecret
+          tfa_token: '123456'
         })
         return [200, {
           user: {
@@ -292,8 +292,8 @@ describe('Contentstack Client', () => {
         .login({
           email: 'test@example.com',
           password: 'password123',
-          tfa_token: '654321',
-          mfaSecret: 'JBSWY3DPEHPK3PXP' // This should be ignored
+          tfa_token: '123456',
+          mfaSecret: 'MFASECRET'
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth Direct TFA')
@@ -374,7 +374,7 @@ describe('Contentstack Client', () => {
         expect(data.user).to.deep.equal({
           email: 'test@example.com',
           password: 'password123',
-          tfa_token: '123456' // Should use provided tfa_token, not generate from mfaSecret
+          tfa_token: '123456'
         })
         return [200, {
           user: {
@@ -389,7 +389,7 @@ describe('Contentstack Client', () => {
           email: 'test@example.com',
           password: 'password123',
           tfa_token: '123456',
-          mfaSecret: 'JBSWY3DPEHPK3PXP' // This should be ignored
+          mfaSecret: 'MFASECRET'
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth')
@@ -404,8 +404,8 @@ describe('Contentstack Client', () => {
         const data = JSON.parse(config.data)
         expect(data.user.email).to.equal('test@example.com')
         expect(data.user.password).to.equal('password123')
-        expect(data.user.tfa_token).to.match(/^\d{6}$/) // Should be 6-digit number
-        expect(data.user.mfaSecret).to.equal(undefined) // Should not be in request
+        expect(data.user.tfa_token).to.match(/^\d{6}$/)
+        expect(data.user.mfaSecret).to.equal(undefined)
         return [200, {
           user: {
             authtoken: 'Test Auth',
@@ -418,7 +418,7 @@ describe('Contentstack Client', () => {
         .login({
           email: 'test@example.com',
           password: 'password123',
-          mfaSecret: 'JBSWY3DPEHPK3PXP'
+          mfaSecret: 'MFASECRET'
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth')
