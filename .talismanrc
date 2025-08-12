@@ -27,7 +27,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/bulkOperation-test.js
     checksum: f40a14c84ab9a194aaf830ca68e14afde2ef83496a07d4a6393d7e0bed15fb0e
   - filename: lib/contentstackClient.js
-    checksum: b61fcf4fea88b8328ffa9d29a1ed88fe23ee9c9ef0cbd458721dcb7c82d2432b
+    checksum: b76ca091caa3a1b2658cd422a2d8ef3ac9996aea0aff3f982d56bb309a3d9fde
   - filename: test/unit/ContentstackClient-test.js
     checksum: e712b74f37ea15afd2ac095fc2154f8c9f2ffe955659e77651da4a0d7079ec88
 version: "1.0"
