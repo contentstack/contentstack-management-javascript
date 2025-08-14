@@ -29,5 +29,5 @@ fileignoreconfig:
   - filename: lib/contentstackClient.js
     checksum: b76ca091caa3a1b2658cd422a2d8ef3ac9996aea0aff3f982d56bb309a3d9fde
   - filename: test/unit/ContentstackClient-test.js
-    checksum: e712b74f37ea15afd2ac095fc2154f8c9f2ffe955659e77651da4a0d7079ec88
+    checksum: 974a4f335aef025b657d139bb290233a69bed1976b947c3c674e97baffe4ce2f
 version: "1.0"
