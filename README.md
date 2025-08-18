@@ -19,12 +19,31 @@ Install it via npm:
 ```bash
 npm i @contentstack/management
 ```
-To import the SDK, use the following command:
-```javascript
-import contentstack from ‘@contentstack/management’
+To import the SDK, use one of the following ways :
+1. **JavaScript ES Modules** 
+   ```javascript
+	import contentstack from '@contentstack/management';
+	 ```
+   - Requires `"type": "module"` in package.json
 
-contentstackClient = contentstack.client()
-```
+2. **TypeScript with esModuleInterop**   
+   ```typescript
+	import contentstack from '@contentstack/management';
+	 ```
+   - Requires `"esModuleInterop": true` in tsconfig.json
+
+3. **TypeScript Namespace Import** 
+   ```typescript
+	import * as contentstack from '@contentstack/management';
+	 ``` 
+   - Works regardless of esModuleInterop setting
+
+4. **TypeScript Destructuring** 
+   ```typescript
+	import contentstack from '@contentstack/management';
+	const { client } = contentstack;
+	 ```
+   - Access client function from default export
 
 ### Authentication
 To use this SDK, you need to authenticate your users by using the Authtoken, credentials, or Management Token (stack-level token).

@@ -4,7 +4,6 @@ const fs = require("fs");
 
 dotenv.config();
 
-const user1 = process.env.USER1;
 const user2 = process.env.USER2;
 const user3 = process.env.USER3;
 const user4 = process.env.USER4;
@@ -35,7 +34,7 @@ const goCdServer = process.env.GOCD_SERVER;
 const reportUrl = `http://${goCdServer}/go/files/${pipelineName}/${pipelineCounter}/sanity/1/sanity/test-results/mochawesome-report/sanity-report.html`;
 
 let tagUsers =
-  failedTests > 0 ? `<@${user1}> <@${user2}> <@${user3}> <@${user4}>` : "";
+  failedTests > 0 ? `<@${user2}> <@${user3}> <@${user4}>` : "";
 
 const slackMessage = {
   text: `Dev11, SDK-JS-CMA Sanity\n*Result:* ${resultMessage}. ${durationInMinutes}m ${durationInSeconds}s\n*Failed Tests:* ${failedTests}\n<${reportUrl}|View Report>\n${tagUsers}`,
