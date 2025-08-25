@@ -186,10 +186,10 @@ describe('BulkOperation api test', () => {
       ]
     }
     doBulkOperation()
-      .publish({ 
-        details: publishDetails, 
+      .publish({
+        details: publishDetails,
         api_version: '3.2',
-        publishAllLocalized: true 
+        publishAllLocalized: true
       })
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
@@ -218,10 +218,10 @@ describe('BulkOperation api test', () => {
       ]
     }
     doBulkOperation()
-      .publish({ 
-        details: publishDetails, 
+      .publish({
+        details: publishDetails,
         api_version: '3.2',
-        publishAllLocalized: false 
+        publishAllLocalized: false
       })
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
@@ -248,10 +248,10 @@ describe('BulkOperation api test', () => {
       ]
     }
     doBulkOperation()
-      .publish({ 
-        details: publishDetails, 
+      .publish({
+        details: publishDetails,
         api_version: '3.2',
-        publishAllLocalized: true 
+        publishAllLocalized: true
       })
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
@@ -280,10 +280,10 @@ describe('BulkOperation api test', () => {
       ]
     }
     doBulkOperation()
-      .unpublish({ 
-        details: unpublishDetails, 
+      .unpublish({
+        details: unpublishDetails,
         api_version: '3.2',
-        unpublishAllLocalized: true 
+        unpublishAllLocalized: true
       })
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
@@ -312,10 +312,10 @@ describe('BulkOperation api test', () => {
       ]
     }
     doBulkOperation()
-      .unpublish({ 
-        details: unpublishDetails, 
+      .unpublish({
+        details: unpublishDetails,
         api_version: '3.2',
-        unpublishAllLocalized: false 
+        unpublishAllLocalized: false
       })
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
@@ -342,10 +342,10 @@ describe('BulkOperation api test', () => {
       ]
     }
     doBulkOperation()
-      .unpublish({ 
-        details: unpublishDetails, 
+      .unpublish({
+        details: unpublishDetails,
         api_version: '3.2',
-        unpublishAllLocalized: true 
+        unpublishAllLocalized: true
       })
       .then((response) => {
         expect(response.notice).to.not.equal(undefined)
@@ -374,8 +374,8 @@ describe('BulkOperation api test', () => {
       ]
     }
     doBulkOperation()
-      .publish({ 
-        details: publishDetails, 
+      .publish({
+        details: publishDetails,
         api_version: '3.2',
         publishAllLocalized: true,
         skip_workflow_stage: true,
