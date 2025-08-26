@@ -17,6 +17,8 @@ export interface BulkOperationConfig {
     is_nested?: boolean
     api_version?: string
     bulk_version?: string
+    publishAllLocalized?: boolean
+    unpublishAllLocalized?: boolean
 }
 
 export interface PublishItems extends PublishDetails {
