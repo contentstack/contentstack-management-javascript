@@ -16,6 +16,13 @@ let assetUid2 = ''
 let jobId1 = ''
 let jobId2 = ''
 let jobId3 = ''
+let jobId4 = ''
+let jobId5 = ''
+let jobId6 = ''
+let jobId7 = ''
+let jobId8 = ''
+let jobId9 = ''
+let jobId10 = ''
 let tokenUidDev = ''
 let tokenUid = ''
 
@@ -162,6 +169,228 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
+  it('should publish entries with publishAllLocalized parameter set to true', done => {
+    const publishDetails = {
+      entries: [
+        {
+          uid: entryUid1,
+          content_type: multiPageCT.content_type.uid,
+          locale: 'en-us'
+        }
+      ],
+      locales: [
+        'en-us'
+      ],
+      environments: [
+        'development'
+      ]
+    }
+    doBulkOperation()
+      .publish({
+        details: publishDetails,
+        api_version: '3.2',
+        publishAllLocalized: true
+      })
+      .then((response) => {
+        expect(response.notice).to.not.equal(undefined)
+        expect(response.job_id).to.not.equal(undefined)
+        // Store job ID for later status check
+        jobId4 = response.job_id
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should publish entries with publishAllLocalized parameter set to false', done => {
+    const publishDetails = {
+      entries: [
+        {
+          uid: entryUid2,
+          content_type: singlepageCT.content_type.uid,
+          locale: 'en-us'
+        }
+      ],
+      locales: [
+        'en-us'
+      ],
+      environments: [
+        'development'
+      ]
+    }
+    doBulkOperation()
+      .publish({
+        details: publishDetails,
+        api_version: '3.2',
+        publishAllLocalized: false
+      })
+      .then((response) => {
+        expect(response.notice).to.not.equal(undefined)
+        expect(response.job_id).to.not.equal(undefined)
+        // Store job ID for later status check
+        jobId5 = response.job_id
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should publish assets with publishAllLocalized parameter', done => {
+    const publishDetails = {
+      assets: [
+        {
+          uid: assetUid1
+        }
+      ],
+      locales: [
+        'en-us'
+      ],
+      environments: [
+        'development'
+      ]
+    }
+    doBulkOperation()
+      .publish({
+        details: publishDetails,
+        api_version: '3.2',
+        publishAllLocalized: true
+      })
+      .then((response) => {
+        expect(response.notice).to.not.equal(undefined)
+        expect(response.job_id).to.not.equal(undefined)
+        // Store job ID for later status check
+        jobId6 = response.job_id
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should unpublish entries with unpublishAllLocalized parameter set to true', done => {
+    const unpublishDetails = {
+      entries: [
+        {
+          uid: entryUid1,
+          content_type: multiPageCT.content_type.uid,
+          locale: 'en-us'
+        }
+      ],
+      locales: [
+        'en-us'
+      ],
+      environments: [
+        'development'
+      ]
+    }
+    doBulkOperation()
+      .unpublish({
+        details: unpublishDetails,
+        api_version: '3.2',
+        unpublishAllLocalized: true
+      })
+      .then((response) => {
+        expect(response.notice).to.not.equal(undefined)
+        expect(response.job_id).to.not.equal(undefined)
+        // Store job ID for later status check
+        jobId7 = response.job_id
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should unpublish entries with unpublishAllLocalized parameter set to false', done => {
+    const unpublishDetails = {
+      entries: [
+        {
+          uid: entryUid2,
+          content_type: singlepageCT.content_type.uid,
+          locale: 'en-us'
+        }
+      ],
+      locales: [
+        'en-us'
+      ],
+      environments: [
+        'development'
+      ]
+    }
+    doBulkOperation()
+      .unpublish({
+        details: unpublishDetails,
+        api_version: '3.2',
+        unpublishAllLocalized: false
+      })
+      .then((response) => {
+        expect(response.notice).to.not.equal(undefined)
+        expect(response.job_id).to.not.equal(undefined)
+        // Store job ID for later status check
+        jobId8 = response.job_id
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should unpublish assets with unpublishAllLocalized parameter', done => {
+    const unpublishDetails = {
+      assets: [
+        {
+          uid: assetUid1
+        }
+      ],
+      locales: [
+        'en-us'
+      ],
+      environments: [
+        'development'
+      ]
+    }
+    doBulkOperation()
+      .unpublish({
+        details: unpublishDetails,
+        api_version: '3.2',
+        unpublishAllLocalized: true
+      })
+      .then((response) => {
+        expect(response.notice).to.not.equal(undefined)
+        expect(response.job_id).to.not.equal(undefined)
+        // Store job ID for later status check
+        jobId9 = response.job_id
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should publish entries with multiple parameters including publishAllLocalized', done => {
+    const publishDetails = {
+      entries: [
+        {
+          uid: entryUid1,
+          content_type: multiPageCT.content_type.uid,
+          locale: 'en-us'
+        }
+      ],
+      locales: [
+        'en-us'
+      ],
+      environments: [
+        'development'
+      ]
+    }
+    doBulkOperation()
+      .publish({
+        details: publishDetails,
+        api_version: '3.2',
+        publishAllLocalized: true,
+        skip_workflow_stage: true,
+        approvals: true
+      })
+      .then((response) => {
+        expect(response.notice).to.not.equal(undefined)
+        expect(response.job_id).to.not.equal(undefined)
+        // Store job ID for later status check
+        jobId10 = response.job_id
+        done()
+      })
+      .catch(done)
+  })
+
   it('should wait for all jobs to be processed before checking status', async () => {
     await delay(5000) // Wait 5 seconds for jobs to be processed
   })
@@ -207,6 +436,83 @@ describe('BulkOperation api test', () => {
 
   it('should get job status for the third publish job', async () => {
     const response = await waitForJobReady(jobId3)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status for publishAllLocalized=true job', async () => {
+    const response = await waitForJobReady(jobId4)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status for publishAllLocalized=false job', async () => {
+    const response = await waitForJobReady(jobId5)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status for asset publishAllLocalized job', async () => {
+    const response = await waitForJobReady(jobId6)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status for unpublishAllLocalized=true job', async () => {
+    const response = await waitForJobReady(jobId7)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status for unpublishAllLocalized=false job', async () => {
+    const response = await waitForJobReady(jobId8)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status for asset unpublishAllLocalized job', async () => {
+    const response = await waitForJobReady(jobId9)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.uid).to.not.equal(undefined)
+    expect(response.status).to.not.equal(undefined)
+    expect(response.action).to.not.equal(undefined)
+    expect(response.summary).to.not.equal(undefined)
+    expect(response.body).to.not.equal(undefined)
+  })
+
+  it('should get job status for multiple parameters job', async () => {
+    const response = await waitForJobReady(jobId10)
 
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
