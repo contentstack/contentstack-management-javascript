@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.25.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.25.0) (2025-09-03)
+ - Enhancement
+   - Added publish_all_localized param in bulk publish/unpublish
+
 ## [v1.24.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.24.0) (2025-08-18)
  - Feat
    - Added Support for MFA
