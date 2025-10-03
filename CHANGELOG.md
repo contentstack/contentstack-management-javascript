@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.25.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.25.1) (2025-10-06)
+ - Fix
+   - Updated delay handling to use centralized external configuration in SDK interceptor
+
 ## [v1.25.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.25.0) (2025-09-03)
  - Enhancement
    - Added publish_all_localized param in bulk publish/unpublish
