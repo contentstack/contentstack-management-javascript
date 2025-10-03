@@ -45,6 +45,7 @@ export interface ContentstackConfig extends AxiosRequestConfig, ContentstackToke
     logHandler?: (level: string, data: any) => void
     application?: string
     integration?: string
+    delayMs?: number 
 }
 
 export interface LoginDetails {
