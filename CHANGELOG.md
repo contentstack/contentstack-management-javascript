@@ -1,6 +1,6 @@
 # Changelog
 
-## [v1.25.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.25.1) (2025-10-06)
+## [v1.25.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.25.1) (2025-10-06)
  - Fix
    - Updated delay handling to use centralized external configuration in SDK interceptor
 
