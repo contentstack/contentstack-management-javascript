@@ -176,7 +176,6 @@ describe('Terms API Test', () => {
       .catch(done)
   })
 
-
   it('should delete of the term uid passed', done => {
     makeTerms(taxonomy.uid, term.term.uid).delete({ force: true })
       .then((response) => {
@@ -185,7 +184,6 @@ describe('Terms API Test', () => {
       })
       .catch(done)
   })
-
 
   it('should delete taxonomy', async () => {
     const taxonomyResponse = await client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomy.uid).delete({ force: true })
@@ -201,7 +199,7 @@ describe('Terms Query Parameters Sanity Tests', () => {
   beforeEach(async () => {
     const user = jsonReader('loggedinuser.json')
     client = contentstackClient(user.authtoken)
-    
+
     // Ensure taxonomy exists before running query tests
     try {
       await client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomy.uid).fetch()
@@ -227,7 +225,7 @@ describe('Terms Query Parameters Sanity Tests', () => {
         }
       }
     }
-    
+
     // Create some test terms if they don't exist
     try {
       const existingTerms = await makeTerms(taxonomy.uid).query().find()
@@ -354,7 +352,7 @@ describe('Terms Query Parameters Sanity Tests', () => {
   })
 
   it('should get terms with multiple parameters', async () => {
-    const terms = await makeTerms(taxonomy.uid).query().find({ 
+    const terms = await makeTerms(taxonomy.uid).query().find({
       locale: 'en-us',
       include_children_count: true,
       include_count: true,
