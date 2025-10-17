@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.26.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.26.0) (2025-10-20)
+ - Enhancement
+   - Added taxonomy localization support
+
 ## [v1.25.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.25.1) (2025-10-06)
  - Fix
    - Updated delay handling to use centralized external configuration in SDK interceptor
