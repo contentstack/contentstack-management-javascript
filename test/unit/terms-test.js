@@ -203,6 +203,490 @@ describe('Contentstack Term test', () => {
       })
       .catch(done)
   })
+
+  it('term locales test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet(`/taxonomies/taxonomy_uid/terms/UID/locales`).reply(200, {
+      terms: [
+        {
+          ...termsMock,
+          locale: 'en-us'
+        },
+        {
+          ...termsMock,
+          locale: 'hi-in'
+        }
+      ],
+      count: 2
+    })
+    makeTerms({
+      term: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .locales()
+      .then((response) => {
+        expect(response).to.have.property('terms')
+        expect(response.terms).to.be.an('array')
+        expect(response.count).to.be.equal(2)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('term localize test', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost(`/taxonomies/taxonomy_uid/terms/UID`).reply(200, {
+      term: {
+        ...termsMock,
+        locale: 'hi-in'
+      }
+    })
+    const localizedTerm = {
+      term: {
+        uid: 'UID',
+        name: 'Term localized',
+        parent_uid: null
+      }
+    }
+    makeTerms({
+      term: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .localize(localizedTerm, { locale: 'hi-in' })
+      .then((term) => {
+        checkTerms(term)
+        expect(term.uid).to.be.equal('UID')
+        expect(term.locale).to.be.equal('hi-in')
+        done()
+      })
+      .catch(done)
+  })
+
+  // Get all Terms of a Taxonomy with query parameters
+  it('terms query with locale parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ locale: 'hi-in' })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with branch parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?branch=main`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ branch: 'main' })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with include_fallback parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?include_fallback=true`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ include_fallback: true })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with fallback_locale parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?fallback_locale=en-us`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ fallback_locale: 'en-us' })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with depth parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?depth=2`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ depth: 2 })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with include_children_count parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?include_children_count=true`).reply(200, {
+      terms: [
+        {
+          ...termsMock,
+          children_count: 2
+        }
+      ],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ include_children_count: true })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with include_referenced_entries_count parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?include_referenced_entries_count=true`).reply(200, {
+      terms: [
+        {
+          ...termsMock,
+          referenced_entries_count: 5
+        }
+      ],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ include_referenced_entries_count: true })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with include_count parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?include_count=true`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ include_count: true })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with include_order parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?include_order=true`).reply(200, {
+      terms: [
+        {
+          ...termsMock,
+          order: 1
+        }
+      ],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ include_order: true })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with asc parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?asc=name`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ asc: 'name' })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with desc parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?desc=name`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ desc: 'name' })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with query parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?query=UID`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ query: 'UID' })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with typeahead parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?typeahead=term`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ typeahead: 'term' })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with deleted parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?deleted=true`).reply(200, {
+      terms: [
+        {
+          ...termsMock,
+          uuid: 'dummy-uuid-123',
+          taxonomy_uuid: 'dummy-taxonomy-uuid-456'
+        }
+      ],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ deleted: true })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with skip and limit parameters test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?skip=0&limit=10`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ skip: 0, limit: 10 })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with taxonomy_uuid parameter test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?taxonomy_uuid=dummy-taxonomy-uuid-456`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ taxonomy_uuid: 'dummy-taxonomy-uuid-456' })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('terms query with multiple parameters test', done => {
+    var mock = new MockAdapter(Axios)
+    // Mock for base terms endpoint
+    mock.onGet(`/taxonomies/taxonomy_uid/terms`).reply(200, {
+      terms: [termsMock],
+      count: 1
+    })
+    mock.onGet(`/taxonomies/taxonomy_uid/terms?locale=hi-in&include_children_count=true&include_count=true&skip=0&limit=10`).reply(200, {
+      terms: [
+        {
+          ...termsMock,
+          locale: 'hi-in',
+          children_count: 3
+        }
+      ],
+      count: 1
+    })
+    makeTerms({
+      stackHeaders: stackHeadersMock
+    })
+      .query()
+      .find({ 
+        locale: 'hi-in',
+        include_children_count: true,
+        include_count: true,
+        skip: 0,
+        limit: 10
+      })
+      .then((response) => {
+        expect(response).to.have.property('items')
+        done()
+      })
+      .catch(done)
+  })
+
 })
 
 function makeTerms (data = {}) {
