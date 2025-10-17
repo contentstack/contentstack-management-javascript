@@ -673,7 +673,7 @@ describe('Contentstack Term test', () => {
       stackHeaders: stackHeadersMock
     })
       .query()
-      .find({ 
+      .find({
         locale: 'hi-in',
         include_children_count: true,
         include_count: true,
@@ -686,7 +686,6 @@ describe('Contentstack Term test', () => {
       })
       .catch(done)
   })
-
 })
 
 function makeTerms (data = {}) {
