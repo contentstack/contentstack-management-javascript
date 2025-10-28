@@ -125,6 +125,35 @@ describe('Terms API Test', () => {
       .catch(done)
   })
 
+  it('should publish with api_version', done => {
+    const publishData = {
+      locales: ['en-us'],
+      environments: ['development'],
+      items: [
+        {
+          uid: taxonomy.uid,
+          term_uid: 'term_test'
+        },
+        {
+          uid: taxonomy.uid,
+          term_uid: 'term_test_child1'
+        },
+        {
+          uid: taxonomy.uid,
+          term_uid: 'term_test_child2'
+        }
+      ]
+    }
+    makeTaxonomy()
+      .publish(publishData, '3.2')
+      .then((response) => {
+        expect(response.notice).to.not.equal(null)
+        expect(response.job_id).to.not.equal(undefined)
+        done()
+      })
+      .catch(done)
+  })
+
   it('should search the term with the string passed', done => {
     makeTerms(taxonomy.uid).search(termString)
       .then((response) => {
@@ -164,6 +193,10 @@ describe('Terms API Test', () => {
 
 function makeTerms (taxonomyUid, termUid = null) {
   return client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomyUid).terms(termUid)
+}
+
+function makeTaxonomy () {
+  return client.stack({ api_key: process.env.API_KEY }).taxonomy()
 }
 
 describe('Branch creation api Test', () => {
