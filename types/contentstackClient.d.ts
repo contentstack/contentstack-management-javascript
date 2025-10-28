@@ -31,6 +31,7 @@ export interface ContentstackToken {
 export interface ContentstackConfig extends AxiosRequestConfig, ContentstackToken {
     proxy?: ProxyConfig | false
     endpoint?: string
+    region?: string
     host?: string
     timeout?: number
     maxRequests?: number
