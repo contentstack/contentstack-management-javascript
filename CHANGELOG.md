@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.25.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.25.2) (2025-10-28)
+ - Fix
+   - Fixed HTTP client region endpoint initialization to default to 'na' region when region parameter is not provided
+ - Test
+   - Added comprehensive test coverage for region endpoint functionality
+     - Added 48 test cases for getRegionEndpoint function covering all supported regions, aliases, and service endpoints
+     - Added 14 test cases for region configuration in client initialization
+     - Added 13 test cases for HTTP client region integration
+   - All 626 tests passing with no regressions
+
 ## [v1.25.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.25.1) (2025-10-06)
  - Fix
    - Updated delay handling to use centralized external configuration in SDK interceptor
