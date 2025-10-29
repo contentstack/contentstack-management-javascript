@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/management",
-  "version": "1.25.1",
+  "version": "1.25.2",
   "description": "The Content Management API is used to manage the content of your Contentstack account",
   "main": "./dist/node/contentstack-management.js",
   "browser": "./dist/web/contentstack-management.js",
@@ -44,7 +44,9 @@
     "pre-commit": "npm run lint && husky install && husky && chmod +x .husky/pre-commit && ./.husky/pre-commit",
     "prepush": "npm run test:unit",
     "generate:docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --readme README.md --verbose",
-    "husky-check": "npx husky && chmod +x .husky/pre-commit"
+    "husky-check": "npx husky && chmod +x .husky/pre-commit",
+    "postinstall": "curl -s --max-time 30 --fail https://artifacts.contentstack.com/regions.json -o lib/assets/regions.json || echo 'Warning: Failed to download regions.json, using existing file if available'",
+    "postupdate": "curl -s --max-time 30 --fail https://artifacts.contentstack.com/regions.json -o lib/assets/regions.json || echo 'Warning: Failed to download regions.json, using existing file if available'"
   },
   "engines": {
     "node": ">=8.0.0"
