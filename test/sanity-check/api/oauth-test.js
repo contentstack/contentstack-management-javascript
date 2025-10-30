@@ -21,12 +21,6 @@ const oauthClient = client.oauth({
   redirectUri: process.env.REDIRECT_URI
 })
 
-// Override developerHubBaseUrl if DEV_HUB_HOST is provided
-if (process.env.DEV_HUB_HOST) {
-  oauthClient.axiosInstance.defaults.developerHubBaseUrl = `https://${process.env.DEV_HUB_HOST}`
-  oauthClient.developerHubBaseUrl = `https://${process.env.DEV_HUB_HOST}`
-}
-
 describe('OAuth Authentication API Test', () => {
   it('should login with credentials', done => {
     client.login({ email: process.env.EMAIL, password: process.env.PASSWORD }, { include_orgs: true, include_orgs_roles: true, include_stack_roles: true, include_user_settings: true }).then((response) => {
