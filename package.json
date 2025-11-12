@@ -44,9 +44,7 @@
     "pre-commit": "npm run lint && husky install && husky && chmod +x .husky/pre-commit && ./.husky/pre-commit",
     "prepush": "npm run test:unit",
     "generate:docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --readme README.md --verbose",
-    "husky-check": "npx husky && chmod +x .husky/pre-commit",
-    "postinstall": "curl -s --max-time 30 --fail https://artifacts.contentstack.com/regions.json -o lib/assets/regions.json || echo 'Warning: Failed to download regions.json, using existing file if available'",
-    "postupdate": "curl -s --max-time 30 --fail https://artifacts.contentstack.com/regions.json -o lib/assets/regions.json || echo 'Warning: Failed to download regions.json, using existing file if available'"
+    "husky-check": "npx husky && chmod +x .husky/pre-commit"
   },
   "engines": {
     "node": ">=8.0.0"
@@ -54,6 +52,7 @@
   "author": "Contentstack",
   "license": "MIT",
   "dependencies": {
+    "@contentstack/utils": "^1.6.1",
     "assert": "^2.1.0",
     "axios": "^1.12.2",
     "buffer": "^6.0.3",
