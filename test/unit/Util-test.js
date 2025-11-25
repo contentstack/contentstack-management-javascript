@@ -300,7 +300,7 @@ describe('Get User Agent', () => {
       })
 
       it('should return correct personalize endpoint for GCP NA region', done => {
-        const endpoint = getRegionEndpoint('gcp-na', 'personalize')
+        const endpoint = getRegionEndpoint('gcp-na', 'personalizeManagement')
         expect(endpoint).to.be.equal('gcp-na-personalize-api.contentstack.com', 'GCP NA personalize endpoint should match')
         done()
       })
