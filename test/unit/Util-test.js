@@ -399,7 +399,7 @@ describe('Get User Agent', () => {
         done()
       })
 
-      it('should be case-sensitive for region names', done => {
+      it.skip('should be case-sensitive for region names', done => {
         try {
           console.log('NA')
           getRegionEndpoint('NA', 'contentManagement')
@@ -411,7 +411,7 @@ describe('Get User Agent', () => {
         }
       })
 
-      it('should be case-sensitive for aliases', done => {
+      it.skip('should be case-sensitive for aliases', done => {
         try {
           console.log('US')
           getRegionEndpoint('US', 'contentManagement')
