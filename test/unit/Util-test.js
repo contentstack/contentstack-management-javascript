@@ -401,11 +401,9 @@ describe('Get User Agent', () => {
 
       it.skip('should be case-sensitive for region names', done => {
         try {
-          console.log('NA')
           getRegionEndpoint('NA', 'contentManagement')
           done(new Error('Should have thrown an error for uppercase region'))
         } catch (error) {
-          console.log(error)
           expect(error.message).to.contain('Invalid region', 'Should throw error for uppercase region')
           done()
         }
@@ -413,11 +411,9 @@ describe('Get User Agent', () => {
 
       it.skip('should be case-sensitive for aliases', done => {
         try {
-          console.log('US')
           getRegionEndpoint('US', 'contentManagement')
           done(new Error('Should have thrown an error for uppercase alias'))
         } catch (error) {
-          console.log(error)
           expect(error.message).to.contain('Invalid region', 'Should throw error for uppercase alias')
           done()
         }
