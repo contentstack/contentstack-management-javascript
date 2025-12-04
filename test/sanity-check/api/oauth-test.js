@@ -33,7 +33,7 @@ describe('OAuth Authentication API Test', () => {
 
   it('should get Current user info test', done => {
     client.getUser().then((user) => {
-      expect(user.uid).not.to.be(undefined)
+      expect(user.uid).to.be.not.undefined
       done()
     })
       .catch(done)
