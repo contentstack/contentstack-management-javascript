@@ -50,6 +50,7 @@ describe('Contentstack User Session api Test', () => {
     client.login({ email: process.env.EMAIL, password: process.env.PASSWORD }, { include_orgs: true, include_orgs_roles: true, include_stack_roles: true, include_user_settings: true }).then((response) => {
       loggedinUserID = response.user.uid
       jsonWrite(response.user, 'loggedinuser.json')
+      authtoken = response.user.authtoken
       expect(response.notice).to.be.equal('Login Successful.', 'Login success messsage does not match.')
       done()
     })
@@ -58,7 +59,6 @@ describe('Contentstack User Session api Test', () => {
 
   it('should get Current user info test', done => {
     client.getUser().then((user) => {
-      authtoken = user.authtoken
       expect(user.uid).to.be.equal(loggedinUserID)
       done()
     })
