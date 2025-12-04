@@ -24,6 +24,7 @@ const oauthClient = client.oauth({
 describe('OAuth Authentication API Test', () => {
   it('should login with credentials', done => {
     client.login({ email: process.env.EMAIL, password: process.env.PASSWORD }, { include_orgs: true, include_orgs_roles: true, include_stack_roles: true, include_user_settings: true }).then((response) => {
+      authtoken = response.user.authtoken
       expect(response.notice).to.be.equal('Login Successful.', 'Login success messsage does not match.')
       done()
     })
@@ -32,7 +33,7 @@ describe('OAuth Authentication API Test', () => {
 
   it('should get Current user info test', done => {
     client.getUser().then((user) => {
-      authtoken = user.authtoken
+      expect(user.uid).not.to.be(undefined)
       done()
     })
       .catch(done)
