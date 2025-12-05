@@ -1,4 +1,4 @@
-import getUserAgent, { __RewireAPI__ as getUserAgentRewireApi, isHost, getRegionEndpoint } from '../../lib/core/Util.js'
+import getUserAgent, { __RewireAPI__ as getUserAgentRewireApi, isHost } from '../../lib/core/Util.js'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 const headerRegEx = /(app|sdk|platform|integration|os) \S+(\/\d+.\d+.\d+(-[\w\d-]+)?)?;/igm
