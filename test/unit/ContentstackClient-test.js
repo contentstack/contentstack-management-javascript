@@ -273,7 +273,6 @@ describe('Contentstack Client', () => {
     it('should prioritize tfa_token over mfaSecret', done => {
       mock.onPost('/user-session').reply(config => {
         const data = JSON.parse(config.data)
-        console.log(data)
         expect(data.user).to.deep.equal({
           email: 'test@example.com',
           password: 'password123',
