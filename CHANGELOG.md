@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.27.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.0) (2025-12-15)
+ - Enhancement
+   - Refactored region endpoint resolution to use centralized `@contentstack/utils` package
+   - Improved region handling flexibility by leveraging shared utility functions
+
 ## [v1.26.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.26.0) (2025-10-20)
  - Enhancement
    - Added taxonomy localization support
