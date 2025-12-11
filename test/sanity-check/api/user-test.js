@@ -136,11 +136,11 @@ describe('Contentstack User Session api Test', () => {
     // The new implementation uses getContentstackEndpoint which handles region validation
     // It should not throw an error, but will use whatever getContentstackEndpoint returns
     try {
-      const client = contentstack.client({ region: 'DUMMYREGION' })
-      expect(client).to.not.equal(null, 'Client should be created even with invalid region')
-      done()
+      contentstack.client({ region: 'DUMMYREGION' })
+      done(new Error('Expected an error to be thrown for invalid region'))
     } catch (error) {
-      done(error)
+      expect(error.message).to.include('Invalid region')
+      done()
     }
   })
 })
