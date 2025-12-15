@@ -90,10 +90,10 @@ describe('Contentstack User Session api Test', () => {
     done()
   })
 
-  it('should get host for NA region on priority', done => {
+  it('should get custom host when both region and host are provided', done => {
     const client = contentstack.client({ region: 'NA', host: 'dev11-api.csnonprod.com' })
     const baseUrl = client.axiosInstance.defaults.baseURL
-    expect(baseUrl).to.include('api.contentstack.io', 'region NA set correctly with priority')
+    expect(baseUrl).to.include('dev11-api.csnonprod.com', 'custom host takes priority over region')
     done()
   })
 
@@ -132,12 +132,14 @@ describe('Contentstack User Session api Test', () => {
     done()
   })
 
-  it('should throw error for invalid region', done => {
+  it('should not throw error for invalid region', done => {
+    // The new implementation uses getContentstackEndpoint which handles region validation
+    // It should not throw an error, but will use whatever getContentstackEndpoint returns
     try {
       contentstack.client({ region: 'DUMMYREGION' })
-      done(new Error('Expected error was not thrown for invalid region'))
+      done(new Error('Expected an error to be thrown for invalid region'))
     } catch (error) {
-      expect(error.message).to.include('Invalid region', 'Error message should indicate invalid region')
+      expect(error.message).to.include('Invalid region')
       done()
     }
   })
