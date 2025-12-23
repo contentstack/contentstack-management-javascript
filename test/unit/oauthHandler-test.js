@@ -288,7 +288,7 @@ describe('OAuthHandler', () => {
         await oauthHandler.getOauthAppAuthorization()
         throw new Error('Expected error not thrown')
       } catch (error) {
-        expect(error.message).to.equal('No authorizations found for current user!')
+        expect(error.message).to.equal('No authorizations found for the current user. Verify user permissions and try again.')
       }
     })
 
@@ -301,7 +301,7 @@ describe('OAuthHandler', () => {
         await oauthHandler.getOauthAppAuthorization()
         throw new Error('Expected error not thrown')
       } catch (error) {
-        expect(error.message).to.equal('No authorizations found for the app!')
+        expect(error.message).to.equal('No authorizations found for the app. Verify app configuration and try again.')
       }
     })
   })
