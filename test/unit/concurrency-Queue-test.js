@@ -189,7 +189,7 @@ describe('Concurrency queue test', () => {
       new ConcurrencyQueue({ axios: undefined })
       expect.fail('Undefined axios should fail')
     } catch (error) {
-      expect(error.message).to.be.equal('Axios instance is not present')
+      expect(error.message).to.be.equal('Axios instance is not present. Initialize the HTTP client and try again.')
       done()
     }
   })
@@ -232,7 +232,7 @@ describe('Concurrency queue test', () => {
       makeConcurrencyQueue({ maxRequests: -10 })
       expect.fail('Negative concurrency queue should fail')
     } catch (error) {
-      expect(error.message).to.be.equal('Concurrency Manager Error: minimum concurrent requests is 1')
+      expect(error.message).to.be.equal('Concurrency Manager Error: Minimum concurrent requests must be at least 1.')
       done()
     }
   })
@@ -242,7 +242,7 @@ describe('Concurrency queue test', () => {
       makeConcurrencyQueue({ retryLimit: -10 })
       expect.fail('Negative retry limit should fail')
     } catch (error) {
-      expect(error.message).to.be.equal('Retry Policy Error: minimum retry limit is 1')
+      expect(error.message).to.be.equal('Retry Policy Error: Minimum retry limit must be at least 1.')
       done()
     }
   })
@@ -252,7 +252,7 @@ describe('Concurrency queue test', () => {
       makeConcurrencyQueue({ retryDelay: 10 })
       expect.fail('Retry delay should be min 300ms')
     } catch (error) {
-      expect(error.message).to.be.equal('Retry Policy Error: minimum retry delay for requests is 300')
+      expect(error.message).to.be.equal('Retry Policy Error: Minimum retry delay must be at least 300ms.')
       done()
     }
   })
