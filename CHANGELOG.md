@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.27.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.1) (2026-01-5)
+ - Fix
+   - Resolve qs dependency version
+
 ## [v1.27.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.0) (2025-12-15)
  - Enhancement
    - Refactored region endpoint resolution to use centralized `@contentstack/utils` package
