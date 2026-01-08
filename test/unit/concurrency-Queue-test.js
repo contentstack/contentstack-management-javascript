@@ -189,7 +189,7 @@ describe('Concurrency queue test', () => {
       new ConcurrencyQueue({ axios: undefined })
       expect.fail('Undefined axios should fail')
     } catch (error) {
-      expect(error.message).to.be.equal('Axios instance is not present. Initialize the HTTP client and try again.')
+      expect(error.message).to.be.equal('HTTP client is required. Initialize the HTTP client and try again.')
       done()
     }
   })
