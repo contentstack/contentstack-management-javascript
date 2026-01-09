@@ -401,7 +401,7 @@ describe('Contentstack Asset test', () => {
         done()
       })
       .catch((err) => {
-        expect(err.message).to.be.equal('Asset URL can not be empty')
+        expect(err.message).to.be.equal('Asset URL is required. Provide a valid asset URL and try again.')
         done()
       })
   })
@@ -415,7 +415,7 @@ describe('Contentstack Asset test', () => {
     })
       .download({ responseType: 'blob' })
       .catch((err) => {
-        expect(err.message).to.be.equal('Asset URL can not be empty')
+        expect(err.message).to.be.equal('Asset URL is required. Provide a valid asset URL and try again.')
         done()
       })
   })
