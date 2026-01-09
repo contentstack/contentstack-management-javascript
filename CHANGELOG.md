@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.27.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.2) (2026-01-12)
+ - Enhancement
+   - Improved error messages
+
 ## [v1.27.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.1) (2026-01-5)
  - Fix
    - Resolve qs dependency version

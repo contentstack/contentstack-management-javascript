@@ -88,7 +88,7 @@ describe('Contentstack ContentType test', () => {
 
   it('ContentType generate UID from content type name test', done => {
     const contentType = makeContentType()
-    expect(contentType.generateUid.bind(contentType, null)).to.throw('Expected parameter name')
+    expect(contentType.generateUid.bind(contentType, null)).to.throw('Parameter name is required. Provide a valid parameter name and try again.')
     expect(contentType.generateUid('Test Name')).to.be.equal('test_name')
     expect(contentType.generateUid('Test @Name')).to.be.equal('test_name')
     expect(contentType.generateUid('12 Test Name')).to.be.equal('12_test_name')

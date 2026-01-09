@@ -3,6 +3,7 @@ import contentstackHTTPClient from '../../lib/core/contentstackHTTPClient.js'
 import { expect } from 'chai'
 import { describe, it, beforeEach } from 'mocha'
 import sinon from 'sinon'
+import MockAdapter from 'axios-mock-adapter'
 const logHandlerStub = sinon.stub()
 
 describe('Contentstack HTTP Client', () => {
@@ -166,5 +167,315 @@ describe('Contentstack HTTP Client', () => {
     expect(axiosInstance.defaults.headers.accessToken).to.be.equal('accessToken', 'Api not Equal to \'accessToken\'')
     expect(axiosInstance.defaults.headers['x-header-ea']).to.be.equal('ea1,ea2')
     done()
+  })
+
+  describe('Plugin Support', () => {
+    it('should call onRequest hook before request is sent', (done) => {
+      const onRequestSpy = sinon.spy()
+      const plugin = {
+        onRequest: onRequestSpy,
+        onResponse: () => {}
+      }
+
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: [plugin]
+      })
+
+      const mock = new MockAdapter(axiosInstance)
+      mock.onGet('/test').reply(200, { data: 'test' })
+
+      axiosInstance.get('/test').then(() => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(onRequestSpy.calledOnce).to.be.true
+        // eslint-disable-next-line no-unused-expressions
+        expect(onRequestSpy.calledWith(sinon.match.object)).to.be.true
+        done()
+      }).catch(done)
+    })
+
+    it('should use returned request from onRequest hook', (done) => {
+      const customHeader = 'custom-value'
+      const plugin = {
+        onRequest: (request) => {
+          // Return modified request
+          return {
+            ...request,
+            headers: {
+              ...request.headers,
+              'X-Custom-Header': customHeader
+            }
+          }
+        },
+        onResponse: () => {}
+      }
+
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: [plugin]
+      })
+
+      const mock = new MockAdapter(axiosInstance)
+      mock.onGet('/test').reply((config) => {
+        expect(config.headers['X-Custom-Header']).to.be.equal(customHeader)
+        return [200, { data: 'test' }]
+      })
+
+      axiosInstance.get('/test').then(() => {
+        done()
+      }).catch(done)
+    })
+
+    it('should call onResponse hook after successful response', (done) => {
+      const onResponseSpy = sinon.spy()
+      const plugin = {
+        onRequest: () => {},
+        onResponse: onResponseSpy
+      }
+
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: [plugin]
+      })
+
+      const mock = new MockAdapter(axiosInstance)
+      mock.onGet('/test').reply(200, { data: 'test' })
+
+      axiosInstance.get('/test').then(() => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(onResponseSpy.calledOnce).to.be.true
+        // eslint-disable-next-line no-unused-expressions
+        expect(onResponseSpy.calledWith(sinon.match.object)).to.be.true
+        done()
+      }).catch(done)
+    })
+
+    it('should call onResponse hook after error response', (done) => {
+      const onResponseSpy = sinon.spy()
+      const plugin = {
+        onRequest: () => {},
+        onResponse: (error) => {
+          onResponseSpy(error)
+          return error
+        }
+      }
+
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: [plugin],
+        retryOnError: false,
+        retryLimit: 0,
+        retryOnHttpServerError: false, // Disable HTTP server error retries
+        maxNetworkRetries: 0 // Disable network retries
+      })
+
+      const mock = new MockAdapter(axiosInstance)
+      mock.onGet('/test').reply(500, { error: 'Server Error' })
+
+      axiosInstance.get('/test').catch(() => {
+        // Plugin should be called for the error
+        // eslint-disable-next-line no-unused-expressions
+        expect(onResponseSpy.called).to.be.true
+        if (onResponseSpy.called) {
+          // eslint-disable-next-line no-unused-expressions
+          expect(onResponseSpy.calledWith(sinon.match.object)).to.be.true
+        }
+        done()
+      }).catch((err) => {
+        // Ensure done is called even if there's an unexpected error
+        done(err)
+      })
+    })
+
+    it('should use returned response from onResponse hook', (done) => {
+      const customData = { modified: true }
+      const plugin = {
+        onRequest: () => {},
+        onResponse: (response) => {
+          // Return modified response
+          return {
+            ...response,
+            data: {
+              ...response.data,
+              customField: customData
+            }
+          }
+        }
+      }
+
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: [plugin]
+      })
+
+      const mock = new MockAdapter(axiosInstance)
+      mock.onGet('/test').reply(200, { data: 'test' })
+
+      axiosInstance.get('/test').then((response) => {
+        expect(response.data.customField).to.deep.equal(customData)
+        done()
+      }).catch(done)
+    })
+
+    it('should run multiple plugins in sequence with return values', (done) => {
+      const callOrder = []
+      let requestHeader1 = null
+      let requestHeader2 = null
+      const plugin1 = {
+        onRequest: (request) => {
+          callOrder.push('plugin1-request')
+          requestHeader1 = 'plugin1-value'
+          return {
+            ...request,
+            headers: {
+              ...request.headers,
+              'X-Plugin1': requestHeader1
+            }
+          }
+        },
+        onResponse: (response) => {
+          callOrder.push('plugin1-response')
+          return response
+        }
+      }
+      const plugin2 = {
+        onRequest: (request) => {
+          callOrder.push('plugin2-request')
+          requestHeader2 = 'plugin2-value'
+          // Should receive request from plugin1
+          expect(request.headers['X-Plugin1']).to.be.equal(requestHeader1)
+          return {
+            ...request,
+            headers: {
+              ...request.headers,
+              'X-Plugin2': requestHeader2
+            }
+          }
+        },
+        onResponse: (response) => {
+          callOrder.push('plugin2-response')
+          return response
+        }
+      }
+
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: [plugin1, plugin2]
+      })
+
+      const mock = new MockAdapter(axiosInstance)
+      mock.onGet('/test').reply((config) => {
+        expect(config.headers['X-Plugin1']).to.be.equal(requestHeader1)
+        expect(config.headers['X-Plugin2']).to.be.equal(requestHeader2)
+        return [200, { data: 'test' }]
+      })
+
+      axiosInstance.get('/test').then(() => {
+        expect(callOrder).to.deep.equal(['plugin1-request', 'plugin2-request', 'plugin1-response', 'plugin2-response'])
+        done()
+      }).catch(done)
+    })
+
+    it('should skip plugin errors and continue with other plugins', (done) => {
+      const logHandlerSpy = sinon.spy()
+      const workingPluginSpy = sinon.spy()
+      const customHeader = 'working-plugin-header'
+      const errorPlugin = {
+        onRequest: () => { throw new Error('Plugin error') },
+        onResponse: () => { throw new Error('Plugin error') }
+      }
+      const workingPlugin = {
+        onRequest: (request) => {
+          workingPluginSpy()
+          return {
+            ...request,
+            headers: {
+              ...request.headers,
+              'X-Working': customHeader
+            }
+          }
+        },
+        onResponse: (response) => {
+          workingPluginSpy()
+          return response
+        }
+      }
+
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: [errorPlugin, workingPlugin],
+        logHandler: logHandlerSpy
+      })
+
+      const mock = new MockAdapter(axiosInstance)
+      mock.onGet('/test').reply((config) => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(config.headers['X-Working']).to.be.equal(customHeader)
+        return [200, { data: 'test' }]
+      })
+
+      axiosInstance.get('/test').then(() => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(workingPluginSpy.callCount).to.be.equal(2) // Called for both request and response
+        // eslint-disable-next-line no-unused-expressions
+        expect(logHandlerSpy.called).to.be.true
+        done()
+      }).catch(done)
+    })
+
+    it('should filter out invalid plugins', (done) => {
+      const validPluginSpy = sinon.spy()
+      const validPlugin = {
+        onRequest: validPluginSpy,
+        onResponse: () => {}
+      }
+      const invalidPlugins = [
+        null,
+        undefined,
+        {},
+        { onRequest: () => {} }, // missing onResponse
+        { onResponse: () => {} }, // missing onRequest
+        { onRequest: 'not-a-function', onResponse: () => {} },
+        'not-an-object'
+      ]
+
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: [validPlugin, ...invalidPlugins]
+      })
+
+      const mock = new MockAdapter(axiosInstance)
+      mock.onGet('/test').reply(200, { data: 'test' })
+
+      axiosInstance.get('/test').then(() => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(validPluginSpy.calledOnce).to.be.true
+        done()
+      }).catch(done)
+    })
+
+    it('should handle empty plugins array', (done) => {
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: []
+      })
+
+      // Should not throw errors
+      // eslint-disable-next-line no-unused-expressions
+      expect(axiosInstance).to.not.be.undefined
+      done()
+    })
+
+    it('should handle undefined plugins', (done) => {
+      const axiosInstance = contentstackHTTPClient({
+        defaultHostName: 'defaulthost',
+        plugins: undefined
+      })
+
+      // Should not throw errors
+      // eslint-disable-next-line no-unused-expressions
+      expect(axiosInstance).to.not.be.undefined
+      done()
+    })
   })
 })
