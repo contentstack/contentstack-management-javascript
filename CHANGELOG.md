@@ -1,5 +1,23 @@
 # Changelog
 
+## [v1.27.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.2) (2026-01-12)
+ - Enhancement
+   - Improved error messages
+   - params support in entry variants update
+
+## [v1.27.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.1) (2026-01-5)
+ - Fix
+   - Resolve qs dependency version
+
+## [v1.27.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.0) (2025-12-15)
+ - Enhancement
+   - Refactored region endpoint resolution to use centralized `@contentstack/utils` package
+   - Improved region handling flexibility by leveraging shared utility functions
+
+## [v1.26.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.26.0) (2025-10-20)
+ - Enhancement
+   - Added taxonomy localization support
+
 ## [v1.25.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.25.1) (2025-10-06)
  - Fix
    - Updated delay handling to use centralized external configuration in SDK interceptor

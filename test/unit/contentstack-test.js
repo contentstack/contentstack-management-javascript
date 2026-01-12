@@ -1,11 +1,31 @@
 import { client, __RewireAPI__ as createClientRewireApi } from '../../lib/contentstack.js'
 import { expect } from 'chai'
-import { describe, it } from 'mocha'
+import { describe, it, beforeEach, afterEach } from 'mocha'
 import packages from '../../package.json'
 import sinon from 'sinon'
 const SDK = `contentstack-management-javascript/${packages.version}`
 
 describe('Contentstack HTTP Client', () => {
+  beforeEach(() => {
+    // Mock getContentstackEndpoint to return expected hostnames
+    createClientRewireApi.__Rewire__('getContentstackEndpoint', (region, service, useHttps) => {
+      const regionHostMap = {
+        NA: 'api.contentstack.io',
+        EU: 'eu-api.contentstack.com',
+        AU: 'au-api.contentstack.com',
+        AZURE_NA: 'azure-na-api.contentstack.com',
+        AZURE_EU: 'azure-eu-api.contentstack.com',
+        GCP_NA: 'gcp-na-api.contentstack.com',
+        GCP_EU: 'gcp-eu-api.contentstack.com'
+      }
+      return regionHostMap[region] || 'api.contentstack.io'
+    })
+  })
+
+  afterEach(() => {
+    createClientRewireApi.__ResetDependency__('getContentstackEndpoint')
+  })
+
   it('Contentstack Http Client Object successful', done => {
     createClientRewireApi.__Rewire__('client', { create: sinon.stub() })
     const createHttpClientStub = sinon.stub()
@@ -104,6 +124,30 @@ describe('Contentstack HTTP Client', () => {
     createClientRewireApi.__Rewire__('contentstackClient', sinon.stub().returns({}))
     client({ early_access: ['ea1', 'ea2'] })
     expect(createHttpClientStub.args[0][0].headers.early_access).to.be.eql('ea1,ea2', 'Early access does not match')
+    createClientRewireApi.__ResetDependency__('httpClient')
+    createClientRewireApi.__ResetDependency__('contentstackClient')
+    done()
+  })
+
+  it('Contentstack Http Client with EU region', done => {
+    createClientRewireApi.__Rewire__('client', { create: sinon.stub() })
+    const createHttpClientStub = sinon.stub()
+    createClientRewireApi.__Rewire__('httpClient', createHttpClientStub)
+    createClientRewireApi.__Rewire__('contentstackClient', sinon.stub().returns({}))
+    client({ region: 'EU' })
+    expect(createHttpClientStub.args[0][0].defaultHostName).to.be.equal('eu-api.contentstack.com', 'EU region host name not match')
+    createClientRewireApi.__ResetDependency__('httpClient')
+    createClientRewireApi.__ResetDependency__('contentstackClient')
+    done()
+  })
+
+  it('Contentstack Http Client with custom host taking priority over region', done => {
+    createClientRewireApi.__Rewire__('client', { create: sinon.stub() })
+    const createHttpClientStub = sinon.stub()
+    createClientRewireApi.__Rewire__('httpClient', createHttpClientStub)
+    createClientRewireApi.__Rewire__('contentstackClient', sinon.stub().returns({}))
+    client({ region: 'EU', host: 'custom-host.com' })
+    expect(createHttpClientStub.args[0][0].defaultHostName).to.be.equal('custom-host.com', 'Custom host should take priority over region')
     createClientRewireApi.__ResetDependency__('httpClient')
     createClientRewireApi.__ResetDependency__('contentstackClient')
     done()
