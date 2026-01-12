@@ -1,5 +1,5 @@
 import { User } from './user'
-import { AxiosRequestConfig } from 'axios'
+import { AxiosRequestConfig, AxiosRequestConfig as AxiosRequest, AxiosResponse, AxiosError } from 'axios'
 import { AnyProperty } from './utility/fields'
 import { Pagination } from './utility/pagination'
 import { Response } from './contentstackCollection'
@@ -22,6 +22,26 @@ export interface RetryDelayOption {
     customBackoff?: (retryCount: number, error: Error) => number
 }
 
+/**
+ * Plugin interface for intercepting and modifying requests and responses
+ * @interface Plugin
+ */
+export interface Plugin {
+    /**
+     * Called before each request is sent. Should return the request object (modified or original).
+     * @param {AxiosRequestConfig} request - The axios request configuration object
+     * @returns {AxiosRequestConfig} The request object to use (return undefined to keep original)
+     */
+    onRequest: (request: AxiosRequest) => AxiosRequest | undefined
+    /**
+     * Called after each response is received (both success and error cases).
+     * Should return the response/error object (modified or original).
+     * @param {AxiosResponse | AxiosError} response - The axios response object (success) or error object (failure)
+     * @returns {AxiosResponse | AxiosError} The response/error object to use (return undefined to keep original)
+     */
+    onResponse: (response: AxiosResponse | AxiosError) => AxiosResponse | AxiosError | undefined
+}
+
 export interface ContentstackToken {
     authorization?: string
     authtoken?: string
@@ -31,6 +51,7 @@ export interface ContentstackToken {
 export interface ContentstackConfig extends AxiosRequestConfig, ContentstackToken {
     proxy?: ProxyConfig | false
     endpoint?: string
+    region?: string
     host?: string
     timeout?: number
     maxRequests?: number
@@ -45,7 +66,12 @@ export interface ContentstackConfig extends AxiosRequestConfig, ContentstackToke
     logHandler?: (level: string, data: any) => void
     application?: string
     integration?: string
-    delayMs?: number 
+    delayMs?: number
+    /**
+     * Array of plugin objects to intercept and modify requests/responses
+     * Each plugin must implement onRequest and onResponse methods
+     */
+    plugins?: Plugin[]
 }
 
 export interface LoginDetails {

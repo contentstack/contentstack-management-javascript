@@ -9,7 +9,7 @@ fileignoreconfig:
     ignore_detectors:
       - filecontent
   - filename: package-lock.json
-    checksum: bab53d56ce2609e960fdbbd1e87cc89915820e6761016ddd74ee57f931f4223d
+    checksum: 17b5bbabcc58beaa180a7fa931fc3fb407ee0e3447d47da224f60118c0a4c294
   - filename: .husky/pre-commit
     checksum: 52a664f536cf5d1be0bea19cb6031ca6e8107b45b6314fe7d47b7fad7d800632
   - filename: test/sanity-check/api/user-test.js
@@ -30,4 +30,11 @@ fileignoreconfig:
     checksum: b76ca091caa3a1b2658cd422a2d8ef3ac9996aea0aff3f982d56bb309a3d9fde
   - filename: test/unit/ContentstackClient-test.js
     checksum: 974a4f335aef025b657d139bb290233a69bed1976b947c3c674e97baffe4ce2f
+  - filename: test/unit/ContentstackHTTPClient-test.js
+    checksum: 4043efd843e24da9afd0272c55ef4b0432e3374b2ca12b913f1a6654df3f62be
+  - filename: test/unit/contentstack-test.js
+    checksum: 2597efae3c1ab8cc173d5bf205f1c76932211f8e0eb2a16444e055d83481976c
 version: "1.0"
+
+
+
