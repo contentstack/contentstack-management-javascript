@@ -530,6 +530,115 @@ describe('Concurrency queue test', () => {
       })
       .catch(done)
   })
+
+  it('should not refresh token when error_code is 294 (2FA required) with 401 status', done => {
+    let refreshTokenCallCount = 0
+    const refreshTokenStub = sinon.stub().callsFake(() => {
+      refreshTokenCallCount++
+      return Promise.resolve({ authorization: 'Bearer new_token' })
+    })
+
+    const axiosWithRefresh = client({
+      baseURL: `${host}:${port}`,
+      authorization: 'Bearer <token_value>',
+      refreshToken: refreshTokenStub
+    })
+
+    const mock = new MockAdapter(axiosWithRefresh.axiosInstance)
+    mock.onGet('/test2fa').reply(401, {
+      error_message: 'Please login using the Two-Factor verification Token',
+      error_code: 294,
+      errors: [],
+      statusCode: 401,
+      tfa_type: 'totp_authenticator'
+    })
+
+    axiosWithRefresh.axiosInstance.get('/test2fa')
+      .then(() => {
+        done(new Error('Expected error was not thrown'))
+      })
+      .catch((error) => {
+        // Verify refreshToken was NOT called
+        expect(refreshTokenCallCount).to.equal(0)
+        expect(refreshTokenStub.called).to.equal(false)
+
+        // Verify the raw error response has error_code 294
+        expect(error.response.status).to.equal(401)
+        expect(error.response.data.error_code).to.equal(294)
+        expect(error.response.data.error_message).to.include('Two-Factor verification')
+        expect(error.response.data.tfa_type).to.equal('totp_authenticator')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should refresh token when 401 status without error_code 294', done => {
+    const axios2 = client({
+      baseURL: `${host}:${port}`
+    })
+    const axios = client({
+      baseURL: `${host}:${port}`,
+      authorization: 'Bearer <token_value>',
+      refreshToken: () => {
+        return new Promise((resolve, reject) => {
+          return axios2.login().then((res) => {
+            resolve({ authorization: res.token })
+          }).catch((error) => {
+            reject(error)
+          })
+        })
+      }
+    })
+
+    // First request will fail with 401, trigger refresh, then succeed
+    axios.axiosInstance.get('/unauthorized')
+      .then((response) => {
+        // Should succeed after token refresh
+        expect(response.data.randomInteger).to.equal(123)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should preserve error_code 294 when present with 401 status', done => {
+    const refreshTokenStub = sinon.stub()
+    refreshTokenStub.returns(Promise.resolve({ authorization: 'Bearer new_token' }))
+
+    const axiosWithRefresh = client({
+      baseURL: `${host}:${port}`,
+      authorization: 'Bearer <token_value>',
+      refreshToken: refreshTokenStub
+    })
+
+    const mock = new MockAdapter(axiosWithRefresh.axiosInstance)
+    mock.onGet('/test2fa294').reply(401, {
+      error_message: 'Please login using the Two-Factor verification Token',
+      error_code: 294,
+      errors: [],
+      statusCode: 401,
+      tfa_type: 'totp_authenticator'
+    })
+
+    axiosWithRefresh.axiosInstance.get('/test2fa294')
+      .then(() => {
+        done(new Error('Expected error was not thrown'))
+      })
+      .catch((error) => {
+        // Verify refreshToken was NOT called
+        expect(refreshTokenStub.called).to.equal(false)
+
+        // Verify the raw error response preserves error_code 294
+        expect(error.response.status).to.equal(401)
+        expect(error.response.data.error_code).to.equal(294)
+        expect(error.response.data.error_message).to.include('Two-Factor verification')
+        expect(error.response.data.tfa_type).to.equal('totp_authenticator')
+
+        // The key test: error_code 294 should be preserved in response.data
+        // This ensures our fix in concurrency-queue.js is working (no token refresh attempted)
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeConcurrencyQueue (config) {
