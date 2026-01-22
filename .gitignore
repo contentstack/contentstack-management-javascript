@@ -69,3 +69,4 @@ tsconfig.json
 dist
 jsdocs
 .early.coverage
+docs/
