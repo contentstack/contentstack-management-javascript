@@ -363,22 +363,11 @@ describe('Bulk Operations API Tests', () => {
       console.log(`  Waiting for bulk jobs to be processed. Job IDs collected: ${jobIds.length}`)
       await wait(15000)
       
-      // Create a management token for job status (required by API)
-      try {
-        const tokenResponse = await stack.managementToken().create({
-          token: {
-            name: `Bulk Job Status Token ${Date.now()}`,
-            description: 'Token for bulk job status checks',
-            scope: [{
-              module: 'bulk_task',
-              acl: { read: true }
-            }],
-            expires_on: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
-          }
-        })
-        managementTokenValue = tokenResponse.token
-        managementTokenUid = tokenResponse.uid
-        console.log('  Created management token for job status')
+      // Use existing management token from env if provided, otherwise try to create one
+      if (process.env.MANAGEMENT_TOKEN) {
+        console.log('  Using existing management token from MANAGEMENT_TOKEN env variable')
+        managementTokenValue = process.env.MANAGEMENT_TOKEN
+        managementTokenUid = null // Not created, so no need to delete
         
         // Create stack client with management token
         const clientForMgmt = contentstackClient()
@@ -386,16 +375,41 @@ describe('Bulk Operations API Tests', () => {
           api_key: process.env.API_KEY, 
           management_token: managementTokenValue 
         })
-      } catch (e) {
-        console.log('  Could not create management token:', e.errorMessage || e.message)
-        // Fall back to regular stack
-        stackWithMgmtToken = stack
+      } else {
+        // Create a management token for job status (required by API)
+        try {
+          const tokenResponse = await stack.managementToken().create({
+            token: {
+              name: `Bulk Job Status Token ${Date.now()}`,
+              description: 'Token for bulk job status checks',
+              scope: [{
+                module: 'bulk_task',
+                acl: { read: true }
+              }],
+              expires_on: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+            }
+          })
+          managementTokenValue = tokenResponse.token
+          managementTokenUid = tokenResponse.uid
+          console.log('  Created management token for job status')
+          
+          // Create stack client with management token
+          const clientForMgmt = contentstackClient()
+          stackWithMgmtToken = clientForMgmt.stack({ 
+            api_key: process.env.API_KEY, 
+            management_token: managementTokenValue 
+          })
+        } catch (e) {
+          console.log('  Could not create management token:', e.errorMessage || e.message)
+          // Fall back to regular stack
+          stackWithMgmtToken = stack
+        }
       }
     })
 
     after(async function () {
       this.timeout(15000)
-      // Delete the management token
+      // Only delete management token if we created it (not from env)
       if (managementTokenUid) {
         try {
           await stack.managementToken(managementTokenUid).delete()

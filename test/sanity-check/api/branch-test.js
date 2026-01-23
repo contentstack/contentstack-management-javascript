@@ -36,9 +36,10 @@ describe('Branch API Tests', () => {
   // ==========================================================================
 
   describe('Branch CRUD Operations', () => {
-    // Branch UID must be max 15 chars
-    const devBranchUid = `dev${shortId()}`
+    // Branch UID must be max 15 chars, only lowercase and numbers
+    let devBranchUid = `dev${shortId()}`
     let createdBranch
+    let branchCreated = false
 
     after(async () => {
       // NOTE: Deletion removed - branches persist for other tests
@@ -72,32 +73,60 @@ describe('Branch API Tests', () => {
         }
       }
 
-      // SDK returns the branch object directly
-      const branch = await stack.branch().create(branchData)
+      try {
+        // SDK returns the branch object directly
+        const branch = await stack.branch().create(branchData)
 
-      expect(branch).to.be.an('object')
-      expect(branch.uid).to.be.a('string')
-      validateBranchResponse(branch)
+        expect(branch).to.be.an('object')
+        expect(branch.uid).to.be.a('string')
+        validateBranchResponse(branch)
 
-      expect(branch.uid).to.equal(devBranchUid)
-      expect(branch.source).to.equal('main')
+        expect(branch.uid).to.equal(devBranchUid)
+        expect(branch.source).to.equal('main')
 
-      createdBranch = branch
-      testData.branches.development = branch
-      
-      // Wait for branch to be fully ready
-      await wait(2000)
+        createdBranch = branch
+        branchCreated = true
+        testData.branches.development = branch
+        
+        // Wait for branch to be fully ready
+        await wait(3000)
+      } catch (error) {
+        // If branch already exists (409), try to fetch it
+        if (error.status === 409 || (error.errorMessage && error.errorMessage.includes('already exists'))) {
+          console.log(`  Branch ${devBranchUid} already exists, fetching it`)
+          const existing = await stack.branch(devBranchUid).fetch()
+          createdBranch = existing
+          branchCreated = true
+          testData.branches.development = existing
+        } else {
+          console.log('  Branch creation failed:', error.errorMessage || error.message)
+          throw error
+        }
+      }
     })
 
     it('should fetch the created branch', async function () {
       this.timeout(15000)
+      
+      if (!branchCreated) {
+        console.log('  Skipping - branch was not created')
+        this.skip()
+        return
+      }
+      
       const response = await stack.branch(devBranchUid).fetch()
 
       expect(response).to.be.an('object')
       expect(response.uid).to.equal(devBranchUid)
     })
 
-    it('should validate branch response structure', async () => {
+    it('should validate branch response structure', async function () {
+      if (!branchCreated) {
+        console.log('  Skipping - branch was not created')
+        this.skip()
+        return
+      }
+      
       const branch = await stack.branch(devBranchUid).fetch()
 
       expect(branch.uid).to.be.a('string')
