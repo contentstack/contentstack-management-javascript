@@ -177,7 +177,7 @@ describe('Contentstack Entry test', () => {
     mock.onGet('/content_types/content_type_uid/entries', (config) => {
       // Check if asset_fields parameter is present in the request
       const assetFields = config.params && (config.params['asset_fields[]'] || config.params.asset_fields)
-      const hasAssetFields = Array.isArray(assetFields) 
+      const hasAssetFields = Array.isArray(assetFields)
         ? (assetFields.includes('user_defined_fields') && assetFields.includes('embedded'))
         : (config.url && config.url.includes('asset_fields') && config.url.includes('user_defined_fields') && config.url.includes('embedded'))
       return hasAssetFields && config.params && config.params.include_count === true
@@ -188,7 +188,7 @@ describe('Contentstack Entry test', () => {
       count: 1
     })
     makeEntry()
-      .query({ 
+      .query({
         asset_fields: ['user_defined_fields', 'embedded'],
         include_count: true
       })
