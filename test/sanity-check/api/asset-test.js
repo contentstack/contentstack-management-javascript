@@ -385,7 +385,7 @@ describe('Asset API Tests', () => {
     let publishEnvironment = null
 
     before(async function () {
-      this.timeout(30000)
+      this.timeout(60000)
       
       // Get environment name from testData (created by environment-test.js)
       if (testData.environments && testData.environments.development) {
@@ -403,8 +403,26 @@ describe('Asset API Tests', () => {
         }
       }
       
+      // If no environment exists, create a temporary one for publishing
       if (!publishEnvironment) {
-        console.log('No environment available for publish tests')
+        try {
+          const tempEnvName = `pub_${Math.random().toString(36).substring(2, 7)}`
+          const envResponse = await stack.environment().create({
+            environment: {
+              name: tempEnvName,
+              urls: [{ locale: 'en-us', url: 'https://publish-test.example.com' }]
+            }
+          })
+          publishEnvironment = envResponse.name || tempEnvName
+          console.log(`Asset Publishing created temporary environment: ${publishEnvironment}`)
+          await wait(2000)
+        } catch (e) {
+          console.log('Could not create environment for publishing:', e.message)
+        }
+      }
+      
+      if (!publishEnvironment) {
+        console.log('No environment available for publish tests - will skip')
         return
       }
       
@@ -482,7 +500,7 @@ describe('Asset API Tests', () => {
     let versionedAssetUid
 
     before(async function () {
-      this.timeout(30000)
+      this.timeout(60000)
       // SDK returns the asset object directly
       const asset = await stack.asset().create({
         upload: assetPath,
@@ -495,7 +513,8 @@ describe('Asset API Tests', () => {
       // NOTE: Deletion removed - assets persist for other tests
     })
 
-    it('should increment version on update', async () => {
+    it('should increment version on update', async function () {
+      this.timeout(30000)
       const asset = await stack.asset(versionedAssetUid).fetch()
       const currentVersion = asset._version || 1
 

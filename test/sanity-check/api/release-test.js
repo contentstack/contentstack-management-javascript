@@ -266,20 +266,40 @@ describe('Release API Tests', () => {
     let deployEnvironment = null
 
     before(async function () {
-      this.timeout(30000)
+      this.timeout(60000)
       
       // Get environment name from testData or query
       if (testData.environments && testData.environments.development) {
         deployEnvironment = testData.environments.development.name
+        console.log(`Release Deployment using environment from testData: ${deployEnvironment}`)
       } else {
         try {
           const envResponse = await stack.environment().query().find()
           const environments = envResponse.items || envResponse.environments || []
           if (environments.length > 0) {
             deployEnvironment = environments[0].name
+            console.log(`Release Deployment using existing environment: ${deployEnvironment}`)
           }
         } catch (e) {
           console.log('Could not fetch environments:', e.message)
+        }
+      }
+      
+      // If no environment exists, create a temporary one for deployment
+      if (!deployEnvironment) {
+        try {
+          const tempEnvName = `dep_${Math.random().toString(36).substring(2, 7)}`
+          const envResponse = await stack.environment().create({
+            environment: {
+              name: tempEnvName,
+              urls: [{ locale: 'en-us', url: 'https://deploy-test.example.com' }]
+            }
+          })
+          deployEnvironment = envResponse.name || tempEnvName
+          console.log(`Release Deployment created temporary environment: ${deployEnvironment}`)
+          await wait(2000)
+        } catch (e) {
+          console.log('Could not create environment for deployment:', e.message)
         }
       }
       

@@ -336,10 +336,19 @@ export async function cleanupStack() {
     // 11. Delete Webhooks
     console.log('   Deleting webhooks...')
     const whData = await apiGet('/webhooks')
-    if (whData?.webhooks) {
-      await Promise.all(whData.webhooks.map(async (wh) => {
-        if (await apiDelete(`/webhooks/${wh.uid}`)) results.webhooks++
-      }))
+    if (whData?.webhooks && whData.webhooks.length > 0) {
+      console.log(`      Found ${whData.webhooks.length} webhooks to delete`)
+      for (const wh of whData.webhooks) {
+        // Webhooks require sequential deletion
+        const deleted = await apiDelete(`/webhooks/${wh.uid}`)
+        if (deleted) {
+          results.webhooks++
+          console.log(`      Deleted webhook: ${wh.uid}`)
+        }
+        await new Promise(r => setTimeout(r, 500)) // Small delay between deletions
+      }
+    } else {
+      console.log('      No webhooks found to delete')
     }
     
     // 12. Delete Delivery Tokens
@@ -351,12 +360,27 @@ export async function cleanupStack() {
       }))
     }
     
-    // 13. Delete Management Tokens
-    console.log('   Deleting management tokens...')
+    // 13. Delete Management Tokens (only test-created ones, preserve user tokens)
+    console.log('   Deleting management tokens (only test-created)...')
     const mtData = await apiGet('/stacks/management_tokens')
     if (mtData?.tokens) {
       await Promise.all(mtData.tokens.map(async (token) => {
-        if (await apiDelete(`/stacks/management_tokens/${token.uid}`)) results.managementTokens++
+        // Only delete tokens created by test suite (identified by naming pattern)
+        // Preserve user-created tokens like those used for MANAGEMENT_TOKEN env
+        const isTestCreatedToken = token.name && (
+          token.name.includes('Bulk Job Status Token') ||
+          token.name.includes('Test Token') ||
+          token.name.includes('test_') ||
+          token.name.startsWith('mgmt_')
+        )
+        if (isTestCreatedToken) {
+          if (await apiDelete(`/stacks/management_tokens/${token.uid}`)) {
+            results.managementTokens++
+            console.log(`      Deleted test token: ${token.name}`)
+          }
+        } else {
+          console.log(`      Preserved user token: ${token.name}`)
+        }
       }))
     }
     

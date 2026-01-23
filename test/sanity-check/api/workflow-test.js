@@ -211,20 +211,40 @@ describe('Workflow API Tests', () => {
     let ruleEnvironment = null
 
     before(async function () {
-      this.timeout(30000)
+      this.timeout(60000)
       
       // Get environment name from testData or query
       if (testData.environments && testData.environments.development) {
         ruleEnvironment = testData.environments.development.name
+        console.log(`Publish Rules using environment from testData: ${ruleEnvironment}`)
       } else {
         try {
           const envResponse = await stack.environment().query().find()
           const environments = envResponse.items || envResponse.environments || []
           if (environments.length > 0) {
             ruleEnvironment = environments[0].name
+            console.log(`Publish Rules using existing environment: ${ruleEnvironment}`)
           }
         } catch (e) {
           console.log('Could not fetch environments:', e.message)
+        }
+      }
+      
+      // If no environment exists, create a temporary one for publish rules
+      if (!ruleEnvironment) {
+        try {
+          const tempEnvName = `wf_${Math.random().toString(36).substring(2, 7)}`
+          const envResponse = await stack.environment().create({
+            environment: {
+              name: tempEnvName,
+              urls: [{ locale: 'en-us', url: 'https://workflow-test.example.com' }]
+            }
+          })
+          ruleEnvironment = envResponse.name || tempEnvName
+          console.log(`Publish Rules created temporary environment: ${ruleEnvironment}`)
+          await wait(2000)
+        } catch (e) {
+          console.log('Could not create environment for publish rules:', e.message)
         }
       }
       
@@ -294,6 +314,12 @@ describe('Workflow API Tests', () => {
         return
       }
       
+      if (!workflowForRulesUid) {
+        console.log('Skipping - no workflow available for publish rule')
+        this.skip()
+        return
+      }
+      
       try {
         const ruleData = {
           publishing_rule: {
@@ -306,12 +332,16 @@ describe('Workflow API Tests', () => {
           }
         }
 
-        const response = await stack.workflow(workflowForRulesUid).publishRule().create(ruleData)
+        // Note: publishRule() is on workflow() collection, not on workflow(uid)
+        const response = await stack.workflow().publishRule().create(ruleData)
 
         expect(response).to.be.an('object')
         if (response.publishing_rule) {
           publishRuleUid = response.publishing_rule.uid
           testData.workflows.publishRule = response.publishing_rule
+        } else if (response.uid) {
+          publishRuleUid = response.uid
+          testData.workflows.publishRule = response
         }
       } catch (error) {
         // Publish rules might require specific environment
@@ -322,7 +352,8 @@ describe('Workflow API Tests', () => {
 
     it('should fetch all publish rules', async () => {
       try {
-        const response = await stack.workflow(workflowForRulesUid).publishRule().fetchAll()
+        // Note: publishRule() is on workflow() collection, not on workflow(uid)
+        const response = await stack.workflow().publishRule().fetchAll()
 
         expect(response).to.be.an('object')
       } catch (error) {

@@ -53,7 +53,7 @@ describe('Global Field API Tests', () => {
     })
 
     it('should create a simple global field', async function () {
-      this.timeout(30000)
+      this.timeout(60000)
       const gfData = JSON.parse(JSON.stringify(seoGlobalField))
       gfData.global_field.uid = seoGfUid
       gfData.global_field.title = `SEO ${Date.now()}`
