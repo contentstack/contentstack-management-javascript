@@ -177,8 +177,8 @@ describe('Entry api Test', () => {
 
   it('should get all Entry with asset_fields parameter combined with other query params', done => {
     makeEntry(multiPageCT.content_type.uid)
-      .query({ 
-        include_count: true, 
+      .query({
+        include_count: true,
         include_content_type: true,
         asset_fields: ['user_defined_fields', 'embedded']
       }).find()
