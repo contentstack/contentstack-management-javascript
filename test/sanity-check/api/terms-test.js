@@ -2,6 +2,7 @@ import { describe, it, beforeEach } from 'mocha'
 import { expect } from 'chai'
 import { jsonReader } from '../utility/fileOperations/readwrite'
 import { contentstackClient } from '../utility/ContentstackClient.js'
+import { environmentCreate } from '../mock/environment.js'
 import { stageBranch } from '../mock/branch.js'
 
 var client = {}
@@ -42,6 +43,7 @@ describe('Terms API Test', () => {
   })
   it('should create taxonomy', async () => {
     const response = await client.stack({ api_key: process.env.API_KEY }).taxonomy().create({ taxonomy })
+    await client.stack({ api_key: process.env.API_KEY }).environment().create(environmentCreate)
     expect(response.uid).to.be.equal(taxonomy.uid)
     await new Promise(resolve => setTimeout(resolve, 5000))
   }, 10000)
@@ -127,6 +129,35 @@ describe('Terms API Test', () => {
       .catch(done)
   })
 
+  it('should publish with api_version', done => {
+    const publishData = {
+      locales: ['en-us'],
+      environments: ['development'],
+      items: [
+        {
+          uid: taxonomy.uid,
+          term_uid: 'term_test'
+        },
+        {
+          uid: taxonomy.uid,
+          term_uid: 'term_test_child1'
+        },
+        {
+          uid: taxonomy.uid,
+          term_uid: 'term_test_child2'
+        }
+      ]
+    }
+    makeTaxonomy()
+      .publish(publishData, '3.2')
+      .then((response) => {
+        expect(response.notice).to.not.equal(null)
+        expect(response.job_id).to.not.equal(undefined)
+        done()
+      })
+      .catch(done)
+  })
+
   it('should search the term with the string passed', done => {
     makeTerms(taxonomy.uid).search(termString)
       .then((response) => {
@@ -193,6 +224,10 @@ describe('Terms API Test', () => {
 
 function makeTerms (taxonomyUid, termUid = null) {
   return client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomyUid).terms(termUid)
+}
+
+function makeTaxonomy () {
+  return client.stack({ api_key: process.env.API_KEY }).taxonomy()
 }
 
 describe('Terms Query Parameters Sanity Tests', () => {
@@ -359,6 +394,7 @@ describe('Terms Query Parameters Sanity Tests', () => {
       skip: 0,
       limit: 10
     })
+    await client.stack({ api_key: process.env.API_KEY }).environment(environmentCreate.environment.name).delete()
     expect(terms).to.have.property('items')
     expect(terms.items).to.be.an('array')
     // Count property might not be available in all environments
