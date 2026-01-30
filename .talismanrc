@@ -34,7 +34,10 @@ fileignoreconfig:
     checksum: 4043efd843e24da9afd0272c55ef4b0432e3374b2ca12b913f1a6654df3f62be
   - filename: test/unit/contentstack-test.js
     checksum: 2597efae3c1ab8cc173d5bf205f1c76932211f8e0eb2a16444e055d83481976c
+  - filename: test/unit/concurrency-Queue-test.js
+    checksum: 186438f9eb9ba4e7fd7f335dbea2afbae9ae969b7ae3ab1b517ec7a1633d255e
 version: "1.0"
+
 
 
 
