@@ -276,9 +276,13 @@ describe('Contentstack HTTP Client', () => {
 
       axiosInstance.get('/test').catch(() => {
         // Plugin should be called for the error
+        // eslint-disable-next-line no-unused-expressions
         expect(onResponseCalled).to.be.true
+        // eslint-disable-next-line no-unused-expressions
         expect(receivedError).to.exist
+        // eslint-disable-next-line no-unused-expressions
         expect(receivedError.response).to.exist
+        // eslint-disable-next-line no-unused-expressions
         expect(receivedError.response.status).to.equal(500)
         done()
       }).catch((err) => {
