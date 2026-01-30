@@ -251,11 +251,13 @@ describe('Contentstack HTTP Client', () => {
     })
 
     it('should call onResponse hook after error response', (done) => {
-      const onResponseSpy = sinon.spy()
+      let onResponseCalled = false
+      let receivedError = null
       const plugin = {
         onRequest: () => {},
         onResponse: (error) => {
-          onResponseSpy(error)
+          onResponseCalled = true
+          receivedError = error
           return error
         }
       }
@@ -274,12 +276,10 @@ describe('Contentstack HTTP Client', () => {
 
       axiosInstance.get('/test').catch(() => {
         // Plugin should be called for the error
-        // eslint-disable-next-line no-unused-expressions
-        expect(onResponseSpy.called).to.be.true
-        if (onResponseSpy.called) {
-          // eslint-disable-next-line no-unused-expressions
-          expect(onResponseSpy.calledWith(sinon.match.object)).to.be.true
-        }
+        expect(onResponseCalled).to.be.true
+        expect(receivedError).to.exist
+        expect(receivedError.response).to.exist
+        expect(receivedError.response.status).to.equal(500)
         done()
       }).catch((err) => {
         // Ensure done is called even if there's an unexpected error
