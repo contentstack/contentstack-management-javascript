@@ -9,7 +9,7 @@ fileignoreconfig:
     ignore_detectors:
       - filecontent
   - filename: package-lock.json
-    checksum: 17b5bbabcc58beaa180a7fa931fc3fb407ee0e3447d47da224f60118c0a4c294
+    checksum: d6e0739053d0068a31f75ef462d9e80a68a165d7715115cc2f33cdf65d9084dd
   - filename: .husky/pre-commit
     checksum: 52a664f536cf5d1be0bea19cb6031ca6e8107b45b6314fe7d47b7fad7d800632
   - filename: test/sanity-check/api/user-test.js
