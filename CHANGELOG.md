@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.27.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.3) (2026-02-02)
+ - Fix
+   - Removed content-type header from the release delete method
+
 ## [v1.27.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.2) (2026-01-12)
  - Enhancement
    - Improved error messages
