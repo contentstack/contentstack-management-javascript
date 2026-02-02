@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.27.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.4) (2026-02-02)
+ - Fix
+   - Removed content-type header from the release delete method
+   - Plugin `onResponse` hook is now called for error responses; errors handled by the concurrency queue (e.g. 5xx, retries exhausted) were previously not running plugin hooks
+
 ## [v1.27.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.3) (2026-01-21)
  - Fix
    - Skip token refresh and preserve error_code 294 when 2FA is required (error_code 294 with 401 status) to prevent error code conversion from 294 to 401
