@@ -210,7 +210,8 @@ describe('User & Authentication API Tests', () => {
         expect.fail('Should have thrown an error')
       } catch (error) {
         expect(error).to.exist
-        expect(error.status).to.be.oneOf([401, 403])
+        const status = error.status ?? error.response?.status
+        expect(status, 'Expected 401/403 in error.status or error.response.status').to.be.oneOf([401, 403])
       }
     })
     
@@ -225,7 +226,8 @@ describe('User & Authentication API Tests', () => {
         expect.fail('Should have thrown an error')
       } catch (error) {
         expect(error).to.exist
-        expect(error.status).to.be.oneOf([401, 403])
+        const status = error.status ?? error.response?.status
+        expect(status, 'Expected 401/403 in error.status or error.response.status').to.be.oneOf([401, 403])
       }
     })
   })
@@ -320,7 +322,8 @@ describe('User & Authentication API Tests', () => {
         // Some APIs might not error on unauthenticated logout
       } catch (error) {
         expect(error).to.exist
-        expect(error.status).to.be.oneOf([401, 403])
+        const status = error.status ?? error.response?.status
+        expect(status).to.be.oneOf([401, 403])
       }
     })
     
