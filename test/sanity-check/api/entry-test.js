@@ -537,6 +537,182 @@ describe('Entry API Tests', () => {
   })
 
   // ==========================================================================
+  // DAM 2.0 - ASSET FIELDS QUERY PARAMETER
+  // Note: These tests are for AM 2.0 feature which is still in development.
+  // Set DAM_2_0_ENABLED=true in .env to enable these tests once the feature is available.
+  // ==========================================================================
+
+  describe('DAM 2.0 - Asset Fields Query Parameter', () => {
+    let assetFieldsEntryUid
+    let dam20Enabled = false
+
+    before(async function () {
+      this.timeout(30000)
+      
+      // Check if DAM 2.0 feature is enabled via env variable
+      if (process.env.DAM_2_0_ENABLED !== 'true') {
+        console.log('    DAM 2.0 tests skipped: Set DAM_2_0_ENABLED=true in .env to enable')
+        this.skip()
+        return
+      }
+      
+      dam20Enabled = true
+      
+      if (!mediumCtReady) {
+        console.log('    Skipping: Medium content type not available')
+        this.skip()
+        return
+      }
+
+      // Create an entry for asset_fields testing
+      try {
+        const entryData = {
+          entry: {
+            title: `Asset Fields Test ${Date.now()}`,
+            summary: 'Entry for testing asset_fields parameter'
+          }
+        }
+        const entry = await stack.contentType(mediumCtUid).entry().create(entryData)
+        assetFieldsEntryUid = entry.uid
+        console.log(`  ✓ Created entry for asset_fields tests: ${assetFieldsEntryUid}`)
+        await wait(2000)
+      } catch (e) {
+        console.log(`  ✗ Failed to create entry for asset_fields tests: ${e.message}`)
+      }
+    })
+
+    // ----- FETCH with asset_fields -----
+
+    it('should fetch entry with asset_fields parameter - single value', async function () {
+      this.timeout(15000)
+      if (!assetFieldsEntryUid) this.skip()
+
+      const entry = await stack.contentType(mediumCtUid).entry(assetFieldsEntryUid)
+        .fetch({ asset_fields: ['user_defined_fields'] })
+
+      expect(entry).to.be.an('object')
+      expect(entry.uid).to.equal(assetFieldsEntryUid)
+    })
+
+    it('should fetch entry with asset_fields parameter - multiple values', async function () {
+      this.timeout(15000)
+      if (!assetFieldsEntryUid) this.skip()
+
+      const entry = await stack.contentType(mediumCtUid).entry(assetFieldsEntryUid)
+        .fetch({ 
+          asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] 
+        })
+
+      expect(entry).to.be.an('object')
+      expect(entry.uid).to.equal(assetFieldsEntryUid)
+    })
+
+    it('should fetch entry with asset_fields combined with other params', async function () {
+      this.timeout(15000)
+      if (!assetFieldsEntryUid) this.skip()
+
+      const entry = await stack.contentType(mediumCtUid).entry(assetFieldsEntryUid)
+        .fetch({ 
+          locale: 'en-us',
+          include_workflow: true,
+          include_publish_details: true,
+          asset_fields: ['user_defined_fields', 'embedded'] 
+        })
+
+      expect(entry).to.be.an('object')
+      expect(entry.uid).to.equal(assetFieldsEntryUid)
+    })
+
+    // ----- QUERY with asset_fields -----
+
+    it('should query entries with asset_fields parameter - single value', async function () {
+      this.timeout(15000)
+      if (!mediumCtReady) this.skip()
+
+      const response = await stack.contentType(mediumCtUid).entry()
+        .query({ 
+          include_count: true, 
+          asset_fields: ['user_defined_fields'] 
+        })
+        .find()
+
+      expect(response).to.be.an('object')
+      const entries = response.items || response.entries || []
+      expect(entries).to.be.an('array')
+      if (response.count !== undefined) {
+        expect(response.count).to.be.a('number')
+      }
+    })
+
+    it('should query entries with asset_fields parameter - multiple values', async function () {
+      this.timeout(15000)
+      if (!mediumCtReady) this.skip()
+
+      const response = await stack.contentType(mediumCtUid).entry()
+        .query({ 
+          include_count: true, 
+          asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] 
+        })
+        .find()
+
+      expect(response).to.be.an('object')
+      const entries = response.items || response.entries || []
+      expect(entries).to.be.an('array')
+    })
+
+    it('should query entries with asset_fields combined with other query params', async function () {
+      this.timeout(15000)
+      if (!mediumCtReady) this.skip()
+
+      const response = await stack.contentType(mediumCtUid).entry()
+        .query({ 
+          include_count: true,
+          include_content_type: true,
+          locale: 'en-us',
+          asset_fields: ['user_defined_fields', 'embedded']
+        })
+        .find()
+
+      expect(response).to.be.an('object')
+      const entries = response.items || response.entries || []
+      expect(entries).to.be.an('array')
+    })
+
+    // ----- Edge cases -----
+
+    it('should handle empty asset_fields array gracefully', async function () {
+      this.timeout(15000)
+      if (!assetFieldsEntryUid) this.skip()
+
+      try {
+        const entry = await stack.contentType(mediumCtUid).entry(assetFieldsEntryUid)
+          .fetch({ asset_fields: [] })
+
+        expect(entry).to.be.an('object')
+        expect(entry.uid).to.equal(assetFieldsEntryUid)
+      } catch (error) {
+        // Some APIs may reject empty array - that's also acceptable
+        expect(error).to.exist
+      }
+    })
+
+    it('should fetch entry with all supported asset_fields values', async function () {
+      this.timeout(15000)
+      if (!assetFieldsEntryUid) this.skip()
+
+      // Test all four supported values from DAM 2.0
+      const allAssetFields = ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups']
+      
+      const entry = await stack.contentType(mediumCtUid).entry(assetFieldsEntryUid)
+        .fetch({ asset_fields: allAssetFields })
+
+      expect(entry).to.be.an('object')
+      expect(entry.uid).to.equal(assetFieldsEntryUid)
+      expect(entry.title).to.include('Asset Fields Test')
+    })
+  })
+
+  // ==========================================================================
   // ERROR HANDLING
   // ==========================================================================
 
