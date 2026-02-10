@@ -42,7 +42,7 @@ fileignoreconfig:
   - filename: test/sanity-check/mock/global-fields.js
     checksum: fb89a4a5028066689de774ca2f990c25c8a3acc46c0c6b97fee410f491853cc1
   - filename: test/sanity-check/utility/ContentstackClient.js
-    checksum: 24d00c8994e7a9986a83e7caafd80c55138ea9d582dc31c7bb7c650fa712bfc0
+    checksum: 8ad5bf958e40cb65181dec35842e2e292f51cca0f7ca1e87c67cb58cd16f139d
   - filename: test/sanity-check/api/variantGroup-test.js
     checksum: 3fc26eca704bc9ce4650056c81be45f3586d3c947a18dfec58fee4447de56360
   - filename: test/sanity-check/api/workflow-test.js
@@ -52,7 +52,7 @@ fileignoreconfig:
   - filename: test/sanity-check/mock/content-types/index.js
     checksum: ff47f74037e22f791e2d7c6afbaccf7857b26b51dd2e2361b5b4b70d36057b7f
   - filename: test/sanity-check/sanity.js
-    checksum: c64975a9058c2d780ba725a1e40c037440f830a537849d3a6324ad934454b2ab
+    checksum: 94fc68fc78e00b8b268f6e86b5ed55dbfe48fbde45f780629afa1c75c968f438
   - filename: test/sanity-check/api/user-test.js
     checksum: 5f1284561725f99980a800c87d80d2f7b6f56e1efa618adb10bbf87312b0deec
   - filename: test/sanity-check/api/locale-test.js
@@ -78,7 +78,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/branchAlias-test.js
     checksum: 0b6cacee74d7636e84ce095198f0234d491b79ea20d3978a742a5495692bd61d
   - filename: test/sanity-check/utility/testSetup.js
-    checksum: 23841aa0365dc059e84311887b2a086e7e8b44c457a98b362649aae61a806a5f
+    checksum: caa1fa9867a49bb8a458bab5bbc3cdeaf2f4a44d0f1a21e997db237553ea33ab
   - filename: test/sanity-check/api/branch-test.js
     checksum: 49c8fd18c59d45e4335f766591711849722206bce34860efa8eced7172f44efa
   - filename: test/sanity-check/api/stack-test.js

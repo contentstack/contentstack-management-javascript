@@ -23,32 +23,33 @@ import { testContext } from './testSetup.js'
 
 /**
  * Create a Contentstack client instance
+ * Uses testSetup's instrumented client (with request capture plugin) when available.
  * 
  * @param {string|null} authtoken - Optional authtoken (uses testSetup context if not provided)
  * @returns {Object} Contentstack client instance
  */
 export function contentstackClient(authtoken = null) {
-  const host = process.env.HOST || 'api.contentstack.io'
-  
-  // If testContext is available and initialized, use its context
-  if (testContext && testContext.authtoken && !authtoken) {
-    return contentstack.client({
-      host: host,
-      authtoken: testContext.authtoken,
-      timeout: 60000
-    })
+  // When explicit authtoken is passed (e.g. for error testing), create new client - don't use shared
+  if (authtoken != null) {
+    const host = process.env.HOST || 'api.contentstack.io'
+    return contentstack.client({ host, authtoken, timeout: 60000 })
+  }
+  // Use testSetup's client when available - it has the request capture plugin for cURL in reports
+  if (testContext && testContext.client) {
+    return testContext.client
   }
   
-  // Standalone mode with provided authtoken
+  // Fallback when testSetup not initialized (e.g. unit tests)
+  const host = process.env.HOST || 'api.contentstack.io'
   const params = {
     host: host,
     timeout: 60000
   }
-  
-  if (authtoken) {
+  if (testContext?.authtoken && !authtoken) {
+    params.authtoken = testContext.authtoken
+  } else if (authtoken) {
     params.authtoken = authtoken
   }
-  
   return contentstack.client(params)
 }
 

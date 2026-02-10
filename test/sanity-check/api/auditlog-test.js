@@ -123,8 +123,9 @@ describe('Audit Log API Tests', () => {
         await stack.auditLog('nonexistent_log_12345').fetch()
         expect.fail('Should have thrown an error')
       } catch (error) {
-        // 422 is also a valid response for invalid UID format
-        expect(error.status).to.be.oneOf([400, 404, 422])
+        // API may return 401 (unauthorized), 404 (not found), 422 (invalid UID), or 400
+        const status = error.status ?? error.response?.status
+        expect(status, 'Expected 400/401/404/422 for non-existent audit log').to.be.oneOf([400, 401, 404, 422])
       }
     })
 

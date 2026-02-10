@@ -244,11 +244,10 @@ describe('Stack API Tests', () => {
   describe('Stack Share Operations', () => {
 
     it('should share stack with user (requires valid email)', async () => {
-      // Use SHARE_EMAIL or MEMBER_EMAIL from env
-      const shareEmail = process.env.SHARE_EMAIL || process.env.MEMBER_EMAIL
+      const shareEmail = process.env.MEMBER_EMAIL
       
       if (!shareEmail) {
-        console.log('Skipping stack share - no SHARE_EMAIL or MEMBER_EMAIL provided')
+        console.log('Skipping stack share - no MEMBER_EMAIL provided')
         return
       }
 

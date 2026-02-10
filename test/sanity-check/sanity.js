@@ -3,32 +3,44 @@
  * 
  * This file orchestrates all API test suites for the CMA JavaScript SDK.
  * 
- * The test suite:
+ * The test suite is FULLY SELF-CONTAINED and dynamically creates:
  * 1. Logs in using EMAIL/PASSWORD to get authtoken
- * 2. Uses existing test stack from API_KEY
- * 3. Runs all API tests against the stack
- * 4. Cleans up all created resources (keeps stack empty for next run)
- * 5. Logs out
+ * 2. Creates a NEW test stack (no pre-existing stack required)
+ * 3. Creates a Management Token for the stack
+ * 4. Creates a Personalize Project linked to the stack
+ * 5. Runs all API tests against the stack
+ * 6. Cleans up all created resources within the stack
+ * 7. Conditionally deletes stack and personalize project (based on env flag)
+ * 8. Logs out
  * 
  * Environment Variables Required:
  * - EMAIL: User email for login
  * - PASSWORD: User password for login
  * - HOST: API host URL (e.g., api.contentstack.io, eu-api.contentstack.com)
- * - API_KEY: Existing test stack API key
- * - ORGANIZATION: Organization UID (for Teams tests)
+ * - ORGANIZATION: Organization UID (for stack creation and personalize)
  * 
  * Optional:
- * - PERSONALIZE_PROJECT_UID: For Variants/Personalize tests
+ * - PERSONALIZE_HOST: Personalize API host (default: personalize-api.contentstack.com)
+ * - DELETE_DYNAMIC_RESOURCES: Toggle for deleting stack/personalize (default: true)
+ *   Set to 'false' to preserve resources for debugging
  * - MEMBER_EMAIL: For team member operations
  * - CLIENT_ID: OAuth client ID
  * - APP_ID: OAuth app ID
  * - REDIRECT_URI: OAuth redirect URI
+ * 
+ * NO LONGER REQUIRED (dynamically created):
+ * - API_KEY: Generated when test stack is created
+ * - MANAGEMENT_TOKEN: Generated for the test stack
+ * - PERSONALIZE_PROJECT_UID: Generated when personalize project is created
  * 
  * Usage:
  *   npm run test:sanity
  *   
  * Or run individual test files:
  *   npm run test -- --grep "Content Type API Tests"
+ * 
+ * To preserve resources for debugging:
+ *   DELETE_DYNAMIC_RESOURCES=false npm run test:sanity
  */
 
 import dotenv from 'dotenv'
@@ -76,8 +88,12 @@ before(async function () {
     console.error('  EMAIL=your-email@example.com')
     console.error('  PASSWORD=your-password')
     console.error('  HOST=api.contentstack.io')
-    console.error('  API_KEY=your-stack-api-key')
     console.error('  ORGANIZATION=your-org-uid')
+    console.error('\nOptional settings:')
+    console.error('  PERSONALIZE_HOST=personalize-api.contentstack.com')
+    console.error('  DELETE_DYNAMIC_RESOURCES=true (set to false to preserve for debugging)')
+    console.error('\nNote: API_KEY, MANAGEMENT_TOKEN, and PERSONALIZE_PROJECT_UID')
+    console.error('are now dynamically created and no longer required in .env')
     throw error
   }
 })
@@ -88,6 +104,9 @@ before(async function () {
 
 // Clear request log and assertion tracker before each test
 beforeEach(function() {
+  // Clear SDK plugin request capture
+  testSetup.clearCapturedRequests()
+  
   try {
     requestLogger.clearRequestLog()
   } catch (e) {
@@ -136,12 +155,14 @@ afterEach(function() {
     }
   }
   
-  // For passed tests, try to get the last request from the request logger
-  let lastRequest = null
-  try {
-    lastRequest = requestLogger.getLastRequest()
-  } catch (e) {
-    // Request logger might not be active
+  // Get the last request from SDK plugin capture or fallback to request logger
+  let lastRequest = testSetup.getLastCapturedRequest()
+  if (!lastRequest) {
+    try {
+      lastRequest = requestLogger.getLastRequest()
+    } catch (e) {
+      // Request logger might not be active
+    }
   }
   
   // Add context to Mochawesome report
@@ -156,13 +177,25 @@ afterEach(function() {
         value: 'PASSED'
       })
       
-      // Add assertion details for passed tests (if any tracked via trackedExpect)
+      // Add assertion details for passed tests (trackedExpect or API result)
       if (trackedAssertions.length > 0) {
         addContext(this, {
           title: '📊 Assertions Verified (Expected vs Actual)',
           value: trackedAssertions.map(a => 
             `✓ ${a.description}\n   Expected: ${a.expected}\n   Actual: ${a.actual}`
           ).join('\n\n')
+        })
+      } else if (lastRequest) {
+        // Fallback: show API result for tests that use expect() not trackedExpect
+        addContext(this, {
+          title: '📊 Result (Expected vs Actual)',
+          value: `Expected: Successful API response\nActual: ${lastRequest.status || 'OK'} - ${lastRequest.method} ${lastRequest.url}`
+        })
+      } else {
+        // Final fallback: test passed but no request/assertion captured
+        addContext(this, {
+          title: '📊 Result (Expected vs Actual)',
+          value: 'Expected: Success\nActual: Test passed (no SDK request captured for this test)'
         })
       }
       
@@ -204,7 +237,35 @@ afterEach(function() {
         value: 'FAILED'
       })
       
-      // Add assertion details for failed tests
+      // Add Expected vs Actual for failed tests
+      if (error) {
+        if (error.expected !== undefined || error.actual !== undefined) {
+          // Chai assertion error
+          addContext(this, {
+            title: '❌ Expected vs Actual',
+            value: `Expected: ${JSON.stringify(error.expected)}\nActual: ${JSON.stringify(error.actual)}`
+          })
+        } else if (error.status || error.errorMessage || apiInfo) {
+          // API/SDK error (e.g. 422 from API)
+          const status = error.status ?? apiInfo?.status ?? error.response?.status
+          const msg = error.errorMessage ?? apiInfo?.errorMessage ?? error.message ?? 'Error'
+          const errDetails = error.errors || apiInfo?.errors || {}
+          const detailsStr = Object.keys(errDetails).length ? `\nDetails: ${JSON.stringify(errDetails)}` : ''
+          addContext(this, {
+            title: '❌ Expected vs Actual',
+            value: `Expected: Success\nActual: ${status} - ${msg}${detailsStr}`
+          })
+        } else {
+          // Fallback: any other error (e.g. thrown Error, assertion in test code)
+          const msg = error.message || String(error)
+          addContext(this, {
+            title: '❌ Expected vs Actual',
+            value: `Expected: Success\nActual: ${msg}`
+          })
+        }
+      }
+      
+      // Add assertion details for failed tests (from trackedExpect)
       if (trackedAssertions.length > 0) {
         const passedAssertions = trackedAssertions.filter(a => a.passed)
         const failedAssertion = trackedAssertions.find(a => !a.passed)
@@ -225,21 +286,35 @@ afterEach(function() {
           })
         }
       }
+      
+      // Add cURL from captured request (for ALL failed tests - from SDK plugin)
+      if (lastRequest && lastRequest.curl) {
+        addContext(this, {
+          title: '📋 cURL Command (copy-paste ready)',
+          value: lastRequest.curl
+        })
+        addContext(this, {
+          title: '📡 API Request',
+          value: `${lastRequest.method} ${lastRequest.url} [${lastRequest.status || 'N/A'}]`
+        })
+        if (lastRequest.sdkMethod && !lastRequest.sdkMethod.startsWith('Unknown')) {
+          addContext(this, {
+            title: '📦 SDK Method Tested',
+            value: lastRequest.sdkMethod
+          })
+        }
+      }
     }
     
-    // Add API details if available (for failed tests)
+    // Add API error details if available (for failed tests with API error in response)
     if (apiInfo) {
       const curl = errorToCurl(apiInfo)
       
-      // Try to get SDK method from the last request
-      const failedSdkMethod = lastRequest?.sdkMethod
-      
-      // Store for final report
       testCurls.push({
         test: testTitle,
         state: testState,
-        curl: curl,
-        sdkMethod: failedSdkMethod,
+        curl: curl || (lastRequest?.curl),
+        sdkMethod: lastRequest?.sdkMethod,
         details: {
           status: apiInfo.status,
           message: apiInfo.errorMessage || apiInfo.message,
@@ -247,15 +322,7 @@ afterEach(function() {
         }
       })
       
-      // Add SDK Method being tested (for failed tests)
-      if (failedSdkMethod && !failedSdkMethod.startsWith('Unknown')) {
-        addContext(this, {
-          title: '📦 SDK Method Tested',
-          value: failedSdkMethod
-        })
-      }
-      
-      // Add error/response details
+      // Add error/response details (skip cURL if already added from lastRequest)
       addContext(this, {
         title: '❌ API Error Details',
         value: {
@@ -267,13 +334,14 @@ afterEach(function() {
         }
       })
       
-      // Add cURL command
-      addContext(this, {
-        title: '📋 cURL Command (copy-paste ready)',
-        value: curl
-      })
+      // Add cURL from apiInfo only if we didn't already add from lastRequest
+      if (!lastRequest?.curl && curl) {
+        addContext(this, {
+          title: '📋 cURL Command (copy-paste ready)',
+          value: curl
+        })
+      }
       
-      // Add request URL for quick reference
       if (apiInfo.request && apiInfo.request.url) {
         addContext(this, {
           title: '🔗 Request',
