@@ -1,4 +1,8 @@
 fileignoreconfig:
+  - filename: test/unit/ContentstackClient-test.js
+    checksum: ffeb69822e7614a9ab14bb26f5f3ec8bdbbb6d3feb259064bda6c1379e3c7d37
+  - filename: lib/contentstackClient.js
+    checksum: f564f6eee5c17dc73abdeab4be226a3b37942893e149d907d2a4ef415c485c5e
   - filename: test/unit/globalField-test.js
     checksum: 25185e3400a12e10a043dc47502d8f30b7e1c4f2b6b4d3b8b55cdc19850c48bf
   - filename: lib/stack/index.js
@@ -26,10 +30,6 @@ fileignoreconfig:
     checksum: e8a32ffbbbdba2a15f3d327273f0a5b4eb33cf84cd346562596ab697125bbbc6
   - filename: test/sanity-check/api/bulkOperation-test.js
     checksum: f40a14c84ab9a194aaf830ca68e14afde2ef83496a07d4a6393d7e0bed15fb0e
-  - filename: lib/contentstackClient.js
-    checksum: b76ca091caa3a1b2658cd422a2d8ef3ac9996aea0aff3f982d56bb309a3d9fde
-  - filename: test/unit/ContentstackClient-test.js
-    checksum: 974a4f335aef025b657d139bb290233a69bed1976b947c3c674e97baffe4ce2f
   - filename: test/unit/ContentstackHTTPClient-test.js
     checksum: 4043efd843e24da9afd0272c55ef4b0432e3374b2ca12b913f1a6654df3f62be
   - filename: test/unit/contentstack-test.js
