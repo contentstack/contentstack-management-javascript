@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.27.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-11)
+ - Fix
+   - Concurrency queue: when response errors have no `config` (e.g. after network retries exhaust in some environments, or when plugins return a new error object), the SDK now rejects with a catchable Error instead of throwing an unhandled TypeError and crashing the process
+   - Hardened `responseHandler` to safely handle errors without `config` (e.g. plugin-replaced errors) by guarding `config.onComplete` and still running queue `shift()` so rejections remain catchable
+   - Added optional chaining for `error.config` reads in the retry path and unit tests for missing-config scenarios
+
 ## [v1.27.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.4) (2026-02-02)
  - Fix
    - Removed content-type header from the release delete method
