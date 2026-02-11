@@ -1,6 +1,6 @@
 /**
  * Asset API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Asset upload (various methods)
  * - Asset CRUD operations
@@ -39,8 +39,6 @@ describe('Asset API Tests', () => {
   // ==========================================================================
 
   describe('Asset Upload', () => {
-    let uploadedAssetUid
-
     after(async () => {
       // NOTE: Deletion removed - assets persist for entries, bulk operations
     })
@@ -67,7 +65,6 @@ describe('Asset API Tests', () => {
       expect(response.title).to.include('Test Image')
       expect(response.description).to.equal('Test image upload')
 
-      uploadedAssetUid = response.uid
       testData.assets.image = response
     })
 
@@ -96,9 +93,9 @@ describe('Asset API Tests', () => {
 
     it('should upload asset from buffer', async function () {
       this.timeout(30000)
-      
+
       const fileBuffer = fs.readFileSync(assetPath)
-      
+
       // SDK returns the asset object directly
       const asset = await stack.asset().create({
         upload: fileBuffer,
@@ -115,7 +112,7 @@ describe('Asset API Tests', () => {
       expect(asset.title).to.include('Buffer Upload')
       // Content type may vary based on server detection
       expect(asset.content_type).to.be.a('string')
-      
+
       testData.assets.bufferUpload = asset
 
       // Cleanup
@@ -131,9 +128,11 @@ describe('Asset API Tests', () => {
         })
         expect.fail('Should have thrown an error')
       } catch (error) {
+        // eslint-disable-next-line no-unused-expressions
         expect(error).to.exist
         // SDK might throw client-side error without status
         if (error.status) {
+          // eslint-disable-next-line no-unused-expressions
           expect(error.status).to.be.oneOf([400, 422])
         }
       }
@@ -147,6 +146,7 @@ describe('Asset API Tests', () => {
         })
         expect.fail('Should have thrown an error')
       } catch (error) {
+        // eslint-disable-next-line no-unused-expressions
         expect(error).to.exist
       }
     })
@@ -286,9 +286,11 @@ describe('Asset API Tests', () => {
         }
       })
 
+      // eslint-disable-next-line no-unused-expressions
       expect(folder).to.be.an('object')
       expect(folder.uid).to.be.a('string')
       expect(folder.name).to.include('Test Folder')
+      // eslint-disable-next-line no-unused-expressions
       expect(folder.is_dir).to.be.true
 
       folderUid = folder.uid
@@ -303,8 +305,10 @@ describe('Asset API Tests', () => {
 
       const response = await stack.asset().folder(folderUid).fetch()
 
+      // eslint-disable-next-line no-unused-expressions
       expect(response).to.be.an('object')
       expect(response.uid).to.equal(folderUid)
+      // eslint-disable-next-line no-unused-expressions
       expect(response.is_dir).to.be.true
     })
 
@@ -386,7 +390,7 @@ describe('Asset API Tests', () => {
 
     before(async function () {
       this.timeout(60000)
-      
+
       // Get environment name from testData (created by environment-test.js)
       if (testData.environments && testData.environments.development) {
         publishEnvironment = testData.environments.development.name
@@ -402,7 +406,7 @@ describe('Asset API Tests', () => {
           console.log('Could not fetch environments:', e.message)
         }
       }
-      
+
       // If no environment exists, create a temporary one for publishing
       if (!publishEnvironment) {
         try {
@@ -420,12 +424,12 @@ describe('Asset API Tests', () => {
           console.log('Could not create environment for publishing:', e.message)
         }
       }
-      
+
       if (!publishEnvironment) {
         console.log('No environment available for publish tests - will skip')
         return
       }
-      
+
       // SDK returns the asset object directly
       const asset = await stack.asset().create({
         upload: assetPath,
@@ -444,7 +448,7 @@ describe('Asset API Tests', () => {
         this.skip()
         return
       }
-      
+
       try {
         const asset = await stack.asset(publishableAssetUid).fetch()
 
@@ -471,7 +475,7 @@ describe('Asset API Tests', () => {
         this.skip()
         return
       }
-      
+
       try {
         const asset = await stack.asset(publishableAssetUid).fetch()
 
@@ -528,7 +532,7 @@ describe('Asset API Tests', () => {
       // SDK doesn't have a separate versions() method
       // Version info is available via _version property on fetched asset
       const asset = await stack.asset(versionedAssetUid).fetch()
-      
+
       expect(asset).to.be.an('object')
       expect(asset._version).to.be.a('number')
       expect(asset._version).to.be.at.least(1)
@@ -608,15 +612,17 @@ describe('Asset API Tests', () => {
 
     it('should download asset from URL', async function () {
       this.timeout(30000)
-      
+
       try {
-        const response = await stack.asset().download({ 
-          url: assetUrl, 
-          responseType: 'stream' 
+        const response = await stack.asset().download({
+          url: assetUrl,
+          responseType: 'stream'
         })
-        
+
+        // eslint-disable-next-line no-unused-expressions
         expect(response).to.be.an('object')
         // Stream response should have data
+        // eslint-disable-next-line no-unused-expressions
         expect(response.data || response).to.exist
       } catch (error) {
         // Download might not be available in all environments
@@ -626,13 +632,15 @@ describe('Asset API Tests', () => {
 
     it('should download asset after fetch', async function () {
       this.timeout(30000)
-      
+
       try {
         const asset = await stack.asset(downloadAssetUid).fetch()
         const response = await asset.download({ responseType: 'stream' })
-        
+
+        // eslint-disable-next-line no-unused-expressions
         expect(response).to.be.an('object')
         // Stream response should have data
+        // eslint-disable-next-line no-unused-expressions
         expect(response.data || response).to.exist
       } catch (error) {
         // Download might not be available in all environments
@@ -685,7 +693,6 @@ describe('Asset API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to fetch non-existent asset', async () => {
       try {
         await stack.asset('nonexistent_asset_12345').fetch()
@@ -709,6 +716,7 @@ describe('Asset API Tests', () => {
         await stack.asset('invalid_uid').fetch()
         expect.fail('Should have thrown an error')
       } catch (error) {
+        // eslint-disable-next-line no-unused-expressions
         expect(error).to.exist
         expect(error.status).to.be.a('number')
         expect(error.errorMessage).to.be.a('string')
@@ -721,7 +729,6 @@ describe('Asset API Tests', () => {
   // ==========================================================================
 
   describe('Asset Query Operations', () => {
-
     it('should query assets by content type', async () => {
       const response = await stack.asset().query({
         query: { content_type: { $regex: 'image' } }
