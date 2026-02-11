@@ -1,4 +1,6 @@
 fileignoreconfig:
+  - filename: lib/contentstackClient.js
+    checksum: f564f6eee5c17dc73abdeab4be226a3b37942893e149d907d2a4ef415c485c5e
   - filename: test/unit/globalField-test.js
     checksum: 25185e3400a12e10a043dc47502d8f30b7e1c4f2b6b4d3b8b55cdc19850c48bf
   - filename: lib/stack/index.js
@@ -7,7 +9,9 @@ fileignoreconfig:
     ignore_detectors:
       - filecontent
   - filename: package-lock.json
-    checksum: 17b5bbabcc58beaa180a7fa931fc3fb407ee0e3447d47da224f60118c0a4c294
+    checksum: 92b88ce00603ede68344bac6bd6bf76bdb76f1e5f5ba8d1d0c79da2b72c5ecc0
+  - filename: test/unit/ContentstackClient-test.js
+    checksum: 5d8519b5b93c715e911a62b4033614cc4fb3596eabf31c7216ecb4cc08604a73
   - filename: .husky/pre-commit
     checksum: 52a664f536cf5d1be0bea19cb6031ca6e8107b45b6314fe7d47b7fad7d800632
   - filename: lib/stack/asset/index.js
@@ -18,10 +22,6 @@ fileignoreconfig:
     checksum: b506f33bffdd20dfc701f964370707f5d7b28a2c05c70665f0edb7b3c53c165b
   - filename: examples/robust-error-handling.js
     checksum: e8a32ffbbbdba2a15f3d327273f0a5b4eb33cf84cd346562596ab697125bbbc6
-  - filename: lib/contentstackClient.js
-    checksum: b76ca091caa3a1b2658cd422a2d8ef3ac9996aea0aff3f982d56bb309a3d9fde
-  - filename: test/unit/ContentstackClient-test.js
-    checksum: 974a4f335aef025b657d139bb290233a69bed1976b947c3c674e97baffe4ce2f
   - filename: test/unit/ContentstackHTTPClient-test.js
     checksum: 4043efd843e24da9afd0272c55ef4b0432e3374b2ca12b913f1a6654df3f62be
   - filename: test/unit/contentstack-test.js
@@ -105,4 +105,6 @@ fileignoreconfig:
     checksum: 1ba486167f2485853d9574322c233d28fc566e02db44bb9831b70fb9afaf7631
   - filename: test/sanity-check/mock/index.js
     checksum: 6c0d8f6e7c85cd2fa5f0a20e8a49e94df0dde1b2c1d7e9c39e8c9c6c8b8d5e2f1
+  - filename: test/unit/concurrency-Queue-test.js
+    checksum: fd5c327f4fa1b334fdb1a2d903ac0213752e7829f31f19667215aa186c3efbbf
 version: "1.0"
