@@ -650,7 +650,9 @@ describe('Concurrency queue test', () => {
     })
     const logSpy = sinon.stub()
     client.defaults.adapter = () => {
-      return Promise.reject({ message: 'Connection timeout', code: 'ECONNABORTED' })
+      const err = new Error('Connection timeout')
+      err.code = 'ECONNABORTED'
+      return Promise.reject(err)
     }
     const queue = new ConcurrencyQueue({
       axios: client,
@@ -679,7 +681,11 @@ describe('Concurrency queue test', () => {
       baseURL: `${host}:${port}`
     })
     const pluginReplacesWithNoConfig = {
-      onResponse: (err) => new Error('Plugin replaced error')
+      onResponse: (err) => {
+        const e = new Error('Plugin replaced error')
+        e.originalError = err
+        return e
+      }
     }
     const queue = new ConcurrencyQueue({
       axios: client,
