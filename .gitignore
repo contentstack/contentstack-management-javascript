@@ -41,6 +41,8 @@ coverage/
 test/utility/dataFiles/
 test/sanity-check/utility/dataFiles/
 report.json
+sanity-check-backup/
+.vscode/
 
 # TypeScript v1 declaration files
 typings/
@@ -62,6 +64,7 @@ tsconfig.json
 
 # dotenv environment variables file
 .env
+test-curls.txt
 
 # next.js build output
 .next
@@ -69,3 +72,4 @@ tsconfig.json
 dist
 jsdocs
 .early.coverage
+docs/

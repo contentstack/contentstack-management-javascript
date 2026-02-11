@@ -1,43 +1,110 @@
 fileignoreconfig:
+  - filename: lib/contentstackClient.js
+    checksum: f564f6eee5c17dc73abdeab4be226a3b37942893e149d907d2a4ef415c485c5e
   - filename: test/unit/globalField-test.js
     checksum: 25185e3400a12e10a043dc47502d8f30b7e1c4f2b6b4d3b8b55cdc19850c48bf
   - filename: lib/stack/index.js
     checksum: 6aab5edf85efb17951418b4dc4402889cd24c8d786c671185074aeb4d50f0242
-  - filename: test/sanity-check/api/stack-test.js
-    checksum: 198d5cf7ead33b079249dc3ecdee61a9c57453e93f1073ed0341400983e5aa53
   - filename: .github/workflows/secrets-scan.yml
     ignore_detectors:
       - filecontent
   - filename: package-lock.json
-    checksum: 751efa34d2f832c7b99771568b5125d929dab095784b6e4ea659daaa612994c8
+    checksum: 92b88ce00603ede68344bac6bd6bf76bdb76f1e5f5ba8d1d0c79da2b72c5ecc0
+  - filename: test/unit/ContentstackClient-test.js
+    checksum: 5d8519b5b93c715e911a62b4033614cc4fb3596eabf31c7216ecb4cc08604a73
   - filename: .husky/pre-commit
     checksum: 52a664f536cf5d1be0bea19cb6031ca6e8107b45b6314fe7d47b7fad7d800632
-  - filename: test/sanity-check/api/user-test.js
-    checksum: 6bb8251aad584e09f4d963a913bd0007e5f6e089357a44c3fb1529e3fda5509d
   - filename: lib/stack/asset/index.js
     checksum: b3358310e9cb2fb493d70890b7219db71e2202360be764465d505ef71907eefe
-  - filename: test/sanity-check/api/previewToken-test.js
-    checksum: 9a42e079b7c71f76932896a0d2390d86ac626678ab20d36821dcf962820a886c
   - filename: lib/stack/deliveryToken/index.js
     checksum: 51ae00f07f4cc75c1cd832b311c2e2482f04a8467a0139da6013ceb88fbdda2f
   - filename: lib/stack/deliveryToken/previewToken/index.js
     checksum: b506f33bffdd20dfc701f964370707f5d7b28a2c05c70665f0edb7b3c53c165b
   - filename: examples/robust-error-handling.js
     checksum: e8a32ffbbbdba2a15f3d327273f0a5b4eb33cf84cd346562596ab697125bbbc6
-  - filename: test/sanity-check/api/bulkOperation-test.js
-    checksum: f40a14c84ab9a194aaf830ca68e14afde2ef83496a07d4a6393d7e0bed15fb0e
-  - filename: lib/contentstackClient.js
-    checksum: b76ca091caa3a1b2658cd422a2d8ef3ac9996aea0aff3f982d56bb309a3d9fde
-  - filename: test/unit/ContentstackClient-test.js
-    checksum: 974a4f335aef025b657d139bb290233a69bed1976b947c3c674e97baffe4ce2f
   - filename: test/unit/ContentstackHTTPClient-test.js
     checksum: 4043efd843e24da9afd0272c55ef4b0432e3374b2ca12b913f1a6654df3f62be
   - filename: test/unit/contentstack-test.js
     checksum: 2597efae3c1ab8cc173d5bf205f1c76932211f8e0eb2a16444e055d83481976c
+  # Sanity check test files - use process.env for all secrets (no hardcoded values)
+  - filename: test/sanity-check/api/environment-test.js
+    checksum: 91d76e6a2c4639db04071a30a9212df32777ab5f0e3a23dc101f4d62c13609b0
+  - filename: test/sanity-check/env.example.txt
+    checksum: 3339944cd20d6d72f70a92e54af3de96736250b4b7117a29577575f9b52ed611
+  - filename: test/sanity-check/api/token-test.js
+    checksum: 951d45bde20704529b38f628ba839a3c4f7a81ffe9d0a0593ff75b42632772db
+  - filename: test/sanity-check/api/webhook-test.js
+    checksum: 4928ae0eb72a47bced3b1a1eb18bc436141280bd41b74c54f03c1164911fd776
+  - filename: test/sanity-check/mock/configurations.js
+    checksum: 1506d750a9344843b3f8370aa322a814cfc0b3ac60fc94e55b691d2246335b5e
+  - filename: test/sanity-check/api/ungroupedVariants-test.js
+    checksum: 16a1460702efd0f9146687a2a1750768f55798bb31e0259f90a6810bcc4ab60a
+  - filename: test/sanity-check/mock/global-fields.js
+    checksum: fb89a4a5028066689de774ca2f990c25c8a3acc46c0c6b97fee410f491853cc1
+  - filename: test/sanity-check/utility/ContentstackClient.js
+    checksum: 96ff5412eed26f5a27621dd307c9463f793a3e8dd977fe1e5453da78507ac2f6
+  - filename: test/sanity-check/api/variantGroup-test.js
+    checksum: 3fc26eca704bc9ce4650056c81be45f3586d3c947a18dfec58fee4447de56360
+  - filename: test/sanity-check/api/workflow-test.js
+    checksum: 032a2b92eb0a7cc72976b597d53aee0beb04f965e36c056b3c7e3c60ad187108
+  - filename: test/sanity-check/api/variants-test.js
+    checksum: 6e1c1b0bada5799bf38443db537673f586c0c3dfd7800a8aec9d5a7fb966c58c
+  - filename: test/sanity-check/mock/content-types/index.js
+    checksum: ff47f74037e22f791e2d7c6afbaccf7857b26b51dd2e2361b5b4b70d36057b7f
+  - filename: test/sanity-check/sanity.js
+    checksum: 523725a12c93abdc1b89a1e7ef38021184e7d710f8719290923f835f8d615693
+  - filename: test/sanity-check/api/user-test.js
+    checksum: 01a2224a02f6a0e1cd5fb10e289a349a32a5cf3eb39b9e06787031fde5aa8aca
+  - filename: test/sanity-check/api/locale-test.js
+    checksum: 91f8db01791a57c18e925c5896cc1960cdb951e6787fff886c008e17c25d5dea
+  - filename: test/sanity-check/api/asset-test.js
+    checksum: 97f19206080fcd5042e3eaa25429e92eac697530de8825cb66533164b73d9164
+  - filename: test/sanity-check/api/label-test.js
+    checksum: bf11c1ec13e66d9251380ac8fe028d51a809ffa174afa9518dfb1f599372381d
+  - filename: test/sanity-check/mock/webhook-import.json
+    checksum: 3fb331e842d640a29663fcbd4feee8284f46600869b39ac45c1fedaa7cde4969
+  - filename: test/sanity-check/api/taxonomy-test.js
+    checksum: accd5b96fff87b6a9aaec7ca053e5546402b5d084417fdc70f7f2bc7a2b8a353
+  - filename: test/sanity-check/api/release-test.js
+    checksum: 863c0ef7d65cfd33f245deb636d537c131ad29233ebafd88c223e555c4f80b82
+  - filename: test/sanity-check/utility/testHelpers.js
+    checksum: 204d11d739947259a3303fbe1d92c296dd82975fa8dff67a438853a3828c27a3
+  - filename: test/sanity-check/api/auditlog-test.js
+    checksum: 9d325aaf73760359dd4194c52ad01203ed7f078230e45282e84aab2b53613095
+  - filename: test/sanity-check/api/team-test.js
+    checksum: e4b7a6824b89e634981651ad29161901377f23bb37d3653a389ac3dc4e7653c7
+  - filename: test/sanity-check/api/oauth-test.js
+    checksum: fd8a4fe7a644955ea6609813c655d8fca6bb3c7eeea4ae2c5ba99d30b1950172
+  - filename: test/sanity-check/api/branchAlias-test.js
+    checksum: 0b6cacee74d7636e84ce095198f0234d491b79ea20d3978a742a5495692bd61d
+  - filename: test/sanity-check/utility/testSetup.js
+    checksum: e906e6a93953826857fa701db7094330ef88e342e719f3446e17c823576c3377
+  - filename: test/sanity-check/api/branch-test.js
+    checksum: 49c8fd18c59d45e4335f766591711849722206bce34860efa8eced7172f44efa
+  - filename: test/sanity-check/api/stack-test.js
+    checksum: abcc3b1a7a6e52a553645bd7a7a38b287402604f6b61df51a69745cd2aa8a187
+  - filename: test/sanity-check/api/previewToken-test.js
+    checksum: 9efe3852336f1c5f961682ca21673514b2bd1334a040c5d56983074f41c6b8e0
+  - filename: test/sanity-check/api/role-test.js
+    checksum: cdfa2ae59443ed02f5463c0e84314a3d94c72f395694de883bc873cd6708cf87
+  - filename: test/sanity-check/api/terms-test.js
+    checksum: 8a54b4b6e27f03a461a7b6c12cec2b9fd4b931ccb6e41959a6cfedb3a2482ee8
+  - filename: test/sanity-check/utility/requestLogger.js
+    checksum: 2b5282cfff084765312e1543bad3f890bc5b47ef27456f0a4c2e50d098292e32
+  - filename: test/sanity-check/api/contentType-test.js
+    checksum: 4d5178998f9f3c27550c5bd21540e254e08f79616e8615e7256ba2175cb4c8e1
+  - filename: test/sanity-check/api/bulkOperation-test.js
+    checksum: 6281e14c7a10864c586e95139f47ae2ee5bb2322a2beaec166a1f6ece830431b
+  - filename: test/sanity-check/api/entry-test.js
+    checksum: 9dc16b404a98ff9fa2c164fad0182b291b9c338dd58558dc5ef8dd75cf18bc1f
+  - filename: test/sanity-check/api/entryVariants-test.js
+    checksum: 2089e9134dece33179b88747c6e82377f1fb4eb74583281df05dd0816a907782
+  - filename: test/sanity-check/api/extension-test.js
+    checksum: 5083af9c4009cc969f7949ce97f97ab2e5b5f40366ecfdd402f491a6246c5e6f
+  - filename: test/sanity-check/api/globalfield-test.js
+    checksum: 1ba486167f2485853d9574322c233d28fc566e02db44bb9831b70fb9afaf7631
+  - filename: test/sanity-check/mock/index.js
+    checksum: 6c0d8f6e7c85cd2fa5f0a20e8a49e94df0dde1b2c1d7e9c39e8c9c6c8b8d5e2f1
   - filename: test/unit/concurrency-Queue-test.js
-    checksum: 186438f9eb9ba4e7fd7f335dbea2afbae9ae969b7ae3ab1b517ec7a1633d255e
+    checksum: fd5c327f4fa1b334fdb1a2d903ac0213752e7829f31f19667215aa186c3efbbf
 version: "1.0"
-
-
-
-
