@@ -170,34 +170,28 @@ afterEach(function() {
     // Get tracked assertions (from trackedExpect)
     const trackedAssertions = assertionTracker.getData()
     
-    // Add test result indicator
+    // Build Expected vs Actual value once so we never skip it
+    let expectedVsActualTitle = '📊 Expected vs Actual'
+    let expectedVsActualValue = ''
+    
     if (testState === 'passed') {
       addContext(this, {
         title: '✅ Test Result',
         value: 'PASSED'
       })
       
-      // Add assertion details for passed tests (trackedExpect or API result)
       if (trackedAssertions.length > 0) {
-        addContext(this, {
-          title: '📊 Assertions Verified (Expected vs Actual)',
-          value: trackedAssertions.map(a => 
-            `✓ ${a.description}\n   Expected: ${a.expected}\n   Actual: ${a.actual}`
-          ).join('\n\n')
-        })
+        expectedVsActualTitle = '📊 Assertions Verified (Expected vs Actual)'
+        expectedVsActualValue = trackedAssertions.map(a =>
+          `✓ ${a.description}\n   Expected: ${a.expected}\n   Actual: ${a.actual}`
+        ).join('\n\n')
       } else if (lastRequest) {
-        // Fallback: show API result for tests that use expect() not trackedExpect
-        addContext(this, {
-          title: '📊 Result (Expected vs Actual)',
-          value: `Expected: Successful API response\nActual: ${lastRequest.status || 'OK'} - ${lastRequest.method} ${lastRequest.url}`
-        })
+        expectedVsActualValue = `Expected: Successful API response\nActual: ${lastRequest.status ?? 'OK'} - ${lastRequest.method || '?'} ${lastRequest.url || '?'}`
       } else {
-        // Final fallback: test passed but no request/assertion captured
-        addContext(this, {
-          title: '📊 Result (Expected vs Actual)',
-          value: 'Expected: Success\nActual: Test passed (no SDK request captured for this test)'
-        })
+        expectedVsActualValue = 'Expected: Success\nActual: Test passed (no SDK request captured for this test)'
       }
+      // Always add Expected vs Actual for every passed test
+      addContext(this, { title: expectedVsActualTitle, value: expectedVsActualValue })
       
       // For passed tests, add the last request curl if available
       if (lastRequest && lastRequest.curl) {

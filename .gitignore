@@ -64,6 +64,7 @@ tsconfig.json
 
 # dotenv environment variables file
 .env
+test-curls.txt
 
 # next.js build output
 .next
