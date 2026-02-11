@@ -1,6 +1,6 @@
 /**
  * Branch Alias API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Branch alias CRUD operations
  * - Branch alias query operations
@@ -11,7 +11,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { testData, wait, shortId, trackedExpect } from '../utility/testHelpers.js'
+import { testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Branch Alias API Tests', () => {
   let client
@@ -34,7 +34,7 @@ describe('Branch Alias API Tests', () => {
       testBranchUid = 'main'
       console.log('Branch Alias tests using main branch (no branch in testData)')
     }
-    
+
     // Wait for any pending operations
     await wait(1000)
   })
@@ -49,31 +49,30 @@ describe('Branch Alias API Tests', () => {
   // ==========================================================================
 
   describe('Branch Alias CRUD', () => {
-
     it('should create a branch alias', async function () {
       this.timeout(45000)
 
       // Generate short alias uid (max 15 chars, lowercase alphanumeric and underscore only)
       // Format: branchUid + '_alias' (similar to old test pattern)
       testAliasUid = `${testBranchUid}_alias`.slice(0, 15)
-      
+
       // If using main branch, use a unique alias name
       if (testBranchUid === 'main') {
         testAliasUid = `main_al_${Date.now().toString().slice(-5)}`
       }
 
       console.log(`Creating alias "${testAliasUid}" for branch "${testBranchUid}"`)
-      
+
       // Create the branch alias using SDK method (same as old tests)
       const response = await stack.branchAlias(testAliasUid).createOrUpdate(testBranchUid)
 
       trackedExpect(response, 'Branch alias').toBeAn('object')
-      
+
       // Validate response matches old test expectations
       trackedExpect(response.uid, 'Branch alias uid').toEqual(testBranchUid)
       trackedExpect(response.alias, 'Branch alias alias').toEqual(testAliasUid)
       expect(response.urlPath).to.equal(`/stacks/branches/${testBranchUid}`)
-      
+
       // Store for later tests
       testData.branchAliases = testData.branchAliases || {}
       testData.branchAliases.test = response
@@ -113,12 +112,16 @@ describe('Branch Alias API Tests', () => {
         query: { uid: testBranchUid }
       })
 
+      // eslint-disable-next-line no-unused-expressions
       expect(response).to.be.an('object')
+      // eslint-disable-next-line no-unused-expressions
       expect(response.items).to.be.an('array')
+      // eslint-disable-next-line no-unused-expressions
       expect(response.items.length).to.be.at.least(1)
-      
+
       // Find our alias in the results
       const item = response.items.find(a => a.alias === testAliasUid)
+      // eslint-disable-next-line no-unused-expressions
       expect(item).to.exist
       expect(item.urlPath).to.equal(`/stacks/branches/${testBranchUid}`)
       // Check SDK methods exist on response items
@@ -169,7 +172,6 @@ describe('Branch Alias API Tests', () => {
   // ==========================================================================
 
   describe('Branch Alias Validation', () => {
-
     it('should validate alias response structure', async function () {
       this.timeout(15000)
 
@@ -216,7 +218,6 @@ describe('Branch Alias API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to fetch non-existent alias', async function () {
       this.timeout(15000)
 
@@ -256,7 +257,6 @@ describe('Branch Alias API Tests', () => {
   // ==========================================================================
 
   describe('Branch Alias Delete', () => {
-
     it('should delete branch alias', async function () {
       this.timeout(45000)
 
@@ -267,7 +267,7 @@ describe('Branch Alias API Tests', () => {
       try {
         // Create temp alias pointing to main
         await stack.branchAlias(tempAliasUid).createOrUpdate('main')
-        
+
         await wait(2000)
 
         const response = await stack.branchAlias(tempAliasUid).delete()
