@@ -1,6 +1,6 @@
 /**
  * Token API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Delivery Token CRUD operations
  * - Management Token CRUD operations
@@ -10,7 +10,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { validateTokenResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
+import { testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Token API Tests', () => {
   let client
@@ -23,7 +23,7 @@ describe('Token API Tests', () => {
     this.timeout(30000)
     client = contentstackClient()
     stack = client.stack({ api_key: process.env.API_KEY })
-    
+
     // ALWAYS fetch fresh environments from API - don't rely on testData which may be stale
     // (Environments in testData may have been deleted by environment delete tests)
     try {
@@ -38,7 +38,7 @@ describe('Token API Tests', () => {
     } catch (e) {
       console.log('Note: Could not fetch environments, token tests may be limited')
     }
-    
+
     // Build scopes with existing environment (required for delivery tokens)
     // Use environment NAME, not UID (API expects names in scope)
     deliveryTokenScope = [
@@ -53,7 +53,7 @@ describe('Token API Tests', () => {
         acl: { read: true }
       }
     ]
-    
+
     // Base scope with required branch field for management tokens
     managementTokenScope = [
       {
@@ -77,7 +77,7 @@ describe('Token API Tests', () => {
   })
 
   // Helper to fetch delivery token by UID using query
-  async function fetchDeliveryTokenByUid(tokenUid) {
+  async function fetchDeliveryTokenByUid (tokenUid) {
     const response = await stack.deliveryToken().query().find()
     const items = response.items || response.tokens || []
     const token = items.find(t => t.uid === tokenUid)
@@ -90,7 +90,7 @@ describe('Token API Tests', () => {
   }
 
   // Helper to fetch management token by UID using query
-  async function fetchManagementTokenByUid(tokenUid) {
+  async function fetchManagementTokenByUid (tokenUid) {
     const response = await stack.managementToken().query().find()
     const items = response.items || response.tokens || []
     const token = items.find(t => t.uid === tokenUid)
@@ -115,13 +115,13 @@ describe('Token API Tests', () => {
 
     it('should create a delivery token', async function () {
       this.timeout(30000)
-      
+
       // Skip if no environment exists (required for delivery tokens)
       if (!existingEnvironment) {
         this.skip()
         return
       }
-      
+
       const tokenData = {
         token: {
           name: `Delivery Token ${Date.now()}`,
@@ -140,7 +140,7 @@ describe('Token API Tests', () => {
 
       createdTokenUid = response.uid
       testData.tokens.delivery = response
-      
+
       // Wait for token to be fully created
       await wait(2000)
     })
@@ -164,19 +164,19 @@ describe('Token API Tests', () => {
 
     it('should update delivery token name', async function () {
       this.timeout(15000)
-      
+
       if (!createdTokenUid) {
         console.log('Skipping - no delivery token created')
         this.skip()
         return
       }
-      
+
       const token = await fetchDeliveryTokenByUid(createdTokenUid)
       const newName = `Updated Delivery Token ${Date.now()}`
 
       // Update only the name field
       token.name = newName
-      
+
       // Preserve the original scope with environment NAMES (not objects)
       // The API expects environment names in scope, not complex objects
       if (token.scope) {
@@ -184,7 +184,7 @@ describe('Token API Tests', () => {
           if (s.module === 'environment' && s.environments) {
             return {
               module: 'environment',
-              environments: s.environments.map(env => 
+              environments: s.environments.map(env =>
                 typeof env === 'object' ? (env.name || env.uid) : env
               ),
               acl: s.acl || { read: true }
@@ -193,7 +193,7 @@ describe('Token API Tests', () => {
           return s
         })
       }
-      
+
       const response = await token.update()
 
       expect(response).to.be.an('object')
@@ -247,7 +247,7 @@ describe('Token API Tests', () => {
 
       createdMgmtTokenUid = response.uid
       testData.tokens.management = response
-      
+
       // Wait for token to be fully created
       await wait(2000)
     })
@@ -301,7 +301,6 @@ describe('Token API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create token without name', async () => {
       const tokenData = {
         token: {
@@ -392,7 +391,6 @@ describe('Token API Tests', () => {
   // ==========================================================================
 
   describe('Delete Token', () => {
-
     it('should delete a delivery token', async function () {
       this.timeout(30000)
       // Create temp token
@@ -405,9 +403,9 @@ describe('Token API Tests', () => {
 
       const response = await stack.deliveryToken().create(tokenData)
       expect(response.uid).to.be.a('string')
-      
+
       await wait(1000)
-      
+
       const token = await fetchDeliveryTokenByUid(response.uid)
       const deleteResponse = await token.delete()
 
@@ -427,9 +425,9 @@ describe('Token API Tests', () => {
 
       const response = await stack.managementToken().create(tokenData)
       expect(response.uid).to.be.a('string')
-      
+
       await wait(1000)
-      
+
       const token = await fetchManagementTokenByUid(response.uid)
       const deleteResponse = await token.delete()
 
@@ -449,9 +447,9 @@ describe('Token API Tests', () => {
 
       const response = await stack.deliveryToken().create(tokenData)
       const tokenUid = response.uid
-      
+
       await wait(1000)
-      
+
       const token = await fetchDeliveryTokenByUid(tokenUid)
       await token.delete()
 

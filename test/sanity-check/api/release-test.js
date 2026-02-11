@@ -1,6 +1,6 @@
 /**
  * Release API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Release CRUD operations
  * - Release items (entries and assets)
@@ -11,13 +11,6 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import {
-  simpleRelease,
-  releaseUpdate,
-  releaseItemEntry,
-  releaseItemAsset,
-  releaseDeployConfig
-} from '../mock/configurations.js'
 import { validateReleaseResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Release API Tests', () => {
@@ -61,7 +54,7 @@ describe('Release API Tests', () => {
 
       createdReleaseUid = release.uid
       testData.releases.q1 = release
-      
+
       // Wait for release to be fully created
       await wait(2000)
     })
@@ -140,7 +133,7 @@ describe('Release API Tests', () => {
       if (testData.entries && Object.keys(testData.entries).length > 0) {
         const existingEntry = Object.values(testData.entries)[0]
         testEntryUid = existingEntry.uid
-        
+
         // Get content type from the entry's _content_type_uid or use testData.contentTypes
         if (testData.contentTypes && Object.keys(testData.contentTypes).length > 0) {
           const existingCt = Object.values(testData.contentTypes)[0]
@@ -148,13 +141,13 @@ describe('Release API Tests', () => {
         } else {
           testContentTypeUid = existingEntry._content_type_uid
         }
-        
+
         console.log(`Release Items using existing entry: ${testEntryUid} from CT: ${testContentTypeUid}`)
       } else {
         // Fallback: Create a simple content type and entry for adding to release
         console.log('No entries in testData, creating new content type and entry for release items')
         testContentTypeUid = `rel_ct_${Date.now().toString().slice(-8)}`
-        
+
         const ctResponse = await stack.contentType().create({
           content_type: {
             title: 'Release Test CT',
@@ -171,7 +164,7 @@ describe('Release API Tests', () => {
             ]
           }
         })
-        
+
         // Get UID from response (handle different response structures)
         testContentTypeUid = ctResponse.uid || (ctResponse.content_type && ctResponse.content_type.uid) || testContentTypeUid
 
@@ -186,7 +179,7 @@ describe('Release API Tests', () => {
 
         testEntryUid = entryResponse.uid || (entryResponse.entry && entryResponse.entry.uid)
       }
-      
+
       if (!testEntryUid || !testContentTypeUid) {
         console.log('Warning: Could not get entry or content type for release items test')
       }
@@ -233,10 +226,10 @@ describe('Release API Tests', () => {
     it('should remove item from release', async () => {
       try {
         const release = await stack.release(releaseForItemsUid).fetch()
-        
+
         // Get items first
         const itemsResponse = await release.item().findAll()
-        
+
         if (itemsResponse.items && itemsResponse.items.length > 0) {
           const item = itemsResponse.items[0]
           const response = await release.item().delete({
@@ -267,7 +260,7 @@ describe('Release API Tests', () => {
 
     before(async function () {
       this.timeout(60000)
-      
+
       // Get environment name from testData or query
       if (testData.environments && testData.environments.development) {
         deployEnvironment = testData.environments.development.name
@@ -284,7 +277,7 @@ describe('Release API Tests', () => {
           console.log('Could not fetch environments:', e.message)
         }
       }
-      
+
       // If no environment exists, create a temporary one for deployment
       if (!deployEnvironment) {
         try {
@@ -302,7 +295,7 @@ describe('Release API Tests', () => {
           console.log('Could not create environment for deployment:', e.message)
         }
       }
-      
+
       const releaseData = {
         release: {
           name: `Deploy Test Release ${Date.now()}`,
@@ -325,7 +318,7 @@ describe('Release API Tests', () => {
         this.skip()
         return
       }
-      
+
       try {
         const release = await stack.release(deployableReleaseUid).fetch()
 
@@ -350,8 +343,6 @@ describe('Release API Tests', () => {
 
   describe('Release Clone', () => {
     let sourceReleaseUid
-    let clonedReleaseUid
-
     before(async () => {
       const releaseData = {
         release: {
@@ -383,7 +374,6 @@ describe('Release API Tests', () => {
         // Clone returns release object directly
         expect(response).to.be.an('object')
         if (response.uid) {
-          clonedReleaseUid = response.uid
           expect(response.name).to.include('Cloned Release')
         }
       } catch (error) {
@@ -397,7 +387,6 @@ describe('Release API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create release without name', async () => {
       const releaseData = {
         release: {
@@ -463,7 +452,6 @@ describe('Release API Tests', () => {
   // ==========================================================================
 
   describe('Delete Release', () => {
-
     it('should delete a release', async () => {
       // Create temp release
       const releaseData = {

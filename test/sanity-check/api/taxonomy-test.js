@@ -1,6 +1,6 @@
 /**
  * Taxonomy API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Taxonomy CRUD operations
  * - Error handling
@@ -9,10 +9,6 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import {
-  categoryTaxonomy,
-  regionTaxonomy
-} from '../mock/taxonomy.js'
 import { validateTaxonomyResponse, testData, wait, shortId, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Taxonomy API Tests', () => {
@@ -58,7 +54,7 @@ describe('Taxonomy API Tests', () => {
 
       createdTaxonomy = taxonomy
       testData.taxonomies.category = taxonomy
-      
+
       // Wait for taxonomy to be fully created
       await wait(2000)
     })
@@ -141,7 +137,6 @@ describe('Taxonomy API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create taxonomy with duplicate UID', async () => {
       const taxonomyData = {
         taxonomy: {
@@ -201,10 +196,9 @@ describe('Taxonomy API Tests', () => {
   // ==========================================================================
 
   describe('Delete Taxonomy', () => {
-
     it('should delete a taxonomy', async function () {
       this.timeout(30000)
-      
+
       // Create a temporary taxonomy to delete
       const tempUid = `del_${shortId()}`
       const taxonomyData = {
@@ -215,7 +209,7 @@ describe('Taxonomy API Tests', () => {
       }
 
       await stack.taxonomy().create(taxonomyData)
-      
+
       await wait(1000)
 
       // OLD pattern: use delete({ force: true }) and expect status 204
@@ -227,7 +221,7 @@ describe('Taxonomy API Tests', () => {
 
     it('should return 404 for deleted taxonomy', async function () {
       this.timeout(30000)
-      
+
       const tempUid = `temp_verify_${Date.now()}`
       const taxonomyData = {
         taxonomy: {
@@ -238,7 +232,7 @@ describe('Taxonomy API Tests', () => {
 
       await stack.taxonomy().create(taxonomyData)
       await wait(1000)
-      
+
       // OLD pattern: use delete({ force: true })
       await stack.taxonomy(tempUid).delete({ force: true })
 

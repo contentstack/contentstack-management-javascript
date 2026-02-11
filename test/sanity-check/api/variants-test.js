@@ -1,10 +1,10 @@
 /**
  * Variants API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Variant CRUD operations within Variant Groups
  * - Error handling
- * 
+ *
  * NOTE: Variants feature must be enabled for the stack.
  * Tests will be skipped if the feature is not available.
  */
@@ -23,10 +23,10 @@ describe('Variants API Tests', () => {
 
   before(async function () {
     this.timeout(60000)
-    
+
     client = contentstackClient()
     stack = client.stack({ api_key: process.env.API_KEY })
-    
+
     // Create a variant group first for variant tests
     try {
       const createData = {
@@ -34,7 +34,7 @@ describe('Variants API Tests', () => {
         name: `Variant Group for Variants Test ${Date.now()}`,
         description: 'Variant group for testing variants API'
       }
-      
+
       const response = await stack.variantGroup().create(createData)
       variantGroupUid = response.uid
       await wait(2000)
@@ -55,7 +55,7 @@ describe('Variants API Tests', () => {
   })
 
   // Helper to fetch variant by UID
-  async function fetchVariantByUid(uid) {
+  async function fetchVariantByUid (uid) {
     const response = await stack.variantGroup(variantGroupUid).variants().query().find()
     const items = response.items || response.variants || []
     const variant = items.find(v => v.uid === uid)
@@ -68,10 +68,9 @@ describe('Variants API Tests', () => {
   }
 
   describe('Variant CRUD Operations', () => {
-    
     it('should create a variant in variant group', async function () {
       this.timeout(30000)
-      
+
       // Skip check at beginning only
       if (!variantGroupUid || !featureEnabled) {
         this.skip()
@@ -91,20 +90,20 @@ describe('Variants API Tests', () => {
       }
 
       const response = await stack.variantGroup(variantGroupUid).variants().create(createData)
-      
+
       trackedExpect(response, 'Variant').toBeAn('object')
       trackedExpect(response.uid, 'Variant UID').toBeA('string')
       trackedExpect(response.name, 'Variant name').toInclude('Test Variant')
-      
+
       variantUid = response.uid
       testData.variantUid = response.uid
-      
+
       await wait(1000)
     })
 
     it('should fetch all variants in variant group', async function () {
       this.timeout(15000)
-      
+
       if (!variantGroupUid || !featureEnabled) {
         this.skip()
         return
@@ -112,11 +111,11 @@ describe('Variants API Tests', () => {
 
       try {
         const response = await stack.variantGroup(variantGroupUid).variants().query().find()
-        
+
         trackedExpect(response, 'Variants query response').toBeAn('object')
         const items = response.items || response.variants || []
         trackedExpect(items, 'Variants list').toBeAn('array')
-        
+
         items.forEach(variant => {
           expect(variant.uid).to.not.equal(null)
           expect(variant.name).to.not.equal(null)
@@ -133,7 +132,7 @@ describe('Variants API Tests', () => {
 
     it('should fetch a single variant by UID', async function () {
       this.timeout(15000)
-      
+
       if (!variantGroupUid || !variantUid || !featureEnabled) {
         this.skip()
         return
@@ -141,7 +140,7 @@ describe('Variants API Tests', () => {
 
       try {
         const variant = await fetchVariantByUid(variantUid)
-        
+
         expect(variant.uid).to.equal(variantUid)
         expect(variant.name).to.not.equal(null)
       } catch (error) {
@@ -155,7 +154,7 @@ describe('Variants API Tests', () => {
 
     it('should update a variant', async function () {
       this.timeout(15000)
-      
+
       if (!variantGroupUid || !variantUid || !featureEnabled) {
         this.skip()
         return
@@ -165,12 +164,12 @@ describe('Variants API Tests', () => {
 
       try {
         const variant = await fetchVariantByUid(variantUid)
-        
+
         // SDK update() takes data object as parameter
         const response = await variant.update({
           name: newName
         })
-        
+
         expect(response).to.be.an('object')
         // Response might be nested
         const updatedVariant = response.variant || response
@@ -189,7 +188,7 @@ describe('Variants API Tests', () => {
   describe('Variant Deletion', () => {
     it('should delete a variant', async function () {
       this.timeout(30000)
-      
+
       // Skip check at beginning only
       if (!variantGroupUid || !featureEnabled) {
         this.skip()
@@ -211,12 +210,12 @@ describe('Variants API Tests', () => {
 
       const tempVariant = await stack.variantGroup(variantGroupUid).variants().create(tempVariantData)
       expect(tempVariant.uid).to.be.a('string')
-      
+
       await wait(1000)
-      
+
       const variantToDelete = await fetchVariantByUid(tempVariant.uid)
       const response = await variantToDelete.delete()
-      
+
       expect(response).to.be.an('object')
     })
   })
@@ -224,7 +223,7 @@ describe('Variants API Tests', () => {
   describe('Error Handling', () => {
     it('should handle fetching non-existent variant', async function () {
       this.timeout(15000)
-      
+
       if (!variantGroupUid || !featureEnabled) {
         this.skip()
         return
@@ -240,7 +239,7 @@ describe('Variants API Tests', () => {
 
     it('should handle creating variant without name', async function () {
       this.timeout(15000)
-      
+
       if (!variantGroupUid || !featureEnabled) {
         this.skip()
         return

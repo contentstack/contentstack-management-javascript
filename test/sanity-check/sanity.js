@@ -1,8 +1,8 @@
 /**
  * Sanity Test Suite - Main Orchestrator
- * 
+ *
  * This file orchestrates all API test suites for the CMA JavaScript SDK.
- * 
+ *
  * The test suite is FULLY SELF-CONTAINED and dynamically creates:
  * 1. Logs in using EMAIL/PASSWORD to get authtoken
  * 2. Creates a NEW test stack (no pre-existing stack required)
@@ -12,13 +12,13 @@
  * 6. Cleans up all created resources within the stack
  * 7. Conditionally deletes stack and personalize project (based on env flag)
  * 8. Logs out
- * 
+ *
  * Environment Variables Required:
  * - EMAIL: User email for login
  * - PASSWORD: User password for login
  * - HOST: API host URL (e.g., api.contentstack.io, eu-api.contentstack.com)
  * - ORGANIZATION: Organization UID (for stack creation and personalize)
- * 
+ *
  * Optional:
  * - PERSONALIZE_HOST: Personalize API host (default: personalize-api.contentstack.com)
  * - DELETE_DYNAMIC_RESOURCES: Toggle for deleting stack/personalize (default: true)
@@ -27,387 +27,38 @@
  * - CLIENT_ID: OAuth client ID
  * - APP_ID: OAuth app ID
  * - REDIRECT_URI: OAuth redirect URI
- * 
+ *
  * NO LONGER REQUIRED (dynamically created):
  * - API_KEY: Generated when test stack is created
  * - MANAGEMENT_TOKEN: Generated for the test stack
  * - PERSONALIZE_PROJECT_UID: Generated when personalize project is created
- * 
+ *
  * Usage:
  *   npm run test:sanity
- *   
+ *
  * Or run individual test files:
  *   npm run test -- --grep "Content Type API Tests"
- * 
+ *
  * To preserve resources for debugging:
  *   DELETE_DYNAMIC_RESOURCES=false npm run test:sanity
  */
 
 import dotenv from 'dotenv'
-dotenv.config()
 
 import fs from 'fs'
 import path from 'path'
 import { before, after, afterEach, beforeEach } from 'mocha'
 import addContext from 'mochawesome/addContext.js'
 import * as testSetup from './utility/testSetup.js'
-import { testData, errorToCurl, formatErrorWithCurl, assertionTracker, globalAssertionStore } from './utility/testHelpers.js'
+import { testData, errorToCurl, assertionTracker, globalAssertionStore } from './utility/testHelpers.js'
 import * as requestLogger from './utility/requestLogger.js'
-
-// Max length for response body in report (avoid huge payloads)
-const MAX_RESPONSE_BODY_DISPLAY = 4000
-
-function formatRequestHeadersForReport(headers) {
-  if (!headers || typeof headers !== 'object') return ''
-  const lines = []
-  for (const [key, value] of Object.entries(headers)) {
-    if (value == null) continue
-    let display = String(value)
-    if (key.toLowerCase() === 'authtoken' || key.toLowerCase() === 'authorization') {
-      display = display.length > 15 ? display.substring(0, 10) + '...' + display.substring(display.length - 5) : '***'
-    }
-    lines.push(`${key}: ${display}`)
-  }
-  return lines.join('\n')
-}
-
-function formatResponseForReport(lastRequest) {
-  const parts = []
-  if (lastRequest.headers && Object.keys(lastRequest.headers).length > 0) {
-    const requestHeaderLines = formatRequestHeadersForReport(lastRequest.headers)
-    if (requestHeaderLines) {
-      parts.push({ title: '📤 Request Headers', value: requestHeaderLines })
-    }
-  }
-  if (lastRequest.responseHeaders && Object.keys(lastRequest.responseHeaders).length > 0) {
-    const headerLines = Object.entries(lastRequest.responseHeaders)
-      .map(([k, v]) => `${k}: ${v}`)
-      .join('\n')
-    parts.push({ title: '📥 Response Headers', value: headerLines })
-  }
-  if (lastRequest.responseData !== undefined && lastRequest.responseData !== null) {
-    let bodyStr
-    try {
-      bodyStr = typeof lastRequest.responseData === 'object'
-        ? JSON.stringify(lastRequest.responseData, null, 2)
-        : String(lastRequest.responseData)
-    } catch (e) {
-      bodyStr = String(lastRequest.responseData)
-    }
-    if (bodyStr.length > MAX_RESPONSE_BODY_DISPLAY) {
-      bodyStr = bodyStr.slice(0, MAX_RESPONSE_BODY_DISPLAY) + '\n... (truncated)'
-    }
-    parts.push({ title: '📥 Response Body', value: bodyStr })
-  }
-  return parts
-}
-
-// Store test cURLs for the final report
-const testCurls = []
-
-// File to save cURLs
-const curlOutputFile = path.join(process.cwd(), 'test-curls.txt')
-
-// ============================================================================
-// GLOBAL SETUP - Login and Create Test Stack
-// ============================================================================
-
-before(async function () {
-  // Increase timeout for setup (login + stack creation)
-  this.timeout(120000) // 2 minutes
-  
-  // Start request logging to capture cURL for all tests
-  requestLogger.startLogging()
-  
-  try {
-    // Validate environment variables
-    testSetup.validateEnvironment()
-    
-    // Setup: Login and create test stack
-    await testSetup.setup()
-    
-    // Store in process.env for backward compatibility with existing tests
-    process.env.API_KEY = testSetup.testContext.stackApiKey
-    process.env.AUTHTOKEN = testSetup.testContext.authtoken
-    
-  } catch (error) {
-    console.error('\n❌ SETUP FAILED:', error.message)
-    console.error('\nPlease ensure your .env file contains:')
-    console.error('  EMAIL=your-email@example.com')
-    console.error('  PASSWORD=your-password')
-    console.error('  HOST=api.contentstack.io')
-    console.error('  ORGANIZATION=your-org-uid')
-    console.error('\nOptional settings:')
-    console.error('  PERSONALIZE_HOST=personalize-api.contentstack.com')
-    console.error('  DELETE_DYNAMIC_RESOURCES=true (set to false to preserve for debugging)')
-    console.error('\nNote: API_KEY, MANAGEMENT_TOKEN, and PERSONALIZE_PROJECT_UID')
-    console.error('are now dynamically created and no longer required in .env')
-    throw error
-  }
-})
-
-// ============================================================================
-// GLOBAL CURL CAPTURE FOR ALL TESTS (PASSED AND FAILED)
-// ============================================================================
-
-// Clear request log and assertion tracker before each test
-beforeEach(function() {
-  // Clear SDK plugin request capture
-  testSetup.clearCapturedRequests()
-  
-  try {
-    requestLogger.clearRequestLog()
-  } catch (e) {
-    // Ignore if request logger not available
-  }
-  
-  // Clear assertion trackers for fresh tracking in each test
-  assertionTracker.clear()
-  globalAssertionStore.clear()
-})
-
-afterEach(function() {
-  const test = this.currentTest
-  if (!test) return
-  
-  const testTitle = test.fullTitle()
-  const testState = test.state // 'passed', 'failed', or undefined (pending)
-  const error = test.err
-  
-  // Try to extract API error/request info from errors (for failed tests)
-  let apiInfo = null
-  
-  if (error) {
-    // Check error message for JSON API response
-    if (error.message) {
-      const jsonMatch = error.message.match(/\{[\s\S]*"status"[\s\S]*\}/)
-      if (jsonMatch) {
-        try {
-          apiInfo = JSON.parse(jsonMatch[0])
-        } catch (e) {
-          // Not valid JSON
-        }
-      }
-    }
-    
-    // Check direct error properties
-    if (!apiInfo && (error.request || error.config || error.status)) {
-      apiInfo = error.originalError || error
-    }
-    
-    // Check for nested errors
-    if (!apiInfo && error.actual && typeof error.actual === 'object') {
-      if (error.actual.request || error.actual.status) {
-        apiInfo = error.actual
-      }
-    }
-  }
-  
-  // Get the last request from SDK plugin capture or fallback to request logger
-  let lastRequest = testSetup.getLastCapturedRequest()
-  if (!lastRequest) {
-    try {
-      lastRequest = requestLogger.getLastRequest()
-    } catch (e) {
-      // Request logger might not be active
-    }
-  }
-  
-  // Add context to Mochawesome report
-  try {
-    // Get tracked assertions (from trackedExpect)
-    const trackedAssertions = assertionTracker.getData()
-    
-    // Build Expected vs Actual value once so we never skip it
-    let expectedVsActualTitle = '📊 Expected vs Actual'
-    let expectedVsActualValue = ''
-    
-    if (testState === 'passed') {
-      addContext(this, {
-        title: '✅ Test Result',
-        value: 'PASSED'
-      })
-      
-      if (trackedAssertions.length > 0) {
-        expectedVsActualTitle = '📊 Assertions Verified (Expected vs Actual)'
-        expectedVsActualValue = trackedAssertions.map(a =>
-          `✓ ${a.description}\n   Expected: ${a.expected}\n   Actual: ${a.actual}`
-        ).join('\n\n')
-      } else if (lastRequest) {
-        expectedVsActualValue = `Expected: Successful API response\nActual: ${lastRequest.status ?? 'OK'} - ${lastRequest.method || '?'} ${lastRequest.url || '?'}`
-      } else {
-        expectedVsActualValue = 'Expected: Success\nActual: Test passed (no SDK request captured for this test)'
-      }
-      // Always add Expected vs Actual for every passed test
-      addContext(this, { title: expectedVsActualTitle, value: expectedVsActualValue })
-      
-      // For passed tests, add the last request curl if available
-      if (lastRequest && lastRequest.curl) {
-        testCurls.push({
-          test: testTitle,
-          state: testState,
-          curl: lastRequest.curl,
-          sdkMethod: lastRequest.sdkMethod,
-          details: {
-            status: lastRequest.status,
-            method: lastRequest.method,
-            url: lastRequest.url
-          }
-        })
-        
-        // Add SDK Method being tested
-        if (lastRequest.sdkMethod && !lastRequest.sdkMethod.startsWith('Unknown')) {
-          addContext(this, {
-            title: '📦 SDK Method Tested',
-            value: lastRequest.sdkMethod
-          })
-        }
-        
-        addContext(this, {
-          title: '📡 API Request',
-          value: `${lastRequest.method} ${lastRequest.url} [${lastRequest.status || 'OK'}]`
-        })
-        
-        addContext(this, {
-          title: '📋 cURL Command (copy-paste ready)',
-          value: lastRequest.curl
-        })
-      }
-    } else if (testState === 'failed') {
-      addContext(this, {
-        title: '❌ Test Result',
-        value: 'FAILED'
-      })
-      
-      // Add Expected vs Actual for failed tests
-      if (error) {
-        if (error.expected !== undefined || error.actual !== undefined) {
-          // Chai assertion error
-          addContext(this, {
-            title: '❌ Expected vs Actual',
-            value: `Expected: ${JSON.stringify(error.expected)}\nActual: ${JSON.stringify(error.actual)}`
-          })
-        } else if (error.status || error.errorMessage || apiInfo) {
-          // API/SDK error (e.g. 422 from API)
-          const status = error.status ?? apiInfo?.status ?? error.response?.status
-          const msg = error.errorMessage ?? apiInfo?.errorMessage ?? error.message ?? 'Error'
-          const errDetails = error.errors || apiInfo?.errors || {}
-          const detailsStr = Object.keys(errDetails).length ? `\nDetails: ${JSON.stringify(errDetails)}` : ''
-          addContext(this, {
-            title: '❌ Expected vs Actual',
-            value: `Expected: Success\nActual: ${status} - ${msg}${detailsStr}`
-          })
-        } else {
-          // Fallback: any other error (e.g. thrown Error, assertion in test code)
-          const msg = error.message || String(error)
-          addContext(this, {
-            title: '❌ Expected vs Actual',
-            value: `Expected: Success\nActual: ${msg}`
-          })
-        }
-      }
-      
-      // Add assertion details for failed tests (from trackedExpect)
-      if (trackedAssertions.length > 0) {
-        const passedAssertions = trackedAssertions.filter(a => a.passed)
-        const failedAssertion = trackedAssertions.find(a => !a.passed)
-        
-        if (passedAssertions.length > 0) {
-          addContext(this, {
-            title: '📊 Assertions Passed Before Failure',
-            value: passedAssertions.map(a => 
-              `✓ ${a.description}\n   Expected: ${a.expected}\n   Actual: ${a.actual}`
-            ).join('\n\n')
-          })
-        }
-        
-        if (failedAssertion) {
-          addContext(this, {
-            title: '❌ Failed Assertion (Expected vs Actual)',
-            value: `✗ ${failedAssertion.description}\n   Expected: ${failedAssertion.expected}\n   Actual: ${failedAssertion.actual}`
-          })
-        }
-      }
-      
-      // Add cURL from captured request (for ALL failed tests - from SDK plugin)
-      if (lastRequest && lastRequest.curl) {
-        addContext(this, {
-          title: '📋 cURL Command (copy-paste ready)',
-          value: lastRequest.curl
-        })
-        addContext(this, {
-          title: '📡 API Request',
-          value: `${lastRequest.method} ${lastRequest.url} [${lastRequest.status || 'N/A'}]`
-        })
-        if (lastRequest.sdkMethod && !lastRequest.sdkMethod.startsWith('Unknown')) {
-          addContext(this, {
-            title: '📦 SDK Method Tested',
-            value: lastRequest.sdkMethod
-          })
-        }
-      }
-    }
-    
-    // Add request headers, response headers & body when available
-    if (lastRequest && (lastRequest.headers || lastRequest.responseHeaders || lastRequest.responseData !== undefined)) {
-      const reportParts = formatResponseForReport(lastRequest)
-      reportParts.forEach(p => addContext(this, p))
-    }
-    
-    // Add API error details if available (for failed tests with API error in response)
-    if (apiInfo) {
-      const curl = errorToCurl(apiInfo)
-      
-      testCurls.push({
-        test: testTitle,
-        state: testState,
-        curl: curl || (lastRequest?.curl),
-        sdkMethod: lastRequest?.sdkMethod,
-        details: {
-          status: apiInfo.status,
-          message: apiInfo.errorMessage || apiInfo.message,
-          errors: apiInfo.errors
-        }
-      })
-      
-      // Add error/response details (skip cURL if already added from lastRequest)
-      addContext(this, {
-        title: '❌ API Error Details',
-        value: {
-          status: apiInfo.status || 'N/A',
-          statusText: apiInfo.statusText || 'N/A',
-          errorCode: apiInfo.errorCode || 'N/A',
-          message: apiInfo.errorMessage || apiInfo.message || 'N/A',
-          errors: apiInfo.errors || {}
-        }
-      })
-      
-      // Add cURL from apiInfo only if we didn't already add from lastRequest
-      if (!lastRequest?.curl && curl) {
-        addContext(this, {
-          title: '📋 cURL Command (copy-paste ready)',
-          value: curl
-        })
-      }
-      
-      if (apiInfo.request && apiInfo.request.url) {
-        addContext(this, {
-          title: '🔗 Request',
-          value: `${(apiInfo.request.method || 'GET').toUpperCase()} ${apiInfo.request.url}`
-        })
-      }
-    }
-  } catch (e) {
-    // addContext might fail if mochawesome is not properly loaded
-  }
-})
 
 // ============================================================================
 // TEST SUITE EXECUTION ORDER
-// 
+//
 // Dependency Order (as per user specification):
-// Locales → Environments → Assets → Taxonomies → Extensions → Marketplace Apps → 
-// Webhooks → Global Fields → Content Types → Labels → Personalize (variant groups) → 
+// Locales → Environments → Assets → Taxonomies → Extensions → Marketplace Apps →
+// Webhooks → Global Fields → Content Types → Labels → Personalize (variant groups) →
 // Entries → Variant Entries → Branches → Roles → Workflows → Releases → Bulk Operations
 // Teams depend on users/roles
 // ============================================================================
@@ -487,6 +138,354 @@ import './api/auditlog-test.js'
 
 // Phase 23: OAuth Authentication
 import './api/oauth-test.js'
+dotenv.config()
+
+// Max length for response body in report (avoid huge payloads)
+const MAX_RESPONSE_BODY_DISPLAY = 4000
+
+function formatRequestHeadersForReport (headers) {
+  if (!headers || typeof headers !== 'object') return ''
+  const lines = []
+  for (const [key, value] of Object.entries(headers)) {
+    if (value == null) continue
+    let display = String(value)
+    if (key.toLowerCase() === 'authtoken' || key.toLowerCase() === 'authorization') {
+      display = display.length > 15 ? display.substring(0, 10) + '...' + display.substring(display.length - 5) : '***'
+    }
+    lines.push(`${key}: ${display}`)
+  }
+  return lines.join('\n')
+}
+
+function formatResponseForReport (lastRequest) {
+  const parts = []
+  if (lastRequest.headers && Object.keys(lastRequest.headers).length > 0) {
+    const requestHeaderLines = formatRequestHeadersForReport(lastRequest.headers)
+    if (requestHeaderLines) {
+      parts.push({ title: '📤 Request Headers', value: requestHeaderLines })
+    }
+  }
+  if (lastRequest.responseHeaders && Object.keys(lastRequest.responseHeaders).length > 0) {
+    const headerLines = Object.entries(lastRequest.responseHeaders)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join('\n')
+    parts.push({ title: '📥 Response Headers', value: headerLines })
+  }
+  if (lastRequest.responseData !== undefined && lastRequest.responseData !== null) {
+    let bodyStr
+    try {
+      bodyStr = typeof lastRequest.responseData === 'object'
+        ? JSON.stringify(lastRequest.responseData, null, 2)
+        : String(lastRequest.responseData)
+    } catch (e) {
+      bodyStr = String(lastRequest.responseData)
+    }
+    if (bodyStr.length > MAX_RESPONSE_BODY_DISPLAY) {
+      bodyStr = bodyStr.slice(0, MAX_RESPONSE_BODY_DISPLAY) + '\n... (truncated)'
+    }
+    parts.push({ title: '📥 Response Body', value: bodyStr })
+  }
+  return parts
+}
+
+// Store test cURLs for the final report
+const testCurls = []
+
+// File to save cURLs
+const curlOutputFile = path.join(process.cwd(), 'test-curls.txt')
+
+// ============================================================================
+// GLOBAL SETUP - Login and Create Test Stack
+// ============================================================================
+
+before(async function () {
+  // Increase timeout for setup (login + stack creation)
+  this.timeout(120000) // 2 minutes
+
+  // Start request logging to capture cURL for all tests
+  requestLogger.startLogging()
+
+  try {
+    // Validate environment variables
+    testSetup.validateEnvironment()
+
+    // Setup: Login and create test stack
+    await testSetup.setup()
+
+    // Store in process.env for backward compatibility with existing tests
+    process.env.API_KEY = testSetup.testContext.stackApiKey
+    process.env.AUTHTOKEN = testSetup.testContext.authtoken
+  } catch (error) {
+    console.error('\n❌ SETUP FAILED:', error.message)
+    console.error('\nPlease ensure your .env file contains:')
+    console.error('  EMAIL=your-email@example.com')
+    console.error('  PASSWORD=your-password')
+    console.error('  HOST=api.contentstack.io')
+    console.error('  ORGANIZATION=your-org-uid')
+    console.error('\nOptional settings:')
+    console.error('  PERSONALIZE_HOST=personalize-api.contentstack.com')
+    console.error('  DELETE_DYNAMIC_RESOURCES=true (set to false to preserve for debugging)')
+    console.error('\nNote: API_KEY, MANAGEMENT_TOKEN, and PERSONALIZE_PROJECT_UID')
+    console.error('are now dynamically created and no longer required in .env')
+    throw error
+  }
+})
+
+// ============================================================================
+// GLOBAL CURL CAPTURE FOR ALL TESTS (PASSED AND FAILED)
+// ============================================================================
+
+// Clear request log and assertion tracker before each test
+beforeEach(function () {
+  // Clear SDK plugin request capture
+  testSetup.clearCapturedRequests()
+
+  try {
+    requestLogger.clearRequestLog()
+  } catch (e) {
+    // Ignore if request logger not available
+  }
+
+  // Clear assertion trackers for fresh tracking in each test
+  assertionTracker.clear()
+  globalAssertionStore.clear()
+})
+
+afterEach(function () {
+  const test = this.currentTest
+  if (!test) return
+
+  const testTitle = test.fullTitle()
+  const testState = test.state // 'passed', 'failed', or undefined (pending)
+  const error = test.err
+
+  // Try to extract API error/request info from errors (for failed tests)
+  let apiInfo = null
+
+  if (error) {
+    // Check error message for JSON API response
+    if (error.message) {
+      const jsonMatch = error.message.match(/\{[\s\S]*"status"[\s\S]*\}/)
+      if (jsonMatch) {
+        try {
+          apiInfo = JSON.parse(jsonMatch[0])
+        } catch (e) {
+          // Not valid JSON
+        }
+      }
+    }
+
+    // Check direct error properties
+    if (!apiInfo && (error.request || error.config || error.status)) {
+      apiInfo = error.originalError || error
+    }
+
+    // Check for nested errors
+    if (!apiInfo && error.actual && typeof error.actual === 'object') {
+      if (error.actual.request || error.actual.status) {
+        apiInfo = error.actual
+      }
+    }
+  }
+
+  // Get the last request from SDK plugin capture or fallback to request logger
+  let lastRequest = testSetup.getLastCapturedRequest()
+  if (!lastRequest) {
+    try {
+      lastRequest = requestLogger.getLastRequest()
+    } catch (e) {
+      // Request logger might not be active
+    }
+  }
+
+  // Add context to Mochawesome report
+  try {
+    // Get tracked assertions (from trackedExpect)
+    const trackedAssertions = assertionTracker.getData()
+
+    // Build Expected vs Actual value once so we never skip it
+    let expectedVsActualTitle = '📊 Expected vs Actual'
+    let expectedVsActualValue = ''
+
+    if (testState === 'passed') {
+      addContext(this, {
+        title: '✅ Test Result',
+        value: 'PASSED'
+      })
+
+      if (trackedAssertions.length > 0) {
+        expectedVsActualTitle = '📊 Assertions Verified (Expected vs Actual)'
+        expectedVsActualValue = trackedAssertions.map(a =>
+          `✓ ${a.description}\n   Expected: ${a.expected}\n   Actual: ${a.actual}`
+        ).join('\n\n')
+      } else if (lastRequest) {
+        expectedVsActualValue = `Expected: Successful API response\nActual: ${lastRequest.status ?? 'OK'} - ${lastRequest.method || '?'} ${lastRequest.url || '?'}`
+      } else {
+        expectedVsActualValue = 'Expected: Success\nActual: Test passed (no SDK request captured for this test)'
+      }
+      // Always add Expected vs Actual for every passed test
+      addContext(this, { title: expectedVsActualTitle, value: expectedVsActualValue })
+
+      // For passed tests, add the last request curl if available
+      if (lastRequest && lastRequest.curl) {
+        testCurls.push({
+          test: testTitle,
+          state: testState,
+          curl: lastRequest.curl,
+          sdkMethod: lastRequest.sdkMethod,
+          details: {
+            status: lastRequest.status,
+            method: lastRequest.method,
+            url: lastRequest.url
+          }
+        })
+
+        // Add SDK Method being tested
+        if (lastRequest.sdkMethod && !lastRequest.sdkMethod.startsWith('Unknown')) {
+          addContext(this, {
+            title: '📦 SDK Method Tested',
+            value: lastRequest.sdkMethod
+          })
+        }
+
+        addContext(this, {
+          title: '📡 API Request',
+          value: `${lastRequest.method} ${lastRequest.url} [${lastRequest.status || 'OK'}]`
+        })
+
+        addContext(this, {
+          title: '📋 cURL Command (copy-paste ready)',
+          value: lastRequest.curl
+        })
+      }
+    } else if (testState === 'failed') {
+      addContext(this, {
+        title: '❌ Test Result',
+        value: 'FAILED'
+      })
+
+      // Add Expected vs Actual for failed tests
+      if (error) {
+        if (error.expected !== undefined || error.actual !== undefined) {
+          // Chai assertion error
+          addContext(this, {
+            title: '❌ Expected vs Actual',
+            value: `Expected: ${JSON.stringify(error.expected)}\nActual: ${JSON.stringify(error.actual)}`
+          })
+        } else if (error.status || error.errorMessage || apiInfo) {
+          // API/SDK error (e.g. 422 from API)
+          const status = error.status ?? apiInfo?.status ?? error.response?.status
+          const msg = error.errorMessage ?? apiInfo?.errorMessage ?? error.message ?? 'Error'
+          const errDetails = error.errors || apiInfo?.errors || {}
+          const detailsStr = Object.keys(errDetails).length ? `\nDetails: ${JSON.stringify(errDetails)}` : ''
+          addContext(this, {
+            title: '❌ Expected vs Actual',
+            value: `Expected: Success\nActual: ${status} - ${msg}${detailsStr}`
+          })
+        } else {
+          // Fallback: any other error (e.g. thrown Error, assertion in test code)
+          const msg = error.message || String(error)
+          addContext(this, {
+            title: '❌ Expected vs Actual',
+            value: `Expected: Success\nActual: ${msg}`
+          })
+        }
+      }
+
+      // Add assertion details for failed tests (from trackedExpect)
+      if (trackedAssertions.length > 0) {
+        const passedAssertions = trackedAssertions.filter(a => a.passed)
+        const failedAssertion = trackedAssertions.find(a => !a.passed)
+
+        if (passedAssertions.length > 0) {
+          addContext(this, {
+            title: '📊 Assertions Passed Before Failure',
+            value: passedAssertions.map(a =>
+              `✓ ${a.description}\n   Expected: ${a.expected}\n   Actual: ${a.actual}`
+            ).join('\n\n')
+          })
+        }
+
+        if (failedAssertion) {
+          addContext(this, {
+            title: '❌ Failed Assertion (Expected vs Actual)',
+            value: `✗ ${failedAssertion.description}\n   Expected: ${failedAssertion.expected}\n   Actual: ${failedAssertion.actual}`
+          })
+        }
+      }
+
+      // Add cURL from captured request (for ALL failed tests - from SDK plugin)
+      if (lastRequest && lastRequest.curl) {
+        addContext(this, {
+          title: '📋 cURL Command (copy-paste ready)',
+          value: lastRequest.curl
+        })
+        addContext(this, {
+          title: '📡 API Request',
+          value: `${lastRequest.method} ${lastRequest.url} [${lastRequest.status || 'N/A'}]`
+        })
+        if (lastRequest.sdkMethod && !lastRequest.sdkMethod.startsWith('Unknown')) {
+          addContext(this, {
+            title: '📦 SDK Method Tested',
+            value: lastRequest.sdkMethod
+          })
+        }
+      }
+    }
+
+    // Add request headers, response headers & body when available
+    if (lastRequest && (lastRequest.headers || lastRequest.responseHeaders || lastRequest.responseData !== undefined)) {
+      const reportParts = formatResponseForReport(lastRequest)
+      reportParts.forEach(p => addContext(this, p))
+    }
+
+    // Add API error details if available (for failed tests with API error in response)
+    if (apiInfo) {
+      const curl = errorToCurl(apiInfo)
+
+      testCurls.push({
+        test: testTitle,
+        state: testState,
+        curl: curl || (lastRequest?.curl),
+        sdkMethod: lastRequest?.sdkMethod,
+        details: {
+          status: apiInfo.status,
+          message: apiInfo.errorMessage || apiInfo.message,
+          errors: apiInfo.errors
+        }
+      })
+
+      // Add error/response details (skip cURL if already added from lastRequest)
+      addContext(this, {
+        title: '❌ API Error Details',
+        value: {
+          status: apiInfo.status || 'N/A',
+          statusText: apiInfo.statusText || 'N/A',
+          errorCode: apiInfo.errorCode || 'N/A',
+          message: apiInfo.errorMessage || apiInfo.message || 'N/A',
+          errors: apiInfo.errors || {}
+        }
+      })
+
+      // Add cURL from apiInfo only if we didn't already add from lastRequest
+      if (!lastRequest?.curl && curl) {
+        addContext(this, {
+          title: '📋 cURL Command (copy-paste ready)',
+          value: curl
+        })
+      }
+
+      if (apiInfo.request && apiInfo.request.url) {
+        addContext(this, {
+          title: '🔗 Request',
+          value: `${(apiInfo.request.method || 'GET').toUpperCase()} ${apiInfo.request.url}`
+        })
+      }
+    }
+  } catch (e) {
+    // addContext might fail if mochawesome is not properly loaded
+  }
+})
 
 // ============================================================================
 // GLOBAL TEARDOWN - Delete Test Stack and Logout
@@ -495,11 +494,11 @@ import './api/oauth-test.js'
 after(async function () {
   // Timeout for cleanup (using direct API calls - much faster)
   this.timeout(120000) // 2 minutes should be enough with direct API calls
-  
+
   // cURLs are captured in HTML report, just save to file for reference
   const failedWithCurl = testCurls.filter(t => t.state === 'failed')
   const passedWithCurl = testCurls.filter(t => t.state === 'passed')
-  
+
   if (testCurls.length > 0) {
     // Save all cURLs to file (no console output - cURLs are in HTML report)
     try {
@@ -508,13 +507,13 @@ after(async function () {
       fileContent += `Total Requests: ${testCurls.length}\n`
       fileContent += `Passed: ${passedWithCurl.length} | Failed: ${failedWithCurl.length}\n`
       fileContent += `${'═'.repeat(80)}\n\n`
-      
+
       // Failed tests first
       if (failedWithCurl.length > 0) {
         fileContent += `\n${'═'.repeat(40)}\n`
         fileContent += `❌ FAILED TESTS (${failedWithCurl.length})\n`
         fileContent += `${'═'.repeat(40)}\n\n`
-        
+
         failedWithCurl.forEach((item, index) => {
           fileContent += `${'─'.repeat(80)}\n`
           fileContent += `[${index + 1}] ${item.test}\n`
@@ -534,13 +533,13 @@ after(async function () {
           fileContent += item.curl + '\n\n'
         })
       }
-      
+
       // Passed tests
       if (passedWithCurl.length > 0) {
         fileContent += `\n${'═'.repeat(40)}\n`
         fileContent += `✅ PASSED TESTS (${passedWithCurl.length})\n`
         fileContent += `${'═'.repeat(40)}\n\n`
-        
+
         passedWithCurl.forEach((item, index) => {
           fileContent += `${'─'.repeat(80)}\n`
           fileContent += `[${index + 1}] ${item.test}\n`
@@ -553,23 +552,23 @@ after(async function () {
           fileContent += item.curl + '\n\n'
         })
       }
-      
+
       fs.writeFileSync(curlOutputFile, fileContent)
       // Silent file save - cURLs are in HTML report
     } catch (e) {
       // Ignore file save errors - cURLs are in HTML report
     }
   }
-  
+
   console.log('\n' + '='.repeat(60))
   console.log('📊 Test Summary')
   console.log('='.repeat(60))
-  
+
   // SDK Method Coverage Summary
   try {
     const sdkCoverage = requestLogger.getSdkMethodCoverage()
     const calledMethods = Object.keys(sdkCoverage).filter(m => !m.startsWith('Unknown'))
-    
+
     if (calledMethods.length > 0) {
       console.log('\n📦 SDK Methods Tested:')
       calledMethods.sort().forEach(method => {
@@ -580,7 +579,7 @@ after(async function () {
   } catch (e) {
     // Ignore coverage summary errors
   }
-  
+
   // Log test data created during tests
   const storedData = {
     contentTypes: Object.keys(testData.contentTypes || {}).length,
@@ -597,7 +596,7 @@ after(async function () {
     releases: Object.keys(testData.releases || {}).length,
     branches: Object.keys(testData.branches || {}).length
   }
-  
+
   console.log('Test Data Created During Run:')
   Object.entries(storedData).forEach(([key, count]) => {
     if (count > 0) {
@@ -605,12 +604,12 @@ after(async function () {
     }
   })
   console.log('='.repeat(60) + '\n')
-  
+
   // Reset test data storage
   if (testData.reset) {
     testData.reset()
   }
-  
+
   // Cleanup: Delete test stack and logout
   try {
     await testSetup.teardown()
@@ -621,9 +620,9 @@ after(async function () {
 
 /**
  * Test Suite Summary
- * 
+ *
  * Total Test Files: 27
- * 
+ *
  * ✅ Test Files:
  *   1. user-test.js - User profile, token validation
  *   2. organization-test.js - Organization fetch, stacks, users, roles
@@ -652,7 +651,7 @@ after(async function () {
  *   25. entryVariants-test.js - Entry Variants CRUD, publishing
  *   26. ungroupedVariants-test.js - Ungrouped/Personalize Variants
  *   27. oauth-test.js - OAuth authentication flow
- * 
+ *
  * SDK Modules Covered:
  *   - User & Authentication
  *   - OAuth Authentication

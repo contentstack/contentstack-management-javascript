@@ -1,6 +1,6 @@
 /**
  * Content Type Mock Schemas
- * 
+ *
  * Based on CDA Test Stack export - adapted for comprehensive CMA SDK testing.
  * These schemas cover all field types and complex nesting patterns.
  */

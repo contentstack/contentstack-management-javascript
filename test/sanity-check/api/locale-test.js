@@ -1,6 +1,6 @@
 /**
  * Locale API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Locale CRUD operations
  * - Fallback locale configuration
@@ -12,9 +12,7 @@ import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import {
   frenchLocale,
-  germanLocale,
-  spanishLocale,
-  localeUpdate
+  germanLocale
 } from '../mock/configurations.js'
 import { validateLocaleResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
@@ -72,7 +70,7 @@ describe('Locale API Tests', () => {
         expect(locale.fallback_locale).to.equal('en-us')
 
         testData.locales.french = locale
-        
+
         // Wait for locale to be fully created
         await wait(2000)
       } catch (error) {
@@ -173,7 +171,6 @@ describe('Locale API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create locale with invalid code', async () => {
       const localeData = {
         locale: {
@@ -248,10 +245,9 @@ describe('Locale API Tests', () => {
   // ==========================================================================
 
   describe('Delete Locale', () => {
-
     it('should delete a non-master locale', async () => {
       const tempCode = 'pt-br'
-      
+
       // Create first
       try {
         await stack.locale().create({
@@ -277,7 +273,7 @@ describe('Locale API Tests', () => {
 
     it('should return 404 for deleted locale', async () => {
       const tempCode = 'ja-jp'
-      
+
       // Create and delete
       try {
         await stack.locale().create({
@@ -287,7 +283,7 @@ describe('Locale API Tests', () => {
             fallback_locale: masterLocale
           }
         })
-        
+
         const locale = await stack.locale(tempCode).fetch()
         await locale.delete()
       } catch (e) { }

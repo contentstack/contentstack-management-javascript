@@ -1,6 +1,6 @@
 /**
  * Preview Token API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Preview token CRUD operations
  * - Preview token lifecycle (create from delivery token)
@@ -29,7 +29,7 @@ describe('Preview Token API Tests', () => {
     try {
       const envResponse = await stack.environment().query().find()
       const environments = envResponse.items || []
-      
+
       if (environments.length > 0) {
         testEnvironmentName = environments[0].name
       } else {
@@ -88,7 +88,6 @@ describe('Preview Token API Tests', () => {
   // ==========================================================================
 
   describe('Preview Token CRUD', () => {
-
     it('should create a preview token from delivery token', async function () {
       this.timeout(30000)
 
@@ -170,7 +169,6 @@ describe('Preview Token API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create preview token for non-existent delivery token', async function () {
       this.timeout(15000)
 
@@ -234,7 +232,6 @@ describe('Preview Token API Tests', () => {
   // ==========================================================================
 
   describe('Preview Token Delete', () => {
-
     it('should delete preview token', async function () {
       this.timeout(30000)
 

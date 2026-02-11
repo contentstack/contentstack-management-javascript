@@ -1,6 +1,6 @@
 /**
  * Webhook API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Webhook CRUD operations
  * - Webhook channels/triggers
@@ -13,8 +13,7 @@ import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import {
   basicWebhook,
-  advancedWebhook,
-  webhookUpdate
+  advancedWebhook
 } from '../mock/configurations.js'
 import { validateWebhookResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
@@ -56,7 +55,7 @@ describe('Webhook API Tests', () => {
 
       createdWebhookUid = webhook.uid
       testData.webhooks.basic = webhook
-      
+
       // Wait for webhook to be fully created
       await wait(2000)
     })
@@ -244,7 +243,7 @@ describe('Webhook API Tests', () => {
         const webhook = await stack.webhook(webhookForExecutionsUid).fetch()
         const executions = await webhook.executions()
 
-        if ((executions.webhooks || executions.executions) && 
+        if ((executions.webhooks || executions.executions) &&
             (executions.webhooks || executions.executions).length > 0) {
           const execution = (executions.webhooks || executions.executions)[0]
           const response = await webhook.retry(execution.uid)
@@ -262,7 +261,6 @@ describe('Webhook API Tests', () => {
   // ==========================================================================
 
   describe('Webhook Channels', () => {
-
     it('should validate entry channels', async () => {
       const entryChannels = [
         'content_types.entries.create',
@@ -325,7 +323,6 @@ describe('Webhook API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create webhook without destination', async () => {
       const webhookData = {
         webhook: {
@@ -374,7 +371,6 @@ describe('Webhook API Tests', () => {
   // ==========================================================================
 
   describe('Delete Webhook', () => {
-
     it('should delete a webhook', async () => {
       const webhookData = {
         webhook: {

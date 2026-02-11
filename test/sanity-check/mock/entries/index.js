@@ -1,6 +1,6 @@
 /**
  * Entry Mock Data
- * 
+ *
  * Based on CDA Test Stack export - adapted for comprehensive CMA SDK testing.
  * Contains entry data for all content types with various field types populated.
  */

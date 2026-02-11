@@ -1,6 +1,6 @@
 /**
  * Stack API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Stack fetch and settings
  * - Stack update operations
@@ -10,7 +10,7 @@
  */
 
 import { expect } from 'chai'
-import { describe, it, before } from 'mocha'
+import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import { testData, trackedExpect } from '../utility/testHelpers.js'
 
@@ -28,7 +28,6 @@ describe('Stack API Tests', () => {
   // ==========================================================================
 
   describe('Stack Fetch Operations', () => {
-
     it('should fetch stack details', async () => {
       const response = await stack.fetch()
 
@@ -139,7 +138,7 @@ describe('Stack API Tests', () => {
 
     it('should fail to update with empty name', async function () {
       this.timeout(15000)
-      
+
       try {
         const stackData = await stack.fetch()
         stackData.name = ''
@@ -160,7 +159,6 @@ describe('Stack API Tests', () => {
   // ==========================================================================
 
   describe('Stack Settings', () => {
-
     it('should get stack settings', async () => {
       try {
         const response = await stack.settings()
@@ -194,7 +192,6 @@ describe('Stack API Tests', () => {
   // ==========================================================================
 
   describe('Stack Users', () => {
-
     it('should get all stack users', async () => {
       try {
         const response = await stack.users()
@@ -242,10 +239,9 @@ describe('Stack API Tests', () => {
   // ==========================================================================
 
   describe('Stack Share Operations', () => {
-
     it('should share stack with user (requires valid email)', async () => {
       const shareEmail = process.env.MEMBER_EMAIL
-      
+
       if (!shareEmail) {
         console.log('Skipping stack share - no MEMBER_EMAIL provided')
         return
@@ -289,7 +285,6 @@ describe('Stack API Tests', () => {
   // ==========================================================================
 
   describe('Stack Transfer', () => {
-
     it('should fail to transfer stack without proper permissions', async () => {
       try {
         await stack.transferOwnership({
@@ -308,7 +303,6 @@ describe('Stack API Tests', () => {
   // ==========================================================================
 
   describe('Stack Variables', () => {
-
     it('should get stack variables', async () => {
       try {
         const response = await stack.stackVariables()
@@ -325,7 +319,6 @@ describe('Stack API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should handle unauthorized access gracefully', async () => {
       const unauthClient = contentstackClient()
       const unauthStack = unauthClient.stack({ api_key: process.env.API_KEY })

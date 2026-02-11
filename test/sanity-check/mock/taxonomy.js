@@ -1,6 +1,6 @@
 /**
  * Taxonomy Mock Data
- * 
+ *
  * Based on CDA Test Stack export - adapted for comprehensive CMA SDK testing.
  * Includes taxonomy definitions and terms.
  */

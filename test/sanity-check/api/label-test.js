@@ -1,11 +1,11 @@
 /**
  * Label API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Label CRUD operations
  * - Label with content types
  * - Error handling
- * 
+ *
  * NOTE: Labels require existing content types when using specific UIDs.
  * We either use empty content_types array or create a content type first.
  */
@@ -73,7 +73,7 @@ describe('Label API Tests', () => {
   })
 
   // Helper to fetch label by UID using query
-  async function fetchLabelByUid(labelUid) {
+  async function fetchLabelByUid (labelUid) {
     const response = await stack.label().query().find()
     const items = response.items || response.labels || []
     const label = items.find(l => l.uid === labelUid)
@@ -98,7 +98,7 @@ describe('Label API Tests', () => {
 
     it('should create a label with empty content types', async function () {
       this.timeout(30000)
-      
+
       // Use empty content_types to avoid dependency issues
       const labelData = {
         label: {
@@ -116,7 +116,7 @@ describe('Label API Tests', () => {
       createdLabelUid = response.uid
       testData.labels = testData.labels || {}
       testData.labels.basic = response
-      
+
       await wait(1000)
     })
 
@@ -168,7 +168,7 @@ describe('Label API Tests', () => {
 
     it('should create label for specific content type', async function () {
       this.timeout(30000)
-      
+
       if (!testContentTypeUid) {
         console.log('Skipping - no test content type available')
         return
@@ -189,7 +189,7 @@ describe('Label API Tests', () => {
       expect(response.content_types).to.include(testContentTypeUid)
 
       specificLabelUid = response.uid
-      
+
       await wait(1000)
     })
 
@@ -214,7 +214,6 @@ describe('Label API Tests', () => {
 
   describe('Parent-Child Labels', () => {
     let parentLabelUid
-    let childLabelUid
 
     after(async () => {
       // NOTE: Deletion removed - labels persist for other tests
@@ -222,7 +221,7 @@ describe('Label API Tests', () => {
 
     it('should create parent label', async function () {
       this.timeout(30000)
-      
+
       const labelData = {
         label: {
           name: `Parent Label ${Date.now()}`,
@@ -234,13 +233,13 @@ describe('Label API Tests', () => {
 
       expect(response.uid).to.be.a('string')
       parentLabelUid = response.uid
-      
+
       await wait(1000)
     })
 
     it('should create child label with parent', async function () {
       this.timeout(30000)
-      
+
       if (!parentLabelUid) {
         console.log('Skipping - no parent label')
         return
@@ -259,8 +258,6 @@ describe('Label API Tests', () => {
       expect(response.uid).to.be.a('string')
       expect(response.parent).to.be.an('array')
       expect(response.parent).to.include(parentLabelUid)
-
-      childLabelUid = response.uid
     })
   })
 
@@ -269,7 +266,6 @@ describe('Label API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create label without name', async () => {
       const labelData = {
         label: {
@@ -320,7 +316,6 @@ describe('Label API Tests', () => {
   // ==========================================================================
 
   describe('Delete Label', () => {
-
     it('should delete a label', async function () {
       this.timeout(30000)
       const labelData = {
@@ -332,9 +327,9 @@ describe('Label API Tests', () => {
 
       const response = await stack.label().create(labelData)
       expect(response.uid).to.be.a('string')
-      
+
       await wait(1000)
-      
+
       const label = await fetchLabelByUid(response.uid)
       const deleteResponse = await label.delete()
 
@@ -353,9 +348,9 @@ describe('Label API Tests', () => {
 
       const response = await stack.label().create(labelData)
       const labelUid = response.uid
-      
+
       await wait(1000)
-      
+
       const label = await fetchLabelByUid(labelUid)
       await label.delete()
 
