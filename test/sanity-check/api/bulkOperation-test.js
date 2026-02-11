@@ -5,7 +5,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { wait, testData, trackedExpect } from '../utility/testHelpers.js'
+import { wait, trackedExpect } from '../utility/testHelpers.js'
 
 let client = null
 let stack = null
@@ -16,7 +16,7 @@ let entryUid = null
 let assetUid = null
 let contentTypeUid = null
 let environmentName = 'development'
-let jobIds = []
+const jobIds = []
 let managementTokenValue = null
 let managementTokenUid = null
 
@@ -28,7 +28,7 @@ describe('Bulk Operations API Tests', () => {
 
   before(async function () {
     this.timeout(60000)
-    
+
     // Get or create resources needed for bulk operations
     try {
       // First, get an environment (required for publish/unpublish)
@@ -49,7 +49,7 @@ describe('Bulk Operations API Tests', () => {
           console.log('Could not create test environment:', e.message)
         }
       }
-      
+
       // Get a content type or create one
       const contentTypes = await stack.contentType().query().find()
       if (contentTypes.items && contentTypes.items.length > 0) {
@@ -72,7 +72,7 @@ describe('Bulk Operations API Tests', () => {
           console.log('Could not create test content type:', e.message)
         }
       }
-      
+
       // Get an entry from this content type or create one
       if (contentTypeUid) {
         const entries = await stack.contentType(contentTypeUid).entry().query().find()
@@ -93,7 +93,7 @@ describe('Bulk Operations API Tests', () => {
           }
         }
       }
-      
+
       // Get an asset
       const assets = await stack.asset().query().find()
       if (assets.items && assets.items.length > 0) {
@@ -107,7 +107,7 @@ describe('Bulk Operations API Tests', () => {
   describe('Bulk Publish Operations', () => {
     it('should bulk publish a single entry', async function () {
       this.timeout(15000)
-      
+
       // Skip if required resources don't exist
       if (!entryUid || !contentTypeUid || !environmentName) {
         this.skip()
@@ -124,15 +124,15 @@ describe('Bulk Operations API Tests', () => {
         environments: [environmentName]
       }
 
-      const response = await stack.bulkOperation().publish({ 
+      const response = await stack.bulkOperation().publish({
         details: publishDetails,
         api_version: '3.2'
       })
-      
+
       trackedExpect(response, 'Bulk publish response').toBeAn('object')
       trackedExpect(response.notice, 'Bulk publish notice').toExist()
       trackedExpect(response.job_id, 'Bulk publish job_id').toExist()
-      
+
       if (response.job_id) {
         jobIds.push(response.job_id)
       }
@@ -140,7 +140,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should bulk publish a single asset', async function () {
       this.timeout(15000)
-      
+
       if (!assetUid) {
         this.skip()
       }
@@ -153,14 +153,14 @@ describe('Bulk Operations API Tests', () => {
         environments: [environmentName]
       }
 
-      const response = await stack.bulkOperation().publish({ 
+      const response = await stack.bulkOperation().publish({
         details: publishDetails,
         api_version: '3.2'
       })
-      
+
       expect(response.notice).to.not.equal(undefined)
       expect(response.job_id).to.not.equal(undefined)
-      
+
       if (response.job_id) {
         jobIds.push(response.job_id)
       }
@@ -168,7 +168,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should bulk publish multiple entries and assets', async function () {
       this.timeout(15000)
-      
+
       if (!entryUid || !assetUid || !contentTypeUid) {
         this.skip()
       }
@@ -186,14 +186,14 @@ describe('Bulk Operations API Tests', () => {
         environments: [environmentName]
       }
 
-      const response = await stack.bulkOperation().publish({ 
+      const response = await stack.bulkOperation().publish({
         details: publishDetails,
         api_version: '3.2'
       })
-      
+
       expect(response.notice).to.not.equal(undefined)
       expect(response.job_id).to.not.equal(undefined)
-      
+
       if (response.job_id) {
         jobIds.push(response.job_id)
       }
@@ -201,7 +201,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should bulk publish with publishAllLocalized parameter', async function () {
       this.timeout(15000)
-      
+
       if (!entryUid || !contentTypeUid) {
         this.skip()
       }
@@ -216,15 +216,15 @@ describe('Bulk Operations API Tests', () => {
         environments: [environmentName]
       }
 
-      const response = await stack.bulkOperation().publish({ 
+      const response = await stack.bulkOperation().publish({
         details: publishDetails,
         api_version: '3.2',
         publishAllLocalized: true
       })
-      
+
       expect(response.notice).to.not.equal(undefined)
       expect(response.job_id).to.not.equal(undefined)
-      
+
       if (response.job_id) {
         jobIds.push(response.job_id)
       }
@@ -232,7 +232,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should bulk publish with workflow skip and approvals', async function () {
       this.timeout(15000)
-      
+
       if (!entryUid || !contentTypeUid) {
         this.skip()
       }
@@ -247,16 +247,16 @@ describe('Bulk Operations API Tests', () => {
         environments: [environmentName]
       }
 
-      const response = await stack.bulkOperation().publish({ 
+      const response = await stack.bulkOperation().publish({
         details: publishDetails,
         api_version: '3.2',
         skip_workflow_stage: true,
         approvals: true
       })
-      
+
       expect(response.notice).to.not.equal(undefined)
       expect(response.job_id).to.not.equal(undefined)
-      
+
       if (response.job_id) {
         jobIds.push(response.job_id)
       }
@@ -266,7 +266,7 @@ describe('Bulk Operations API Tests', () => {
   describe('Bulk Unpublish Operations', () => {
     it('should bulk unpublish an entry', async function () {
       this.timeout(15000)
-      
+
       if (!entryUid || !contentTypeUid) {
         this.skip()
       }
@@ -284,14 +284,14 @@ describe('Bulk Operations API Tests', () => {
         environments: [environmentName]
       }
 
-      const response = await stack.bulkOperation().unpublish({ 
+      const response = await stack.bulkOperation().unpublish({
         details: unpublishDetails,
         api_version: '3.2'
       })
-      
+
       expect(response.notice).to.not.equal(undefined)
       expect(response.job_id).to.not.equal(undefined)
-      
+
       if (response.job_id) {
         jobIds.push(response.job_id)
       }
@@ -299,7 +299,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should bulk unpublish an asset', async function () {
       this.timeout(15000)
-      
+
       if (!assetUid) {
         this.skip()
       }
@@ -312,14 +312,14 @@ describe('Bulk Operations API Tests', () => {
         environments: [environmentName]
       }
 
-      const response = await stack.bulkOperation().unpublish({ 
+      const response = await stack.bulkOperation().unpublish({
         details: unpublishDetails,
         api_version: '3.2'
       })
-      
+
       expect(response.notice).to.not.equal(undefined)
       expect(response.job_id).to.not.equal(undefined)
-      
+
       if (response.job_id) {
         jobIds.push(response.job_id)
       }
@@ -327,7 +327,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should bulk unpublish with unpublishAllLocalized parameter', async function () {
       this.timeout(15000)
-      
+
       if (!entryUid || !contentTypeUid) {
         this.skip()
       }
@@ -342,15 +342,15 @@ describe('Bulk Operations API Tests', () => {
         environments: [environmentName]
       }
 
-      const response = await stack.bulkOperation().unpublish({ 
+      const response = await stack.bulkOperation().unpublish({
         details: unpublishDetails,
         api_version: '3.2',
         unpublishAllLocalized: true
       })
-      
+
       expect(response.notice).to.not.equal(undefined)
       expect(response.job_id).to.not.equal(undefined)
-      
+
       if (response.job_id) {
         jobIds.push(response.job_id)
       }
@@ -363,18 +363,18 @@ describe('Bulk Operations API Tests', () => {
       // Wait for bulk jobs to be processed (prod can be slower)
       console.log(`  Waiting for bulk jobs to be processed. Job IDs collected: ${jobIds.length}`)
       await wait(15000)
-      
+
       // Use existing management token from env if provided, otherwise try to create one
       if (process.env.MANAGEMENT_TOKEN) {
         console.log('  Using existing management token from MANAGEMENT_TOKEN env variable')
         managementTokenValue = process.env.MANAGEMENT_TOKEN
         managementTokenUid = null // Not created, so no need to delete
-        
+
         // Create stack client with management token
         const clientForMgmt = contentstackClient()
-        stackWithMgmtToken = clientForMgmt.stack({ 
-          api_key: process.env.API_KEY, 
-          management_token: managementTokenValue 
+        stackWithMgmtToken = clientForMgmt.stack({
+          api_key: process.env.API_KEY,
+          management_token: managementTokenValue
         })
       } else {
         // Create a management token for job status (required by API)
@@ -393,12 +393,12 @@ describe('Bulk Operations API Tests', () => {
           managementTokenValue = tokenResponse.token
           managementTokenUid = tokenResponse.uid
           console.log('  Created management token for job status')
-          
+
           // Create stack client with management token
           const clientForMgmt = contentstackClient()
-          stackWithMgmtToken = clientForMgmt.stack({ 
-            api_key: process.env.API_KEY, 
-            management_token: managementTokenValue 
+          stackWithMgmtToken = clientForMgmt.stack({
+            api_key: process.env.API_KEY,
+            management_token: managementTokenValue
           })
         } catch (e) {
           console.log('  Could not create management token:', e.errorMessage || e.message)
@@ -421,7 +421,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should get job status for a bulk operation', async function () {
       this.timeout(120000) // 2 minutes timeout
-      
+
       // Skip check MUST be at the very beginning before any async operations
       if (jobIds.length === 0) {
         this.skip()
@@ -429,21 +429,21 @@ describe('Bulk Operations API Tests', () => {
       }
 
       const jobId = jobIds[0]
-      
+
       // Retry getting job status with longer waits for prod
       let attempts = 0
       let response = null
       const maxAttempts = 5
-      
+
       while (attempts < maxAttempts) {
         try {
           // Use management token for job status (required by API)
-          response = await stackWithMgmtToken.bulkOperation().jobStatus({ 
+          response = await stackWithMgmtToken.bulkOperation().jobStatus({
             job_id: jobId,
             bulk_version: 'v3',
-            api_version: '3.2' 
+            api_version: '3.2'
           })
-          
+
           // Accept any valid response (status or job_uid or uid)
           if (response && (response.status || response.job_uid || response.uid)) {
             break
@@ -455,7 +455,7 @@ describe('Bulk Operations API Tests', () => {
         await wait(3000)
         attempts++
       }
-      
+
       // Validate response - if we got nothing after retries, pass anyway
       if (response) {
         expect(response).to.not.equal(undefined)
@@ -469,7 +469,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should validate job status response structure', async function () {
       this.timeout(30000)
-      
+
       if (jobIds.length === 0) {
         this.skip()
         return
@@ -477,17 +477,17 @@ describe('Bulk Operations API Tests', () => {
 
       const jobId = jobIds[0]
       let response = null
-      
+
       try {
-        response = await stackWithMgmtToken.bulkOperation().jobStatus({ 
+        response = await stackWithMgmtToken.bulkOperation().jobStatus({
           job_id: jobId,
           bulk_version: 'v3',
-          api_version: '3.2' 
+          api_version: '3.2'
         })
       } catch (e) {
         // Silently handle errors
       }
-      
+
       if (response) {
         // Validate main job properties
         expect(response.uid).to.not.equal(undefined)
@@ -500,7 +500,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should get job status with bulk_version parameter', async function () {
       this.timeout(30000)
-      
+
       if (jobIds.length === 0) {
         this.skip()
         return
@@ -508,17 +508,17 @@ describe('Bulk Operations API Tests', () => {
 
       const jobId = jobIds[0]
       let response = null
-      
+
       try {
-        response = await stackWithMgmtToken.bulkOperation().jobStatus({ 
-          job_id: jobId, 
+        response = await stackWithMgmtToken.bulkOperation().jobStatus({
+          job_id: jobId,
           bulk_version: 'v3',
-          api_version: '3.2' 
+          api_version: '3.2'
         })
       } catch (e) {
         // Silently handle errors
       }
-      
+
       if (response) {
         expect(response.uid).to.not.equal(undefined)
         expect(response.status).to.not.equal(undefined)
@@ -532,10 +532,10 @@ describe('Bulk Operations API Tests', () => {
   describe('Bulk Delete Operations', () => {
     it('should handle bulk delete request structure', async function () {
       this.timeout(15000)
-      
+
       // Note: We don't actually delete entries in this test to preserve test data
       // This test validates the API structure
-      
+
       const deleteDetails = {
         entries: [{
           uid: 'test_entry_uid',
@@ -579,10 +579,10 @@ describe('Bulk Operations API Tests', () => {
       this.timeout(15000)
 
       try {
-        await stackWithMgmtToken.bulkOperation().jobStatus({ 
+        await stackWithMgmtToken.bulkOperation().jobStatus({
           job_id: 'non_existent_job_id',
           bulk_version: 'v3',
-          api_version: '3.2' 
+          api_version: '3.2'
         })
       } catch (error) {
         // Expected to fail - just verify we got an error
@@ -592,7 +592,7 @@ describe('Bulk Operations API Tests', () => {
 
     it('should handle bulk publish with invalid environment', async function () {
       this.timeout(15000)
-      
+
       if (!entryUid || !contentTypeUid) {
         this.skip()
       }
