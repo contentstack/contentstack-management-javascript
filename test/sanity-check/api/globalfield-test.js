@@ -28,7 +28,8 @@ import {
   validateGlobalFieldResponse,
   generateValidUid,
   testData,
-  wait
+  wait,
+  trackedExpect
 } from '../utility/testHelpers.js'
 
 describe('Global Field API Tests', () => {
@@ -61,8 +62,8 @@ describe('Global Field API Tests', () => {
       // SDK returns the global field object directly
       const gf = await stack.globalField().create(gfData)
 
-      expect(gf).to.be.an('object')
-      expect(gf.uid).to.be.a('string')
+      trackedExpect(gf, 'Global field').toBeAn('object')
+      trackedExpect(gf.uid, 'Global field UID').toBeA('string')
       validateGlobalFieldResponse(gf, seoGfUid)
 
       expect(gf.title).to.include('SEO')
@@ -80,8 +81,8 @@ describe('Global Field API Tests', () => {
       this.timeout(15000)
       const response = await stack.globalField(seoGfUid).fetch()
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.equal(seoGfUid)
+      trackedExpect(response, 'Global field').toBeAn('object')
+      trackedExpect(response.uid, 'Global field UID').toEqual(seoGfUid)
       expect(response.title).to.equal(createdGf.title)
     })
 

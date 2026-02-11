@@ -5,7 +5,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { wait, testData } from '../utility/testHelpers.js'
+import { wait, testData, trackedExpect } from '../utility/testHelpers.js'
 
 let client = null
 let stack = null
@@ -129,8 +129,9 @@ describe('Bulk Operations API Tests', () => {
         api_version: '3.2'
       })
       
-      expect(response.notice).to.not.equal(undefined)
-      expect(response.job_id).to.not.equal(undefined)
+      trackedExpect(response, 'Bulk publish response').toBeAn('object')
+      trackedExpect(response.notice, 'Bulk publish notice').toExist()
+      trackedExpect(response.job_id, 'Bulk publish job_id').toExist()
       
       if (response.job_id) {
         jobIds.push(response.job_id)

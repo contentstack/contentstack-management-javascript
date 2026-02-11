@@ -17,7 +17,7 @@ import {
   workflowUpdate,
   publishRule
 } from '../mock/configurations.js'
-import { validateWorkflowResponse, testData, wait } from '../utility/testHelpers.js'
+import { validateWorkflowResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Workflow API Tests', () => {
   let client
@@ -56,8 +56,8 @@ describe('Workflow API Tests', () => {
       const response = await stack.workflow().create(workflowData)
 
       // SDK returns the workflow object directly, not wrapped in response.workflow
-      expect(response).to.be.an('object')
-      expect(response.uid).to.be.a('string')
+      trackedExpect(response, 'Workflow').toBeAn('object')
+      trackedExpect(response.uid, 'Workflow UID').toBeA('string')
       validateWorkflowResponse(response)
 
       expect(response.name).to.include('Simple Workflow')
@@ -75,8 +75,8 @@ describe('Workflow API Tests', () => {
       this.timeout(15000)
       const response = await stack.workflow(createdWorkflowUid).fetch()
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.equal(createdWorkflowUid)
+      trackedExpect(response, 'Workflow').toBeAn('object')
+      trackedExpect(response.uid, 'Workflow UID').toEqual(createdWorkflowUid)
     })
 
     it('should validate workflow stages', async () => {

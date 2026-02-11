@@ -13,7 +13,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { testData, wait } from '../utility/testHelpers.js'
+import { testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Label API Tests', () => {
   let client
@@ -109,9 +109,9 @@ describe('Label API Tests', () => {
 
       const response = await stack.label().create(labelData)
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.be.a('string')
-      expect(response.name).to.include('Test Label')
+      trackedExpect(response, 'Label').toBeAn('object')
+      trackedExpect(response.uid, 'Label UID').toBeA('string')
+      trackedExpect(response.name, 'Label name').toInclude('Test Label')
 
       createdLabelUid = response.uid
       testData.labels = testData.labels || {}
@@ -124,8 +124,8 @@ describe('Label API Tests', () => {
       this.timeout(15000)
       const label = await fetchLabelByUid(createdLabelUid)
 
-      expect(label).to.be.an('object')
-      expect(label.uid).to.equal(createdLabelUid)
+      trackedExpect(label, 'Label').toBeAn('object')
+      trackedExpect(label.uid, 'Label UID').toEqual(createdLabelUid)
     })
 
     it('should update label name', async () => {

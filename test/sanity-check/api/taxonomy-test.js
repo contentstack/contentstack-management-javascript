@@ -13,7 +13,7 @@ import {
   categoryTaxonomy,
   regionTaxonomy
 } from '../mock/taxonomy.js'
-import { validateTaxonomyResponse, testData, wait, shortId } from '../utility/testHelpers.js'
+import { validateTaxonomyResponse, testData, wait, shortId, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Taxonomy API Tests', () => {
   let client
@@ -49,12 +49,12 @@ describe('Taxonomy API Tests', () => {
       // SDK returns the taxonomy object directly
       const taxonomy = await stack.taxonomy().create(taxonomyData)
 
-      expect(taxonomy).to.be.an('object')
-      expect(taxonomy.uid).to.be.a('string')
+      trackedExpect(taxonomy, 'Taxonomy').toBeAn('object')
+      trackedExpect(taxonomy.uid, 'Taxonomy UID').toBeA('string')
       validateTaxonomyResponse(taxonomy)
 
-      expect(taxonomy.uid).to.equal(categoryUid)
-      expect(taxonomy.name).to.include('Categories')
+      trackedExpect(taxonomy.uid, 'Taxonomy UID').toEqual(categoryUid)
+      trackedExpect(taxonomy.name, 'Taxonomy name').toInclude('Categories')
 
       createdTaxonomy = taxonomy
       testData.taxonomies.category = taxonomy
@@ -67,9 +67,9 @@ describe('Taxonomy API Tests', () => {
       this.timeout(15000)
       const response = await stack.taxonomy(categoryUid).fetch()
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.equal(categoryUid)
-      expect(response.name).to.equal(createdTaxonomy.name)
+      trackedExpect(response, 'Taxonomy').toBeAn('object')
+      trackedExpect(response.uid, 'Taxonomy UID').toEqual(categoryUid)
+      trackedExpect(response.name, 'Taxonomy name').toEqual(createdTaxonomy.name)
     })
 
     it('should update taxonomy name', async () => {

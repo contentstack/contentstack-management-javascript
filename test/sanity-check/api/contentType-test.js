@@ -27,7 +27,8 @@ import {
   generateValidUid,
   testData,
   safeDeleteContentType,
-  wait
+  wait,
+  trackedExpect
 } from '../utility/testHelpers.js'
 
 // Get base path for mock files (works with both ESM and CommonJS after Babel transpilation)
@@ -59,11 +60,11 @@ describe('Content Type API Tests', () => {
       // SDK returns the content type object directly
       const ct = await stack.contentType().create(ctData)
 
-      expect(ct).to.be.an('object')
-      expect(ct.uid).to.be.a('string')
+      trackedExpect(ct, 'Content type').toBeAn('object')
+      trackedExpect(ct.uid, 'Content type UID').toBeA('string')
       validateContentTypeResponse(ct, simpleCtUid)
 
-      expect(ct.title).to.include('Simple Test')
+      trackedExpect(ct.title, 'Content type title').toInclude('Simple Test')
       expect(ct.schema).to.be.an('array')
       expect(ct.schema.length).to.be.at.least(1)
 
@@ -84,9 +85,9 @@ describe('Content Type API Tests', () => {
       this.timeout(15000)
       const response = await stack.contentType(simpleCtUid).fetch()
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.equal(simpleCtUid)
-      expect(response.title).to.equal(createdCt.title)
+      trackedExpect(response, 'Content type').toBeAn('object')
+      trackedExpect(response.uid, 'Content type UID').toEqual(simpleCtUid)
+      trackedExpect(response.title, 'Content type title').toEqual(createdCt.title)
       expect(response.schema).to.deep.equal(createdCt.schema)
     })
 

@@ -20,7 +20,7 @@ import {
   branchAlias,
   branchAliasUpdate
 } from '../mock/configurations.js'
-import { validateBranchResponse, testData, wait, shortId } from '../utility/testHelpers.js'
+import { validateBranchResponse, testData, wait, shortId, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Branch API Tests', () => {
   let client
@@ -48,19 +48,17 @@ describe('Branch API Tests', () => {
     it('should query all branches', async () => {
       const response = await stack.branch().query().find()
 
-      expect(response).to.be.an('object')
-      expect(response.items || response.branches).to.be.an('array')
-
+      trackedExpect(response, 'Branches response').toBeAn('object')
       const items = response.items || response.branches
-      // At least main branch should exist
-      expect(items.length).to.be.at.least(1)
+      trackedExpect(items, 'Branches list').toBeAn('array')
+      trackedExpect(items.length, 'Branches count').toBeAtLeast(1)
     })
 
     it('should fetch main branch', async () => {
       const response = await stack.branch('main').fetch()
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.equal('main')
+      trackedExpect(response, 'Main branch').toBeAn('object')
+      trackedExpect(response.uid, 'Main branch UID').toEqual('main')
     })
 
     it('should create a development branch from main', async function () {
@@ -77,11 +75,11 @@ describe('Branch API Tests', () => {
         // SDK returns the branch object directly
         const branch = await stack.branch().create(branchData)
 
-        expect(branch).to.be.an('object')
-        expect(branch.uid).to.be.a('string')
+        trackedExpect(branch, 'Branch').toBeAn('object')
+        trackedExpect(branch.uid, 'Branch UID').toBeA('string')
         validateBranchResponse(branch)
 
-        expect(branch.uid).to.equal(devBranchUid)
+        trackedExpect(branch.uid, 'Branch UID').toEqual(devBranchUid)
         expect(branch.source).to.equal('main')
 
         createdBranch = branch

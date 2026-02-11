@@ -13,7 +13,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { wait, testData } from '../utility/testHelpers.js'
+import { wait, testData, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Variant Group API Tests', () => {
   let client = null
@@ -59,9 +59,9 @@ describe('Variant Group API Tests', () => {
       try {
         const response = await stack.variantGroup().create(createData)
         
-        expect(response).to.be.an('object')
-        expect(response.uid).to.be.a('string')
-        expect(response.name).to.include('Test Variant Group')
+        trackedExpect(response, 'Variant group').toBeAn('object')
+        trackedExpect(response.uid, 'Variant group UID').toBeA('string')
+        trackedExpect(response.name, 'Variant group name').toInclude('Test Variant Group')
         
         variantGroupUid = response.uid
         testData.variantGroupUid = response.uid
@@ -91,9 +91,9 @@ describe('Variant Group API Tests', () => {
       try {
         const response = await stack.variantGroup().query().find()
         
-        expect(response).to.be.an('object')
+        trackedExpect(response, 'Variant groups query response').toBeAn('object')
         const items = response.items || response.variant_groups || []
-        expect(items).to.be.an('array')
+        trackedExpect(items, 'Variant groups list').toBeAn('array')
         
         items.forEach(variantGroup => {
           expect(variantGroup.name).to.not.equal(null)

@@ -18,7 +18,7 @@ import {
   mediumEntryUpdate,
   complexEntry
 } from '../mock/entries/index.js'
-import { testData, wait } from '../utility/testHelpers.js'
+import { testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Entry API Tests', () => {
   let client
@@ -113,8 +113,8 @@ describe('Entry API Tests', () => {
       // SDK returns the entry object directly
       const entry = await stack.contentType(mediumCtUid).entry().create(entryData)
 
-      expect(entry).to.be.an('object')
-      expect(entry.uid).to.be.a('string')
+      trackedExpect(entry, 'Entry').toBeAn('object')
+      trackedExpect(entry.uid, 'Entry UID').toBeA('string')
       expect(entry.title).to.include('All Fields')
       expect(entry.summary).to.be.a('string')
       expect(entry.view_count).to.equal(1250)
@@ -134,7 +134,7 @@ describe('Entry API Tests', () => {
       
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
-      expect(entry.uid).to.equal(entryUid)
+      trackedExpect(entry.uid, 'Entry UID').toEqual(entryUid)
       expect(entry.title).to.include('All Fields')
     })
 

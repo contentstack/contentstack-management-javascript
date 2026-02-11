@@ -18,7 +18,7 @@ import {
   releaseItemAsset,
   releaseDeployConfig
 } from '../mock/configurations.js'
-import { validateReleaseResponse, testData, wait } from '../utility/testHelpers.js'
+import { validateReleaseResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Release API Tests', () => {
   let client
@@ -52,8 +52,8 @@ describe('Release API Tests', () => {
       // SDK returns the release object directly
       const release = await stack.release().create(releaseData)
 
-      expect(release).to.be.an('object')
-      expect(release.uid).to.be.a('string')
+      trackedExpect(release, 'Release').toBeAn('object')
+      trackedExpect(release.uid, 'Release UID').toBeA('string')
       validateReleaseResponse(release)
 
       expect(release.name).to.include('Q1 Release')
@@ -70,8 +70,8 @@ describe('Release API Tests', () => {
       this.timeout(15000)
       const response = await stack.release(createdReleaseUid).fetch()
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.equal(createdReleaseUid)
+      trackedExpect(response, 'Release').toBeAn('object')
+      trackedExpect(response.uid, 'Release UID').toEqual(createdReleaseUid)
     })
 
     it('should update release name', async () => {

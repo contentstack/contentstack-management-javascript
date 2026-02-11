@@ -12,7 +12,7 @@
 import { expect } from 'chai'
 import { describe, it, before } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { testData } from '../utility/testHelpers.js'
+import { testData, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Organization API Tests', () => {
   let client
@@ -42,8 +42,8 @@ describe('Organization API Tests', () => {
     it('should fetch all organizations', async () => {
       const response = await client.organization().fetchAll()
 
-      expect(response).to.be.an('object')
-      expect(response.items).to.be.an('array')
+      trackedExpect(response, 'Response').toBeAn('object')
+      trackedExpect(response.items, 'Organizations list').toBeAn('array')
     })
 
     it('should validate organization structure', async () => {
@@ -191,7 +191,10 @@ describe('Organization API Tests', () => {
       try {
         const response = await client.organization(organizationUid).teams().fetchAll()
 
-        expect(response).to.be.an('object')
+        trackedExpect(response, 'Teams response').toBeAn('object')
+        if (response.items != null) {
+          trackedExpect(response.items, 'Teams list').toBeAn('array')
+        }
       } catch (error) {
         console.log('Teams fetch failed:', error.errorMessage)
       }
