@@ -5,7 +5,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { generateUniqueId, wait, testData, trackedExpect } from '../utility/testHelpers.js'
+import { generateUniqueId, wait, trackedExpect } from '../utility/testHelpers.js'
 
 let client = null
 let stack = null
@@ -17,18 +17,6 @@ let contentTypeUid = null
 let entryUid = null
 let environmentName = 'development'
 
-// Mock data
-const createVariantGroup = {
-  uid: `test_vg_entry_${Date.now()}`,
-  name: `Variant Group for Entry Variants ${generateUniqueId()}`,
-  description: 'Variant group for testing entry variants API'
-}
-
-const createVariant = {
-  name: `Entry Variant Test ${generateUniqueId()}`,
-  uid: `entry_variant_${Date.now()}`
-}
-
 describe('Entry Variants API Tests', () => {
   before(function () {
     client = contentstackClient()
@@ -37,19 +25,19 @@ describe('Entry Variants API Tests', () => {
 
   before(async function () {
     this.timeout(120000)
-    
+
     try {
       // Get environment first
       const environments = await stack.environment().query().find()
       if (environments.items && environments.items.length > 0) {
         environmentName = environments.items[0].name
       }
-      
+
       console.log('  Entry Variants: Setting up test resources...')
-      
+
       // ALWAYS create a fresh, self-contained setup to avoid linkage issues
       // This ensures the variant group is properly linked to our content type
-      
+
       // Step 1: Create content type
       const ctUid = `ev_ct_${Date.now()}`
       try {
@@ -79,7 +67,7 @@ describe('Entry Variants API Tests', () => {
           console.log('  CT creation failed:', e.errorMessage || e.message)
         }
       }
-      
+
       // Step 2: Create entry in the content type
       if (contentTypeUid) {
         try {
@@ -101,7 +89,7 @@ describe('Entry Variants API Tests', () => {
           } catch (e2) { }
         }
       }
-      
+
       // Step 3: Create variant group LINKED to our content type
       if (contentTypeUid && entryUid) {
         const vgUid = `vg_ev_${Date.now()}`
@@ -110,12 +98,12 @@ describe('Entry Variants API Tests', () => {
             uid: vgUid,
             name: `Variant Group for Entry Variants ${Date.now()}`,
             description: 'Variant group for testing entry variants API',
-            content_types: [contentTypeUid]  // CRITICAL: Link to our content type
+            content_types: [contentTypeUid] // CRITICAL: Link to our content type
           })
           variantGroupUid = vgResp.uid
           await wait(3000)
           console.log('  Created variant group:', variantGroupUid, 'linked to:', contentTypeUid)
-          
+
           // Step 4: Create variant in this group
           const varUid = `ev_var_${Date.now()}`
           const varResp = await stack.variantGroup(variantGroupUid).variants().create({
@@ -127,21 +115,21 @@ describe('Entry Variants API Tests', () => {
           console.log('  Created variant:', variantUid)
         } catch (e) {
           console.log('  Variant group creation failed:', e.errorMessage || e.message)
-          
+
           // If variant group creation fails, try to find an existing one with our content type
           try {
             const existingGroups = await stack.variantGroup().query().find()
             for (const vg of existingGroups.items || []) {
               // Check if this VG is linked to our content type
               const linkedCts = vg.content_types || []
-              const isLinked = linkedCts.some(ct => 
+              const isLinked = linkedCts.some(ct =>
                 (ct.uid || ct) === contentTypeUid
               )
-              
+
               if (isLinked) {
                 variantGroupUid = vg.uid
                 console.log('  Found existing variant group linked to our CT:', variantGroupUid)
-                
+
                 // Get a variant from this group
                 const variants = await stack.variantGroup(variantGroupUid).variants().query().find()
                 if (variants.items && variants.items.length > 0) {
@@ -156,7 +144,7 @@ describe('Entry Variants API Tests', () => {
           }
         }
       }
-      
+
       console.log('  Entry Variants setup complete:', { contentTypeUid, entryUid, variantGroupUid, variantUid, environmentName })
     } catch (e) {
       console.log('Entry Variants setup error:', e.message)
@@ -171,7 +159,7 @@ describe('Entry Variants API Tests', () => {
   describe('Entry Variant CRUD Operations', () => {
     it('should create/update entry variant', async function () {
       this.timeout(15000)
-      
+
       if (!contentTypeUid || !entryUid || !variantUid) {
         console.log('  Missing required data:', { contentTypeUid, entryUid, variantUid })
         this.skip()
@@ -194,7 +182,7 @@ describe('Entry Variants API Tests', () => {
           .entry(entryUid)
           .variants(variantUid)
           .update(variantEntryData)
-        
+
         trackedExpect(response, 'Entry variant update response').toBeAn('object')
         trackedExpect(response.entry, 'Entry variant entry').toExist()
         trackedExpect(response.entry.title, 'Entry variant title').toExist()
@@ -215,7 +203,7 @@ describe('Entry Variants API Tests', () => {
 
     it('should fetch entry variant', async function () {
       this.timeout(15000)
-      
+
       if (!contentTypeUid || !entryUid || !variantUid) {
         this.skip()
       }
@@ -226,7 +214,7 @@ describe('Entry Variants API Tests', () => {
           .entry(entryUid)
           .variants(variantUid)
           .fetch()
-        
+
         trackedExpect(response, 'Entry variant fetch response').toBeAn('object')
         trackedExpect(response.entry, 'Entry variant entry').toExist()
         trackedExpect(response.entry._variant, 'Entry variant _variant').toExist()
@@ -241,7 +229,7 @@ describe('Entry Variants API Tests', () => {
 
     it('should fetch all entry variants', async function () {
       this.timeout(15000)
-      
+
       if (!contentTypeUid || !entryUid) {
         this.skip()
       }
@@ -253,9 +241,9 @@ describe('Entry Variants API Tests', () => {
           .variants()
           .query({})
           .find()
-        
+
         expect(response.items).to.be.an('array')
-        
+
         if (response.items.length > 0) {
           response.items.forEach(item => {
             expect(item.variants).to.not.equal(undefined)
@@ -274,7 +262,7 @@ describe('Entry Variants API Tests', () => {
   describe('Entry Variant Publishing', () => {
     it('should publish entry variant', async function () {
       this.timeout(15000)
-      
+
       if (!contentTypeUid || !entryUid || !variantUid) {
         this.skip()
       }
@@ -299,7 +287,7 @@ describe('Entry Variants API Tests', () => {
             publishDetails: publishDetails,
             locale: 'en-us'
           })
-        
+
         expect(response.notice).to.not.equal(undefined)
       } catch (error) {
         if (error.status === 403 || error.status === 422) {
@@ -313,7 +301,7 @@ describe('Entry Variants API Tests', () => {
 
     it('should publish entry variant with api_version', async function () {
       this.timeout(15000)
-      
+
       if (!contentTypeUid || !entryUid || !variantUid) {
         this.skip()
       }
@@ -335,7 +323,7 @@ describe('Entry Variants API Tests', () => {
             publishDetails: publishDetails,
             locale: 'en-us'
           })
-        
+
         expect(response.notice).to.not.equal(undefined)
       } catch (error) {
         if (error.status === 403 || error.status === 422) {
@@ -348,7 +336,7 @@ describe('Entry Variants API Tests', () => {
 
     it('should unpublish entry variant', async function () {
       this.timeout(15000)
-      
+
       if (!contentTypeUid || !entryUid || !variantUid) {
         this.skip()
       }
@@ -370,7 +358,7 @@ describe('Entry Variants API Tests', () => {
             publishDetails: unpublishDetails,
             locale: 'en-us'
           })
-        
+
         expect(response.notice).to.not.equal(undefined)
       } catch (error) {
         if (error.status === 403 || error.status === 422) {
@@ -385,7 +373,7 @@ describe('Entry Variants API Tests', () => {
   describe('Entry Variant Deletion', () => {
     it('should delete entry variant', async function () {
       this.timeout(60000)
-      
+
       // If required resources are not available, pass the test with a note
       // (Do NOT use this.skip() as it causes "pending" status)
       if (!contentTypeUid || !entryUid || !variantGroupUid) {
@@ -406,7 +394,7 @@ describe('Entry Variants API Tests', () => {
       // Create a TEMPORARY variant for deletion testing
       const delId = Date.now().toString().slice(-8)
       const tempVariantUid = `del_ev_${delId}`
-      
+
       try {
         // First create a temporary variant in the variant group
         const tempVariant = await stack.variantGroup(variantGroupUid).variants().create({
@@ -419,32 +407,32 @@ describe('Entry Variants API Tests', () => {
             variant_short_uid: `var_del_${delId}`
           }
         })
-        
+
         await wait(2000)
-        
+
         // Create entry variant data for the temp variant (must include _variant._change_set)
         await stack
           .contentType(contentTypeUid)
           .entry(entryUid)
           .variants(tempVariant.uid)
           .update({
-            entry: { 
+            entry: {
               title: `Temp Entry Variant ${delId}`,
               _variant: {
                 _change_set: ['title']
               }
             }
           })
-        
+
         await wait(2000)
-        
+
         // Now delete the entry variant
         const response = await stack
           .contentType(contentTypeUid)
           .entry(entryUid)
           .variants(tempVariant.uid)
           .delete()
-        
+
         expect(response.notice).to.include('deleted')
       } catch (e) {
         // If variant operations fail, pass with a note
@@ -457,7 +445,7 @@ describe('Entry Variants API Tests', () => {
   describe('Error Handling', () => {
     it('should handle fetching non-existent entry variant', async function () {
       this.timeout(15000)
-      
+
       if (!contentTypeUid || !entryUid) {
         // Pass without skip to avoid pending status
         expect(true).to.equal(true)

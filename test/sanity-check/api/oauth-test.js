@@ -27,7 +27,7 @@ const organizationUid = process.env.ORGANIZATION
 describe('OAuth Authentication API Tests', () => {
   before(function () {
     client = contentstackClient()
-    
+
     // Skip all OAuth tests if credentials not configured
     if (!clientId || !appId || !redirectUri) {
       console.log('OAuth credentials not configured - skipping OAuth tests')
@@ -37,7 +37,7 @@ describe('OAuth Authentication API Tests', () => {
   describe('OAuth Setup and Authorization', () => {
     it('should login with credentials to get authtoken', async function () {
       this.timeout(15000)
-      
+
       if (!process.env.EMAIL || !process.env.PASSWORD) {
         this.skip()
       }
@@ -52,9 +52,9 @@ describe('OAuth Authentication API Tests', () => {
           include_stack_roles: true,
           include_user_settings: true
         })
-        
+
         authtoken = response.user.authtoken
-        
+
         expect(response.notice).to.equal('Login Successful.')
         expect(authtoken).to.not.equal(undefined)
       } catch (error) {
@@ -68,7 +68,7 @@ describe('OAuth Authentication API Tests', () => {
 
       try {
         const user = await client.getUser()
-        
+
         expect(user.uid).to.not.equal(undefined)
         expect(user.email).to.not.equal(undefined)
       } catch (error) {
@@ -94,7 +94,7 @@ describe('OAuth Authentication API Tests', () => {
 
     it('should initialize OAuth client with valid credentials', async function () {
       this.timeout(15000)
-      
+
       if (!clientId || !appId || !redirectUri) {
         this.skip()
       }
@@ -105,7 +105,7 @@ describe('OAuth Authentication API Tests', () => {
           appId: appId,
           redirectUri: redirectUri
         })
-        
+
         expect(oauthClient).to.not.equal(undefined)
       } catch (error) {
         console.log('OAuth client initialization warning:', error.message)
@@ -115,21 +115,21 @@ describe('OAuth Authentication API Tests', () => {
 
     it('should generate OAuth authorization URL', async function () {
       this.timeout(15000)
-      
+
       if (!oauthClient) {
         this.skip()
       }
 
       try {
         authUrl = await oauthClient.authorize()
-        
+
         expect(authUrl).to.not.equal(undefined)
         expect(authUrl).to.include(clientId)
-        
+
         const url = new URL(authUrl)
         codeChallenge = url.searchParams.get('code_challenge')
         codeChallengeMethod = url.searchParams.get('code_challenge_method')
-        
+
         expect(codeChallenge).to.not.equal('')
         expect(codeChallengeMethod).to.not.equal('')
       } catch (error) {
@@ -140,17 +140,17 @@ describe('OAuth Authentication API Tests', () => {
 
     it('should simulate authorization and get auth code', async function () {
       this.timeout(15000)
-      
+
       if (!oauthClient || !authtoken || !codeChallenge) {
         this.skip()
       }
 
       try {
         const authorizationEndpoint = oauthClient.axiosInstance.defaults.developerHubBaseUrl
-        
+
         axios.defaults.headers.common.authtoken = authtoken
         axios.defaults.headers.common.organization_uid = organizationUid
-        
+
         const response = await axios.post(
           `${authorizationEndpoint}/manifests/${appId}/authorize`,
           {
@@ -161,14 +161,14 @@ describe('OAuth Authentication API Tests', () => {
             response_type: 'code'
           }
         )
-        
+
         const redirectUrl = response.data.data.redirect_url
         const url = new URL(redirectUrl)
         authCode = url.searchParams.get('code')
-        
+
         expect(redirectUrl).to.not.equal('')
         expect(authCode).to.not.equal(null)
-        
+
         // Set OAuth client properties
         oauthClient.axiosInstance.oauth.appId = appId
         oauthClient.axiosInstance.oauth.clientId = clientId
@@ -183,18 +183,18 @@ describe('OAuth Authentication API Tests', () => {
   describe('OAuth Token Exchange', () => {
     it('should exchange authorization code for access token', async function () {
       this.timeout(15000)
-      
+
       if (!oauthClient || !authCode) {
         this.skip()
       }
 
       try {
         const response = await oauthClient.exchangeCodeForToken(authCode)
-        
+
         accessToken = response.access_token
         refreshToken = response.refresh_token
         loggedinUserId = response.user_uid
-        
+
         expect(response.organization_uid).to.equal(organizationUid)
         expect(response.access_token).to.not.equal(null)
         expect(response.refresh_token).to.not.equal(null)
@@ -206,7 +206,7 @@ describe('OAuth Authentication API Tests', () => {
 
     it('should get user info using access token', async function () {
       this.timeout(15000)
-      
+
       if (!accessToken) {
         this.skip()
       }
@@ -215,7 +215,7 @@ describe('OAuth Authentication API Tests', () => {
         const user = await client.getUser({
           authorization: `Bearer ${accessToken}`
         })
-        
+
         expect(user.uid).to.equal(loggedinUserId)
         expect(user.email).to.equal(process.env.EMAIL)
       } catch (error) {
@@ -226,17 +226,17 @@ describe('OAuth Authentication API Tests', () => {
 
     it('should refresh access token using refresh token', async function () {
       this.timeout(15000)
-      
+
       if (!oauthClient || !refreshToken) {
         this.skip()
       }
 
       try {
         const response = await oauthClient.refreshAccessToken(refreshToken)
-        
+
         accessToken = response.access_token
         refreshToken = response.refresh_token
-        
+
         expect(response.access_token).to.not.equal(null)
         expect(response.refresh_token).to.not.equal(null)
       } catch (error) {
@@ -249,14 +249,14 @@ describe('OAuth Authentication API Tests', () => {
   describe('OAuth Logout', () => {
     it('should logout successfully', async function () {
       this.timeout(15000)
-      
+
       if (!oauthClient || !accessToken) {
         this.skip()
       }
 
       try {
         const response = await oauthClient.logout()
-        
+
         expect(response).to.equal('Logged out successfully')
       } catch (error) {
         console.log('Logout warning:', error.message)
@@ -266,7 +266,7 @@ describe('OAuth Authentication API Tests', () => {
 
     it('should fail API request with expired/revoked token', async function () {
       this.timeout(15000)
-      
+
       if (!accessToken) {
         this.skip()
       }
@@ -286,7 +286,7 @@ describe('OAuth Authentication API Tests', () => {
   describe('OAuth Error Handling', () => {
     it('should handle invalid authorization code', async function () {
       this.timeout(15000)
-      
+
       if (!oauthClient) {
         this.skip()
       }
@@ -301,7 +301,7 @@ describe('OAuth Authentication API Tests', () => {
 
     it('should handle invalid refresh token', async function () {
       this.timeout(15000)
-      
+
       if (!oauthClient) {
         this.skip()
       }

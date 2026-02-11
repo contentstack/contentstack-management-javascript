@@ -1,6 +1,6 @@
 /**
  * Test Setup Module
- * 
+ *
  * This module handles the complete lifecycle of test setup and teardown:
  * 1. Login with credentials to get authtoken
  * 2. Create a NEW test stack dynamically (no pre-existing stack required)
@@ -10,19 +10,19 @@
  * 6. Cleanup: Delete all resources within the stack
  * 7. Conditionally delete the test stack and Personalize Project (based on env flag)
  * 8. Logout
- * 
+ *
  * Environment Variables Required:
  * - EMAIL: User email for login
  * - PASSWORD: User password for login
  * - HOST: API host URL (e.g., api.contentstack.io)
  * - ORGANIZATION: Organization UID (for stack creation and personalize)
- * 
+ *
  * Optional:
  * - PERSONALIZE_HOST: Personalize API host (default: personalize-api.contentstack.com)
  * - DELETE_DYNAMIC_RESOURCES: Toggle for deleting stack/personalize project (default: true)
  * - CLIENT_ID, APP_ID, REDIRECT_URI: For OAuth tests
  * - MEMBER_EMAIL: For team member operations
- * 
+ *
  * NO LONGER REQUIRED (dynamically created):
  * - API_KEY: Generated when test stack is created
  * - MANAGEMENT_TOKEN: Generated for the test stack
@@ -38,32 +38,32 @@ export const testContext = {
   // Authentication
   authtoken: null,
   userUid: null,
-  
+
   // Stack details (dynamically created)
   stackApiKey: null,
   stackUid: null,
   stackName: null,
-  
+
   // Management Token (dynamically created)
   managementToken: null,
   managementTokenUid: null,
-  
+
   // Organization - will be set at runtime
   organizationUid: null,
-  
+
   // Personalize (dynamically created)
   personalizeProjectUid: null,
   personalizeProjectName: null,
-  
+
   // Client instance
   client: null,
   stack: null,
-  
+
   // Feature flags
   isLoggedIn: false,
   isDynamicStackCreated: false,
   isDynamicPersonalizeCreated: false,
-  
+
   // OAuth (optional) - will be set at runtime
   clientId: null,
   appId: null,
@@ -73,14 +73,14 @@ export const testContext = {
 /**
  * Utility: Wait for specified milliseconds
  */
-export function wait(ms) {
+export function wait (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 /**
  * Generate a short unique ID for naming resources
  */
-function shortId() {
+function shortId () {
   return Math.random().toString(36).substring(2, 7)
 }
 
@@ -90,21 +90,21 @@ function shortId() {
  */
 let capturedRequests = []
 
-export function getCapturedRequests() {
+export function getCapturedRequests () {
   return capturedRequests
 }
 
-export function getLastCapturedRequest() {
+export function getLastCapturedRequest () {
   return capturedRequests.length > 0 ? capturedRequests[capturedRequests.length - 1] : null
 }
 
-export function clearCapturedRequests() {
+export function clearCapturedRequests () {
   capturedRequests = []
 }
 
-function buildFullUrl(config) {
+function buildFullUrl (config) {
   try {
-    let url = config.url || ''
+    const url = config.url || ''
     const baseURL = config.baseURL || ''
     if (url.startsWith('http')) return url
     if (baseURL) {
@@ -119,12 +119,12 @@ function buildFullUrl(config) {
   }
 }
 
-function generateCurl(config) {
+function generateCurl (config) {
   try {
     const url = buildFullUrl(config)
-    
+
     let curl = `curl -X ${(config.method || 'GET').toUpperCase()} '${url}'`
-    
+
     const headers = config.headers || {}
     for (const [key, value] of Object.entries(headers)) {
       if (value && typeof value === 'string') {
@@ -138,22 +138,22 @@ function generateCurl(config) {
         curl += ` \\\n  -H '${key}: ${displayValue}'`
       }
     }
-    
+
     if (config.data) {
       let dataStr = typeof config.data === 'string' ? config.data : JSON.stringify(config.data)
       dataStr = dataStr.replace(/'/g, "'\\''")
       curl += ` \\\n  -d '${dataStr}'`
     }
-    
+
     return curl
   } catch (e) {
     return `# Could not generate cURL: ${e.message}`
   }
 }
 
-function detectSdkMethod(method, url) {
+function detectSdkMethod (method, url) {
   if (!method || !url) return 'Unknown'
-  
+
   const httpMethod = method.toUpperCase()
   let path = url
   try {
@@ -165,7 +165,7 @@ function detectSdkMethod(method, url) {
     }
   }
   path = path.replace(/^\/v\d+/, '')
-  
+
   const patterns = [
     { pattern: /\/user-session$/, method: 'POST', sdk: 'client.login()' },
     { pattern: /\/user-session$/, method: 'DELETE', sdk: 'client.logout()' },
@@ -200,24 +200,24 @@ function detectSdkMethod(method, url) {
     { pattern: /\/organizations$/, method: 'GET', sdk: 'client.organization().fetchAll()' },
     { pattern: /\/organizations\/[^\/]+$/, method: 'GET', sdk: 'client.organization(uid).fetch()' },
     { pattern: /\/variant_groups$/, method: 'POST', sdk: 'stack.variantGroup().create()' },
-    { pattern: /\/variant_groups$/, method: 'GET', sdk: 'stack.variantGroup().query().find()' },
+    { pattern: /\/variant_groups$/, method: 'GET', sdk: 'stack.variantGroup().query().find()' }
   ]
-  
+
   for (const mapping of patterns) {
     if (mapping.method === httpMethod && mapping.pattern.test(path)) {
       return mapping.sdk
     }
   }
-  
+
   return `${httpMethod} ${path}`
 }
 
 /**
  * Initialize Contentstack client with request capture plugin
  */
-export function initializeClient() {
+export function initializeClient () {
   const host = process.env.HOST || 'api.contentstack.io'
-  
+
   // Request capture plugin - capture on request (so timeouts still have cURL) and on response
   const requestCapturePlugin = {
     onRequest: (request) => {
@@ -242,12 +242,12 @@ export function initializeClient() {
       // SDK passes response on success, error object on failure - both have .config
       const config = responseOrError?.config
       if (!config) return responseOrError
-      
+
       const isError = responseOrError?.isAxiosError || responseOrError?.response
       const res = responseOrError?.response || responseOrError
       const duration = config._startTime ? Date.now() - config._startTime : null
       const fullUrl = buildFullUrl(config)
-      
+
       // Normalize response headers (axios may give plain object or Headers-like)
       let responseHeaders = {}
       if (res?.headers) {
@@ -276,21 +276,21 @@ export function initializeClient() {
         sdkMethod: detectSdkMethod(config.method, fullUrl)
       }
       capturedRequests.push(captured)
-      
+
       if (capturedRequests.length > 100) {
         capturedRequests.shift()
       }
-      
+
       return responseOrError
     }
   }
-  
+
   testContext.client = contentstack.client({
     host: host,
     timeout: 60000,
     plugins: [requestCapturePlugin]
   })
-  
+
   return testContext.client
 }
 
@@ -298,20 +298,20 @@ export function initializeClient() {
  * Login with email/password and store authtoken
  * Uses direct API call instead of SDK to get the raw authtoken
  */
-export async function login() {
+export async function login () {
   const email = process.env.EMAIL
   const password = process.env.PASSWORD
   const host = process.env.HOST || 'api.contentstack.io'
-  
+
   if (!email || !password) {
     throw new Error('EMAIL and PASSWORD environment variables are required')
   }
-  
+
   console.log('🔐 Logging in...')
-  
+
   // Import axios for direct API call
   const axios = (await import('axios')).default
-  
+
   try {
     // Use CMA Login API
     const response = await axios.post(`https://${host}/v3/user-session`, {
@@ -324,20 +324,19 @@ export async function login() {
         'Content-Type': 'application/json'
       }
     })
-    
+
     testContext.authtoken = response.data.user.authtoken
     testContext.userUid = response.data.user.uid
     testContext.isLoggedIn = true
-    
+
     // Set authtoken on the client (created by initializeClient with plugin)
     if (testContext.client?.axiosInstance?.defaults?.headers) {
       testContext.client.axiosInstance.defaults.headers.common.authtoken = testContext.authtoken
     }
-    
+
     console.log(`✅ Logged in successfully as: ${email}`)
-    
+
     return testContext.authtoken
-    
   } catch (error) {
     const errorMsg = error.response?.data?.error_message || error.message
     throw new Error(`Login failed: ${errorMsg}`)
@@ -348,24 +347,24 @@ export async function login() {
  * Create a new test stack dynamically
  * Uses CMA API: POST /v3/stacks
  */
-export async function createDynamicStack() {
+export async function createDynamicStack () {
   if (!testContext.isLoggedIn || !testContext.authtoken) {
     throw new Error('Must login before creating stack')
   }
-  
+
   const organizationUid = process.env.ORGANIZATION
   if (!organizationUid) {
     throw new Error('ORGANIZATION environment variable is required for stack creation')
   }
-  
+
   const host = process.env.HOST || 'api.contentstack.io'
   const axios = (await import('axios')).default
-  
+
   // Generate unique stack name
   const stackName = `SDK_Test_${shortId()}`
-  
+
   console.log(`📦 Creating test stack: ${stackName}...`)
-  
+
   try {
     const response = await axios.post(`https://${host}/v3/stacks`, {
       stack: {
@@ -375,37 +374,36 @@ export async function createDynamicStack() {
       }
     }, {
       headers: {
-        'authtoken': testContext.authtoken,
-        'organization_uid': organizationUid,
+        authtoken: testContext.authtoken,
+        organization_uid: organizationUid,
         'Content-Type': 'application/json'
       }
     })
-    
+
     const stack = response.data.stack
     testContext.stackApiKey = stack.api_key
     testContext.stackUid = stack.uid
     testContext.stackName = stack.name
     testContext.organizationUid = organizationUid
     testContext.isDynamicStackCreated = true
-    
+
     // Initialize stack reference in SDK
     testContext.stack = testContext.client.stack({ api_key: testContext.stackApiKey })
-    
+
     console.log(`✅ Created stack: ${testContext.stackName}`)
     console.log(`   API Key: ${testContext.stackApiKey}`)
-    
+
     // Wait for stack to be fully provisioned (branches-enabled orgs create main branch)
     // Management token creation requires stack to be fully ready
     console.log('⏳ Waiting for stack provisioning (5 seconds)...')
     await wait(5000)
     console.log('✅ Stack provisioning complete')
-    
+
     return {
       apiKey: testContext.stackApiKey,
       uid: testContext.stackUid,
       name: testContext.stackName
     }
-    
   } catch (error) {
     const errorMsg = error.response?.data?.error_message || error.message
     const errors = error.response?.data?.errors
@@ -417,23 +415,23 @@ export async function createDynamicStack() {
  * Create a Management Token for the test stack
  * Uses CMA API: POST /v3/stacks/management_tokens
  */
-export async function createManagementToken() {
+export async function createManagementToken () {
   if (!testContext.stackApiKey || !testContext.authtoken) {
     throw new Error('Must create stack before creating management token')
   }
-  
+
   const host = process.env.HOST || 'api.contentstack.io'
   const axios = (await import('axios')).default
-  
+
   const tokenName = `SDK_Test_Token_${shortId()}`
-  
+
   console.log(`🔑 Creating management token: ${tokenName}...`)
-  
+
   try {
     // Calculate expiry date (30 days from now)
     const expiryDate = new Date()
     expiryDate.setDate(expiryDate.getDate() + 30)
-    
+
     const response = await axios.post(`https://${host}/v3/stacks/management_tokens`, {
       token: {
         name: tokenName,
@@ -453,23 +451,22 @@ export async function createManagementToken() {
       }
     }, {
       headers: {
-        'api_key': testContext.stackApiKey,
-        'authtoken': testContext.authtoken,
+        api_key: testContext.stackApiKey,
+        authtoken: testContext.authtoken,
         'Content-Type': 'application/json'
       }
     })
-    
+
     const token = response.data.token
     testContext.managementToken = token.token
     testContext.managementTokenUid = token.uid
-    
+
     console.log(`✅ Created management token: ${tokenName}`)
-    
+
     return {
       token: testContext.managementToken,
       uid: testContext.managementTokenUid
     }
-    
   } catch (error) {
     const errorMsg = error.response?.data?.error_message || error.message
     const errorDetails = error.response?.data?.errors || {}
@@ -480,16 +477,16 @@ export async function createManagementToken() {
     if (error.response?.status) {
       console.log(`   HTTP Status: ${error.response.status}`)
     }
-    
+
     // Retry after waiting - stack may still be initializing
     console.log('⏳ Waiting 5 seconds and retrying...')
     await wait(5000)
-    
+
     try {
       // Calculate expiry date (30 days from now) for retry
       const retryExpiryDate = new Date()
       retryExpiryDate.setDate(retryExpiryDate.getDate() + 30)
-      
+
       const retryResponse = await axios.post(`https://${host}/v3/stacks/management_tokens`, {
         token: {
           name: `${tokenName}_retry`,
@@ -509,18 +506,18 @@ export async function createManagementToken() {
         }
       }, {
         headers: {
-          'api_key': testContext.stackApiKey,
-          'authtoken': testContext.authtoken,
+          api_key: testContext.stackApiKey,
+          authtoken: testContext.authtoken,
           'Content-Type': 'application/json'
         }
       })
-      
+
       const token = retryResponse.data.token
       testContext.managementToken = token.token
       testContext.managementTokenUid = token.uid
-      
+
       console.log(`✅ Created management token on retry: ${tokenName}_retry`)
-      
+
       return {
         token: testContext.managementToken,
         uid: testContext.managementTokenUid
@@ -545,18 +542,18 @@ export async function createManagementToken() {
  * Create a Personalize Project linked to the test stack
  * Uses Personalize API: POST /projects
  */
-export async function createPersonalizeProject() {
+export async function createPersonalizeProject () {
   if (!testContext.stackApiKey || !testContext.authtoken || !testContext.organizationUid) {
     throw new Error('Must create stack before creating personalize project')
   }
-  
+
   const personalizeHost = process.env.PERSONALIZE_HOST || 'personalize-api.contentstack.com'
   const axios = (await import('axios')).default
-  
+
   const projectName = `SDK_Test_Proj_${shortId()}`
-  
+
   console.log(`🎯 Creating personalize project: ${projectName}...`)
-  
+
   try {
     const response = await axios.post(`https://${personalizeHost}/projects`, {
       name: projectName,
@@ -564,28 +561,27 @@ export async function createPersonalizeProject() {
       connectedStackApiKey: testContext.stackApiKey
     }, {
       headers: {
-        'Authtoken': testContext.authtoken,
-        'Organization_uid': testContext.organizationUid,
+        Authtoken: testContext.authtoken,
+        Organization_uid: testContext.organizationUid,
         'Content-Type': 'application/json'
       }
     })
-    
+
     const project = response.data
     testContext.personalizeProjectUid = project.uid || project.project_uid || project._id
     testContext.personalizeProjectName = project.name || projectName
     testContext.isDynamicPersonalizeCreated = true
-    
+
     console.log(`✅ Created personalize project: ${testContext.personalizeProjectName}`)
     console.log(`   Project UID: ${testContext.personalizeProjectUid}`)
-    
+
     // Wait for project to be fully linked
     await wait(2000)
-    
+
     return {
       uid: testContext.personalizeProjectUid,
       name: testContext.personalizeProjectName
     }
-    
   } catch (error) {
     const errorMsg = error.response?.data?.error_message || error.response?.data?.message || error.message
     console.log(`⚠️ Personalize project creation failed: ${errorMsg}`)
@@ -598,32 +594,31 @@ export async function createPersonalizeProject() {
  * Delete the Personalize Project
  * Uses Personalize API: DELETE /projects/{project_uid}
  */
-export async function deletePersonalizeProject() {
+export async function deletePersonalizeProject () {
   if (!testContext.personalizeProjectUid || !testContext.authtoken || !testContext.organizationUid) {
     console.log('   No personalize project to delete')
     return false
   }
-  
+
   const personalizeHost = process.env.PERSONALIZE_HOST || 'personalize-api.contentstack.com'
   const axios = (await import('axios')).default
-  
+
   console.log(`🗑️  Deleting personalize project: ${testContext.personalizeProjectName}...`)
-  
+
   try {
     await axios.delete(`https://${personalizeHost}/projects/${testContext.personalizeProjectUid}`, {
       headers: {
-        'Authtoken': testContext.authtoken,
-        'Organization_uid': testContext.organizationUid
+        Authtoken: testContext.authtoken,
+        Organization_uid: testContext.organizationUid
       }
     })
-    
+
     console.log(`✅ Deleted personalize project: ${testContext.personalizeProjectName}`)
     testContext.personalizeProjectUid = null
     testContext.personalizeProjectName = null
     testContext.isDynamicPersonalizeCreated = false
-    
+
     return true
-    
   } catch (error) {
     const errorMsg = error.response?.data?.error_message || error.response?.data?.message || error.message
     console.log(`⚠️ Personalize project deletion failed: ${errorMsg}`)
@@ -635,33 +630,32 @@ export async function deletePersonalizeProject() {
  * Delete the test stack
  * Uses CMA API: DELETE /v3/stacks
  */
-export async function deleteStack() {
+export async function deleteStack () {
   if (!testContext.stackApiKey || !testContext.authtoken) {
     console.log('   No stack to delete')
     return false
   }
-  
+
   const host = process.env.HOST || 'api.contentstack.io'
   const axios = (await import('axios')).default
-  
+
   console.log(`🗑️  Deleting test stack: ${testContext.stackName}...`)
-  
+
   try {
     await axios.delete(`https://${host}/v3/stacks`, {
       headers: {
-        'api_key': testContext.stackApiKey,
-        'authtoken': testContext.authtoken
+        api_key: testContext.stackApiKey,
+        authtoken: testContext.authtoken
       }
     })
-    
+
     console.log(`✅ Deleted test stack: ${testContext.stackName}`)
     testContext.stackApiKey = null
     testContext.stackUid = null
     testContext.stackName = null
     testContext.isDynamicStackCreated = false
-    
+
     return true
-    
   } catch (error) {
     const errorMsg = error.response?.data?.error_message || error.message
     console.log(`⚠️ Stack deletion failed: ${errorMsg}`)
@@ -673,41 +667,54 @@ export async function deleteStack() {
  * Stack cleanup - Delete all resources within the stack (but keep the stack)
  * Uses direct CMA API calls for faster cleanup
  */
-export async function cleanupStack() {
+export async function cleanupStack () {
   console.log('🧹 Cleaning up stack resources (using direct API calls)...')
-  
+
   const apiKey = testContext.stackApiKey
   const authtoken = testContext.authtoken
   const host = process.env.HOST || 'api.contentstack.io'
-  
+
   if (!apiKey || !authtoken) {
     console.log('⚠️ Missing credentials for cleanup')
     return
   }
-  
+
   // Import axios dynamically
   const axios = (await import('axios')).default
-  
+
   // Base headers for all requests
   const headers = {
-    'api_key': apiKey,
-    'authtoken': authtoken,
+    api_key: apiKey,
+    authtoken: authtoken,
     'Content-Type': 'application/json'
   }
-  
+
   const baseUrl = `https://${host}/v3`
-  
+
   // Track cleanup results
   const results = {
-    entries: 0, contentTypes: 0, globalFields: 0, assets: 0,
-    environments: 0, locales: 0, taxonomies: 0, webhooks: 0,
-    workflows: 0, labels: 0, extensions: 0, roles: 0,
-    deliveryTokens: 0, managementTokens: 0, releases: 0,
-    branches: 0, branchAliases: 0, variantGroups: 0
+    entries: 0,
+    contentTypes: 0,
+    globalFields: 0,
+    assets: 0,
+    environments: 0,
+    locales: 0,
+    taxonomies: 0,
+    webhooks: 0,
+    workflows: 0,
+    labels: 0,
+    extensions: 0,
+    roles: 0,
+    deliveryTokens: 0,
+    managementTokens: 0,
+    releases: 0,
+    branches: 0,
+    branchAliases: 0,
+    variantGroups: 0
   }
-  
+
   // Helper for API calls
-  async function apiGet(path) {
+  async function apiGet (path) {
     try {
       const response = await axios.get(`${baseUrl}${path}`, { headers })
       return response.data
@@ -715,8 +722,8 @@ export async function cleanupStack() {
       return null
     }
   }
-  
-  async function apiDelete(path) {
+
+  async function apiDelete (path) {
     try {
       await axios.delete(`${baseUrl}${path}`, { headers })
       return true
@@ -728,7 +735,7 @@ export async function cleanupStack() {
       return false
     }
   }
-  
+
   try {
     // 1. Delete Entries (must be deleted before content types)
     console.log('   Deleting entries...')
@@ -746,7 +753,7 @@ export async function cleanupStack() {
       }
     }
     await wait(2000)
-    
+
     // 2. Variant Groups - Delete all (since we're cleaning up everything)
     console.log('   Deleting variant groups...')
     try {
@@ -762,7 +769,7 @@ export async function cleanupStack() {
     } catch (e) {
       console.log('   Variant groups cleanup error:', e.message)
     }
-    
+
     // 3. Delete Workflows
     console.log('   Deleting workflows...')
     const wfData = await apiGet('/workflows')
@@ -771,7 +778,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/workflows/${wf.uid}`)) results.workflows++
       }))
     }
-    
+
     // 4. Delete Labels (children first, then parents)
     console.log('   Deleting labels...')
     try {
@@ -793,7 +800,7 @@ export async function cleanupStack() {
     } catch (e) {
       console.log('   Labels cleanup error:', e.message)
     }
-    
+
     // 5. Delete Releases
     console.log('   Deleting releases...')
     const releasesData = await apiGet('/releases')
@@ -802,7 +809,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/releases/${release.uid}`)) results.releases++
       }))
     }
-    
+
     // 6. Delete Content Types
     console.log('   Deleting content types...')
     const ctData2 = await apiGet('/content_types')
@@ -812,7 +819,7 @@ export async function cleanupStack() {
       }
     }
     await wait(1000)
-    
+
     // 7. Delete Global Fields
     console.log('   Deleting global fields...')
     const gfData = await apiGet('/global_fields')
@@ -821,7 +828,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/global_fields/${gf.uid}?force=true`)) results.globalFields++
       }))
     }
-    
+
     // 8. Delete Assets
     console.log('   Deleting assets...')
     const assetsData = await apiGet('/assets')
@@ -830,7 +837,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/assets/${asset.uid}`)) results.assets++
       }))
     }
-    
+
     // 9. Delete Taxonomies (with force)
     console.log('   Deleting taxonomies...')
     const taxData = await apiGet('/taxonomies')
@@ -839,7 +846,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/taxonomies/${tax.uid}?force=true`)) results.taxonomies++
       }))
     }
-    
+
     // 10. Delete Extensions
     console.log('   Deleting extensions...')
     const extData = await apiGet('/extensions')
@@ -848,7 +855,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/extensions/${ext.uid}`)) results.extensions++
       }))
     }
-    
+
     // 11. Delete Webhooks
     console.log('   Deleting webhooks...')
     const whData = await apiGet('/webhooks')
@@ -860,12 +867,12 @@ export async function cleanupStack() {
           results.webhooks++
           console.log(`      Deleted webhook: ${wh.uid}`)
         }
-        await new Promise(r => setTimeout(r, 500))
+        await new Promise(resolve => setTimeout(resolve, 500))
       }
     } else {
       console.log('      No webhooks found to delete')
     }
-    
+
     // 12. Delete Delivery Tokens
     console.log('   Deleting delivery tokens...')
     const dtData = await apiGet('/stacks/delivery_tokens')
@@ -874,7 +881,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/stacks/delivery_tokens/${token.uid}`)) results.deliveryTokens++
       }))
     }
-    
+
     // 13. Delete Management Tokens (all of them since this is a dynamic stack)
     console.log('   Deleting management tokens...')
     const mtData = await apiGet('/stacks/management_tokens')
@@ -886,7 +893,7 @@ export async function cleanupStack() {
         }
       }))
     }
-    
+
     // 14. Delete custom locales (keep en-us master locale)
     console.log('   Deleting custom locales...')
     const localeData = await apiGet('/locales')
@@ -896,7 +903,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/locales/${locale.code}`)) results.locales++
       }))
     }
-    
+
     // 15. Delete custom environments
     console.log('   Deleting custom environments...')
     const envData = await apiGet('/environments')
@@ -905,7 +912,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/environments/${env.name}`)) results.environments++
       }))
     }
-    
+
     // 16. Delete custom roles (keep default roles)
     console.log('   Deleting custom roles...')
     const roleData = await apiGet('/roles')
@@ -916,7 +923,7 @@ export async function cleanupStack() {
         if (await apiDelete(`/roles/${role.uid}`)) results.roles++
       }))
     }
-    
+
     // 17. Delete branch aliases FIRST (must delete before branches)
     console.log('   Deleting branch aliases...')
     try {
@@ -932,7 +939,7 @@ export async function cleanupStack() {
     } catch (e) {
       console.log('   Branch aliases cleanup error:', e.message)
     }
-    
+
     // 18. Delete branches (keep main - IMPORTANT: max 10 branches allowed)
     console.log('   Deleting branches (except main)...')
     try {
@@ -949,7 +956,7 @@ export async function cleanupStack() {
     } catch (e) {
       console.log('   Branches cleanup error:', e.message)
     }
-    
+
     // Print cleanup summary
     console.log('\n   📊 Cleanup Summary:')
     Object.entries(results).forEach(([resource, count]) => {
@@ -957,24 +964,23 @@ export async function cleanupStack() {
         console.log(`      ${resource}: ${count} deleted`)
       }
     })
-    
   } catch (error) {
     console.error(`   ❌ Cleanup error: ${error.message}`)
   }
-  
+
   console.log(`\n✅ Stack cleanup complete: ${testContext.stackName}`)
 }
 
 /**
  * Logout and invalidate authtoken
  */
-export async function logout() {
+export async function logout () {
   if (!testContext.isLoggedIn || !testContext.authtoken) {
     return
   }
-  
+
   console.log('🚪 Logging out...')
-  
+
   try {
     await testContext.client.logout(testContext.authtoken)
     console.log('✅ Logged out successfully')
@@ -987,7 +993,7 @@ export async function logout() {
 /**
  * Get the Contentstack client (authenticated)
  */
-export function getClient() {
+export function getClient () {
   if (!testContext.client) {
     throw new Error('Client not initialized. Call setup() first.')
   }
@@ -997,7 +1003,7 @@ export function getClient() {
 /**
  * Get the test stack reference
  */
-export function getStack() {
+export function getStack () {
   if (!testContext.stack) {
     throw new Error('Stack not initialized. Call setup() first.')
   }
@@ -1007,20 +1013,20 @@ export function getStack() {
 /**
  * Get test context
  */
-export function getContext() {
+export function getContext () {
   return testContext
 }
 
 /**
  * Full setup - Login, create stack, management token, and personalize project
  */
-export async function setup() {
+export async function setup () {
   // Initialize context from environment at runtime
   testContext.organizationUid = process.env.ORGANIZATION
   testContext.clientId = process.env.CLIENT_ID
   testContext.appId = process.env.APP_ID
   testContext.redirectUri = process.env.REDIRECT_URI
-  
+
   console.log('\n' + '='.repeat(60))
   console.log('🚀 CMA SDK Test Suite - Dynamic Setup')
   console.log('='.repeat(60))
@@ -1029,20 +1035,20 @@ export async function setup() {
   console.log(`Personalize Host: ${process.env.PERSONALIZE_HOST || 'personalize-api.contentstack.com'}`)
   console.log(`Delete Resources After: ${process.env.DELETE_DYNAMIC_RESOURCES !== 'false'}`)
   console.log('='.repeat(60) + '\n')
-  
+
   // Step 1: Initialize client and login
   initializeClient()
   await login()
-  
+
   // Step 2: Create a new test stack dynamically
   await createDynamicStack()
-  
+
   // Step 3: Create a Management Token for the stack
   await createManagementToken()
-  
+
   // Step 4: Create a Personalize Project linked to the stack
   await createPersonalizeProject()
-  
+
   // Update environment variables for backward compatibility with existing tests
   process.env.API_KEY = testContext.stackApiKey
   process.env.AUTHTOKEN = testContext.authtoken
@@ -1052,7 +1058,7 @@ export async function setup() {
   if (testContext.personalizeProjectUid) {
     process.env.PERSONALIZE_PROJECT_UID = testContext.personalizeProjectUid
   }
-  
+
   console.log('\n' + '='.repeat(60))
   console.log('✅ Dynamic Setup Complete - Running Tests')
   console.log('='.repeat(60))
@@ -1060,35 +1066,35 @@ export async function setup() {
   console.log(`   Management Token: ${testContext.managementToken ? 'Created' : 'Not created'}`)
   console.log(`   Personalize Project: ${testContext.personalizeProjectUid || 'Not created'}`)
   console.log('='.repeat(60) + '\n')
-  
+
   return testContext
 }
 
 /**
  * Full teardown - Cleanup resources and conditionally delete stack/personalize project
  */
-export async function teardown() {
+export async function teardown () {
   console.log('\n' + '='.repeat(60))
   console.log('🧹 CMA SDK Test Suite - Cleanup')
   console.log('='.repeat(60) + '\n')
-  
+
   // Check if we should delete the dynamic resources
   const shouldDeleteResources = process.env.DELETE_DYNAMIC_RESOURCES !== 'false'
-  
+
   if (shouldDeleteResources) {
     // Delete the stack (this deletes all resources inside automatically)
     console.log('📦 Deleting dynamically created resources...')
-    
+
     // Delete Personalize Project first (it's linked to the stack)
     if (testContext.isDynamicPersonalizeCreated) {
       await deletePersonalizeProject()
     }
-    
+
     // Delete the test stack
     if (testContext.isDynamicStackCreated) {
       await deleteStack()
     }
-    
+
     // Logout
     await logout()
   } else {
@@ -1106,11 +1112,11 @@ export async function teardown() {
     }
     console.log('')
     console.log('   ⚠️  Remember to manually delete these resources when done debugging!')
-    
+
     // Still logout to revoke the authtoken
     await logout()
   }
-  
+
   console.log('\n' + '='.repeat(60))
   console.log('✅ Cleanup Complete')
   console.log('='.repeat(60) + '\n')
@@ -1119,14 +1125,14 @@ export async function teardown() {
 /**
  * Validate required environment variables
  */
-export function validateEnvironment() {
+export function validateEnvironment () {
   // Only require auth credentials and organization - stack is created dynamically
   const required = ['EMAIL', 'PASSWORD', 'HOST', 'ORGANIZATION']
   const missing = required.filter(key => !process.env[key])
-  
+
   if (missing.length > 0) {
     throw new Error(`Missing required environment variables: ${missing.join(', ')}`)
   }
-  
+
   return true
 }

@@ -1,6 +1,6 @@
 /**
  * Global Field API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Global field CRUD operations
  * - Complex nested schemas
@@ -14,23 +14,21 @@ import path from 'path'
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-
-// Get base path for mock files (works with both ESM and CommonJS after Babel transpilation)
-const mockBasePath = path.resolve(process.cwd(), 'test/sanity-check/mock')
 import {
   seoGlobalField,
   contentBlockGlobalField,
   heroBannerGlobalField,
-  cardGlobalField,
-  globalFieldUpdate
+  cardGlobalField
 } from '../mock/global-fields.js'
 import {
   validateGlobalFieldResponse,
-  generateValidUid,
   testData,
   wait,
   trackedExpect
 } from '../utility/testHelpers.js'
+
+// Get base path for mock files (works with both ESM and CommonJS after Babel transpilation)
+const mockBasePath = path.resolve(process.cwd(), 'test/sanity-check/mock')
 
 describe('Global Field API Tests', () => {
   let client
@@ -72,7 +70,7 @@ describe('Global Field API Tests', () => {
 
       createdGf = gf
       testData.globalFields.seo = gf
-      
+
       // Wait for global field to be fully created
       await wait(5000)
     })
@@ -320,7 +318,6 @@ describe('Global Field API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create global field with duplicate UID', async () => {
       const gfData = {
         global_field: {
@@ -483,7 +480,7 @@ describe('Global Field API Tests', () => {
   describe('Nested Global Fields (api_version 3.2)', () => {
     const baseGfUid = `base_gf_${Date.now()}`
     const nestedGfUid = `ngf_parent_${Date.now()}`
-    
+
     after(async function () {
       this.timeout(60000)
       // NOTE: Deletion removed - nested global fields persist for other tests
@@ -491,7 +488,7 @@ describe('Global Field API Tests', () => {
 
     it('should create base global field for nesting', async function () {
       this.timeout(30000)
-      
+
       const gfData = {
         global_field: {
           title: `Base GF ${Date.now()}`,
@@ -520,18 +517,18 @@ describe('Global Field API Tests', () => {
       }
 
       const response = await stack.globalField({ api_version: '3.2' }).create(gfData)
-      
+
       expect(response).to.be.an('object')
       const gf = response.global_field || response
       expect(gf.uid).to.equal(baseGfUid)
-      
+
       testData.globalFields.baseForNesting = gf
       await wait(2000)
     })
 
     it('should create nested global field referencing base', async function () {
       this.timeout(30000)
-      
+
       const gfData = {
         global_field: {
           title: `Nested Parent ${Date.now()}`,
@@ -561,28 +558,28 @@ describe('Global Field API Tests', () => {
       }
 
       const response = await stack.globalField({ api_version: '3.2' }).create(gfData)
-      
+
       expect(response).to.be.an('object')
       const gf = response.global_field || response
       expect(gf.uid).to.equal(nestedGfUid)
-      
+
       // Validate nested field structure
       const nestedField = gf.schema.find(f => f.data_type === 'global_field')
       expect(nestedField).to.exist
       expect(nestedField.reference_to).to.equal(baseGfUid)
-      
+
       testData.globalFields.nestedParent = gf
       await wait(2000)
     })
 
     it('should fetch nested global field with api_version 3.2', async function () {
       this.timeout(15000)
-      
+
       const response = await stack.globalField(nestedGfUid, { api_version: '3.2' }).fetch()
-      
+
       expect(response).to.be.an('object')
       expect(response.uid).to.equal(nestedGfUid)
-      
+
       // Verify nested field is present
       const nestedField = response.schema.find(f => f.data_type === 'global_field')
       expect(nestedField).to.exist
@@ -590,9 +587,9 @@ describe('Global Field API Tests', () => {
 
     it('should query all nested global fields with api_version 3.2', async function () {
       this.timeout(15000)
-      
+
       const response = await stack.globalField({ api_version: '3.2' }).query().find()
-      
+
       expect(response).to.be.an('object')
       const items = response.items || response.global_fields || []
       expect(items).to.be.an('array')
@@ -601,28 +598,28 @@ describe('Global Field API Tests', () => {
 
     it('should update nested global field', async function () {
       this.timeout(30000)
-      
+
       const gf = await stack.globalField(nestedGfUid, { api_version: '3.2' }).fetch()
       const newTitle = `Updated Nested ${Date.now()}`
-      
+
       gf.title = newTitle
       const response = await gf.update()
-      
+
       expect(response.title).to.equal(newTitle)
     })
 
     it('should validate nested global field schema structure', async function () {
       this.timeout(15000)
-      
+
       const gf = await stack.globalField(nestedGfUid, { api_version: '3.2' }).fetch()
-      
+
       // Should have at least 2 fields: text field + nested global field
       expect(gf.schema.length).to.be.at.least(2)
-      
+
       // Find the nested global_field type
       const globalFieldTypes = gf.schema.filter(f => f.data_type === 'global_field')
       expect(globalFieldTypes.length).to.be.at.least(1)
-      
+
       globalFieldTypes.forEach(field => {
         expect(field.reference_to).to.be.a('string')
         expect(field.reference_to.length).to.be.at.least(1)
@@ -644,9 +641,9 @@ describe('Global Field API Tests', () => {
 
     it('should import global field from JSON file', async function () {
       this.timeout(30000)
-      
+
       const importPath = path.join(mockBasePath, 'globalfield-import.json')
-      
+
       // First, try to delete any existing global field with the same UID
       // The import file has uid: "imported_gf"
       try {
@@ -658,18 +655,18 @@ describe('Global Field API Tests', () => {
       } catch (e) {
         // Global field doesn't exist, which is fine
       }
-      
+
       try {
         const response = await stack.globalField().import({
           global_field: importPath
         })
-        
+
         expect(response).to.be.an('object')
         expect(response.uid).to.be.a('string')
-        
+
         importedGfUid = response.uid
         testData.globalFields.imported = response
-        
+
         await wait(2000)
       } catch (error) {
         // Import might fail for other reasons
@@ -680,14 +677,14 @@ describe('Global Field API Tests', () => {
 
     it('should fetch imported global field', async function () {
       this.timeout(15000)
-      
+
       if (!importedGfUid) {
         this.skip()
         return
       }
-      
+
       const response = await stack.globalField(importedGfUid).fetch()
-      
+
       expect(response).to.be.an('object')
       expect(response.uid).to.equal(importedGfUid)
       expect(response.title).to.equal('Imported Global Field')

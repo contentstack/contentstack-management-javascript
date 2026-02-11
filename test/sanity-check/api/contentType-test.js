@@ -1,6 +1,6 @@
 /**
  * Content Type API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Content type CRUD operations
  * - Complex schema creation (all field types)
@@ -23,10 +23,7 @@ import {
 } from '../mock/content-types/index.js'
 import {
   validateContentTypeResponse,
-  validateErrorResponse,
-  generateValidUid,
   testData,
-  safeDeleteContentType,
   wait,
   trackedExpect
 } from '../utility/testHelpers.js'
@@ -76,7 +73,7 @@ describe('Content Type API Tests', () => {
 
       createdCt = ct
       testData.contentTypes.simple = ct
-      
+
       // Wait for content type to be fully created
       await wait(2000)
     })
@@ -153,7 +150,7 @@ describe('Content Type API Tests', () => {
 
     it('should delete a content type', async function () {
       this.timeout(30000)
-      
+
       // Create a temporary content type specifically for delete testing
       // so we don't delete the simple CT which is needed by downstream tests (workflow, labels, etc.)
       const tempCtUid = `temp_del_ct_${Date.now()}`
@@ -165,7 +162,7 @@ describe('Content Type API Tests', () => {
         }
       })
       await wait(2000)
-      
+
       const ct = await stack.contentType(tempCtUid).fetch()
       const response = await ct.delete()
 
@@ -175,7 +172,7 @@ describe('Content Type API Tests', () => {
 
     it('should return 404 for deleted content type', async function () {
       this.timeout(30000)
-      
+
       // Create and delete a temp CT to test 404 behavior
       const tempCtUid = `temp_404_ct_${Date.now()}`
       await stack.contentType().create({
@@ -186,11 +183,11 @@ describe('Content Type API Tests', () => {
         }
       })
       await wait(2000)
-      
+
       const ct = await stack.contentType(tempCtUid).fetch()
       await ct.delete()
       await wait(2000)
-      
+
       try {
         await stack.contentType(tempCtUid).fetch()
         expect.fail('Should have thrown an error')
@@ -472,7 +469,6 @@ describe('Content Type API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-    
     it('should fail to create content type with duplicate UID', async () => {
       const ctData = JSON.parse(JSON.stringify(simpleContentType))
       ctData.content_type.uid = 'duplicate_test'
@@ -651,20 +647,20 @@ describe('Content Type API Tests', () => {
 
     it('should import content type from JSON file', async function () {
       this.timeout(30000)
-      
+
       const importPath = path.join(mockBasePath, 'contentType-import.json')
-      
+
       try {
         const response = await stack.contentType().import({
           content_type: importPath
         })
-        
+
         expect(response).to.be.an('object')
         expect(response.uid).to.be.a('string')
-        
+
         importedCtUid = response.uid
         testData.contentTypes.imported = response
-        
+
         await wait(2000)
       } catch (error) {
         // Import might fail if content type with same UID exists
@@ -679,18 +675,18 @@ describe('Content Type API Tests', () => {
 
     it('should fetch imported content type', async function () {
       this.timeout(15000)
-      
+
       if (!importedCtUid) {
         this.skip()
         return
       }
-      
+
       const response = await stack.contentType(importedCtUid).fetch()
-      
+
       expect(response).to.be.an('object')
       expect(response.uid).to.equal(importedCtUid)
       expect(response.title).to.equal('Imported Content Type')
-      
+
       // Verify schema was imported correctly
       expect(response.schema).to.be.an('array')
       const titleField = response.schema.find(f => f.uid === 'title')
@@ -700,14 +696,14 @@ describe('Content Type API Tests', () => {
 
     it('should validate imported content type options', async function () {
       this.timeout(15000)
-      
+
       if (!importedCtUid) {
         this.skip()
         return
       }
-      
+
       const response = await stack.contentType(importedCtUid).fetch()
-      
+
       expect(response.options).to.be.an('object')
       expect(response.options.is_page).to.be.true
       expect(response.options.singleton).to.be.false

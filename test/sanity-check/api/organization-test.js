@@ -1,6 +1,6 @@
 /**
  * Organization API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Organization fetch
  * - Organization stacks
@@ -38,7 +38,6 @@ describe('Organization API Tests', () => {
   // ==========================================================================
 
   describe('Organization Fetch', () => {
-
     it('should fetch all organizations', async () => {
       const response = await client.organization().fetchAll()
 
@@ -90,7 +89,6 @@ describe('Organization API Tests', () => {
   // ==========================================================================
 
   describe('Organization Stacks', () => {
-
     it('should get all stacks in organization', async () => {
       if (!organizationUid) {
         console.log('Skipping - no organization available')
@@ -134,7 +132,6 @@ describe('Organization API Tests', () => {
   // ==========================================================================
 
   describe('Organization Users', () => {
-
     it('should get organization users', async () => {
       if (!organizationUid) {
         console.log('Skipping - no organization available')
@@ -156,7 +153,6 @@ describe('Organization API Tests', () => {
   // ==========================================================================
 
   describe('Organization Roles', () => {
-
     it('should get organization roles', async () => {
       if (!organizationUid) {
         console.log('Skipping - no organization available')
@@ -181,7 +177,6 @@ describe('Organization API Tests', () => {
   // ==========================================================================
 
   describe('Organization Teams', () => {
-
     it('should get organization teams', async () => {
       if (!organizationUid) {
         console.log('Skipping - no organization available')
@@ -206,7 +201,6 @@ describe('Organization API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to fetch non-existent organization', async () => {
       try {
         await client.organization('nonexistent_org_12345').fetch()

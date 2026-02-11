@@ -1,6 +1,6 @@
 /**
  * Entry API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Entry CRUD operations with all field types
  * - Complex nested data (groups, modular blocks)
@@ -15,7 +15,6 @@ import { contentstackClient } from '../utility/ContentstackClient.js'
 import { mediumContentType, complexContentType } from '../mock/content-types/index.js'
 import {
   mediumEntry,
-  mediumEntryUpdate,
   complexEntry
 } from '../mock/entries/index.js'
 import { testData, wait, trackedExpect } from '../utility/testHelpers.js'
@@ -27,7 +26,7 @@ describe('Entry API Tests', () => {
   // Content type UIDs created for testing (shorter UIDs to avoid length issues)
   const mediumCtUid = `ent_med_${Date.now().toString().slice(-8)}`
   const complexCtUid = `ent_cplx_${Date.now().toString().slice(-8)}`
-  
+
   // Flags to track successful setup
   let mediumCtReady = false
   let complexCtReady = false
@@ -99,7 +98,7 @@ describe('Entry API Tests', () => {
 
     it('should create entry with all field types', async function () {
       this.timeout(15000)
-      
+
       const entryData = JSON.parse(JSON.stringify(mediumEntry))
       entryData.entry.title = `All Fields ${Date.now()}`
 
@@ -124,14 +123,14 @@ describe('Entry API Tests', () => {
       entryUid = entry.uid
       testData.entries = testData.entries || {}
       testData.entries.medium = entry
-      
+
       await wait(2000)
     })
 
     it('should fetch the created entry', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
       trackedExpect(entry.uid, 'Entry UID').toEqual(entryUid)
@@ -141,7 +140,7 @@ describe('Entry API Tests', () => {
     it('should validate text field', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
       expect(entry.title).to.be.a('string')
@@ -151,7 +150,7 @@ describe('Entry API Tests', () => {
     it('should validate number field', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
       expect(entry.view_count).to.be.a('number')
@@ -161,7 +160,7 @@ describe('Entry API Tests', () => {
     it('should validate boolean field', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
       expect(entry.is_featured).to.be.a('boolean')
@@ -171,7 +170,7 @@ describe('Entry API Tests', () => {
     it('should validate date field', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
       expect(entry.publish_date).to.be.a('string')
@@ -183,7 +182,7 @@ describe('Entry API Tests', () => {
     it('should validate link field', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
       expect(entry.external_link).to.be.an('object')
@@ -195,7 +194,7 @@ describe('Entry API Tests', () => {
     it('should validate select/dropdown field', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
       expect(entry.status).to.be.a('string')
@@ -205,7 +204,7 @@ describe('Entry API Tests', () => {
     it('should validate multiple text (content_tags) field', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
       expect(entry.content_tags).to.be.an('array')
@@ -217,7 +216,7 @@ describe('Entry API Tests', () => {
     it('should update entry with partial data', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
 
       entry.view_count = 5000
@@ -251,22 +250,22 @@ describe('Entry API Tests', () => {
 
     it('should create entry with modular blocks', async function () {
       this.timeout(15000)
-      
+
       const entryData = JSON.parse(JSON.stringify(complexEntry))
       entryData.entry.title = `Complex Entry ${Date.now()}`
 
       // Add asset references if an image asset was created by asset tests
       // File fields require the asset UID as a string value
       const assetUid = testData.assets && testData.assets.image && testData.assets.image.uid
-      
+
       if (assetUid) {
         console.log(`  ✓ Adding asset references with UID: ${assetUid}`)
-        
+
         // Add to SEO group
         if (entryData.entry.seo) {
           entryData.entry.seo.social_image = assetUid
         }
-        
+
         // Add to modular block sections
         if (entryData.entry.sections) {
           entryData.entry.sections.forEach(section => {
@@ -297,14 +296,14 @@ describe('Entry API Tests', () => {
       entryUid = entry.uid
       testData.entries = testData.entries || {}
       testData.entries.complex = entry
-      
+
       await wait(2000)
     })
 
     it('should validate modular block data', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(complexCtUid).entry(entryUid).fetch()
 
       expect(entry.sections).to.be.an('array')
@@ -314,7 +313,7 @@ describe('Entry API Tests', () => {
     it('should validate nested group data (SEO)', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(complexCtUid).entry(entryUid).fetch()
 
       expect(entry.seo).to.be.an('object')
@@ -325,7 +324,7 @@ describe('Entry API Tests', () => {
     it('should validate repeatable group data (links)', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(complexCtUid).entry(entryUid).fetch()
 
       expect(entry.links).to.be.an('array')
@@ -339,7 +338,7 @@ describe('Entry API Tests', () => {
     it('should validate JSON RTE content', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(complexCtUid).entry(entryUid).fetch()
 
       expect(entry.content_json_rte).to.be.an('object')
@@ -350,7 +349,7 @@ describe('Entry API Tests', () => {
     it('should update complex entry', async function () {
       this.timeout(15000)
       if (!entryUid) this.skip()
-      
+
       const entry = await stack.contentType(complexCtUid).entry(entryUid).fetch()
 
       entry.seo.meta_title = 'Updated SEO Title'
@@ -378,7 +377,7 @@ describe('Entry API Tests', () => {
 
     it('should create an entry', async function () {
       this.timeout(15000)
-      
+
       const entryData = {
         entry: {
           title: `CRUD Entry ${Date.now()}`,
@@ -395,14 +394,14 @@ describe('Entry API Tests', () => {
       expect(entry.uid).to.be.a('string')
 
       crudEntryUid = entry.uid
-      
+
       await wait(2000)
     })
 
     it('should fetch entry by UID', async function () {
       this.timeout(15000)
       if (!crudEntryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(crudEntryUid).fetch()
 
       expect(entry.uid).to.equal(crudEntryUid)
@@ -411,7 +410,7 @@ describe('Entry API Tests', () => {
 
     it('should query all entries', async function () {
       this.timeout(15000)
-      
+
       const response = await stack.contentType(mediumCtUid).entry().query().find()
 
       expect(response).to.be.an('object')
@@ -420,7 +419,7 @@ describe('Entry API Tests', () => {
 
     it('should count entries', async function () {
       this.timeout(15000)
-      
+
       const response = await stack.contentType(mediumCtUid).entry().query().count()
 
       expect(response).to.be.an('object')
@@ -430,7 +429,7 @@ describe('Entry API Tests', () => {
     it('should update entry', async function () {
       this.timeout(15000)
       if (!crudEntryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(crudEntryUid).fetch()
 
       entry.title = `Updated CRUD Entry ${Date.now()}`
@@ -446,20 +445,20 @@ describe('Entry API Tests', () => {
     it('should delete entry', async function () {
       this.timeout(15000)
       if (!crudEntryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(crudEntryUid).fetch()
       const response = await entry.delete()
 
       expect(response).to.be.an('object')
       expect(response.notice).to.be.a('string')
-      
+
       crudEntryUid = null // Mark as deleted
     })
 
     it('should return error for deleted entry', async function () {
       this.timeout(15000)
       if (crudEntryUid) this.skip() // Only run if entry was deleted
-      
+
       try {
         await stack.contentType(mediumCtUid).entry('deleted_entry_uid_123').fetch()
         expect.fail('Should have thrown an error')
@@ -489,7 +488,7 @@ describe('Entry API Tests', () => {
 
     it('should create entry with version 1', async function () {
       this.timeout(15000)
-      
+
       const entryData = {
         entry: {
           title: `Version Test ${Date.now()}`,
@@ -501,37 +500,37 @@ describe('Entry API Tests', () => {
       // SDK returns the entry object directly
       const entry = await stack.contentType(mediumCtUid).entry().create(entryData)
       versionEntryUid = entry.uid
-      
+
       expect(entry._version).to.equal(1)
-      
+
       await wait(2000)
     })
 
     it('should increment version on update', async function () {
       this.timeout(15000)
       if (!versionEntryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(versionEntryUid).fetch()
       entry.summary = 'Second version'
       entry.view_count = 2
-      
+
       const response = await entry.update()
-      
+
       expect(response._version).to.equal(2)
-      
+
       await wait(2000)
     })
 
     it('should have version 3 after another update', async function () {
       this.timeout(15000)
       if (!versionEntryUid) this.skip()
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(versionEntryUid).fetch()
       entry.summary = 'Third version'
       entry.view_count = 3
-      
+
       const response = await entry.update()
-      
+
       expect(response._version).to.equal(3)
     })
   })
@@ -544,20 +543,17 @@ describe('Entry API Tests', () => {
 
   describe('DAM 2.0 - Asset Fields Query Parameter', () => {
     let assetFieldsEntryUid
-    let dam20Enabled = false
 
     before(async function () {
       this.timeout(30000)
-      
+
       // Check if DAM 2.0 feature is enabled via env variable
       if (process.env.DAM_2_0_ENABLED !== 'true') {
         console.log('    DAM 2.0 tests skipped: Set DAM_2_0_ENABLED=true in .env to enable')
         this.skip()
         return
       }
-      
-      dam20Enabled = true
-      
+
       if (!mediumCtReady) {
         console.log('    Skipping: Medium content type not available')
         this.skip()
@@ -599,8 +595,8 @@ describe('Entry API Tests', () => {
       if (!assetFieldsEntryUid) this.skip()
 
       const entry = await stack.contentType(mediumCtUid).entry(assetFieldsEntryUid)
-        .fetch({ 
-          asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] 
+        .fetch({
+          asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups']
         })
 
       expect(entry).to.be.an('object')
@@ -612,11 +608,11 @@ describe('Entry API Tests', () => {
       if (!assetFieldsEntryUid) this.skip()
 
       const entry = await stack.contentType(mediumCtUid).entry(assetFieldsEntryUid)
-        .fetch({ 
+        .fetch({
           locale: 'en-us',
           include_workflow: true,
           include_publish_details: true,
-          asset_fields: ['user_defined_fields', 'embedded'] 
+          asset_fields: ['user_defined_fields', 'embedded']
         })
 
       expect(entry).to.be.an('object')
@@ -630,9 +626,9 @@ describe('Entry API Tests', () => {
       if (!mediumCtReady) this.skip()
 
       const response = await stack.contentType(mediumCtUid).entry()
-        .query({ 
-          include_count: true, 
-          asset_fields: ['user_defined_fields'] 
+        .query({
+          include_count: true,
+          asset_fields: ['user_defined_fields']
         })
         .find()
 
@@ -649,9 +645,9 @@ describe('Entry API Tests', () => {
       if (!mediumCtReady) this.skip()
 
       const response = await stack.contentType(mediumCtUid).entry()
-        .query({ 
-          include_count: true, 
-          asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] 
+        .query({
+          include_count: true,
+          asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups']
         })
         .find()
 
@@ -665,7 +661,7 @@ describe('Entry API Tests', () => {
       if (!mediumCtReady) this.skip()
 
       const response = await stack.contentType(mediumCtUid).entry()
-        .query({ 
+        .query({
           include_count: true,
           include_content_type: true,
           locale: 'en-us',
@@ -702,7 +698,7 @@ describe('Entry API Tests', () => {
 
       // Test all four supported values from DAM 2.0
       const allAssetFields = ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups']
-      
+
       const entry = await stack.contentType(mediumCtUid).entry(assetFieldsEntryUid)
         .fetch({ asset_fields: allAssetFields })
 
@@ -726,7 +722,7 @@ describe('Entry API Tests', () => {
 
     it('should fail to create entry without required title', async function () {
       this.timeout(15000)
-      
+
       try {
         await stack.contentType(mediumCtUid).entry().create({
           entry: {
@@ -746,7 +742,7 @@ describe('Entry API Tests', () => {
 
     it('should fail to fetch non-existent entry', async function () {
       this.timeout(15000)
-      
+
       try {
         await stack.contentType(mediumCtUid).entry('nonexistent_uid_12345').fetch()
         expect.fail('Should have thrown an error')
@@ -757,7 +753,7 @@ describe('Entry API Tests', () => {
 
     it('should fail to create entry for non-existent content type', async function () {
       this.timeout(15000)
-      
+
       try {
         await stack.contentType('nonexistent_ct_12345').entry().create({
           entry: {

@@ -1,9 +1,9 @@
 /**
  * Test Helper Utilities
- * 
+ *
  * Provides helper functions for:
  * - Schema validation
- * - Response validation  
+ * - Response validation
  * - Error handling
  * - Test data generation
  * - Cleanup utilities
@@ -23,46 +23,20 @@ import { expect } from 'chai'
 export const globalAssertionStore = {
   assertions: [],
   maxAssertions: 50,
-  
-  clear() {
+
+  clear () {
     this.assertions = []
   },
-  
-  add(assertion) {
+
+  add (assertion) {
     if (this.assertions.length < this.maxAssertions) {
       this.assertions.push(assertion)
     }
   },
-  
-  getData() {
+
+  getData () {
     return [...this.assertions]
   }
-}
-
-/**
- * Format value for report display
- */
-function formatValueCompact(value) {
-  if (value === undefined) return 'undefined'
-  if (value === null) return 'null'
-  if (typeof value === 'string') {
-    return value.length > 80 ? `"${value.substring(0, 80)}..."` : `"${value}"`
-  }
-  if (typeof value === 'number' || typeof value === 'boolean') {
-    return String(value)
-  }
-  if (Array.isArray(value)) {
-    return `Array(${value.length})`
-  }
-  if (typeof value === 'object') {
-    try {
-      const str = JSON.stringify(value)
-      return str.length > 80 ? str.substring(0, 80) + '...' : str
-    } catch (e) {
-      return '[Object]'
-    }
-  }
-  return String(value)
 }
 
 // ============================================================================
@@ -73,17 +47,17 @@ function formatValueCompact(value) {
  * Default delay between dependent API operations (in milliseconds)
  * This helps with slower environments where APIs need time to propagate
  */
-export const API_DELAY = 5000  // 5 seconds
+export const API_DELAY = 5000 // 5 seconds
 
 /**
  * Short delay for quick operations
  */
-export const SHORT_DELAY = 2000  // 2 seconds
+export const SHORT_DELAY = 2000 // 2 seconds
 
 /**
  * Long delay for operations that need more time (like branch creation)
  */
-export const LONG_DELAY = 10000  // 10 seconds
+export const LONG_DELAY = 10000 // 10 seconds
 
 // ============================================================================
 // RESPONSE VALIDATORS
@@ -94,19 +68,19 @@ export const LONG_DELAY = 10000  // 10 seconds
  * @param {Object} response - The API response
  * @param {string} expectedUid - Expected content type UID
  */
-export function validateContentTypeResponse(response, expectedUid = null) {
+export function validateContentTypeResponse (response, expectedUid = null) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.title).to.be.a('string')
   expect(response.schema).to.be.an('array')
-  
+
   if (expectedUid) {
     expect(response.uid).to.equal(expectedUid)
   }
-  
+
   // Validate UID format
   expect(response.uid).to.match(/^[a-z][a-z0-9_]*$/, 'UID should be lowercase with underscores')
-  
+
   // Validate timestamps exist
   if (response.created_at) {
     expect(new Date(response.created_at)).to.be.instanceof(Date)
@@ -121,23 +95,23 @@ export function validateContentTypeResponse(response, expectedUid = null) {
  * @param {Object} response - The API response
  * @param {string} contentTypeUid - Expected content type UID
  */
-export function validateEntryResponse(response, contentTypeUid = null) {
+export function validateEntryResponse (response, contentTypeUid = null) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.title).to.be.a('string')
   expect(response.locale).to.be.a('string')
-  
+
   // Validate UID format (entries have blt prefix)
   expect(response.uid).to.match(/^blt[a-f0-9]+$/, 'Entry UID should have blt prefix')
-  
+
   // Validate required fields
   expect(response._version).to.be.a('number')
-  
+
   // Validate content type if provided
   if (contentTypeUid) {
     expect(response._content_type_uid).to.equal(contentTypeUid)
   }
-  
+
   // Validate timestamps
   expect(response.created_at).to.be.a('string')
   expect(response.updated_at).to.be.a('string')
@@ -149,17 +123,17 @@ export function validateEntryResponse(response, contentTypeUid = null) {
  * Validates that a response has the expected structure for an asset
  * @param {Object} response - The API response
  */
-export function validateAssetResponse(response) {
+export function validateAssetResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.filename).to.be.a('string')
   expect(response.url).to.be.a('string')
   expect(response.content_type).to.be.a('string')
   expect(response.file_size).to.be.a('string')
-  
+
   // Validate UID format
   expect(response.uid).to.match(/^blt[a-f0-9]+$/, 'Asset UID should have blt prefix')
-  
+
   // Validate timestamps
   expect(response.created_at).to.be.a('string')
   expect(response.updated_at).to.be.a('string')
@@ -170,16 +144,16 @@ export function validateAssetResponse(response) {
  * @param {Object} response - The API response
  * @param {string} expectedUid - Expected global field UID
  */
-export function validateGlobalFieldResponse(response, expectedUid = null) {
+export function validateGlobalFieldResponse (response, expectedUid = null) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.title).to.be.a('string')
   expect(response.schema).to.be.an('array')
-  
+
   if (expectedUid) {
     expect(response.uid).to.equal(expectedUid)
   }
-  
+
   // Validate UID format
   expect(response.uid).to.match(/^[a-z][a-z0-9_]*$/, 'UID should be lowercase with underscores')
 }
@@ -188,7 +162,7 @@ export function validateGlobalFieldResponse(response, expectedUid = null) {
  * Validates that a response has the expected structure for a taxonomy
  * @param {Object} response - The API response
  */
-export function validateTaxonomyResponse(response) {
+export function validateTaxonomyResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.name).to.be.a('string')
@@ -198,7 +172,7 @@ export function validateTaxonomyResponse(response) {
  * Validates that a response has the expected structure for a taxonomy term
  * @param {Object} response - The API response
  */
-export function validateTermResponse(response) {
+export function validateTermResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.name).to.be.a('string')
@@ -208,7 +182,7 @@ export function validateTermResponse(response) {
  * Validates that a response has the expected structure for an environment
  * @param {Object} response - The API response
  */
-export function validateEnvironmentResponse(response) {
+export function validateEnvironmentResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.name).to.be.a('string')
@@ -219,7 +193,7 @@ export function validateEnvironmentResponse(response) {
  * Validates that a response has the expected structure for a locale
  * @param {Object} response - The API response
  */
-export function validateLocaleResponse(response) {
+export function validateLocaleResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.code).to.be.a('string')
@@ -230,7 +204,7 @@ export function validateLocaleResponse(response) {
  * Validates that a response has the expected structure for a workflow
  * @param {Object} response - The API response
  */
-export function validateWorkflowResponse(response) {
+export function validateWorkflowResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.name).to.be.a('string')
@@ -242,7 +216,7 @@ export function validateWorkflowResponse(response) {
  * Validates that a response has the expected structure for a webhook
  * @param {Object} response - The API response
  */
-export function validateWebhookResponse(response) {
+export function validateWebhookResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.name).to.be.a('string')
@@ -254,7 +228,7 @@ export function validateWebhookResponse(response) {
  * Validates that a response has the expected structure for a role
  * @param {Object} response - The API response
  */
-export function validateRoleResponse(response) {
+export function validateRoleResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.name).to.be.a('string')
@@ -265,7 +239,7 @@ export function validateRoleResponse(response) {
  * Validates that a response has the expected structure for a release
  * @param {Object} response - The API response
  */
-export function validateReleaseResponse(response) {
+export function validateReleaseResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.name).to.be.a('string')
@@ -275,7 +249,7 @@ export function validateReleaseResponse(response) {
  * Validates that a response has the expected structure for a token
  * @param {Object} response - The API response
  */
-export function validateTokenResponse(response) {
+export function validateTokenResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.name).to.be.a('string')
@@ -286,7 +260,7 @@ export function validateTokenResponse(response) {
  * Validates that a response has the expected structure for a branch
  * @param {Object} response - The API response
  */
-export function validateBranchResponse(response) {
+export function validateBranchResponse (response) {
   expect(response).to.be.an('object')
   expect(response.uid).to.be.a('string')
   expect(response.source).to.be.a('string')
@@ -302,12 +276,12 @@ export function validateBranchResponse(response) {
  * @param {number} expectedStatus - Expected HTTP status code
  * @param {string} expectedCode - Expected error code (optional)
  */
-export function validateErrorResponse(error, expectedStatus, expectedCode = null) {
+export function validateErrorResponse (error, expectedStatus, expectedCode = null) {
   expect(error).to.be.an('object')
   expect(error.status).to.equal(expectedStatus)
   expect(error.errorMessage).to.be.a('string')
   expect(error.errorCode).to.be.a('number')
-  
+
   if (expectedCode) {
     expect(error.errorCode).to.equal(expectedCode)
   }
@@ -317,7 +291,7 @@ export function validateErrorResponse(error, expectedStatus, expectedCode = null
  * Validates a 404 Not Found error
  * @param {Object} error - The error object
  */
-export function validateNotFoundError(error) {
+export function validateNotFoundError (error) {
   validateErrorResponse(error, 404)
 }
 
@@ -325,7 +299,7 @@ export function validateNotFoundError(error) {
  * Validates a 401 Unauthorized error
  * @param {Object} error - The error object
  */
-export function validateUnauthorizedError(error) {
+export function validateUnauthorizedError (error) {
   validateErrorResponse(error, 401)
 }
 
@@ -333,7 +307,7 @@ export function validateUnauthorizedError(error) {
  * Validates a 403 Forbidden error
  * @param {Object} error - The error object
  */
-export function validateForbiddenError(error) {
+export function validateForbiddenError (error) {
   validateErrorResponse(error, 403)
 }
 
@@ -341,7 +315,7 @@ export function validateForbiddenError(error) {
  * Validates a 422 Unprocessable Entity error
  * @param {Object} error - The error object
  */
-export function validateValidationError(error) {
+export function validateValidationError (error) {
   validateErrorResponse(error, 422)
 }
 
@@ -349,7 +323,7 @@ export function validateValidationError(error) {
  * Validates a 409 Conflict error
  * @param {Object} error - The error object
  */
-export function validateConflictError(error) {
+export function validateConflictError (error) {
   validateErrorResponse(error, 409)
 }
 
@@ -361,7 +335,7 @@ export function validateConflictError(error) {
  * Generates a short unique suffix (4-5 chars)
  * @returns {string} Short unique suffix
  */
-export function shortId() {
+export function shortId () {
   return Math.random().toString(36).substring(2, 6)
 }
 
@@ -370,7 +344,7 @@ export function shortId() {
  * @param {string} prefix - Prefix for the identifier
  * @returns {string} Unique identifier (e.g., test_a1b2)
  */
-export function generateUniqueId(prefix = 'test') {
+export function generateUniqueId (prefix = 'test') {
   return `${prefix}_${shortId()}`
 }
 
@@ -379,7 +353,7 @@ export function generateUniqueId(prefix = 'test') {
  * @param {string} base - Base title
  * @returns {string} Unique title
  */
-export function generateUniqueTitle(base = 'Test Entry') {
+export function generateUniqueTitle (base = 'Test Entry') {
   return `${base} ${shortId()}`
 }
 
@@ -388,7 +362,7 @@ export function generateUniqueTitle(base = 'Test Entry') {
  * @param {string} prefix - Prefix for the UID
  * @returns {string} Valid UID (e.g., test_a1b2)
  */
-export function generateValidUid(prefix = 'test') {
+export function generateValidUid (prefix = 'test') {
   return `${prefix}_${shortId()}`.toLowerCase()
 }
 
@@ -396,7 +370,7 @@ export function generateValidUid(prefix = 'test') {
  * Generates a random email address
  * @returns {string} Random email
  */
-export function generateRandomEmail() {
+export function generateRandomEmail () {
   const random = Math.random().toString(36).substring(2, 10)
   return `test_${random}@example.com`
 }
@@ -406,7 +380,7 @@ export function generateRandomEmail() {
  * @param {number} daysFromNow - Number of days from now
  * @returns {string} ISO date string
  */
-export function generateFutureDate(daysFromNow = 7) {
+export function generateFutureDate (daysFromNow = 7) {
   const date = new Date()
   date.setDate(date.getDate() + daysFromNow)
   return date.toISOString()
@@ -417,7 +391,7 @@ export function generateFutureDate(daysFromNow = 7) {
  * @param {number} daysAgo - Number of days ago
  * @returns {string} ISO date string
  */
-export function generatePastDate(daysAgo = 7) {
+export function generatePastDate (daysAgo = 7) {
   const date = new Date()
   date.setDate(date.getDate() - daysAgo)
   return date.toISOString()
@@ -432,7 +406,7 @@ export function generatePastDate(daysAgo = 7) {
  * @param {number} ms - Milliseconds to wait
  * @returns {Promise} Promise that resolves after the delay
  */
-export function wait(ms) {
+export function wait (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
@@ -443,9 +417,9 @@ export function wait(ms) {
  * @param {number} delayMs - Delay between attempts in milliseconds
  * @returns {Promise} Result of the function
  */
-export async function retry(fn, maxAttempts = 3, delayMs = 1000) {
+export async function retry (fn, maxAttempts = 3, delayMs = 1000) {
   let lastError
-  
+
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       return await fn()
@@ -456,7 +430,7 @@ export async function retry(fn, maxAttempts = 3, delayMs = 1000) {
       }
     }
   }
-  
+
   throw lastError
 }
 
@@ -468,7 +442,7 @@ export async function retry(fn, maxAttempts = 3, delayMs = 1000) {
  * Safely deletes an entry (ignores 404 errors)
  * @param {Object} entry - Entry object with delete method
  */
-export async function safeDeleteEntry(entry) {
+export async function safeDeleteEntry (entry) {
   try {
     await entry.delete()
   } catch (error) {
@@ -482,7 +456,7 @@ export async function safeDeleteEntry(entry) {
  * Safely deletes a content type (ignores 404 errors)
  * @param {Object} contentType - Content type object with delete method
  */
-export async function safeDeleteContentType(contentType) {
+export async function safeDeleteContentType (contentType) {
   try {
     await contentType.delete()
   } catch (error) {
@@ -496,7 +470,7 @@ export async function safeDeleteContentType(contentType) {
  * Safely deletes an asset (ignores 404 errors)
  * @param {Object} asset - Asset object with delete method
  */
-export async function safeDeleteAsset(asset) {
+export async function safeDeleteAsset (asset) {
   try {
     await asset.delete()
   } catch (error) {
@@ -515,7 +489,7 @@ export async function safeDeleteAsset(asset) {
  * @param {Array} actual - Actual array
  * @param {Array} expected - Expected array
  */
-export function assertArraysEqual(actual, expected) {
+export function assertArraysEqual (actual, expected) {
   expect(actual).to.have.lengthOf(expected.length)
   expected.forEach(item => {
     expect(actual).to.include(item)
@@ -527,7 +501,7 @@ export function assertArraysEqual(actual, expected) {
  * @param {Object} obj - Object to check
  * @param {Array} keys - Expected keys
  */
-export function assertHasKeys(obj, keys) {
+export function assertHasKeys (obj, keys) {
   keys.forEach(key => {
     expect(obj).to.have.property(key)
   })
@@ -537,7 +511,7 @@ export function assertHasKeys(obj, keys) {
  * Asserts that a value is a valid ISO date string
  * @param {string} value - Value to check
  */
-export function assertValidIsoDate(value) {
+export function assertValidIsoDate (value) {
   expect(value).to.be.a('string')
   const date = new Date(value)
   expect(date.toISOString()).to.equal(value)
@@ -565,9 +539,9 @@ export const testData = {
   tokens: {},
   releases: {},
   branches: {},
-  
+
   // Reset all stored data
-  reset() {
+  reset () {
     this.contentTypes = {}
     this.entries = {}
     this.assets = {}
@@ -643,37 +617,26 @@ export default {
  * @param {Object} error - The error object from SDK
  * @returns {string} - cURL command string
  */
-export function errorToCurl(error) {
+export function errorToCurl (error) {
   try {
     // Extract request info from error
     const request = error.request || error.config || {}
-    
+
     // Get base URL from environment or default
     const host = process.env.HOST || 'https://api.contentstack.io'
-    
+
     // Build URL
     let url = request.url || ''
     if (!url.startsWith('http')) {
       url = `${host}/v3${url.startsWith('/') ? '' : '/'}${url}`
     }
-    
+
     // Start building cURL
     let curl = `curl -X ${(request.method || 'GET').toUpperCase()} '${url}'`
-    
+
     // Add headers
     const headers = request.headers || {}
-    
-    // Common headers to include
-    const headersToCurl = [
-      'Content-Type',
-      'api_key',
-      'authtoken',
-      'authorization',
-      'Accept',
-      'X-User-Agent',
-      'branch'
-    ]
-    
+
     for (const [key, value] of Object.entries(headers)) {
       if (value && typeof value === 'string') {
         // Mask sensitive values
@@ -684,7 +647,7 @@ export function errorToCurl(error) {
         curl += ` \\\n  -H '${key}: ${displayValue}'`
       }
     }
-    
+
     // Add data if present
     const data = request.data
     if (data) {
@@ -693,7 +656,7 @@ export function errorToCurl(error) {
       dataStr = dataStr.replace(/'/g, "'\\''")
       curl += ` \\\n  -d '${dataStr}'`
     }
-    
+
     return curl
   } catch (e) {
     return `# Could not generate cURL: ${e.message}\n# Original error: ${JSON.stringify(error, null, 2)}`
@@ -705,19 +668,19 @@ export function errorToCurl(error) {
  * @param {Object} error - The error object
  * @returns {string} - Formatted error message with cURL
  */
-export function formatErrorWithCurl(error) {
+export function formatErrorWithCurl (error) {
   const curl = errorToCurl(error)
-  
+
   let message = '\n' + '='.repeat(80) + '\n'
   message += '❌ API REQUEST FAILED\n'
   message += '='.repeat(80) + '\n\n'
-  
+
   // Error details
   message += `Status: ${error.status || error.statusCode || 'N/A'}\n`
   message += `Status Text: ${error.statusText || 'N/A'}\n`
   message += `Error Code: ${error.errorCode || 'N/A'}\n`
   message += `Error Message: ${error.errorMessage || error.message || 'N/A'}\n`
-  
+
   // Errors object
   if (error.errors && Object.keys(error.errors).length > 0) {
     message += `\nValidation Errors:\n`
@@ -726,14 +689,14 @@ export function formatErrorWithCurl(error) {
       message += `  - ${field}: ${errorList}\n`
     }
   }
-  
+
   // cURL
   message += '\n' + '-'.repeat(40) + '\n'
   message += '📋 cURL Command (copy-paste ready):\n'
   message += '-'.repeat(40) + '\n\n'
   message += curl + '\n'
   message += '\n' + '='.repeat(80) + '\n'
-  
+
   return message
 }
 
@@ -742,15 +705,15 @@ export function formatErrorWithCurl(error) {
  * Use this to wrap your test functions
  * @param {Function} testFn - The async test function
  * @returns {Function} - Wrapped test function
- * 
+ *
  * @example
  * it('should create entry', createTestWrapper(async () => {
  *   const response = await stack.contentType('blog').entry().create(data)
  *   expect(response.uid).to.exist
  * }))
  */
-export function createTestWrapper(testFn) {
-  return async function() {
+export function createTestWrapper (testFn) {
+  return async function () {
     try {
       await testFn.call(this)
     } catch (error) {
@@ -758,7 +721,7 @@ export function createTestWrapper(testFn) {
       if (error.request || error.config || error.status) {
         const formattedError = formatErrorWithCurl(error)
         console.error(formattedError)
-        
+
         // Create enhanced error with cURL info
         const enhancedError = new Error(
           `${error.errorMessage || error.message}\n\ncURL:\n${errorToCurl(error)}`
@@ -782,14 +745,14 @@ export function createTestWrapper(testFn) {
  */
 export const assertionTracker = {
   assertions: [],
-  
+
   /**
    * Clear all tracked assertions (call at start of each test)
    */
-  clear() {
+  clear () {
     this.assertions = []
   },
-  
+
   /**
    * Add an assertion record
    * @param {string} description - What is being asserted
@@ -797,7 +760,7 @@ export const assertionTracker = {
    * @param {*} actual - Actual value
    * @param {boolean} passed - Whether the assertion passed
    */
-  add(description, expected, actual, passed) {
+  add (description, expected, actual, passed) {
     this.assertions.push({
       description,
       expected: formatValue(expected),
@@ -805,23 +768,23 @@ export const assertionTracker = {
       passed
     })
   },
-  
+
   /**
    * Get all assertions as formatted string for reports
    */
-  getReport() {
+  getReport () {
     if (this.assertions.length === 0) return ''
-    
+
     return this.assertions.map((a, i) => {
       const status = a.passed ? '✓' : '✗'
       return `${status} ${a.description}\n   Expected: ${a.expected}\n   Actual: ${a.actual}`
     }).join('\n\n')
   },
-  
+
   /**
    * Get assertions as structured data
    */
-  getData() {
+  getData () {
     return [...this.assertions]
   }
 }
@@ -831,7 +794,7 @@ export const assertionTracker = {
  * @param {*} value - Value to format
  * @returns {string} - Formatted string
  */
-function formatValue(value) {
+function formatValue (value) {
   if (value === undefined) return 'undefined'
   if (value === null) return 'null'
   if (typeof value === 'string') return `"${value.length > 100 ? value.substring(0, 100) + '...' : value}"`
@@ -849,18 +812,18 @@ function formatValue(value) {
 /**
  * Track an assertion and add to report
  * Use this to wrap important assertions you want to see in reports
- * 
+ *
  * @param {string} description - Description of what's being asserted
  * @param {*} actual - The actual value
  * @param {*} expected - The expected value
  * @param {Function} assertFn - The assertion function to execute
- * 
+ *
  * @example
  * trackAssertion('Response should have uid', response.uid, 'string', () => {
  *   expect(response.uid).to.be.a('string')
  * })
  */
-export function trackAssertion(description, actual, expected, assertFn) {
+export function trackAssertion (description, actual, expected, assertFn) {
   try {
     assertFn()
     assertionTracker.add(description, expected, actual, true)
@@ -873,22 +836,22 @@ export function trackAssertion(description, actual, expected, assertFn) {
 /**
  * Tracked assertion helper - tracks and logs assertions for reports
  * Use this instead of expect() for important assertions you want visible in reports
- * 
+ *
  * @param {*} actual - The actual value to test
  * @param {string} description - Description for the assertion
  * @returns {Object} - Object with assertion methods
- * 
+ *
  * @example
  * trackedExpect(response.uid, 'User UID').toBeA('string')
  * trackedExpect(response.email, 'User email').toEqual(expectedEmail)
  * trackedExpect(response.status, 'HTTP Status').toEqual(200)
  */
-export function trackedExpect(actual, description = '') {
+export function trackedExpect (actual, description = '') {
   return {
     /**
      * Assert value equals expected
      */
-    toEqual(expected) {
+    toEqual (expected) {
       try {
         expect(actual).to.equal(expected)
         assertionTracker.add(description || 'Equal check', expected, actual, true)
@@ -898,11 +861,11 @@ export function trackedExpect(actual, description = '') {
       }
       return this
     },
-    
+
     /**
      * Assert value deep equals expected
      */
-    toDeepEqual(expected) {
+    toDeepEqual (expected) {
       try {
         expect(actual).to.eql(expected)
         assertionTracker.add(description || 'Deep equal check', expected, actual, true)
@@ -912,11 +875,11 @@ export function trackedExpect(actual, description = '') {
       }
       return this
     },
-    
+
     /**
      * Assert value is of type
      */
-    toBeA(type) {
+    toBeA (type) {
       try {
         expect(actual).to.be.a(type)
         assertionTracker.add(description || 'Type check', `a ${type}`, formatValue(actual), true)
@@ -926,18 +889,18 @@ export function trackedExpect(actual, description = '') {
       }
       return this
     },
-    
+
     /**
      * Alias for toBeA
      */
-    toBeAn(type) {
+    toBeAn (type) {
       return this.toBeA(type)
     },
-    
+
     /**
      * Assert value exists (not null/undefined)
      */
-    toExist() {
+    toExist () {
       try {
         expect(actual).to.exist
         assertionTracker.add(description || 'Exists check', 'exists', formatValue(actual), true)
@@ -947,11 +910,11 @@ export function trackedExpect(actual, description = '') {
       }
       return this
     },
-    
+
     /**
      * Assert value is truthy
      */
-    toBeTruthy() {
+    toBeTruthy () {
       try {
         expect(actual).to.be.ok
         assertionTracker.add(description || 'Truthy check', 'truthy', formatValue(actual), true)
@@ -961,11 +924,11 @@ export function trackedExpect(actual, description = '') {
       }
       return this
     },
-    
+
     /**
      * Assert array includes value
      */
-    toInclude(value) {
+    toInclude (value) {
       try {
         expect(actual).to.include(value)
         assertionTracker.add(description || 'Include check', `includes ${formatValue(value)}`, formatValue(actual), true)
@@ -975,11 +938,11 @@ export function trackedExpect(actual, description = '') {
       }
       return this
     },
-    
+
     /**
      * Assert value matches regex
      */
-    toMatch(regex) {
+    toMatch (regex) {
       try {
         expect(actual).to.match(regex)
         assertionTracker.add(description || 'Regex match', `matches ${regex}`, formatValue(actual), true)
@@ -989,11 +952,11 @@ export function trackedExpect(actual, description = '') {
       }
       return this
     },
-    
+
     /**
      * Assert value is at least (>=)
      */
-    toBeAtLeast(expected) {
+    toBeAtLeast (expected) {
       try {
         expect(actual).to.be.at.least(expected)
         assertionTracker.add(description || 'At least check', `>= ${expected}`, actual, true)

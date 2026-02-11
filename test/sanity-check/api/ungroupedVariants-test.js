@@ -1,6 +1,6 @@
 /**
  * Ungrouped Variants (Personalize) API Tests
- * 
+ *
  * Tests stack.variants() - for ungrouped/personalize variants
  * SDK Methods: create, query, fetch, fetchByUIDs, delete
  * NOTE: There is NO update method for ungrouped variants in the SDK
@@ -9,16 +9,16 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { generateUniqueId, wait, testData, trackedExpect } from '../utility/testHelpers.js'
+import { wait, testData, trackedExpect } from '../utility/testHelpers.js'
 
 let client = null
 let stack = null
 let variantUid = null
-let createdVariantName = null  // Store actual created name
+let createdVariantName = null // Store actual created name
 let featureEnabled = true
 
 // Mock data - UID/name generated fresh each run
-function getCreateVariantData() {
+function getCreateVariantData () {
   const id = Math.random().toString(36).substring(2, 6)
   return {
     uid: `ugv_${id}`,
@@ -37,7 +37,7 @@ describe('Ungrouped Variants (Personalize) API Tests', () => {
     this.timeout(30000)
     client = contentstackClient()
     stack = client.stack({ api_key: process.env.API_KEY })
-    
+
     // Feature detection - check if Personalize/Variants feature is enabled
     try {
       await stack.variants().query().find()
@@ -62,24 +62,24 @@ describe('Ungrouped Variants (Personalize) API Tests', () => {
     it('should create an ungrouped variant', async function () {
       this.timeout(15000)
 
-      // Skip check at beginning only  
+      // Skip check at beginning only
       if (!featureEnabled) {
         this.skip()
         return
       }
 
       const createVariant = getCreateVariantData()
-      
+
       const response = await stack.variants().create(createVariant)
-      
+
       trackedExpect(response, 'Ungrouped variant').toBeAn('object')
       trackedExpect(response.uid, 'Ungrouped variant UID').toExist()
       trackedExpect(response.name, 'Ungrouped variant name').toEqual(createVariant.name)
-      
+
       variantUid = response.uid
-      createdVariantName = response.name  // Store actual name
+      createdVariantName = response.name // Store actual name
       testData.ungroupedVariantUid = response.uid
-      
+
       await wait(1000)
     })
 
@@ -92,10 +92,10 @@ describe('Ungrouped Variants (Personalize) API Tests', () => {
       }
 
       const response = await stack.variants().query().find()
-      
+
       trackedExpect(response, 'Ungrouped variants query response').toBeAn('object')
       trackedExpect(response.items, 'Ungrouped variants list').toBeAn('array')
-      
+
       response.items.forEach(variant => {
         expect(variant.uid).to.not.equal(null)
         expect(variant.name).to.not.equal(null)
@@ -104,7 +104,7 @@ describe('Ungrouped Variants (Personalize) API Tests', () => {
 
     it('should query ungrouped variants by name', async function () {
       this.timeout(15000)
-      
+
       if (!variantUid || !featureEnabled || !createdVariantName) {
         this.skip()
         return
@@ -113,9 +113,9 @@ describe('Ungrouped Variants (Personalize) API Tests', () => {
       const response = await stack.variants()
         .query({ query: { name: createdVariantName } })
         .find()
-      
+
       expect(response.items).to.be.an('array')
-      
+
       // Find our created variant by UID (not just first result)
       const foundVariant = response.items.find(v => v.uid === variantUid)
       if (foundVariant) {
@@ -128,28 +128,28 @@ describe('Ungrouped Variants (Personalize) API Tests', () => {
 
     it('should fetch ungrouped variant by UID', async function () {
       this.timeout(15000)
-      
+
       if (!variantUid || !featureEnabled) {
         this.skip()
         return
       }
 
       const response = await stack.variants(variantUid).fetch()
-      
+
       expect(response.uid).to.equal(variantUid)
       expect(response.name).to.not.equal(null)
     })
 
     it('should fetch variants by array of UIDs', async function () {
       this.timeout(15000)
-      
+
       if (!variantUid || !featureEnabled) {
         this.skip()
         return
       }
 
       const response = await stack.variants().fetchByUIDs([variantUid])
-      
+
       expect(response).to.be.an('object')
       // Response should contain the variant(s)
       const variants = response.variants || response.items || []
@@ -181,11 +181,11 @@ describe('Ungrouped Variants (Personalize) API Tests', () => {
 
       const tempVariant = await stack.variants().create(tempVariantData)
       expect(tempVariant.uid).to.be.a('string')
-      
+
       await wait(1000)
-      
+
       const response = await stack.variants(tempVariant.uid).delete()
-      
+
       expect(response).to.be.an('object')
     })
   })

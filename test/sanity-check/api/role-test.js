@@ -1,6 +1,6 @@
 /**
  * Role API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Role CRUD operations
  * - Complex permission rules
@@ -12,8 +12,7 @@ import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import {
   basicRole,
-  advancedRole,
-  roleUpdate
+  advancedRole
 } from '../mock/configurations.js'
 import { validateRoleResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
@@ -27,7 +26,7 @@ describe('Role API Tests', () => {
   })
 
   // Helper to fetch role by UID (since stack.role(uid).fetch() doesn't exist)
-  async function fetchRoleByUid(roleUid) {
+  async function fetchRoleByUid (roleUid) {
     const response = await stack.role().fetchAll({ include_rules: true, include_permissions: true })
     const items = response.items || response.roles
     const role = items.find(r => r.uid === roleUid)
@@ -37,17 +36,6 @@ describe('Role API Tests', () => {
       throw error
     }
     return role
-  }
-
-  // Helper to delete role by UID
-  async function deleteRoleByUid(roleUid) {
-    const role = await fetchRoleByUid(roleUid)
-    // The role object from fetchAll should have delete method
-    if (role.delete) {
-      return await role.delete()
-    }
-    // If not, use the stack.role(uid) pattern for deletion
-    return await stack.role(roleUid).delete()
   }
 
   // Base branch rule required for all roles
@@ -77,7 +65,7 @@ describe('Role API Tests', () => {
 
       trackedExpect(response, 'Role').toBeAn('object')
       trackedExpect(response.uid, 'Role UID').toBeA('string')
-      
+
       validateRoleResponse(response)
 
       trackedExpect(response.name, 'Role name').toInclude('Content Editor')
@@ -85,7 +73,7 @@ describe('Role API Tests', () => {
 
       createdRoleUid = response.uid
       testData.roles.basic = response
-      
+
       // Wait for role to be fully created
       await wait(2000)
     })
@@ -177,16 +165,16 @@ describe('Role API Tests', () => {
       roleData.role.name = `Senior Editor ${Date.now()}`
 
       const response = await stack.role().create(roleData)
-      
+
       expect(response).to.be.an('object')
       expect(response.uid).to.be.a('string')
-      
+
       validateRoleResponse(response)
       expect(response.rules.length).to.be.at.least(3)
 
       advancedRoleUid = response.uid
       testData.roles.advanced = response
-      
+
       await wait(2000)
     })
 
@@ -271,7 +259,7 @@ describe('Role API Tests', () => {
 
       expect(response).to.be.an('object')
       expect(response.uid).to.be.a('string')
-      
+
       validateRoleResponse(response)
 
       // Verify read-only permissions
@@ -279,7 +267,7 @@ describe('Role API Tests', () => {
       expect(ctRule.acl.read).to.be.true
 
       permissionRoleUid = response.uid
-      
+
       await wait(2000)
     })
 
@@ -312,8 +300,6 @@ describe('Role API Tests', () => {
   // ==========================================================================
 
   describe('Content Type Specific Permissions', () => {
-    let ctSpecificRoleUid
-
     after(async () => {
       // NOTE: Deletion removed - roles persist for other tests
     })
@@ -339,17 +325,15 @@ describe('Role API Tests', () => {
       }
 
       const response = await stack.role().create(roleData)
-      
+
       expect(response).to.be.an('object')
       expect(response.uid).to.be.a('string')
-      
+
       validateRoleResponse(response)
 
       const ctRule = response.rules.find(r => r.module === 'content_type')
       expect(ctRule).to.exist
 
-      ctSpecificRoleUid = response.uid
-      
       await wait(2000)
     })
   })
@@ -359,7 +343,6 @@ describe('Role API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create role without name', async () => {
       const roleData = {
         role: {
@@ -434,7 +417,6 @@ describe('Role API Tests', () => {
   // ==========================================================================
 
   describe('Delete Role', () => {
-
     it('should delete a custom role', async function () {
       this.timeout(30000)
       // Create temp role
@@ -454,9 +436,9 @@ describe('Role API Tests', () => {
 
       const response = await stack.role().create(roleData)
       expect(response.uid).to.be.a('string')
-      
+
       await wait(1000)
-      
+
       const role = await fetchRoleByUid(response.uid)
       const deleteResponse = await role.delete()
 
@@ -476,9 +458,9 @@ describe('Role API Tests', () => {
 
       const response = await stack.role().create(roleData)
       const roleUid = response.uid
-      
+
       await wait(1000)
-      
+
       const role = await fetchRoleByUid(roleUid)
       await role.delete()
 

@@ -1,11 +1,11 @@
 /**
  * Variant Group API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Variant Group CRUD operations
  * - Content type linking
  * - Error handling
- * 
+ *
  * NOTE: Variant Groups feature must be enabled for the stack.
  * Tests will be skipped if the feature is not available.
  */
@@ -32,7 +32,7 @@ describe('Variant Group API Tests', () => {
   })
 
   // Helper to fetch variant group by UID
-  async function fetchVariantGroupByUid(uid) {
+  async function fetchVariantGroupByUid (uid) {
     const response = await stack.variantGroup().query().find()
     const items = response.items || response.variant_groups || []
     const group = items.find(g => g.uid === uid)
@@ -45,7 +45,6 @@ describe('Variant Group API Tests', () => {
   }
 
   describe('Variant Group CRUD Operations', () => {
-    
     it('should create a variant group', async function () {
       this.timeout(30000)
 
@@ -58,18 +57,18 @@ describe('Variant Group API Tests', () => {
 
       try {
         const response = await stack.variantGroup().create(createData)
-        
+
         trackedExpect(response, 'Variant group').toBeAn('object')
         trackedExpect(response.uid, 'Variant group UID').toBeA('string')
         trackedExpect(response.name, 'Variant group name').toInclude('Test Variant Group')
-        
+
         variantGroupUid = response.uid
         testData.variantGroupUid = response.uid
-        
+
         await wait(1000)
       } catch (error) {
         // Variant groups might not be enabled for this stack
-        if (error.status === 403 || error.errorCode === 403 || 
+        if (error.status === 403 || error.errorCode === 403 ||
             (error.errorMessage && error.errorMessage.includes('not enabled'))) {
           console.log('Variant Groups feature not enabled for this stack')
           featureEnabled = false
@@ -90,11 +89,11 @@ describe('Variant Group API Tests', () => {
 
       try {
         const response = await stack.variantGroup().query().find()
-        
+
         trackedExpect(response, 'Variant groups query response').toBeAn('object')
         const items = response.items || response.variant_groups || []
         trackedExpect(items, 'Variant groups list').toBeAn('array')
-        
+
         items.forEach(variantGroup => {
           expect(variantGroup.name).to.not.equal(null)
           expect(variantGroup.uid).to.not.equal(null)
@@ -111,7 +110,7 @@ describe('Variant Group API Tests', () => {
 
     it('should query variant group by name', async function () {
       this.timeout(15000)
-      
+
       if (!variantGroupUid || !featureEnabled) {
         this.skip()
         return
@@ -122,7 +121,7 @@ describe('Variant Group API Tests', () => {
         const response = await stack.variantGroup()
           .query({ query: { name: group.name } })
           .find()
-        
+
         expect(response).to.be.an('object')
         const items = response.items || response.variant_groups || []
         expect(items).to.be.an('array')
@@ -138,7 +137,7 @@ describe('Variant Group API Tests', () => {
 
     it('should fetch a single variant group by UID', async function () {
       this.timeout(15000)
-      
+
       if (!variantGroupUid || !featureEnabled) {
         this.skip()
         return
@@ -146,7 +145,7 @@ describe('Variant Group API Tests', () => {
 
       try {
         const group = await fetchVariantGroupByUid(variantGroupUid)
-        
+
         expect(group.uid).to.equal(variantGroupUid)
         expect(group.name).to.not.equal(null)
       } catch (error) {
@@ -160,7 +159,7 @@ describe('Variant Group API Tests', () => {
 
     it('should update a variant group', async function () {
       this.timeout(15000)
-      
+
       if (!variantGroupUid || !featureEnabled) {
         this.skip()
         return
@@ -171,13 +170,13 @@ describe('Variant Group API Tests', () => {
 
       try {
         const group = await fetchVariantGroupByUid(variantGroupUid)
-        
+
         // SDK update() takes data object as parameter
         const response = await group.update({
           name: newName,
           description: newDescription
         })
-        
+
         expect(response).to.be.an('object')
         // Response might be nested or direct
         const updatedGroup = response.variant_group || response
@@ -198,11 +197,11 @@ describe('Variant Group API Tests', () => {
 
     before(async function () {
       this.timeout(15000)
-      
+
       if (!featureEnabled) {
         return
       }
-      
+
       // Get a content type for linking
       try {
         const contentTypes = await stack.contentType().query().find()
@@ -217,7 +216,7 @@ describe('Variant Group API Tests', () => {
 
     it('should link content type to variant group', async function () {
       this.timeout(15000)
-      
+
       if (!variantGroupUid || !contentTypeUid || !featureEnabled) {
         this.skip()
         return
@@ -225,13 +224,13 @@ describe('Variant Group API Tests', () => {
 
       try {
         const group = await fetchVariantGroupByUid(variantGroupUid)
-        
+
         // Per CMA API docs, content_types must be array of objects with uid AND status properties
         // See: https://www.contentstack.com/docs/developers/apis/content-management-api#link-content-types
         const response = await group.update({
           content_types: [{ uid: contentTypeUid, status: 'linked' }]
         })
-        
+
         const updatedGroup = response.variant_group || response
         expect(updatedGroup.uid).to.equal(variantGroupUid)
       } catch (error) {
@@ -249,7 +248,7 @@ describe('Variant Group API Tests', () => {
   describe('Variant Group Deletion', () => {
     it('should delete variant group', async function () {
       this.timeout(30000)
-      
+
       if (!featureEnabled) {
         this.skip()
         return
@@ -267,12 +266,12 @@ describe('Variant Group API Tests', () => {
       try {
         const tempGroup = await stack.variantGroup().create(tempGroupData)
         expect(tempGroup.uid).to.be.a('string')
-        
+
         await wait(1000)
-        
+
         const groupToDelete = await fetchVariantGroupByUid(tempGroup.uid)
         const response = await groupToDelete.delete()
-        
+
         expect(response).to.be.an('object')
       } catch (error) {
         if (error.status === 403) {

@@ -1,6 +1,6 @@
 /**
  * Workflow API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Workflow CRUD operations
  * - Workflow stages
@@ -13,9 +13,7 @@ import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import {
   simpleWorkflow,
-  complexWorkflow,
-  workflowUpdate,
-  publishRule
+  complexWorkflow
 } from '../mock/configurations.js'
 import { validateWorkflowResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
@@ -41,13 +39,13 @@ describe('Workflow API Tests', () => {
 
     it('should create a simple workflow', async function () {
       this.timeout(30000)
-      
+
       // Use an existing content type from testData (simpler approach)
       const ctUid = testData.contentTypes?.simple?.uid || testData.contentTypes?.medium?.uid
       if (!ctUid) {
         this.skip()
       }
-      
+
       const workflowData = JSON.parse(JSON.stringify(simpleWorkflow))
       workflowData.workflow.name = `Simple Workflow ${Date.now()}`
       // Use existing content type instead of '$all' to avoid conflicts
@@ -66,7 +64,7 @@ describe('Workflow API Tests', () => {
 
       createdWorkflowUid = response.uid
       testData.workflows.simple = response
-      
+
       // Wait for workflow to be fully created
       await wait(2000)
     })
@@ -139,13 +137,13 @@ describe('Workflow API Tests', () => {
 
     it('should create complex workflow with multiple stages', async function () {
       this.timeout(30000)
-      
+
       // Use an existing content type from testData (simpler approach)
       const ctUid = testData.contentTypes?.medium?.uid || testData.contentTypes?.simple?.uid
       if (!ctUid) {
         this.skip()
       }
-      
+
       const workflowData = JSON.parse(JSON.stringify(complexWorkflow))
       workflowData.workflow.name = `Complex Workflow ${Date.now()}`
       // Use existing content type instead of '$all' to avoid conflicts
@@ -167,7 +165,7 @@ describe('Workflow API Tests', () => {
         this.skip()
         return
       }
-      
+
       const workflow = await stack.workflow(complexWorkflowUid).fetch()
 
       workflow.workflow_stages.forEach(stage => {
@@ -181,7 +179,7 @@ describe('Workflow API Tests', () => {
         this.skip()
         return
       }
-      
+
       const workflow = await stack.workflow(complexWorkflowUid).fetch()
       const initialStageCount = workflow.workflow_stages.length
 
@@ -207,12 +205,11 @@ describe('Workflow API Tests', () => {
 
   describe('Publish Rules', () => {
     let workflowForRulesUid
-    let publishRuleUid
     let ruleEnvironment = null
 
     before(async function () {
       this.timeout(60000)
-      
+
       // Get environment name from testData or query
       if (testData.environments && testData.environments.development) {
         ruleEnvironment = testData.environments.development.name
@@ -229,7 +226,7 @@ describe('Workflow API Tests', () => {
           console.log('Could not fetch environments:', e.message)
         }
       }
-      
+
       // If no environment exists, create a temporary one for publish rules
       if (!ruleEnvironment) {
         try {
@@ -247,7 +244,7 @@ describe('Workflow API Tests', () => {
           console.log('Could not create environment for publish rules:', e.message)
         }
       }
-      
+
       // Try to use existing workflow from testData instead of creating new one
       // This avoids "Workflow already exists for all content types" error
       if (testData.workflows && testData.workflows.simple && testData.workflows.simple.uid) {
@@ -255,13 +252,13 @@ describe('Workflow API Tests', () => {
         console.log(`Publish Rules using existing workflow: ${workflowForRulesUid}`)
         return
       }
-      
+
       // Create a workflow for publish rules testing
       // Use empty content_types array to avoid conflict with existing workflows
       const workflowData = {
         workflow: {
           name: `Publish Rules Workflow ${Date.now()}`,
-          content_types: [],  // Empty array to avoid $all conflict
+          content_types: [], // Empty array to avoid $all conflict
           branches: ['main'],
           enabled: true,
           workflow_stages: [
@@ -313,13 +310,13 @@ describe('Workflow API Tests', () => {
         this.skip()
         return
       }
-      
+
       if (!workflowForRulesUid) {
         console.log('Skipping - no workflow available for publish rule')
         this.skip()
         return
       }
-      
+
       try {
         const ruleData = {
           publishing_rule: {
@@ -337,10 +334,8 @@ describe('Workflow API Tests', () => {
 
         expect(response).to.be.an('object')
         if (response.publishing_rule) {
-          publishRuleUid = response.publishing_rule.uid
           testData.workflows.publishRule = response.publishing_rule
         } else if (response.uid) {
-          publishRuleUid = response.uid
           testData.workflows.publishRule = response
         }
       } catch (error) {
@@ -367,7 +362,6 @@ describe('Workflow API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create workflow without name', async () => {
       const workflowData = {
         workflow: {
@@ -413,10 +407,9 @@ describe('Workflow API Tests', () => {
   // ==========================================================================
 
   describe('Delete Workflow', () => {
-
     it('should delete a workflow', async function () {
       this.timeout(60000)
-      
+
       // Create a unique temp content type for this workflow delete test
       // to avoid "Workflow already exists for the following content type(s)" error
       const tempCtUid = `wf_del_ct_${Date.now()}`
@@ -434,12 +427,12 @@ describe('Workflow API Tests', () => {
         console.log('Failed to create temp CT for workflow delete:', e.message)
         this.skip()
       }
-      
+
       // Create a temp workflow with minimum 2 stages and at least 1 content type (API requirement)
       const workflowData = {
         workflow: {
           name: `Temp Delete Workflow ${Date.now()}`,
-          content_types: [tempCtUid],  // Use the newly created temp content type
+          content_types: [tempCtUid], // Use the newly created temp content type
           branches: ['main'],
           enabled: false,
           workflow_stages: [
@@ -468,15 +461,15 @@ describe('Workflow API Tests', () => {
 
       // SDK returns the workflow object directly
       const createdWorkflow = await stack.workflow().create(workflowData)
-      
+
       await wait(1000)
-      
+
       const workflow = await stack.workflow(createdWorkflow.uid).fetch()
       const deleteResponse = await workflow.delete()
 
       expect(deleteResponse).to.be.an('object')
       expect(deleteResponse.notice).to.be.a('string')
-      
+
       // Cleanup the temp content type
       try {
         await stack.contentType(tempCtUid).delete()

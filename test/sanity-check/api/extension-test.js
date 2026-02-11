@@ -16,12 +16,8 @@ let stack = null
 
 // Extension UIDs for cleanup
 let customFieldUrlUid = null
-let customFieldSrcUid = null
 let customWidgetUrlUid = null
-let customWidgetSrcUid = null
 let customDashboardUrlUid = null
-let customDashboardSrcUid = null
-let customFieldUploadUid = null
 
 // Mock extension data
 const customFieldURL = {
@@ -108,10 +104,10 @@ describe('Extensions API Tests', () => {
       this.timeout(15000)
 
       const response = await stack.extension().create(customFieldURL)
-      
+
       customFieldUrlUid = response.uid
       testData.extensionUid = response.uid
-      
+
       trackedExpect(response, 'Extension').toBeAn('object')
       trackedExpect(response.uid, 'Extension UID').toExist()
       trackedExpect(response.uid, 'Extension UID type').toBeA('string')
@@ -125,9 +121,9 @@ describe('Extensions API Tests', () => {
 
       try {
         const response = await stack.extension().create(customFieldSRC)
-        
-        customFieldSrcUid = response.uid
-        
+
+        void response.uid
+
         expect(response.uid).to.not.equal(null)
         expect(response.title).to.equal(customFieldSRC.extension.title)
         expect(response.type).to.equal('field')
@@ -139,13 +135,13 @@ describe('Extensions API Tests', () => {
 
     it('should fetch custom field by UID', async function () {
       this.timeout(15000)
-      
+
       if (!customFieldUrlUid) {
         this.skip()
       }
 
       const response = await stack.extension(customFieldUrlUid).fetch()
-      
+
       trackedExpect(response, 'Extension').toBeAn('object')
       trackedExpect(response.uid, 'Extension UID').toEqual(customFieldUrlUid)
       trackedExpect(response.title, 'Extension title').toEqual(customFieldURL.extension.title)
@@ -154,16 +150,16 @@ describe('Extensions API Tests', () => {
 
     it('should update custom field', async function () {
       this.timeout(15000)
-      
+
       if (!customFieldUrlUid) {
         this.skip()
       }
 
       const extension = await stack.extension(customFieldUrlUid).fetch()
       extension.title = `Updated Custom Field ${generateUniqueId()}`
-      
+
       const response = await extension.update()
-      
+
       expect(response.uid).to.equal(customFieldUrlUid)
       expect(response.title).to.include('Updated Custom Field')
     })
@@ -174,9 +170,9 @@ describe('Extensions API Tests', () => {
       const response = await stack.extension()
         .query({ query: { type: 'field' } })
         .find()
-      
+
       expect(response.items).to.be.an('array')
-      
+
       response.items.forEach(extension => {
         expect(extension.uid).to.not.equal(null)
         expect(extension.type).to.equal('field')
@@ -190,9 +186,9 @@ describe('Extensions API Tests', () => {
 
       try {
         const response = await stack.extension().create(customWidgetURL)
-        
+
         customWidgetUrlUid = response.uid
-        
+
         expect(response.uid).to.not.equal(null)
         expect(response.title).to.equal(customWidgetURL.extension.title)
         expect(response.type).to.equal('widget')
@@ -207,9 +203,9 @@ describe('Extensions API Tests', () => {
 
       try {
         const response = await stack.extension().create(customWidgetSRC)
-        
-        customWidgetSrcUid = response.uid
-        
+
+        void response.uid
+
         expect(response.uid).to.not.equal(null)
         expect(response.title).to.equal(customWidgetSRC.extension.title)
         expect(response.type).to.equal('widget')
@@ -221,19 +217,19 @@ describe('Extensions API Tests', () => {
 
     it('should fetch and update custom widget', async function () {
       this.timeout(15000)
-      
+
       if (!customWidgetUrlUid) {
         this.skip()
       }
 
       const extension = await stack.extension(customWidgetUrlUid).fetch()
-      
+
       expect(extension.uid).to.equal(customWidgetUrlUid)
       expect(extension.type).to.equal('widget')
-      
+
       extension.title = `Updated Widget ${generateUniqueId()}`
       const updatedExtension = await extension.update()
-      
+
       expect(updatedExtension.title).to.include('Updated Widget')
     })
 
@@ -243,9 +239,9 @@ describe('Extensions API Tests', () => {
       const response = await stack.extension()
         .query({ query: { type: 'widget' } })
         .find()
-      
+
       expect(response.items).to.be.an('array')
-      
+
       response.items.forEach(extension => {
         expect(extension.type).to.equal('widget')
       })
@@ -258,9 +254,9 @@ describe('Extensions API Tests', () => {
 
       try {
         const response = await stack.extension().create(customDashboardURL)
-        
+
         customDashboardUrlUid = response.uid
-        
+
         expect(response.uid).to.not.equal(null)
         expect(response.title).to.equal(customDashboardURL.extension.title)
         expect(response.type).to.equal('dashboard')
@@ -277,9 +273,9 @@ describe('Extensions API Tests', () => {
 
       try {
         const response = await stack.extension().create(customDashboardSRC)
-        
-        customDashboardSrcUid = response.uid
-        
+
+        void response.uid
+
         expect(response.uid).to.not.equal(null)
         expect(response.title).to.equal(customDashboardSRC.extension.title)
         expect(response.type).to.equal('dashboard')
@@ -292,19 +288,19 @@ describe('Extensions API Tests', () => {
 
     it('should fetch and update custom dashboard', async function () {
       this.timeout(15000)
-      
+
       if (!customDashboardUrlUid) {
         this.skip()
       }
 
       const extension = await stack.extension(customDashboardUrlUid).fetch()
-      
+
       expect(extension.uid).to.equal(customDashboardUrlUid)
       expect(extension.type).to.equal('dashboard')
-      
+
       extension.title = `Updated Dashboard ${generateUniqueId()}`
       const updatedExtension = await extension.update()
-      
+
       expect(updatedExtension.title).to.include('Updated Dashboard')
     })
 
@@ -314,9 +310,9 @@ describe('Extensions API Tests', () => {
       const response = await stack.extension()
         .query({ query: { type: 'dashboard' } })
         .find()
-      
+
       expect(response.items).to.be.an('array')
-      
+
       response.items.forEach(extension => {
         expect(extension.type).to.equal('dashboard')
       })
@@ -324,15 +320,11 @@ describe('Extensions API Tests', () => {
   })
 
   describe('Extension Upload Operations', () => {
-    let uploadedFieldUid = null
-    let uploadedWidgetUid = null
-    let uploadedDashboardUid = null
-    
     it('should upload custom field from file', async function () {
       this.timeout(15000)
 
       const uploadPath = path.join(testBaseDir, 'mock/assets/customUpload.html')
-      
+
       try {
         const response = await stack.extension().upload({
           title: `Uploaded Field ${Date.now()}`,
@@ -342,24 +334,24 @@ describe('Extensions API Tests', () => {
           multiple: false,
           upload: uploadPath
         })
-        
+
         expect(response.uid).to.be.a('string')
         expect(response.title).to.include('Uploaded Field')
         expect(response.type).to.equal('field')
-        
-        uploadedFieldUid = response.uid
+
+        void response.uid
       } catch (error) {
         // File might not exist or upload might fail
         console.log('Upload field warning:', error.message)
         throw error
       }
     })
-    
+
     it('should upload custom widget from file', async function () {
       this.timeout(15000)
 
       const uploadPath = path.join(testBaseDir, 'mock/assets/customUpload.html')
-      
+
       try {
         const response = await stack.extension().upload({
           title: `Uploaded Widget ${Date.now()}`,
@@ -367,23 +359,23 @@ describe('Extensions API Tests', () => {
           tags: 'upload,test',
           upload: uploadPath
         })
-        
+
         expect(response.uid).to.be.a('string')
         expect(response.title).to.include('Uploaded Widget')
         expect(response.type).to.equal('widget')
-        
-        uploadedWidgetUid = response.uid
+
+        void response.uid
       } catch (error) {
         console.log('Upload widget warning:', error.message)
         throw error
       }
     })
-    
+
     it('should upload custom dashboard from file', async function () {
       this.timeout(15000)
 
       const uploadPath = path.join(testBaseDir, 'mock/assets/customUpload.html')
-      
+
       try {
         const response = await stack.extension().upload({
           title: `Uploaded Dashboard ${Date.now()}`,
@@ -393,12 +385,12 @@ describe('Extensions API Tests', () => {
           default_width: 'half',
           upload: uploadPath
         })
-        
+
         expect(response.uid).to.be.a('string')
         expect(response.title).to.include('Uploaded Dashboard')
         expect(response.type).to.equal('dashboard')
-        
-        uploadedDashboardUid = response.uid
+
+        void response.uid
       } catch (error) {
         console.log('Upload dashboard warning:', error.message)
         throw error
@@ -413,9 +405,9 @@ describe('Extensions API Tests', () => {
       const response = await stack.extension()
         .query()
         .find()
-      
+
       expect(response.items).to.be.an('array')
-      
+
       response.items.forEach(extension => {
         expect(extension.uid).to.not.equal(null)
         expect(extension.title).to.not.equal(null)
@@ -430,7 +422,7 @@ describe('Extensions API Tests', () => {
       const response = await stack.extension()
         .query({ limit: 5 })
         .find()
-      
+
       expect(response.items).to.be.an('array')
       expect(response.items.length).to.be.at.most(5)
     })
@@ -439,7 +431,7 @@ describe('Extensions API Tests', () => {
   describe('Extension Deletion', () => {
     it('should delete an extension', async function () {
       this.timeout(30000)
-      
+
       // Create a TEMPORARY extension for deletion testing
       // Don't delete the shared extension UIDs
       const tempExtensionData = {
@@ -454,11 +446,11 @@ describe('Extensions API Tests', () => {
       try {
         const tempExtension = await stack.extension().create(tempExtensionData)
         expect(tempExtension.uid).to.be.a('string')
-        
+
         await wait(2000)
-        
+
         const response = await stack.extension(tempExtension.uid).delete()
-        
+
         expect(response.notice).to.equal('Extension deleted successfully.')
       } catch (error) {
         // Extension limit might be reached

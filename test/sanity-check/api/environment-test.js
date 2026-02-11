@@ -1,6 +1,6 @@
 /**
  * Environment API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Environment CRUD operations
  * - URL configuration
@@ -10,12 +10,6 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import {
-  developmentEnvironment,
-  stagingEnvironment,
-  productionEnvironment,
-  environmentUpdate
-} from '../mock/configurations.js'
 import { validateEnvironmentResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 /**
@@ -26,7 +20,7 @@ import { validateEnvironmentResponse, testData, wait, trackedExpect } from '../u
  * @param {number} maxAttempts - Maximum number of attempts
  * @returns {Promise<object>} - The fetched environment
  */
-async function waitForEnvironment(stack, envName, maxAttempts = 10) {
+async function waitForEnvironment (stack, envName, maxAttempts = 10) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       // SDK uses environment NAME for fetch, not UID
@@ -57,7 +51,7 @@ describe('Environment API Tests', () => {
 
   describe('Environment CRUD Operations', () => {
     const devEnvName = `development_${Date.now()}`
-    let currentEnvName = devEnvName  // Track current name (changes after update)
+    let currentEnvName = devEnvName // Track current name (changes after update)
     let createdEnvUid
 
     after(async () => {
@@ -92,18 +86,18 @@ describe('Environment API Tests', () => {
       createdEnvUid = env.uid
       currentEnvName = env.name
       testData.environments.development = env
-      
+
       // Wait for environment to be fully created
       await wait(2000)
     })
 
     it('should fetch environment by name', async function () {
       this.timeout(30000)
-      
+
       if (!currentEnvName) {
         throw new Error('Environment name not set - previous test may have failed')
       }
-      
+
       // SDK uses environment NAME for fetch (not UID) - following old test pattern
       const response = await waitForEnvironment(stack, currentEnvName)
 
@@ -114,11 +108,11 @@ describe('Environment API Tests', () => {
 
     it('should validate environment URL structure', async function () {
       this.timeout(30000)
-      
+
       if (!currentEnvName) {
         throw new Error('Environment name not set - previous test may have failed')
       }
-      
+
       // SDK uses environment NAME for fetch
       const env = await waitForEnvironment(stack, currentEnvName)
 
@@ -132,11 +126,11 @@ describe('Environment API Tests', () => {
 
     it('should update environment name', async function () {
       this.timeout(30000)
-      
+
       if (!currentEnvName) {
         throw new Error('Environment name not set - previous test may have failed')
       }
-      
+
       // SDK uses environment NAME for fetch
       const env = await waitForEnvironment(stack, currentEnvName)
       const newName = `updated_${devEnvName}`
@@ -146,18 +140,18 @@ describe('Environment API Tests', () => {
 
       expect(response).to.be.an('object')
       expect(response.name).to.equal(newName)
-      
+
       // Update tracking variable since name changed
       currentEnvName = newName
     })
 
     it('should add URL to environment', async function () {
       this.timeout(30000)
-      
+
       if (!currentEnvName) {
         throw new Error('Environment name not set - previous test may have failed')
       }
-      
+
       // SDK uses environment NAME for fetch (use currentEnvName which was updated)
       const env = await waitForEnvironment(stack, currentEnvName)
       const initialUrlCount = env.urls.length
@@ -198,7 +192,7 @@ describe('Environment API Tests', () => {
 
     it('should create staging environment with multiple URLs', async function () {
       this.timeout(30000)
-      
+
       const envData = {
         environment: {
           name: stagingEnvName,
@@ -217,18 +211,18 @@ describe('Environment API Tests', () => {
 
       currentStagingName = env.name
       testData.environments.staging = env
-      
+
       // Wait for environment to propagate
       await wait(2000)
     })
 
     it('should update URL for specific locale', async function () {
       this.timeout(30000)
-      
+
       if (!currentStagingName) {
         throw new Error('Staging environment name not set - previous test may have failed')
       }
-      
+
       // SDK uses environment NAME for fetch
       const env = await waitForEnvironment(stack, currentStagingName)
 
@@ -249,7 +243,6 @@ describe('Environment API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create environment with duplicate name', async () => {
       const envData = {
         environment: {
@@ -342,22 +335,21 @@ describe('Environment API Tests', () => {
   // ==========================================================================
 
   describe('Delete Environment', () => {
-
     it('should delete an environment', async function () {
       this.timeout(45000)
-      
+
       // Create a temp environment - SDK returns environment object directly
       const tempName = `temp_delete_env_${Date.now()}`
-      const createdEnv = await stack.environment().create({
+      await stack.environment().create({
         environment: {
           name: tempName,
           urls: [{ locale: 'en-us', url: 'https://temp.example.com' }]
         }
       })
-      
+
       // Wait for environment to propagate
       await wait(2000)
-      
+
       // SDK uses environment NAME for fetch
       const env = await waitForEnvironment(stack, tempName)
       const deleteResponse = await env.delete()
@@ -368,23 +360,23 @@ describe('Environment API Tests', () => {
 
     it('should return 404 for deleted environment', async function () {
       this.timeout(45000)
-      
+
       // Create and delete - SDK returns environment object directly
       const tempName = `temp_verify_env_${Date.now()}`
-      const createdEnv = await stack.environment().create({
+      await stack.environment().create({
         environment: {
           name: tempName,
           urls: [{ locale: 'en-us', url: 'https://temp.example.com' }]
         }
       })
-      
+
       // Wait for environment to propagate
       await wait(2000)
-      
+
       // SDK uses environment NAME for fetch
       const env = await waitForEnvironment(stack, tempName)
       await env.delete()
-      
+
       await wait(1000)
 
       try {

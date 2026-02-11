@@ -1,6 +1,6 @@
 /**
  * Taxonomy Terms API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Term CRUD operations
  * - Hierarchical terms
@@ -11,11 +11,6 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import {
-  categoryTerms,
-  regionTerms,
-  termUpdate
-} from '../mock/taxonomy.js'
 import { validateTermResponse, testData, wait, shortId, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Taxonomy Terms API Tests', () => {
@@ -51,7 +46,6 @@ describe('Taxonomy Terms API Tests', () => {
 
   describe('Term CRUD Operations', () => {
     let parentTermUid
-    let childTermUid
 
     it('should create a root term', async () => {
       const termData = {
@@ -91,8 +85,6 @@ describe('Taxonomy Terms API Tests', () => {
       validateTermResponse(term)
       trackedExpect(term.uid, 'Child term UID').toEqual('software')
       trackedExpect(term.parent_uid, 'Child term parent_uid').toEqual(parentTermUid)
-
-      childTermUid = term.uid
     })
 
     it('should create another root term', async () => {
@@ -234,7 +226,7 @@ describe('Taxonomy Terms API Tests', () => {
       this.timeout(30000)
       const moveId = shortId()
       const parentId = shortId()
-      
+
       // Create terms for movement testing
       const moveable = await stack.taxonomy(taxonomyUid).terms().create({
         term: { name: `Move Term ${moveId}`, uid: `move_${moveId}` }
@@ -247,18 +239,18 @@ describe('Taxonomy Terms API Tests', () => {
         term: { name: `New Parent ${parentId}`, uid: `parent_${parentId}` }
       })
       newParentUid = newParent.uid
-      
+
       await wait(1000)
     })
 
     it('should move term to new parent', async function () {
       this.timeout(15000)
-      
+
       if (!moveableTermUid || !newParentUid) {
         this.skip()
         return
       }
-      
+
       // Use the correct SDK syntax: terms(uid).move({ term: {...}, force: true })
       const response = await stack.taxonomy(taxonomyUid).terms(moveableTermUid).move({
         term: {
@@ -278,7 +270,6 @@ describe('Taxonomy Terms API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create term with duplicate UID', async () => {
       // Create first
       try {
@@ -328,20 +319,19 @@ describe('Taxonomy Terms API Tests', () => {
   // ==========================================================================
 
   describe('Delete Terms', () => {
-
     it('should delete a leaf term', async function () {
       this.timeout(30000)
-      
+
       // Generate unique UID for this test
       const deleteTermUid = `del_${shortId()}`
-      
+
       // Create a term to delete - SDK returns term object directly
       const createdTerm = await stack.taxonomy(taxonomyUid).terms().create({
         term: { name: 'Delete Me', uid: deleteTermUid }
       })
-      
+
       await wait(1000)
-      
+
       // Get the UID from the response (handle different response structures)
       const termUid = createdTerm.uid || (createdTerm.term && createdTerm.term.uid) || deleteTermUid
       expect(termUid).to.be.a('string', 'Term UID should be available after creation')
@@ -355,23 +345,23 @@ describe('Taxonomy Terms API Tests', () => {
 
     it('should return 404 for deleted term', async function () {
       this.timeout(30000)
-      
+
       // Generate unique UID for this test
       const verifyTermUid = `vfy_${shortId()}`
-      
+
       // Create and delete - SDK returns term object directly
       const createdTerm = await stack.taxonomy(taxonomyUid).terms().create({
         term: { name: 'Delete Verify', uid: verifyTermUid }
       })
-      
+
       await wait(1000)
-      
+
       // Get the UID from the response (handle different response structures)
       const termUid = createdTerm.uid || (createdTerm.term && createdTerm.term.uid) || verifyTermUid
 
       // OLD pattern: use delete({ force: true }) directly
       await stack.taxonomy(taxonomyUid).terms(termUid).delete({ force: true })
-      
+
       await wait(2000)
 
       try {

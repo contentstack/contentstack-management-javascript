@@ -1,6 +1,6 @@
 /**
  * Global Field Mock Schemas
- * 
+ *
  * Based on CDA Test Stack export - adapted for comprehensive CMA SDK testing.
  * Global fields are reusable field schemas that can be embedded in content types.
  */
