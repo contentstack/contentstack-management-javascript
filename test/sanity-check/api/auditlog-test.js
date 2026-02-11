@@ -1,6 +1,6 @@
 /**
  * Audit Log API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Audit log fetch
  * - Audit log filtering
@@ -10,7 +10,7 @@
 import { expect } from 'chai'
 import { describe, it, before } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { testData, trackedExpect } from '../utility/testHelpers.js'
+import { trackedExpect } from '../utility/testHelpers.js'
 
 describe('Audit Log API Tests', () => {
   let client
@@ -26,7 +26,6 @@ describe('Audit Log API Tests', () => {
   // ==========================================================================
 
   describe('Audit Log Fetch', () => {
-
     it('should fetch audit logs', async () => {
       try {
         const response = await stack.auditLog().fetchAll()
@@ -80,7 +79,6 @@ describe('Audit Log API Tests', () => {
   // ==========================================================================
 
   describe('Audit Log Filtering', () => {
-
     it('should fetch logs with pagination', async () => {
       try {
         const response = await stack.auditLog().query({
@@ -117,7 +115,6 @@ describe('Audit Log API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to fetch non-existent audit log', async () => {
       try {
         await stack.auditLog('nonexistent_log_12345').fetch()
@@ -139,6 +136,7 @@ describe('Audit Log API Tests', () => {
         console.log('Audit log accessible without auth token - skipping test')
       } catch (error) {
         // Accept any error - could be 401, 403, or other auth-related errors
+        // eslint-disable-next-line no-unused-expressions
         expect(error).to.exist
         if (error.status) {
           expect(error.status).to.be.oneOf([401, 403, 422])

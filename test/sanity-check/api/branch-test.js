@@ -1,6 +1,6 @@
 /**
  * Branch API Tests
- * 
+ *
  * Comprehensive test suite for:
  * - Branch CRUD operations
  * - Branch compare
@@ -12,14 +12,6 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import {
-  developmentBranch,
-  featureBranch,
-  branchCompare,
-  branchMerge,
-  branchAlias,
-  branchAliasUpdate
-} from '../mock/configurations.js'
 import { validateBranchResponse, testData, wait, shortId, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Branch API Tests', () => {
@@ -37,8 +29,7 @@ describe('Branch API Tests', () => {
 
   describe('Branch CRUD Operations', () => {
     // Branch UID must be max 15 chars, only lowercase and numbers
-    let devBranchUid = `dev${shortId()}`
-    let createdBranch
+    const devBranchUid = `dev${shortId()}`
     let branchCreated = false
 
     after(async () => {
@@ -63,7 +54,7 @@ describe('Branch API Tests', () => {
 
     it('should create a development branch from main', async function () {
       this.timeout(30000)
-      
+
       const branchData = {
         branch: {
           uid: devBranchUid,
@@ -82,10 +73,9 @@ describe('Branch API Tests', () => {
         trackedExpect(branch.uid, 'Branch UID').toEqual(devBranchUid)
         expect(branch.source).to.equal('main')
 
-        createdBranch = branch
         branchCreated = true
         testData.branches.development = branch
-        
+
         // Wait for branch to be fully ready
         await wait(3000)
       } catch (error) {
@@ -93,7 +83,6 @@ describe('Branch API Tests', () => {
         if (error.status === 409 || (error.errorMessage && error.errorMessage.includes('already exists'))) {
           console.log(`  Branch ${devBranchUid} already exists, fetching it`)
           const existing = await stack.branch(devBranchUid).fetch()
-          createdBranch = existing
           branchCreated = true
           testData.branches.development = existing
         } else {
@@ -105,13 +94,13 @@ describe('Branch API Tests', () => {
 
     it('should fetch the created branch', async function () {
       this.timeout(15000)
-      
+
       if (!branchCreated) {
         console.log('  Skipping - branch was not created')
         this.skip()
         return
       }
-      
+
       const response = await stack.branch(devBranchUid).fetch()
 
       expect(response).to.be.an('object')
@@ -124,7 +113,7 @@ describe('Branch API Tests', () => {
         this.skip()
         return
       }
-      
+
       const branch = await stack.branch(devBranchUid).fetch()
 
       expect(branch.uid).to.be.a('string')
@@ -274,7 +263,6 @@ describe('Branch API Tests', () => {
   // ==========================================================================
 
   describe('Error Handling', () => {
-
     it('should fail to create branch with duplicate UID', async () => {
       // Main branch always exists
       try {
@@ -329,9 +317,8 @@ describe('Branch API Tests', () => {
   // ==========================================================================
 
   describe('Delete Branch', () => {
-
     // Helper to wait for branch to be ready (with polling)
-    async function waitForBranchReady(branchUid, maxAttempts = 10) {
+    async function waitForBranchReady (branchUid, maxAttempts = 10) {
       for (let i = 0; i < maxAttempts; i++) {
         try {
           const branch = await stack.branch(branchUid).fetch()
@@ -357,7 +344,7 @@ describe('Branch API Tests', () => {
           source: 'main'
         }
       })
-      
+
       // Wait for branch to be fully created (15 seconds like old tests)
       await wait(15000)
 
@@ -380,14 +367,14 @@ describe('Branch API Tests', () => {
           source: 'main'
         }
       })
-      
+
       // Wait for branch to be fully created (15 seconds like old tests)
       await wait(15000)
 
       // Poll until branch is ready
       const branch = await waitForBranchReady(tempBranchUid, 5)
       await branch.delete()
-      
+
       // Wait for deletion to propagate
       await wait(5000)
 
