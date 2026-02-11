@@ -10,7 +10,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { validateTokenResponse, testData, wait } from '../utility/testHelpers.js'
+import { validateTokenResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Token API Tests', () => {
   let client
@@ -132,11 +132,11 @@ describe('Token API Tests', () => {
 
       const response = await stack.deliveryToken().create(tokenData)
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.be.a('string')
-      expect(response.name).to.include('Delivery Token')
-      expect(response.token).to.be.a('string')
-      expect(response.scope).to.be.an('array')
+      trackedExpect(response, 'Delivery token').toBeAn('object')
+      trackedExpect(response.uid, 'Delivery token UID').toBeA('string')
+      trackedExpect(response.name, 'Delivery token name').toInclude('Delivery Token')
+      trackedExpect(response.token, 'Delivery token value').toBeA('string')
+      trackedExpect(response.scope, 'Delivery token scope').toBeAn('array')
 
       createdTokenUid = response.uid
       testData.tokens.delivery = response
@@ -149,8 +149,8 @@ describe('Token API Tests', () => {
       this.timeout(15000)
       const token = await fetchDeliveryTokenByUid(createdTokenUid)
 
-      expect(token).to.be.an('object')
-      expect(token.uid).to.equal(createdTokenUid)
+      trackedExpect(token, 'Delivery token').toBeAn('object')
+      trackedExpect(token.uid, 'Delivery token UID').toEqual(createdTokenUid)
     })
 
     it('should validate delivery token scope', async () => {
@@ -240,10 +240,10 @@ describe('Token API Tests', () => {
 
       const response = await stack.managementToken().create(tokenData)
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.be.a('string')
-      expect(response.name).to.include('Management Token')
-      expect(response.token).to.be.a('string')
+      trackedExpect(response, 'Management token').toBeAn('object')
+      trackedExpect(response.uid, 'Management token UID').toBeA('string')
+      trackedExpect(response.name, 'Management token name').toInclude('Management Token')
+      trackedExpect(response.token, 'Management token value').toBeA('string')
 
       createdMgmtTokenUid = response.uid
       testData.tokens.management = response
@@ -256,8 +256,8 @@ describe('Token API Tests', () => {
       this.timeout(15000)
       const token = await fetchManagementTokenByUid(createdMgmtTokenUid)
 
-      expect(token).to.be.an('object')
-      expect(token.uid).to.equal(createdMgmtTokenUid)
+      trackedExpect(token, 'Management token').toBeAn('object')
+      trackedExpect(token.uid, 'Management token UID').toEqual(createdMgmtTokenUid)
     })
 
     it('should validate management token scope', async () => {

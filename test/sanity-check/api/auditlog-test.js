@@ -10,7 +10,7 @@
 import { expect } from 'chai'
 import { describe, it, before } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { testData } from '../utility/testHelpers.js'
+import { testData, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Audit Log API Tests', () => {
   let client
@@ -31,8 +31,8 @@ describe('Audit Log API Tests', () => {
       try {
         const response = await stack.auditLog().fetchAll()
 
-        expect(response).to.be.an('object')
-        expect(response.items || response.logs).to.be.an('array')
+        trackedExpect(response, 'Audit log response').toBeAn('object')
+        trackedExpect(response.items || response.logs, 'Logs list').toBeAn('array')
       } catch (error) {
         // Audit logs might require specific permissions
         console.log('Audit log fetch failed:', error.errorMessage)
@@ -46,7 +46,7 @@ describe('Audit Log API Tests', () => {
 
         if (logs && logs.length > 0) {
           const log = logs[0]
-          expect(log.uid).to.be.a('string')
+          trackedExpect(log.uid, 'Log UID').toBeA('string')
 
           if (log.created_at) {
             expect(new Date(log.created_at)).to.be.instanceof(Date)
@@ -66,8 +66,8 @@ describe('Audit Log API Tests', () => {
           const logUid = logs[0].uid
           const singleLog = await stack.auditLog(logUid).fetch()
 
-          expect(singleLog).to.be.an('object')
-          expect(singleLog.uid).to.equal(logUid)
+          trackedExpect(singleLog, 'Single log').toBeAn('object')
+          trackedExpect(singleLog.uid, 'Log UID').toEqual(logUid)
         }
       } catch (error) {
         console.log('Single log fetch failed:', error.errorMessage)

@@ -14,7 +14,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { validateAssetResponse, testData, wait } from '../utility/testHelpers.js'
+import { validateAssetResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 import path from 'path'
 import fs from 'fs'
 
@@ -56,8 +56,8 @@ describe('Asset API Tests', () => {
       })
 
       // SDK returns the asset object directly
-      expect(response).to.be.an('object')
-      expect(response.uid).to.be.a('string')
+      trackedExpect(response, 'Asset response').toBeAn('object')
+      trackedExpect(response.uid, 'Asset UID').toBeA('string')
       validateAssetResponse(response)
 
       expect(response.filename).to.include('image')
@@ -81,8 +81,8 @@ describe('Asset API Tests', () => {
         description: 'Test HTML upload'
       })
 
-      expect(asset).to.be.an('object')
-      expect(asset.uid).to.be.a('string')
+      trackedExpect(asset, 'HTML asset').toBeAn('object')
+      trackedExpect(asset.uid, 'Asset UID').toBeA('string')
       expect(asset.filename).to.include('upload')
       expect(asset.content_type).to.include('html')
 

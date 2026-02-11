@@ -6,7 +6,7 @@ import path from 'path'
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { generateUniqueId, wait, testData } from '../utility/testHelpers.js'
+import { generateUniqueId, wait, testData, trackedExpect } from '../utility/testHelpers.js'
 
 // Get base directory for test files
 const testBaseDir = path.resolve(process.cwd(), 'test/sanity-check')
@@ -112,11 +112,12 @@ describe('Extensions API Tests', () => {
       customFieldUrlUid = response.uid
       testData.extensionUid = response.uid
       
-      expect(response.uid).to.not.equal(null)
-      expect(response.uid).to.be.a('string')
-      expect(response.title).to.equal(customFieldURL.extension.title)
-      expect(response.type).to.equal('field')
-      expect(response.data_type).to.equal('text')
+      trackedExpect(response, 'Extension').toBeAn('object')
+      trackedExpect(response.uid, 'Extension UID').toExist()
+      trackedExpect(response.uid, 'Extension UID type').toBeA('string')
+      trackedExpect(response.title, 'Extension title').toEqual(customFieldURL.extension.title)
+      trackedExpect(response.type, 'Extension type').toEqual('field')
+      trackedExpect(response.data_type, 'Extension data_type').toEqual('text')
     })
 
     it('should create custom field with source code', async function () {
@@ -145,9 +146,10 @@ describe('Extensions API Tests', () => {
 
       const response = await stack.extension(customFieldUrlUid).fetch()
       
-      expect(response.uid).to.equal(customFieldUrlUid)
-      expect(response.title).to.equal(customFieldURL.extension.title)
-      expect(response.type).to.equal('field')
+      trackedExpect(response, 'Extension').toBeAn('object')
+      trackedExpect(response.uid, 'Extension UID').toEqual(customFieldUrlUid)
+      trackedExpect(response.title, 'Extension title').toEqual(customFieldURL.extension.title)
+      trackedExpect(response.type, 'Extension type').toEqual('field')
     })
 
     it('should update custom field', async function () {

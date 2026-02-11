@@ -16,7 +16,7 @@ import {
   spanishLocale,
   localeUpdate
 } from '../mock/configurations.js'
-import { validateLocaleResponse, testData, wait } from '../utility/testHelpers.js'
+import { validateLocaleResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Locale API Tests', () => {
   let client
@@ -46,11 +46,10 @@ describe('Locale API Tests', () => {
     it('should query all locales', async () => {
       const response = await stack.locale().query().find()
 
-      expect(response).to.be.an('object')
-      expect(response.items || response.locales).to.be.an('array')
-
+      trackedExpect(response, 'Locales response').toBeAn('object')
       const items = response.items || response.locales
-      expect(items.length).to.be.at.least(1)
+      trackedExpect(items, 'Locales list').toBeAn('array')
+      trackedExpect(items.length, 'Locales count').toBeAtLeast(1)
 
       // Master locale should exist
       const master = items.find(l => l.code === masterLocale)

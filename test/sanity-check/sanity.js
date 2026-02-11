@@ -54,6 +54,54 @@ import * as testSetup from './utility/testSetup.js'
 import { testData, errorToCurl, formatErrorWithCurl, assertionTracker, globalAssertionStore } from './utility/testHelpers.js'
 import * as requestLogger from './utility/requestLogger.js'
 
+// Max length for response body in report (avoid huge payloads)
+const MAX_RESPONSE_BODY_DISPLAY = 4000
+
+function formatRequestHeadersForReport(headers) {
+  if (!headers || typeof headers !== 'object') return ''
+  const lines = []
+  for (const [key, value] of Object.entries(headers)) {
+    if (value == null) continue
+    let display = String(value)
+    if (key.toLowerCase() === 'authtoken' || key.toLowerCase() === 'authorization') {
+      display = display.length > 15 ? display.substring(0, 10) + '...' + display.substring(display.length - 5) : '***'
+    }
+    lines.push(`${key}: ${display}`)
+  }
+  return lines.join('\n')
+}
+
+function formatResponseForReport(lastRequest) {
+  const parts = []
+  if (lastRequest.headers && Object.keys(lastRequest.headers).length > 0) {
+    const requestHeaderLines = formatRequestHeadersForReport(lastRequest.headers)
+    if (requestHeaderLines) {
+      parts.push({ title: '📤 Request Headers', value: requestHeaderLines })
+    }
+  }
+  if (lastRequest.responseHeaders && Object.keys(lastRequest.responseHeaders).length > 0) {
+    const headerLines = Object.entries(lastRequest.responseHeaders)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join('\n')
+    parts.push({ title: '📥 Response Headers', value: headerLines })
+  }
+  if (lastRequest.responseData !== undefined && lastRequest.responseData !== null) {
+    let bodyStr
+    try {
+      bodyStr = typeof lastRequest.responseData === 'object'
+        ? JSON.stringify(lastRequest.responseData, null, 2)
+        : String(lastRequest.responseData)
+    } catch (e) {
+      bodyStr = String(lastRequest.responseData)
+    }
+    if (bodyStr.length > MAX_RESPONSE_BODY_DISPLAY) {
+      bodyStr = bodyStr.slice(0, MAX_RESPONSE_BODY_DISPLAY) + '\n... (truncated)'
+    }
+    parts.push({ title: '📥 Response Body', value: bodyStr })
+  }
+  return parts
+}
+
 // Store test cURLs for the final report
 const testCurls = []
 
@@ -298,6 +346,12 @@ afterEach(function() {
           })
         }
       }
+    }
+    
+    // Add request headers, response headers & body when available
+    if (lastRequest && (lastRequest.headers || lastRequest.responseHeaders || lastRequest.responseData !== undefined)) {
+      const reportParts = formatResponseForReport(lastRequest)
+      reportParts.forEach(p => addContext(this, p))
     }
     
     // Add API error details if available (for failed tests with API error in response)

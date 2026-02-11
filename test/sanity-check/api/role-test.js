@@ -15,7 +15,7 @@ import {
   advancedRole,
   roleUpdate
 } from '../mock/configurations.js'
-import { validateRoleResponse, testData, wait } from '../utility/testHelpers.js'
+import { validateRoleResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Role API Tests', () => {
   let client
@@ -75,13 +75,13 @@ describe('Role API Tests', () => {
 
       const response = await stack.role().create(roleData)
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.be.a('string')
+      trackedExpect(response, 'Role').toBeAn('object')
+      trackedExpect(response.uid, 'Role UID').toBeA('string')
       
       validateRoleResponse(response)
 
-      expect(response.name).to.include('Content Editor')
-      expect(response.rules).to.be.an('array')
+      trackedExpect(response.name, 'Role name').toInclude('Content Editor')
+      trackedExpect(response.rules, 'Role rules').toBeAn('array')
 
       createdRoleUid = response.uid
       testData.roles.basic = response
@@ -94,8 +94,8 @@ describe('Role API Tests', () => {
       this.timeout(15000)
       const role = await fetchRoleByUid(createdRoleUid)
 
-      expect(role).to.be.an('object')
-      expect(role.uid).to.equal(createdRoleUid)
+      trackedExpect(role, 'Role').toBeAn('object')
+      trackedExpect(role.uid, 'Role UID').toEqual(createdRoleUid)
     })
 
     it('should validate role rules structure', async () => {

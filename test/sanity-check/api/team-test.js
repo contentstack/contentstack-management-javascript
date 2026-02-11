@@ -5,7 +5,8 @@ import {
   validateErrorResponse, 
   generateUniqueId, 
   wait,
-  testData 
+  testData,
+  trackedExpect
 } from '../utility/testHelpers.js'
 
 let client = null
@@ -83,10 +84,11 @@ describe('Teams API Tests', () => {
       teamUid1 = response.uid
       testData.teamUid = teamUid1
       
-      expect(response.uid).to.not.equal(null)
-      expect(response.uid).to.be.a('string')
-      expect(response.name).to.equal(teamData.name)
-      expect(response.organizationRole).to.not.equal(undefined)
+      trackedExpect(response, 'Team').toBeAn('object')
+      trackedExpect(response.uid, 'Team UID').toExist()
+      trackedExpect(response.uid, 'Team UID type').toBeA('string')
+      trackedExpect(response.name, 'Team name').toEqual(teamData.name)
+      trackedExpect(response.organizationRole, 'Team organizationRole').toExist()
       
       // Wait for team to be fully created
       await wait(2000)
@@ -119,15 +121,15 @@ describe('Teams API Tests', () => {
 
       const response = await client.organization(organizationUid).teams().fetchAll()
       
-      expect(response).to.exist
+      trackedExpect(response, 'Teams response').toExist()
       
       // Handle different response structures
       const teams = response.items || response.teams || (Array.isArray(response) ? response : [])
-      expect(teams).to.be.an('array')
+      trackedExpect(teams, 'Teams list').toBeAn('array')
       
       // Only check for at least 1 team if we created teams earlier
       if (teamUid1) {
-        expect(teams.length).to.be.at.least(1)
+        trackedExpect(teams.length, 'Teams count').toBeAtLeast(1)
       }
       
       // OLD pattern: use organizationUid, name, created_by, updated_by
@@ -153,9 +155,10 @@ describe('Teams API Tests', () => {
 
       const response = await client.organization(organizationUid).teams(teamUid1).fetch()
       
-      expect(response.uid).to.equal(teamUid1)
-      expect(response.organizationUid).to.equal(organizationUid)
-      expect(response.name).to.not.equal(null)
+      trackedExpect(response, 'Team').toBeAn('object')
+      trackedExpect(response.uid, 'Team UID').toEqual(teamUid1)
+      trackedExpect(response.organizationUid, 'Team organizationUid').toEqual(organizationUid)
+      trackedExpect(response.name, 'Team name').toExist()
       // OLD pattern: check created_by and updated_by if they exist
       if (response.created_by !== undefined) {
         expect(response.created_by).to.not.equal(null)

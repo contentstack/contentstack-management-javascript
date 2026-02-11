@@ -9,7 +9,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { generateUniqueId, wait, testData } from '../utility/testHelpers.js'
+import { generateUniqueId, wait, testData, trackedExpect } from '../utility/testHelpers.js'
 
 let client = null
 let stack = null
@@ -72,8 +72,9 @@ describe('Ungrouped Variants (Personalize) API Tests', () => {
       
       const response = await stack.variants().create(createVariant)
       
-      expect(response.uid).to.not.equal(null)
-      expect(response.name).to.equal(createVariant.name)
+      trackedExpect(response, 'Ungrouped variant').toBeAn('object')
+      trackedExpect(response.uid, 'Ungrouped variant UID').toExist()
+      trackedExpect(response.name, 'Ungrouped variant name').toEqual(createVariant.name)
       
       variantUid = response.uid
       createdVariantName = response.name  // Store actual name
@@ -92,7 +93,8 @@ describe('Ungrouped Variants (Personalize) API Tests', () => {
 
       const response = await stack.variants().query().find()
       
-      expect(response.items).to.be.an('array')
+      trackedExpect(response, 'Ungrouped variants query response').toBeAn('object')
+      trackedExpect(response.items, 'Ungrouped variants list').toBeAn('array')
       
       response.items.forEach(variant => {
         expect(variant.uid).to.not.equal(null)

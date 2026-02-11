@@ -218,10 +218,24 @@ function detectSdkMethod(method, url) {
 export function initializeClient() {
   const host = process.env.HOST || 'api.contentstack.io'
   
-  // Request capture plugin - onResponse receives (response) on success or (error) on failure
+  // Request capture plugin - capture on request (so timeouts still have cURL) and on response
   const requestCapturePlugin = {
     onRequest: (request) => {
       request._startTime = Date.now()
+      const config = request
+      if (config) {
+        const fullUrl = buildFullUrl(config)
+        capturedRequests.push({
+          timestamp: new Date().toISOString(),
+          method: (config.method || 'GET').toUpperCase(),
+          url: fullUrl,
+          headers: config.headers || {},
+          status: null,
+          curl: generateCurl(config),
+          sdkMethod: detectSdkMethod(config.method, fullUrl)
+        })
+        if (capturedRequests.length > 100) capturedRequests.shift()
+      }
       return request
     },
     onResponse: (responseOrError) => {
@@ -234,6 +248,18 @@ export function initializeClient() {
       const duration = config._startTime ? Date.now() - config._startTime : null
       const fullUrl = buildFullUrl(config)
       
+      // Normalize response headers (axios may give plain object or Headers-like)
+      let responseHeaders = {}
+      if (res?.headers) {
+        if (typeof res.headers.entries === 'function') {
+          for (const [k, v] of res.headers.entries()) {
+            responseHeaders[k] = v
+          }
+        } else if (typeof res.headers === 'object') {
+          responseHeaders = { ...res.headers }
+        }
+      }
+
       const captured = {
         timestamp: new Date().toISOString(),
         method: (config.method || 'GET').toUpperCase(),
@@ -242,6 +268,7 @@ export function initializeClient() {
         data: config.data,
         status: res?.status || null,
         statusText: res?.statusText || null,
+        responseHeaders,
         responseData: res?.data,
         success: !isError,
         duration: duration,

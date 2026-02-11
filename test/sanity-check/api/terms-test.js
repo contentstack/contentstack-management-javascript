@@ -16,7 +16,7 @@ import {
   regionTerms,
   termUpdate
 } from '../mock/taxonomy.js'
-import { validateTermResponse, testData, wait, shortId } from '../utility/testHelpers.js'
+import { validateTermResponse, testData, wait, shortId, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Taxonomy Terms API Tests', () => {
   let client
@@ -64,12 +64,12 @@ describe('Taxonomy Terms API Tests', () => {
       // SDK returns the term object directly
       const term = await stack.taxonomy(taxonomyUid).terms().create(termData)
 
-      expect(term).to.be.an('object')
-      expect(term.uid).to.be.a('string')
+      trackedExpect(term, 'Term').toBeAn('object')
+      trackedExpect(term.uid, 'Term UID').toBeA('string')
       validateTermResponse(term)
 
-      expect(term.uid).to.equal('technology')
-      expect(term.name).to.equal('Technology')
+      trackedExpect(term.uid, 'Term UID').toEqual('technology')
+      trackedExpect(term.name, 'Term name').toEqual('Technology')
 
       parentTermUid = term.uid
       testData.taxonomies.terms = testData.taxonomies.terms || {}
@@ -89,8 +89,8 @@ describe('Taxonomy Terms API Tests', () => {
       const term = await stack.taxonomy(taxonomyUid).terms().create(termData)
 
       validateTermResponse(term)
-      expect(term.uid).to.equal('software')
-      expect(term.parent_uid).to.equal(parentTermUid)
+      trackedExpect(term.uid, 'Child term UID').toEqual('software')
+      trackedExpect(term.parent_uid, 'Child term parent_uid').toEqual(parentTermUid)
 
       childTermUid = term.uid
     })
@@ -113,9 +113,9 @@ describe('Taxonomy Terms API Tests', () => {
     it('should fetch a term', async () => {
       const response = await stack.taxonomy(taxonomyUid).terms(parentTermUid).fetch()
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.equal(parentTermUid)
-      expect(response.name).to.equal('Technology')
+      trackedExpect(response, 'Term').toBeAn('object')
+      trackedExpect(response.uid, 'Term UID').toEqual(parentTermUid)
+      trackedExpect(response.name, 'Term name').toEqual('Technology')
     })
 
     it('should update term name', async () => {

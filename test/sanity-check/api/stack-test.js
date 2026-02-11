@@ -12,7 +12,7 @@
 import { expect } from 'chai'
 import { describe, it, before } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { testData } from '../utility/testHelpers.js'
+import { testData, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Stack API Tests', () => {
   let client
@@ -32,10 +32,10 @@ describe('Stack API Tests', () => {
     it('should fetch stack details', async () => {
       const response = await stack.fetch()
 
-      expect(response).to.be.an('object')
-      expect(response.api_key).to.equal(process.env.API_KEY)
-      expect(response.name).to.be.a('string')
-      expect(response.org_uid).to.be.a('string')
+      trackedExpect(response, 'Stack response').toBeAn('object')
+      trackedExpect(response.api_key, 'API key').toEqual(process.env.API_KEY)
+      trackedExpect(response.name, 'Stack name').toBeA('string')
+      trackedExpect(response.org_uid, 'Org UID').toBeA('string')
 
       testData.stack = response
     })

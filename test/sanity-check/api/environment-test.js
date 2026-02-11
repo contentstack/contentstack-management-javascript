@@ -16,7 +16,7 @@ import {
   productionEnvironment,
   environmentUpdate
 } from '../mock/configurations.js'
-import { validateEnvironmentResponse, testData, wait } from '../utility/testHelpers.js'
+import { validateEnvironmentResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 /**
  * Helper function to wait for environment to be available after creation
@@ -81,13 +81,13 @@ describe('Environment API Tests', () => {
       // SDK returns the environment object directly
       const env = await stack.environment().create(envData)
 
-      expect(env).to.be.an('object')
-      expect(env.uid).to.be.a('string')
+      trackedExpect(env, 'Environment').toBeAn('object')
+      trackedExpect(env.uid, 'Environment UID').toBeA('string')
       validateEnvironmentResponse(env)
 
-      expect(env.name).to.equal(devEnvName)
-      expect(env.urls).to.be.an('array')
-      expect(env.urls.length).to.be.at.least(1)
+      trackedExpect(env.name, 'Environment name').toEqual(devEnvName)
+      trackedExpect(env.urls, 'Environment urls').toBeAn('array')
+      trackedExpect(env.urls.length, 'Environment urls count').toBeAtLeast(1)
 
       createdEnvUid = env.uid
       currentEnvName = env.name
@@ -107,9 +107,9 @@ describe('Environment API Tests', () => {
       // SDK uses environment NAME for fetch (not UID) - following old test pattern
       const response = await waitForEnvironment(stack, currentEnvName)
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.equal(createdEnvUid)
-      expect(response.name).to.equal(currentEnvName)
+      trackedExpect(response, 'Environment').toBeAn('object')
+      trackedExpect(response.uid, 'Environment UID').toEqual(createdEnvUid)
+      trackedExpect(response.name, 'Environment name').toEqual(currentEnvName)
     })
 
     it('should validate environment URL structure', async function () {

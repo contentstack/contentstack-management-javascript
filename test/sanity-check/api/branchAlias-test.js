@@ -11,7 +11,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { testData, wait, shortId } from '../utility/testHelpers.js'
+import { testData, wait, shortId, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Branch Alias API Tests', () => {
   let client
@@ -67,11 +67,11 @@ describe('Branch Alias API Tests', () => {
       // Create the branch alias using SDK method (same as old tests)
       const response = await stack.branchAlias(testAliasUid).createOrUpdate(testBranchUid)
 
-      expect(response).to.be.an('object')
+      trackedExpect(response, 'Branch alias').toBeAn('object')
       
       // Validate response matches old test expectations
-      expect(response.uid).to.equal(testBranchUid)
-      expect(response.alias).to.equal(testAliasUid)
+      trackedExpect(response.uid, 'Branch alias uid').toEqual(testBranchUid)
+      trackedExpect(response.alias, 'Branch alias alias').toEqual(testAliasUid)
       expect(response.urlPath).to.equal(`/stacks/branches/${testBranchUid}`)
       
       // Store for later tests
@@ -90,10 +90,10 @@ describe('Branch Alias API Tests', () => {
 
       const response = await stack.branchAlias(testAliasUid).fetch()
 
-      expect(response).to.be.an('object')
+      trackedExpect(response, 'Branch alias').toBeAn('object')
       // Validate response matches old test expectations
-      expect(response.uid).to.equal(testBranchUid)
-      expect(response.alias).to.equal(testAliasUid)
+      trackedExpect(response.uid, 'Branch alias uid').toEqual(testBranchUid)
+      trackedExpect(response.alias, 'Branch alias alias').toEqual(testAliasUid)
       expect(response.urlPath).to.equal(`/stacks/branches/${testBranchUid}`)
       expect(response.source).to.be.a('string')
       // Check SDK methods exist on response

@@ -11,7 +11,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { testData, wait } from '../utility/testHelpers.js'
+import { testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Preview Token API Tests', () => {
   let client
@@ -101,8 +101,8 @@ describe('Preview Token API Tests', () => {
       try {
         const response = await stack.deliveryToken(deliveryTokenUid).previewToken().create()
 
-        expect(response).to.be.an('object')
-        expect(response.preview_token || response.token?.preview_token).to.be.a('string')
+        trackedExpect(response, 'Preview token response').toBeAn('object')
+        trackedExpect(response.preview_token || response.token?.preview_token, 'Preview token value').toBeA('string')
 
         previewTokenCreated = true
         testData.tokens.preview = response
@@ -132,8 +132,8 @@ describe('Preview Token API Tests', () => {
         const tokens = await stack.deliveryToken().query().find()
         const token = tokens.items?.find(t => t.uid === deliveryTokenUid)
 
-        expect(token).to.exist
-        expect(token.preview_token).to.be.a('string')
+        trackedExpect(token, 'Delivery token with preview').toExist()
+        trackedExpect(token.preview_token, 'Preview token').toBeA('string')
       } catch (error) {
         console.log('Fetch with preview token failed:', error.errorMessage)
         this.skip()

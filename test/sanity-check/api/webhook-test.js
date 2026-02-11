@@ -16,7 +16,7 @@ import {
   advancedWebhook,
   webhookUpdate
 } from '../mock/configurations.js'
-import { validateWebhookResponse, testData, wait } from '../utility/testHelpers.js'
+import { validateWebhookResponse, testData, wait, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Webhook API Tests', () => {
   let client
@@ -46,13 +46,13 @@ describe('Webhook API Tests', () => {
       // SDK returns the webhook object directly
       const webhook = await stack.webhook().create(webhookData)
 
-      expect(webhook).to.be.an('object')
-      expect(webhook.uid).to.be.a('string')
+      trackedExpect(webhook, 'Webhook').toBeAn('object')
+      trackedExpect(webhook.uid, 'Webhook UID').toBeA('string')
       validateWebhookResponse(webhook)
 
-      expect(webhook.name).to.include('Basic Webhook')
-      expect(webhook.destinations).to.be.an('array')
-      expect(webhook.channels).to.be.an('array')
+      trackedExpect(webhook.name, 'Webhook name').toInclude('Basic Webhook')
+      trackedExpect(webhook.destinations, 'Webhook destinations').toBeAn('array')
+      trackedExpect(webhook.channels, 'Webhook channels').toBeAn('array')
 
       createdWebhookUid = webhook.uid
       testData.webhooks.basic = webhook
@@ -65,8 +65,8 @@ describe('Webhook API Tests', () => {
       this.timeout(15000)
       const response = await stack.webhook(createdWebhookUid).fetch()
 
-      expect(response).to.be.an('object')
-      expect(response.uid).to.equal(createdWebhookUid)
+      trackedExpect(response, 'Webhook').toBeAn('object')
+      trackedExpect(response.uid, 'Webhook UID').toEqual(createdWebhookUid)
     })
 
     it('should validate webhook destinations', async () => {

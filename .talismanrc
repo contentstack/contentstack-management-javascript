@@ -28,7 +28,7 @@ fileignoreconfig:
     checksum: 2597efae3c1ab8cc173d5bf205f1c76932211f8e0eb2a16444e055d83481976c
   # Sanity check test files - use process.env for all secrets (no hardcoded values)
   - filename: test/sanity-check/api/environment-test.js
-    checksum: 9557c3898d40ab061061fdce522a8f7450214de6cb5b34ef1ffb634064a2ca06
+    checksum: e554b04ac510600c8489870a6097ee5f824f5b5e0f1a6358d8ef4ad24b3b0c12
   - filename: test/sanity-check/env.example.txt
     checksum: 3339944cd20d6d72f70a92e54af3de96736250b4b7117a29577575f9b52ed611
   - filename: test/sanity-check/api/token-test.js
@@ -52,7 +52,7 @@ fileignoreconfig:
   - filename: test/sanity-check/mock/content-types/index.js
     checksum: ff47f74037e22f791e2d7c6afbaccf7857b26b51dd2e2361b5b4b70d36057b7f
   - filename: test/sanity-check/sanity.js
-    checksum: 94fc68fc78e00b8b268f6e86b5ed55dbfe48fbde45f780629afa1c75c968f438
+    checksum: 523725a12c93abdc1b89a1e7ef38021184e7d710f8719290923f835f8d615693
   - filename: test/sanity-check/api/user-test.js
     checksum: 5f1284561725f99980a800c87d80d2f7b6f56e1efa618adb10bbf87312b0deec
   - filename: test/sanity-check/api/locale-test.js
@@ -82,7 +82,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/branch-test.js
     checksum: 49c8fd18c59d45e4335f766591711849722206bce34860efa8eced7172f44efa
   - filename: test/sanity-check/api/stack-test.js
-    checksum: afefc21f2ac44e18f03e8bd12f80143f5545f2147fc6cedf8a933ff2aa3f4028
+    checksum: abcc3b1a7a6e52a553645bd7a7a38b287402604f6b61df51a69745cd2aa8a187
   - filename: test/sanity-check/api/previewToken-test.js
     checksum: 9efe3852336f1c5f961682ca21673514b2bd1334a040c5d56983074f41c6b8e0
   - filename: test/sanity-check/api/role-test.js

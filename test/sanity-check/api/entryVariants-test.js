@@ -5,7 +5,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { generateUniqueId, wait, testData } from '../utility/testHelpers.js'
+import { generateUniqueId, wait, testData, trackedExpect } from '../utility/testHelpers.js'
 
 let client = null
 let stack = null
@@ -195,9 +195,10 @@ describe('Entry Variants API Tests', () => {
           .variants(variantUid)
           .update(variantEntryData)
         
-        expect(response.entry).to.not.equal(undefined)
-        expect(response.entry.title).to.not.equal(null)
-        expect(response.notice).to.include('variant')
+        trackedExpect(response, 'Entry variant update response').toBeAn('object')
+        trackedExpect(response.entry, 'Entry variant entry').toExist()
+        trackedExpect(response.entry.title, 'Entry variant title').toExist()
+        trackedExpect(response.notice, 'Notice').toInclude('variant')
       } catch (error) {
         if (error.status === 403 || error.errorCode === 403) {
           console.log('Entry Variants feature not enabled')
@@ -226,8 +227,9 @@ describe('Entry Variants API Tests', () => {
           .variants(variantUid)
           .fetch()
         
-        expect(response.entry).to.not.equal(undefined)
-        expect(response.entry._variant).to.not.equal(undefined)
+        trackedExpect(response, 'Entry variant fetch response').toBeAn('object')
+        trackedExpect(response.entry, 'Entry variant entry').toExist()
+        trackedExpect(response.entry._variant, 'Entry variant _variant').toExist()
       } catch (error) {
         if (error.status === 403 || error.status === 404) {
           this.skip()

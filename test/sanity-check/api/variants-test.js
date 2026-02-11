@@ -12,7 +12,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { wait, testData } from '../utility/testHelpers.js'
+import { wait, testData, trackedExpect } from '../utility/testHelpers.js'
 
 describe('Variants API Tests', () => {
   let client = null
@@ -92,9 +92,9 @@ describe('Variants API Tests', () => {
 
       const response = await stack.variantGroup(variantGroupUid).variants().create(createData)
       
-      expect(response).to.be.an('object')
-      expect(response.uid).to.be.a('string')
-      expect(response.name).to.include('Test Variant')
+      trackedExpect(response, 'Variant').toBeAn('object')
+      trackedExpect(response.uid, 'Variant UID').toBeA('string')
+      trackedExpect(response.name, 'Variant name').toInclude('Test Variant')
       
       variantUid = response.uid
       testData.variantUid = response.uid
@@ -113,9 +113,9 @@ describe('Variants API Tests', () => {
       try {
         const response = await stack.variantGroup(variantGroupUid).variants().query().find()
         
-        expect(response).to.be.an('object')
+        trackedExpect(response, 'Variants query response').toBeAn('object')
         const items = response.items || response.variants || []
-        expect(items).to.be.an('array')
+        trackedExpect(items, 'Variants list').toBeAn('array')
         
         items.forEach(variant => {
           expect(variant.uid).to.not.equal(null)
