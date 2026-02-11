@@ -239,7 +239,7 @@ describe('Contentstack Client', () => {
     })
 
     it('should handle login with TOTP secret', done => {
-      const mfaSecret = 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP'
+      const mfaSecret = 'MFASECRET'
 
       mock.onPost('/user-session').reply(config => {
         const data = JSON.parse(config.data)
@@ -416,7 +416,7 @@ describe('Contentstack Client', () => {
         .login({
           email: 'test@example.com',
           password: 'password123',
-          mfaSecret: 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP'
+          mfaSecret: 'MFASECRET'
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth')
