@@ -94,7 +94,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/contentType-test.js
     checksum: 4d5178998f9f3c27550c5bd21540e254e08f79616e8615e7256ba2175cb4c8e1
   - filename: test/sanity-check/api/bulkOperation-test.js
-    checksum: 29321d383af277bfac4b2db4a52bc9f5e3db67d1333f9ca65fbc4d1bc1ba6f0a
+    checksum: 6281e14c7a10864c586e95139f47ae2ee5bb2322a2beaec166a1f6ece830431b
   - filename: test/sanity-check/api/entry-test.js
     checksum: 9dc16b404a98ff9fa2c164fad0182b291b9c338dd58558dc5ef8dd75cf18bc1f
   - filename: test/sanity-check/api/entryVariants-test.js
