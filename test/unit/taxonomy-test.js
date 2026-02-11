@@ -101,7 +101,7 @@ describe('Contentstack Taxonomy test', () => {
   it('Taxonomy fetch with locale parameter test', done => {
     const mock = new MockAdapter(Axios)
     const queryParams = { locale: 'hi-in' }
-    mock.onGet('/taxonomies/UID', queryParams).reply(200, {
+    mock.onGet('/taxonomies/UID', { params: queryParams }).reply(200, {
       taxonomy: {
         ...taxonomyMock,
         locale: 'hi-in'
@@ -139,7 +139,7 @@ describe('Contentstack Taxonomy test', () => {
         referenced_content_type_count: 2
       }
     }
-    mock.onGet('/taxonomies/UID', queryParams).reply(200, responseData)
+    mock.onGet('/taxonomies/UID', { params: queryParams }).reply(200, responseData)
     makeTaxonomy({
       taxonomy: {
         ...systemUidMock
@@ -166,7 +166,7 @@ describe('Contentstack Taxonomy test', () => {
       include_fallback: true,
       fallback_locale: 'en-us'
     }
-    mock.onGet('/taxonomies/UID', queryParams).reply(200, {
+    mock.onGet('/taxonomies/UID', { params: queryParams }).reply(200, {
       taxonomy: {
         ...taxonomyMock,
         locale: 'hi-in'
@@ -199,7 +199,7 @@ describe('Contentstack Taxonomy test', () => {
         uuid: '65c091865ae75f256a76adc2'
       }
     }
-    mock.onGet('/taxonomies/UID', queryParams).reply(200, responseData)
+    mock.onGet('/taxonomies/UID', { params: queryParams }).reply(200, responseData)
     makeTaxonomy({
       taxonomy: {
         ...systemUidMock
@@ -234,7 +234,7 @@ describe('Contentstack Taxonomy test', () => {
   it('Taxonomies query with locale parameter test', done => {
     const mock = new MockAdapter(Axios)
     const queryParams = { locale: 'hi-in' }
-    mock.onGet('/taxonomies', queryParams).reply(200, {
+    mock.onGet('/taxonomies', { params: queryParams }).reply(200, {
       taxonomies: [
         {
           ...taxonomyMock,
@@ -275,7 +275,7 @@ describe('Contentstack Taxonomy test', () => {
       ],
       count: 1
     }
-    mock.onGet('/taxonomies', queryParams).reply(200, responseData)
+    mock.onGet('/taxonomies', { params: queryParams }).reply(200, responseData)
     makeTaxonomy()
       .query(queryParams)
       .find()
@@ -299,7 +299,7 @@ describe('Contentstack Taxonomy test', () => {
       include_fallback: true,
       fallback_locale: 'en-us'
     }
-    mock.onGet('/taxonomies', queryParams).reply(200, {
+    mock.onGet('/taxonomies', { params: queryParams }).reply(200, {
       taxonomies: [
         {
           ...taxonomyMock,
@@ -325,7 +325,7 @@ describe('Contentstack Taxonomy test', () => {
       asc: 'name',
       desc: 'created_at'
     }
-    mock.onGet('/taxonomies', queryParams).reply(200, {
+    mock.onGet('/taxonomies', { params: queryParams }).reply(200, {
       taxonomies: [
         taxonomyMock
       ],
@@ -348,7 +348,7 @@ describe('Contentstack Taxonomy test', () => {
       typeahead: 'taxonomy',
       deleted: false
     }
-    mock.onGet('/taxonomies', queryParams).reply(200, {
+    mock.onGet('/taxonomies', { params: queryParams }).reply(200, {
       taxonomies: [
         taxonomyMock
       ],
@@ -370,7 +370,7 @@ describe('Contentstack Taxonomy test', () => {
       skip: 10,
       limit: 5
     }
-    mock.onGet('/taxonomies', queryParams).reply(200, {
+    mock.onGet('/taxonomies', { params: queryParams }).reply(200, {
       taxonomies: [
         taxonomyMock
       ],
@@ -400,7 +400,7 @@ describe('Contentstack Taxonomy test', () => {
       ],
       count: 1
     }
-    mock.onGet('/taxonomies', queryParams).reply(200, responseData)
+    mock.onGet('/taxonomies', { params: queryParams }).reply(200, responseData)
     makeTaxonomy()
       .query(queryParams)
       .find()
@@ -527,7 +527,7 @@ describe('Contentstack Taxonomy test', () => {
       notice: 'Taxonomy unlocalized successfully',
       status: 200
     }
-    mock.onDelete('/taxonomies/UID', { locale: 'hi-in' }).reply(200, deleteResponse)
+    mock.onDelete('/taxonomies/UID', { params: { locale: 'hi-in' } }).reply(200, deleteResponse)
     makeTaxonomy({
       taxonomy: {
         ...systemUidMock
@@ -571,7 +571,7 @@ describe('Contentstack Taxonomy test', () => {
       notice: 'Taxonomy unlocalized successfully',
       status: 200
     }
-    mock.onDelete('/taxonomies/UID', { locale: 'mr-in' }).reply(200, deleteResponse)
+    mock.onDelete('/taxonomies/UID', { params: { locale: 'mr-in' } }).reply(200, deleteResponse)
     makeTaxonomy({
       taxonomy: {
         ...systemUidMock
