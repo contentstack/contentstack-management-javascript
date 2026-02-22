@@ -639,6 +639,40 @@ describe('Concurrency queue test', () => {
       })
       .catch(done)
   })
+
+  it('should not refresh token when error_code is 161 (env/permission) with 401 status', done => {
+    let refreshTokenCallCount = 0
+    const refreshTokenStub = sinon.stub().callsFake(() => {
+      refreshTokenCallCount++
+      return Promise.resolve({ authorization: 'Bearer new_token' })
+    })
+
+    const axiosWithRefresh = client({
+      baseURL: `${host}:${port}`,
+      authorization: 'Bearer <token_value>',
+      refreshToken: refreshTokenStub
+    })
+
+    const mock = new MockAdapter(axiosWithRefresh.axiosInstance)
+    mock.onGet('/test161').reply(401, {
+      error_message: "Environment doesn't exists or insufficient permission to access it.",
+      error_code: 161
+    })
+
+    axiosWithRefresh.axiosInstance.get('/test161')
+      .then(() => {
+        done(new Error('Expected error was not thrown'))
+      })
+      .catch((error) => {
+        expect(refreshTokenCallCount).to.equal(0)
+        expect(refreshTokenStub.called).to.equal(false)
+        expect(error.response.status).to.equal(401)
+        expect(error.response.data.error_code).to.equal(161)
+        expect(error.response.data.error_message).to.include("Environment doesn't exists or insufficient permission")
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeConcurrencyQueue (config) {

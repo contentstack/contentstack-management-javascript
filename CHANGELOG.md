@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.27.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-16)
+ - Fix
+   - Skip token refresh on 401 when API returns error_code 161 (environment/permission) so the actual API error is returned instead of triggering refresh and a generic "Unable to refresh token" message
+   - When token refresh fails after a 401, return the original API error (error_message, error_code) instead of the generic "Unable to refresh token" message
+
 ## [v1.27.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.4) (2026-02-02)
  - Fix
    - Removed content-type header from the release delete method
