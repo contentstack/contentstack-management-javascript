@@ -1,6 +1,9 @@
 # Changelog
 
 ## [v1.27.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-16)
+ - Enhancement
+   - OAuth PKCE: store code_verifier in sessionStorage (browser only) so token exchange works after redirect in React and other SPAs; verifier is restored on callback, cleared after successful exchange or on error; 10-minute expiry; Node remains memory-only
+   - Extracted PKCE storage into `lib/core/pkceStorage.js` module
  - Fix
    - Skip token refresh on 401 when API returns error_code 161 (environment/permission) so the actual API error is returned instead of triggering refresh and a generic "Unable to refresh token" message
    - When token refresh fails after a 401, return the original API error (error_message, error_code) instead of the generic "Unable to refresh token" message

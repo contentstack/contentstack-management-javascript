@@ -329,4 +329,144 @@ describe('OAuthHandler', () => {
       expect(deleteStub.called).to.be.false
     })
   })
+
+  describe('PKCE sessionStorage (browser)', () => {
+    let sessionStorageStub
+
+    beforeEach(() => {
+      sessionStorageStub = {
+        getItem: sandbox.stub(),
+        setItem: sandbox.stub(),
+        removeItem: sandbox.stub()
+      }
+      global.window = { sessionStorage: sessionStorageStub }
+    })
+
+    afterEach(() => {
+      delete global.window
+    })
+
+    it('should store code_verifier in sessionStorage when generated (browser)', () => {
+      sessionStorageStub.getItem.returns(null)
+
+      const handler = new OAuthHandler(
+        axiosInstance,
+        'appId',
+        'clientId',
+        'http://localhost:8184',
+        null
+      )
+
+      expect(handler.codeVerifier).to.be.a('string')
+      expect(handler.codeVerifier).to.have.lengthOf(128)
+      expect(sessionStorageStub.setItem.calledOnce).to.equal(true)
+      const [key, valueStr] = sessionStorageStub.setItem.firstCall.args
+      expect(key).to.include('contentstack_oauth_pkce')
+      expect(key).to.include('appId')
+      expect(key).to.include('clientId')
+      const value = JSON.parse(valueStr)
+      expect(value).to.have.property('codeVerifier', handler.codeVerifier)
+      expect(value).to.have.property('expiresAt')
+      expect(value.expiresAt).to.be.greaterThan(Date.now())
+    })
+
+    it('should retrieve code_verifier from sessionStorage in constructor when valid', () => {
+      const storedVerifier = 'stored_code_verifier_xyz'
+      const storedValue = JSON.stringify({
+        codeVerifier: storedVerifier,
+        expiresAt: Date.now() + 600000
+      })
+      sessionStorageStub.getItem.returns(storedValue)
+
+      const handler = new OAuthHandler(
+        axiosInstance,
+        'appId',
+        'clientId',
+        'http://localhost:8184',
+        null
+      )
+
+      expect(handler.codeVerifier).to.equal(storedVerifier)
+      expect(sessionStorageStub.setItem.called).to.equal(false)
+    })
+
+    it('should not use expired sessionStorage entry and should generate new code_verifier', () => {
+      const expiredValue = JSON.stringify({
+        codeVerifier: 'expired_verifier',
+        expiresAt: Date.now() - 1000
+      })
+      sessionStorageStub.getItem.returns(expiredValue)
+
+      const handler = new OAuthHandler(
+        axiosInstance,
+        'appId',
+        'clientId',
+        'http://localhost:8184',
+        null
+      )
+
+      expect(handler.codeVerifier).to.not.equal('expired_verifier')
+      expect(handler.codeVerifier).to.have.lengthOf(128)
+      expect(sessionStorageStub.setItem.calledOnce).to.equal(true)
+    })
+
+    it('should clear sessionStorage after successful token exchange', async () => {
+      sessionStorageStub.getItem.returns(null)
+      const handler = new OAuthHandler(
+        axiosInstance,
+        'appId',
+        'clientId',
+        'http://localhost:8184',
+        null
+      )
+      const tokenData = { access_token: 'accessToken', refresh_token: 'refreshToken', expires_in: 3600 }
+      sandbox.stub(axiosInstance, 'post').resolves({ data: tokenData })
+
+      await handler.exchangeCodeForToken('authorization_code')
+
+      expect(sessionStorageStub.removeItem.calledOnce).to.equal(true)
+      expect(sessionStorageStub.removeItem.firstCall.args[0]).to.include('contentstack_oauth_pkce')
+    })
+
+    it('should clear sessionStorage on token exchange error to prevent replay attacks', async () => {
+      sessionStorageStub.getItem.returns(null)
+      const handler = new OAuthHandler(
+        axiosInstance,
+        'appId',
+        'clientId',
+        'http://localhost:8184',
+        null
+      )
+      sandbox.stub(axiosInstance, 'post').rejects(new Error('invalid_code_verifier'))
+
+      try {
+        await handler.exchangeCodeForToken('authorization_code')
+      } catch {
+        // errorFormatter rethrows; we only care that removeItem was called
+      }
+      expect(sessionStorageStub.removeItem.calledOnce).to.equal(true)
+    })
+  })
+
+  describe('PKCE memory-only (Node / no sessionStorage)', () => {
+    it('should use memory-only code_verifier when window is not defined', () => {
+      const originalWindow = global.window
+      delete global.window
+
+      const handler = new OAuthHandler(
+        axiosInstance,
+        'appId',
+        'clientId',
+        'http://localhost:8184',
+        null
+      )
+
+      expect(handler.codeVerifier).to.be.a('string')
+      expect(handler.codeVerifier).to.have.lengthOf(128)
+
+      if (originalWindow !== undefined) {
+        global.window = originalWindow
+      }
+    })
+  })
 })

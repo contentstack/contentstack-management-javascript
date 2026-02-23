@@ -1,4 +1,10 @@
 fileignoreconfig:
+  - filename: lib/core/pkceStorage.js
+    checksum: e060690c5ed348a6914df7ecc36de5b6b45f9a7c3a9c164c88bd2c7fad2bea08
+  - filename: test/unit/oauthHandler-test.js
+    checksum: 95a968c0d72d5bbe9e1acb30ea17ab505938f6174e917d7a25dda8facfda5a49
+  - filename: test/unit/pkceStorage-test.js
+    checksum: 567f557d37e8119c22cd4c5c4014c16dd660c03be35f65e803fb340cfd4b2136
   - filename: test/unit/globalField-test.js
     checksum: 25185e3400a12e10a043dc47502d8f30b7e1c4f2b6b4d3b8b55cdc19850c48bf
   - filename: lib/stack/index.js
