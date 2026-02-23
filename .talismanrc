@@ -11,7 +11,7 @@ fileignoreconfig:
     ignore_detectors:
       - filecontent
   - filename: package-lock.json
-    checksum: 92b88ce00603ede68344bac6bd6bf76bdb76f1e5f5ba8d1d0c79da2b72c5ecc0
+    checksum: 4a58eb4ee1f54d68387bd005fb76e83a02461441c647d94017743d3442c0f476
   - filename: test/unit/ContentstackClient-test.js
     checksum: 5d8519b5b93c715e911a62b4033614cc4fb3596eabf31c7216ecb4cc08604a73
   - filename: .husky/pre-commit
