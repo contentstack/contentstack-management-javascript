@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.27.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.6) (2026-03-02)
+ - Enhancement
+   - Added support for get job item status.
+
 ## [v1.27.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-16)
  - Enhancement
    - OAuth PKCE: store code_verifier in sessionStorage (browser only) so token exchange works after redirect in React and other SPAs; verifier is restored on callback, cleared after successful exchange or on error; 10-minute expiry; Node remains memory-only
