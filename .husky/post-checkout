@@ -21,6 +21,7 @@ esac
 
 # Only run when current branch does not exist on origin (treat as new local branch)
 if git ls-remote --heads origin "$CURRENT_BRANCH" 2>/dev/null | grep -q .; then
+  echo "post-checkout: $CURRENT_BRANCH exists on origin, skipping merge."
   exit 0
 fi
 
