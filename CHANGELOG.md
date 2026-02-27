@@ -1,16 +1,19 @@
 # Changelog
 
-## [v1.27.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.6) (2026-03-02)
- - Enhancement
-   - Added support for get job item status.
+## [v1.28.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-03-02)
+-  Enh
+   - Added DAM 2.0 query support 
 
-## [v1.27.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-16)
- - Enhancement
-   - OAuth PKCE: store code_verifier in sessionStorage (browser only) so token exchange works after redirect in React and other SPAs; verifier is restored on callback, cleared after successful exchange or on error; 10-minute expiry; Node remains memory-only
-   - Extracted PKCE storage into `lib/core/pkceStorage.js` module
+## [v1.27.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-23)
  - Fix
    - Skip token refresh on 401 when API returns error_code 161 (environment/permission) so the actual API error is returned instead of triggering refresh and a generic "Unable to refresh token" message
    - When token refresh fails after a 401, return the original API error (error_message, error_code) instead of the generic "Unable to refresh token" message
+
+## [v1.27.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-11)
+ - Fix
+   - Concurrency queue: when response errors have no `config` (e.g. after network retries exhaust in some environments, or when plugins return a new error object), the SDK now rejects with a catchable Error instead of throwing an unhandled TypeError and crashing the process
+   - Hardened `responseHandler` to safely handle errors without `config` (e.g. plugin-replaced errors) by guarding `config.onComplete` and still running queue `shift()` so rejections remain catchable
+   - Added optional chaining for `error.config` reads in the retry path and unit tests for missing-config scenarios
 
 ## [v1.27.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.4) (2026-02-02)
  - Fix
