@@ -42,6 +42,26 @@ describe('Entry api Test', () => {
       .catch(done)
   })
 
+  it('should entry fetch with asset_fields parameter - single value', done => {
+    makeEntry(singlepageCT.content_type.uid, entryUTD)
+      .fetch({ asset_fields: ['user_defined_fields'] })
+      .then((entryResponse) => {
+        expect(entryResponse.uid).to.be.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should entry fetch with asset_fields parameter - multiple values', done => {
+    makeEntry(singlepageCT.content_type.uid, entryUTD)
+      .fetch({ asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] })
+      .then((entryResponse) => {
+        expect(entryResponse.uid).to.be.not.equal(null)
+        done()
+      })
+      .catch(done)
+  })
+
   it('should localize entry with title update', done => {
     makeEntry(singlepageCT.content_type.uid, entryUTD)
       .fetch()
@@ -121,6 +141,52 @@ describe('Entry api Test', () => {
         collection.items.forEach((entry) => {
           expect(entry.uid).to.be.not.equal(null)
           expect(entry.tags).to.have.all.keys(0)
+        })
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should get all Entry with asset_fields parameter - single value', done => {
+    makeEntry(multiPageCT.content_type.uid)
+      .query({ include_count: true, asset_fields: ['user_defined_fields'] }).find()
+      .then((collection) => {
+        expect(collection.count).to.be.equal(3)
+        collection.items.forEach((entry) => {
+          expect(entry.uid).to.be.not.equal(null)
+          expect(entry.content_type_uid).to.be.equal(multiPageCT.content_type.uid)
+        })
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should get all Entry with asset_fields parameter - multiple values', done => {
+    makeEntry(multiPageCT.content_type.uid)
+      .query({ include_count: true, asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] }).find()
+      .then((collection) => {
+        expect(collection.count).to.be.equal(3)
+        collection.items.forEach((entry) => {
+          expect(entry.uid).to.be.not.equal(null)
+          expect(entry.content_type_uid).to.be.equal(multiPageCT.content_type.uid)
+        })
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should get all Entry with asset_fields parameter combined with other query params', done => {
+    makeEntry(multiPageCT.content_type.uid)
+      .query({
+        include_count: true,
+        include_content_type: true,
+        asset_fields: ['user_defined_fields', 'embedded']
+      }).find()
+      .then((collection) => {
+        expect(collection.count).to.be.equal(3)
+        collection.items.forEach((entry) => {
+          expect(entry.uid).to.be.not.equal(null)
+          expect(entry.content_type_uid).to.be.equal(multiPageCT.content_type.uid)
         })
         done()
       })
