@@ -673,6 +673,73 @@ describe('Concurrency queue test', () => {
       })
       .catch(done)
   })
+
+  it('should reject with catchable error when response error has no config (avoids TypeError crash)', (done) => {
+    // Simulates the reported bug: when retries exhaust and the SDK receives an error
+    // without .config (e.g. in some environments), it must reject with a proper Error
+    // instead of throwing "Cannot read properties of undefined (reading 'networkRetryCount')"
+    const client = Axios.create({
+      baseURL: `${host}:${port}`,
+      timeout: 500
+    })
+    const logSpy = sinon.stub()
+    client.defaults.adapter = () => {
+      const err = new Error('Connection timeout')
+      err.code = 'ECONNABORTED'
+      return Promise.reject(err)
+    }
+    const queue = new ConcurrencyQueue({
+      axios: client,
+      config: {
+        retryOnNetworkFailure: true,
+        maxNetworkRetries: 2,
+        logHandler: logSpy
+      }
+    })
+    client.get('/any')
+      .then(() => done(new Error('Expected rejection')))
+      .catch((err) => {
+        queue.detach()
+        expect(err).to.be.an('Error')
+        expect(err.message).to.be.a('string')
+        expect(() => { throw err }).to.throw(Error)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should not crash when responseHandler receives error without config (e.g. plugin returns new error)', (done) => {
+    // When a plugin onResponse returns a new error without .config, we pass it to responseHandler.
+    // responseHandler must not access .config when missing (shift + return instead of throwing).
+    const client = Axios.create({
+      baseURL: `${host}:${port}`
+    })
+    const pluginReplacesWithNoConfig = {
+      onResponse: (err) => {
+        const e = new Error('Plugin replaced error')
+        e.originalError = err
+        return e
+      }
+    }
+    const queue = new ConcurrencyQueue({
+      axios: client,
+      config: {
+        retryOnError: true,
+        retryCondition: () => false,
+        logHandler: logHandlerStub
+      },
+      plugins: [pluginReplacesWithNoConfig]
+    })
+    client.get('/fail')
+      .then(() => done(new Error('Expected rejection')))
+      .catch((err) => {
+        queue.detach()
+        expect(err).to.be.an('Error')
+        expect(err.message).to.equal('Plugin replaced error')
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeConcurrencyQueue (config) {
