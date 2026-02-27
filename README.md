@@ -71,6 +71,39 @@ contentstackClient.stack({ api_key: 'API_KEY', management_token: 'MANAGEMENT_TOK
 	console.log(contenttype)
 })
 ```
+
+### Host and Region Configuration
+You can configure the SDK to use a specific region or custom host for API requests.
+
+#### Region
+The SDK supports multiple regions. Valid region values are: `NA`, `EU`, `AU`, `AZURE_NA`, `AZURE_EU`, `GCP_NA`, `GCP_EU`. The default region is `NA`.
+
+```javascript
+// Use EU region
+contentstackClient = contentstack.client({ 
+  authtoken: 'AUTHTOKEN',
+  region: 'EU' 
+})
+```
+
+#### Custom Host
+You can specify a custom host for API requests. If both `host` and `region` are provided, the `host` parameter takes priority.
+
+```javascript
+// Use custom host
+contentstackClient = contentstack.client({ 
+  authtoken: 'AUTHTOKEN',
+  host: 'api.contentstack.io' 
+})
+
+// Custom host takes priority over region
+contentstackClient = contentstack.client({ 
+  authtoken: 'AUTHTOKEN',
+  region: 'EU',
+  host: 'custom-api.example.com' 
+})
+```
+
 ### Contentstack Management JavaScript SDK: 5-minute Quickstart
 #### Initializing Your SDK:
 To use the JavaScript CMA SDK, you need to first initialize it. To do this, use the following code:
@@ -124,7 +157,7 @@ contentstackClient.stack({ api_key: 'API_KEY' }).asset().create({ asset })
 -   [Content Management API Docs](https://www.contentstack.com/docs/developers/apis/content-management-api)
 
 ### The MIT License (MIT)
-Copyright © 2012-2025  [Contentstack](https://www.contentstack.com/). All Rights Reserved
+Copyright © 2012-2026  [Contentstack](https://www.contentstack.com/). All Rights Reserved
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
