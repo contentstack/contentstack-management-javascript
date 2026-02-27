@@ -110,6 +110,97 @@ describe('Contentstack Entry test', () => {
       .catch(done)
   })
 
+  it('Entry Query test with asset_fields parameter - single value', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/content_types/content_type_uid/entries', (config) => {
+      // Check if asset_fields parameter is present in the request
+      const assetFields = config.params && (config.params['asset_fields[]'] || config.params.asset_fields)
+      if (Array.isArray(assetFields)) {
+        return assetFields.includes('user_defined_fields')
+      }
+      // Also check URL if params are serialized
+      if (config.url && config.url.includes('asset_fields')) {
+        return config.url.includes('user_defined_fields')
+      }
+      return false
+    }).reply(200, {
+      entries: [
+        entryMock
+      ]
+    })
+    makeEntry()
+      .query({ asset_fields: ['user_defined_fields'] })
+      .find()
+      .then((entry) => {
+        checkEntry(entry.items[0])
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry Query test with asset_fields parameter - multiple values', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/content_types/content_type_uid/entries', (config) => {
+      // Check if asset_fields parameter is present in the request
+      const assetFields = config.params && (config.params['asset_fields[]'] || config.params.asset_fields)
+      if (Array.isArray(assetFields)) {
+        return assetFields.includes('user_defined_fields') &&
+               assetFields.includes('embedded') &&
+               assetFields.includes('ai_suggested') &&
+               assetFields.includes('visual_markups')
+      }
+      // Also check URL if params are serialized
+      if (config.url && config.url.includes('asset_fields')) {
+        return config.url.includes('user_defined_fields') &&
+               config.url.includes('embedded') &&
+               config.url.includes('ai_suggested') &&
+               config.url.includes('visual_markups')
+      }
+      return false
+    }).reply(200, {
+      entries: [
+        entryMock
+      ]
+    })
+    makeEntry()
+      .query({ asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] })
+      .find()
+      .then((entry) => {
+        checkEntry(entry.items[0])
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry Query test with asset_fields parameter combined with other query params', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/content_types/content_type_uid/entries', (config) => {
+      // Check if asset_fields parameter is present in the request
+      const assetFields = config.params && (config.params['asset_fields[]'] || config.params.asset_fields)
+      const hasAssetFields = Array.isArray(assetFields)
+        ? (assetFields.includes('user_defined_fields') && assetFields.includes('embedded'))
+        : (config.url && config.url.includes('asset_fields') && config.url.includes('user_defined_fields') && config.url.includes('embedded'))
+      return hasAssetFields && config.params && config.params.include_count === true
+    }).reply(200, {
+      entries: [
+        entryMock
+      ],
+      count: 1
+    })
+    makeEntry()
+      .query({
+        asset_fields: ['user_defined_fields', 'embedded'],
+        include_count: true
+      })
+      .find()
+      .then((entry) => {
+        checkEntry(entry.items[0])
+        expect(entry.count).to.be.equal(1)
+        done()
+      })
+      .catch(done)
+  })
+
   it('Entry update test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPut('/content_types/content_type_uid/entries/UID').reply(200, {
@@ -145,6 +236,76 @@ describe('Contentstack Entry test', () => {
       stackHeaders: stackHeadersMock
     })
       .fetch()
+      .then((entry) => {
+        checkEntry(entry)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry fetch test with asset_fields parameter - single value', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/content_types/content_type_uid/entries/UID', (config) => {
+      // Check if asset_fields parameter is present in the request
+      const assetFields = config.params && (config.params['asset_fields[]'] || config.params.asset_fields)
+      if (Array.isArray(assetFields)) {
+        return assetFields.includes('user_defined_fields')
+      }
+      // Also check URL if params are serialized
+      if (config.url && config.url.includes('asset_fields')) {
+        return config.url.includes('user_defined_fields')
+      }
+      return false
+    }).reply(200, {
+      entry: {
+        ...entryMock
+      }
+    })
+    makeEntry({
+      entry: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .fetch({ asset_fields: ['user_defined_fields'] })
+      .then((entry) => {
+        checkEntry(entry)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry fetch test with asset_fields parameter - multiple values', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/content_types/content_type_uid/entries/UID', (config) => {
+      // Check if asset_fields parameter is present in the request
+      const assetFields = config.params && (config.params['asset_fields[]'] || config.params.asset_fields)
+      if (Array.isArray(assetFields)) {
+        return assetFields.includes('user_defined_fields') &&
+               assetFields.includes('embedded') &&
+               assetFields.includes('ai_suggested') &&
+               assetFields.includes('visual_markups')
+      }
+      // Also check URL if params are serialized
+      if (config.url && config.url.includes('asset_fields')) {
+        return config.url.includes('user_defined_fields') &&
+               config.url.includes('embedded') &&
+               config.url.includes('ai_suggested') &&
+               config.url.includes('visual_markups')
+      }
+      return false
+    }).reply(200, {
+      entry: {
+        ...entryMock
+      }
+    })
+    makeEntry({
+      entry: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .fetch({ asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] })
       .then((entry) => {
         checkEntry(entry)
         done()
