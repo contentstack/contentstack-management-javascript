@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.28.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-03-02)
+-  Enh
+   - Added DAM 2.0 query support 
+
 ## [v1.27.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-23)
  - Fix
    - Skip token refresh on 401 when API returns error_code 161 (environment/permission) so the actual API error is returned instead of triggering refresh and a generic "Unable to refresh token" message
