@@ -1,11 +1,12 @@
-# Ensures package.json and CHANGELOG.md are bumped compared to the latest tag when relevant files change.
+# Ensures package.json and CHANGELOG.md are bumped when merging to release branch (master/main).
+# Runs only on PRs targeting master or main (e.g. development → master).
 name: Check Version Bump
 
 on:
   pull_request:
-    paths:
-      - 'package.json'
-      - 'CHANGELOG.md'
+    branches:
+      - master
+      - main
 
 jobs:
   version-bump:
@@ -23,8 +24,21 @@ jobs:
           node-version: '22.x'
 
       - name: Check version bump
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -e
+          # Skip version bump check when only test/docs/config files changed (no production code)
+          if [ -n "$BASE_SHA" ]; then
+            CHANGED=$(git diff --name-only "$BASE_SHA" HEAD 2>/dev/null || true)
+            PROD_CHANGES=$(echo "$CHANGED" | grep -v -e '^test/' -e '^package\.json$' -e '^CHANGELOG\.md$' -e '^\.github/' -e '^README' -e '^\.' -e '^docs/' -e '^jest\.config' -e '^\.eslintrc' -e '^\.prettierrc' || true)
+            # Remove empty lines; if no production changes left, skip check
+            PROD_CHANGES=$(echo "$PROD_CHANGES" | sed '/^$/d')
+            if [ -z "$PROD_CHANGES" ]; then
+              echo "Only test/docs/config files changed. Skipping version bump check."
+              exit 0
+            fi
+          fi
           PKG_VERSION=$(node -p "require('./package.json').version.replace(/^v/, '')")
           if [ -z "$PKG_VERSION" ]; then
             echo "::error::Could not read version from package.json"
