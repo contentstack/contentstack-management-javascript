@@ -131,7 +131,7 @@ describe('Environment API Tests', () => {
       // shared "development" env (testData.environments.development) used by
       // bulk operations, entry publish, release, workflow, etc.
       const tempName = `temp_rename_${Date.now()}`
-      const tempEnv = await stack.environment().create({
+      await stack.environment().create({
         environment: {
           name: tempName,
           urls: [{ locale: 'en-us', url: 'https://temp-rename.example.com' }]

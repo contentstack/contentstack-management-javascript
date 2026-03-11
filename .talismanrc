@@ -28,7 +28,7 @@ fileignoreconfig:
     checksum: 2597efae3c1ab8cc173d5bf205f1c76932211f8e0eb2a16444e055d83481976c
   # Sanity check test files - use process.env for all secrets (no hardcoded values)
   - filename: test/sanity-check/api/environment-test.js
-    checksum: 5c3225c9013d7f0640ed7ef0e556fda4382e52b93da1af1f155c94eededd5195
+    checksum: 8fe733679cd4d116509a42c3d4daaf431220732acd86869dbe49236f42990b2a
   - filename: test/sanity-check/env.example.txt
     checksum: 3339944cd20d6d72f70a92e54af3de96736250b4b7117a29577575f9b52ed611
   - filename: test/sanity-check/api/token-test.js
