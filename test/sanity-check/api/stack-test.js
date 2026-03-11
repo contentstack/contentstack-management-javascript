@@ -201,7 +201,7 @@ describe('Stack API Tests', () => {
           expect(response.stack.collaborators || response.stack.users).to.be.an('array')
         }
       } catch (error) {
-        console.log('Stack users not available:', error.errorMessage)
+        console.log('Stack users not available:', error.errorMessage || error.message || 'unknown')
       }
     })
 
