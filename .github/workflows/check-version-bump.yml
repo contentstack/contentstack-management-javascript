@@ -1,9 +1,13 @@
-# Require version + CHANGELOG bump when merging to master/main/development (skip when only test/docs/config).
+# Ensures package.json and CHANGELOG.md are bumped when merging to release branch (master/main).
+# Runs only on PRs targeting master or main (e.g. development → master).
 name: Check Version Bump
 
 on:
   pull_request:
-    branches: [master, main, development]
+    branches:
+      - master
+      - main
+      - development
 
 jobs:
   version-bump:
@@ -25,42 +29,63 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -e
+          # Use three-dot diff so we only see changes introduced by the PR branch (works with merge commit checkout)
+          DIFF_REF="${BASE_SHA}...HEAD"
           if [ -n "$BASE_SHA" ] && git rev-parse --verify "$BASE_SHA" >/dev/null 2>&1; then
-            CHANGED=$(git diff --name-only "$BASE_SHA...HEAD" 2>/dev/null || true)
-            PROD=$(echo "$CHANGED" | grep -vE '^test/|^package\.json$|^CHANGELOG\.md$|^\.github/|^README|^\.|^docs/|^jest\.config|^\.eslintrc|^\.prettierrc' | sed '/^$/d')
-            if [ -z "$PROD" ]; then
-              echo "Only test/docs/config changed. Skipping."
+            CHANGED=$(git diff --name-only "$DIFF_REF" 2>/dev/null || true)
+            PROD_CHANGES=$(echo "$CHANGED" | grep -v -e '^test/' -e '^package\.json$' -e '^CHANGELOG\.md$' -e '^\.github/' -e '^README' -e '^\.' -e '^docs/' -e '^jest\.config' -e '^\.eslintrc' -e '^\.prettierrc' || true)
+            PROD_CHANGES=$(echo "$PROD_CHANGES" | sed '/^$/d')
+            if [ -z "$PROD_CHANGES" ]; then
+              echo "Only test/docs/config files changed. Skipping version bump check."
               exit 0
             fi
-            # Skip when only comments changed in lib/ or other prod files (//, /*, *, */, #)
-            if git diff "$BASE_SHA...HEAD" 2>/dev/null | node -e "
-              const l=require('fs').readFileSync(0,'utf8').split('\n').filter(x=>x.startsWith('+')||x.startsWith('-'));
-              const c=s=>{const t=(s||'').slice(1).trim(); return!t||/^\/\//.test(t)||/^\/\*/.test(t)||/^\*\//.test(t)||/^\*/.test(t)||/^#/.test(t);};
-              process.exit(l.length>0&&l.every(c)?0:1);
+            # Skip when only comments changed (any file/folder): JS, HTML, shell, YAML, SQL, etc.
+            if git diff "$DIFF_REF" 2>/dev/null | node -e "
+              try {
+                const lines = require('fs').readFileSync(0,'utf8').split('\n').filter(l=>l.startsWith('+')||l.startsWith('-'));
+                const isComment = (s) => {
+                  const t = (s||'').slice(1).replace(/^\s+|\s+$/g,'');
+                  if (!t) return true;
+                  return /^\/\//.test(t) || /^\/\*/.test(t) || /^\*\//.test(t) || /^\s*\*(\s|$)/.test(t) || /^#/.test(t)
+                    || /^<!--/.test(t) || /^-->/.test(t) || /^\s*--(\s|$)/.test(t)
+                    || /^\s*[\"\']\s*/.test(t) || /^;\s*/.test(t) || /^\s*%/.test(t)
+                    || /^[\s*\-=]+$/.test(t);
+                };
+                process.exit(lines.length > 0 && !lines.some(l => !isComment(l)) ? 0 : 1);
+              } catch(e) { process.exit(1); }
             " 2>/dev/null; then
-              echo "Only comments changed (lib/ or other). Skipping."
+              echo "Only comments changed in code. Skipping version bump check."
               exit 0
             fi
           fi
-
           PKG_VERSION=$(node -p "require('./package.json').version.replace(/^v/, '')")
-          [ -n "$PKG_VERSION" ] || { echo "::error::Could not read package.json version"; exit 1; }
-
+          if [ -z "$PKG_VERSION" ]; then
+            echo "::error::Could not read version from package.json"
+            exit 1
+          fi
           git fetch --tags --force 2>/dev/null || true
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
           if [ -z "$LATEST_TAG" ]; then
-            echo "No tags yet. Skipping."
+            echo "No existing tags found. Skipping version-bump check (first release)."
             exit 0
           fi
-          LATEST="${LATEST_TAG#v}"; LATEST="${LATEST%%-*}"
-
-          if [ "$(printf '%s\n' "$LATEST" "$PKG_VERSION" | sort -V | tail -1)" != "$PKG_VERSION" ] || [ "$PKG_VERSION" = "$LATEST" ]; then
-            echo "::error::Version bump required: package.json ($PKG_VERSION) must be greater than latest tag ($LATEST_TAG)."
+          LATEST_VERSION="${LATEST_TAG#v}"
+          LATEST_VERSION="${LATEST_VERSION%%-*}"
+          if [ "$(printf '%s\n' "$LATEST_VERSION" "$PKG_VERSION" | sort -V | tail -1)" != "$PKG_VERSION" ]; then
+            echo "::error::Version bump required: package.json version ($PKG_VERSION) is not greater than latest tag ($LATEST_TAG). Please bump the version in package.json."
             exit 1
           fi
-
-          CHANGELOG_VER=$(sed -nE 's/^## \[v?([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' CHANGELOG.md | head -1)
-          [ -n "$CHANGELOG_VER" ] || { echo "::error::No version line in CHANGELOG.md"; exit 1; }
-          [ "$CHANGELOG_VER" = "$PKG_VERSION" ] || { echo "::error::CHANGELOG top version ($CHANGELOG_VER) must match package.json ($PKG_VERSION)."; exit 1; }
-
-          echo "Version bump OK: $PKG_VERSION (latest tag: $LATEST_TAG)."
+          if [ "$PKG_VERSION" = "$LATEST_VERSION" ]; then
+            echo "::error::Version bump required: package.json version ($PKG_VERSION) equals latest tag ($LATEST_TAG). Please bump the version in package.json."
+            exit 1
+          fi
+          CHANGELOG_VERSION=$(sed -nE 's/^## \[v?([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' CHANGELOG.md | head -1)
+          if [ -z "$CHANGELOG_VERSION" ]; then
+            echo "::error::Could not find a version entry in CHANGELOG.md (expected line like '## [v1.0.0](...)')."
+            exit 1
+          fi
+          if [ "$CHANGELOG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::CHANGELOG version mismatch: CHANGELOG.md top version ($CHANGELOG_VERSION) does not match package.json version ($PKG_VERSION). Please add or update the CHANGELOG entry for $PKG_VERSION."
+            exit 1
+          fi
+          echo "Version bump check passed: package.json and CHANGELOG.md are at $PKG_VERSION (latest tag: $LATEST_TAG)."
