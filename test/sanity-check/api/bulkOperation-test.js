@@ -40,7 +40,7 @@ function assetsWithValidUids () {
   return [assetUid1, assetUid2].filter(uid => uid && String(uid).trim()).map(uid => ({ uid }))
 }
 
-async function waitForJobReady (jobId, maxAttempts = 10) {
+async function waitForJobReady (jobId, maxAttempts = 15) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       const response = await doBulkOperationWithManagementToken(tokenUidDev)
@@ -49,10 +49,13 @@ async function waitForJobReady (jobId, maxAttempts = 10) {
       if (response && response.status) {
         return response
       }
+      if (attempt === 1) {
+        console.log(`   jobStatus for ${jobId} returned undefined on first attempt, will keep polling...`)
+      }
     } catch (error) {
-      console.log(`Attempt ${attempt}: Job not ready yet, retrying...`)
+      console.log(`Attempt ${attempt}/${maxAttempts}: Job ${jobId} not ready — ${error.message || 'retrying...'}`)
     }
-    await delay(2000)
+    await delay(5000)
   }
   throw new Error(`Job ${jobId} did not become ready after ${maxAttempts} attempts`)
 }
@@ -357,12 +360,11 @@ describe('BulkOperation api test', () => {
   })
 
   it('should wait for all jobs to be processed before checking status', async () => {
-    await delay(5000) // Wait 5 seconds for jobs to be processed
+    await delay(15000)
   })
 
-  it('should wait for jobs to be ready and get job status for the first publish job', async () => {
+  it('should wait for jobs to be ready and get job status for the first publish job', async function () {
     const response = await waitForJobReady(jobId1)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -371,26 +373,20 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should validate detailed job status response structure', async () => {
+  it('should validate detailed job status response structure', async function () {
     const response = await waitForJobReady(jobId1)
-
     expect(response).to.not.equal(undefined)
-    // Validate main job properties
     expect(response.uid).to.not.equal(undefined)
     expect(response.api_key).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
-
-    // Validate body structure
     expect(response.body).to.not.equal(undefined)
     expect(response.body.locales).to.be.an('array')
     expect(response.body.environments).to.be.an('array')
-    // Validate summary structure
     expect(response.summary).to.not.equal(undefined)
   })
 
-  it('should get job status for the second publish job', async () => {
+  it('should get job status for the second publish job', async function () {
     const response = await waitForJobReady(jobId2)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -399,9 +395,8 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for the third publish job', async () => {
+  it('should get job status for the third publish job', async function () {
     const response = await waitForJobReady(jobId3)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -410,9 +405,8 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for publishAllLocalized=true job', async () => {
+  it('should get job status for publishAllLocalized=true job', async function () {
     const response = await waitForJobReady(jobId4)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -421,9 +415,8 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for publishAllLocalized=false job', async () => {
+  it('should get job status for publishAllLocalized=false job', async function () {
     const response = await waitForJobReady(jobId5)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -432,9 +425,8 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for asset publishAllLocalized job', async () => {
+  it('should get job status for asset publishAllLocalized job', async function () {
     const response = await waitForJobReady(jobId6)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -443,9 +435,8 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for unpublishAllLocalized=true job', async () => {
+  it('should get job status for unpublishAllLocalized=true job', async function () {
     const response = await waitForJobReady(jobId7)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -454,9 +445,8 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for unpublishAllLocalized=false job', async () => {
+  it('should get job status for unpublishAllLocalized=false job', async function () {
     const response = await waitForJobReady(jobId8)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -465,9 +455,8 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for asset unpublishAllLocalized job', async () => {
+  it('should get job status for asset unpublishAllLocalized job', async function () {
     const response = await waitForJobReady(jobId9)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -476,9 +465,8 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for multiple parameters job', async () => {
+  it('should get job status for multiple parameters job', async function () {
     const response = await waitForJobReady(jobId10)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -487,12 +475,10 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status with bulk_version parameter', async () => {
+  it('should get job status with bulk_version parameter', async function () {
     await waitForJobReady(jobId1)
-
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .jobStatus({ job_id: jobId1, bulk_version: 'v3', api_version: '3.2' })
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -501,22 +487,18 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job items for a completed job', async () => {
+  it('should get job items for a completed job', async function () {
     await waitForJobReady(jobId1)
-
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .getJobItems(jobId1)
-
     expect(response).to.not.equal(undefined)
     expect(response.items).to.be.an('array')
   })
 
-  it('should get job items with explicit api_version', async () => {
+  it('should get job items with explicit api_version', async function () {
     await waitForJobReady(jobId2)
-
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .getJobItems(jobId2, { api_version: '3.2' })
-
     expect(response).to.not.equal(undefined)
     expect(response.items).to.be.an('array')
   })
