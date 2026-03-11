@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { describe, it, setup } from 'mocha'
+import { describe, it, setup, before } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import * as testSetup from '../utility/testSetup.js'
 import { testData } from '../utility/testHelpers.js'
@@ -15,7 +15,6 @@ let entryUid2 = ''
 let assetUid2 = ''
 let bulkCtUid1 = ''
 let bulkCtUid2 = ''
-let bulkCtTitle1 = ''
 let jobId1 = ''
 let jobId2 = ''
 let jobId3 = ''
@@ -70,7 +69,6 @@ describe('BulkOperation api test', () => {
     assetUid2 = (testData.assets?.html?.uid || testData.assets?.bufferUpload?.uid || testData.assets?.folder?.uid) || ''
     bulkCtUid1 = testData.contentTypes?.entryTestMedium?.uid || ''
     bulkCtUid2 = testData.contentTypes?.entryTestComplex?.uid || ''
-    bulkCtTitle1 = 'Entry Test Medium'
     envName = testData.environments?.development?.name || 'development'
     clientWithManagementToken = contentstackClient()
   })
