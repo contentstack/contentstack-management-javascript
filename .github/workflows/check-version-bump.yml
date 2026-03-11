@@ -33,10 +33,19 @@ jobs:
           if [ -n "$BASE_SHA" ]; then
             CHANGED=$(git diff --name-only "$BASE_SHA" HEAD 2>/dev/null || true)
             PROD_CHANGES=$(echo "$CHANGED" | grep -v -e '^test/' -e '^package\.json$' -e '^CHANGELOG\.md$' -e '^\.github/' -e '^README' -e '^\.' -e '^docs/' -e '^jest\.config' -e '^\.eslintrc' -e '^\.prettierrc' || true)
-            # Remove empty lines; if no production changes left, skip check
             PROD_CHANGES=$(echo "$PROD_CHANGES" | sed '/^$/d')
             if [ -z "$PROD_CHANGES" ]; then
               echo "Only test/docs/config files changed. Skipping version bump check."
+              exit 0
+            fi
+            # Skip when only comments changed in production files (//, /*, *, */, #)
+            if git diff "$BASE_SHA" HEAD | node -e "
+              const lines = require('fs').readFileSync(0,'utf8').split('\n').filter(l=>l.startsWith('+')||l.startsWith('-'));
+              const isComment = (s) => { const t=(s||'').slice(1).replace(/^\s+|\s+$/g,''); return !t || /^\/\//.test(t) || /^\/\*/.test(t) || /^\*\//.test(t) || /^\s*\*/.test(t) || /^#/.test(t); };
+              const hasCode = lines.some(l => !isComment(l));
+              process.exit(hasCode ? 1 : 0);
+            " 2>/dev/null; then
+              echo "Only comments changed in code. Skipping version bump check."
               exit 0
             fi
           fi
