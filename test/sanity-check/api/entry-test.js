@@ -467,7 +467,9 @@ describe('Entry API Tests', () => {
         }
       })
       expect(response).to.be.an('object')
-      trackedExpect(response.uid ?? response.entry_uid, 'Published entry').toBeA('string')
+      // CMA Publish Entry API returns { notice } only, not uid/entry_uid
+      trackedExpect(response.notice, 'Published entry notice').toBeA('string')
+      expect(response.notice).to.include('performed')
     })
   })
 
