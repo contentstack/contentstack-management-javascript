@@ -127,32 +127,41 @@ describe('Environment API Tests', () => {
     it('should update environment name', async function () {
       this.timeout(30000)
 
-      if (!currentEnvName) {
-        throw new Error('Environment name not set - previous test may have failed')
-      }
+      // Use a separate temp environment for rename test so we do NOT rename the
+      // shared "development" env (testData.environments.development) used by
+      // bulk operations, entry publish, release, workflow, etc.
+      const tempName = `temp_rename_${Date.now()}`
+      const tempEnv = await stack.environment().create({
+        environment: {
+          name: tempName,
+          urls: [{ locale: 'en-us', url: 'https://temp-rename.example.com' }]
+        }
+      })
+      await wait(2000)
 
-      // SDK uses environment NAME for fetch
-      const env = await waitForEnvironment(stack, currentEnvName)
-      const newName = `updated_${devEnvName}`
-
+      const env = await waitForEnvironment(stack, tempName)
+      const newName = `updated_${tempName}`
       env.name = newName
       const response = await env.update()
 
       expect(response).to.be.an('object')
       expect(response.name).to.equal(newName)
 
-      // Update tracking variable since name changed
-      currentEnvName = newName
+      // Cleanup temp env so it does not affect downstream tests
+      try {
+        const updatedEnv = await waitForEnvironment(stack, newName)
+        await updatedEnv.delete()
+      } catch (e) { /* ignore */ }
     })
 
     it('should add URL to environment', async function () {
       this.timeout(30000)
 
+      // Use the development env (never renamed - still devEnvName) for add URL
       if (!currentEnvName) {
         throw new Error('Environment name not set - previous test may have failed')
       }
 
-      // SDK uses environment NAME for fetch (use currentEnvName which was updated)
       const env = await waitForEnvironment(stack, currentEnvName)
       const initialUrlCount = env.urls.length
 

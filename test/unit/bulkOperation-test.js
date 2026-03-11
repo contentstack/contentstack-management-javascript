@@ -11,6 +11,7 @@ describe('Contentstack BulkOperation test', () => {
     expect(bulkOperation.urlPath).to.be.equal('/bulk')
     expect(bulkOperation.stackHeaders).to.be.equal(undefined)
     expect(bulkOperation.addItems).to.not.equal(undefined)
+    expect(bulkOperation.getJobItems).to.not.equal(undefined)
     expect(bulkOperation.publish).to.not.equal(undefined)
     expect(bulkOperation.unpublish).to.not.equal(undefined)
     expect(bulkOperation.delete).to.not.equal(undefined)
@@ -23,6 +24,7 @@ describe('Contentstack BulkOperation test', () => {
     expect(bulkOperation.stackHeaders).to.not.equal(undefined)
     expect(bulkOperation.stackHeaders.api_key).to.be.equal(stackHeadersMock.api_key)
     expect(bulkOperation.addItems).to.not.equal(undefined)
+    expect(bulkOperation.getJobItems).to.not.equal(undefined)
     expect(bulkOperation.publish).to.not.equal(undefined)
     expect(bulkOperation.unpublish).to.not.equal(undefined)
     expect(bulkOperation.delete).to.not.equal(undefined)
@@ -217,6 +219,142 @@ describe('Contentstack BulkOperation test', () => {
     const response = await makeBulkOperation().jobStatus(jobStatusDetails)
     expect(response.notice).to.equal('Your job status request is successful.')
     expect(response.status).to.equal('completed')
+  })
+
+  it('should fetch job items with default api_version', async () => {
+    const jobId = 'job_id'
+
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/bulk/jobs/${jobId}/items`).reply((config) => {
+      expect(config.headers.api_version).to.equal('3.2')
+      return [200, {
+        items: [
+          { uid: 'entry_uid', content_type_uid: 'content_type_uid', status: 'completed' }
+        ]
+      }]
+    })
+
+    const response = await makeBulkOperation().getJobItems(jobId)
+    expect(response.items).to.not.equal(undefined)
+    expect(response.items).to.be.an('array')
+    expect(response.items[0].uid).to.equal('entry_uid')
+    expect(response.items[0].content_type_uid).to.equal('content_type_uid')
+  })
+
+  it('should fetch job items with custom api_version', async () => {
+    const jobId = 'job_id'
+    const params = { api_version: '3.0' }
+
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/bulk/jobs/${jobId}/items`).reply((config) => {
+      expect(config.headers.api_version).to.equal('3.0')
+      return [200, { items: [] }]
+    })
+
+    const response = await makeBulkOperation().getJobItems(jobId, params)
+    expect(response.items).to.not.equal(undefined)
+    expect(response.items).to.be.an('array')
+  })
+
+  it('should fetch job items with query params: include_count, skip, limit', async () => {
+    const jobId = 'job_id'
+    const params = {
+      include_count: true,
+      skip: 10,
+      limit: 50
+    }
+
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/bulk/jobs/${jobId}/items`).reply((config) => {
+      expect(config.params.include_count).to.equal(true)
+      expect(config.params.skip).to.equal(10)
+      expect(config.params.limit).to.equal(50)
+      return [200, { items: [], count: 0 }]
+    })
+
+    const response = await makeBulkOperation().getJobItems(jobId, params)
+    expect(response.items).to.be.an('array')
+    expect(response.count).to.equal(0)
+  })
+
+  it('should fetch job items with query params: include_reference, status, type', async () => {
+    const jobId = 'job_id'
+    const params = {
+      include_reference: false,
+      status: 'failed',
+      type: 'entry'
+    }
+
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/bulk/jobs/${jobId}/items`).reply((config) => {
+      expect(config.params.include_reference).to.equal(false)
+      expect(config.params.status).to.equal('failed')
+      expect(config.params.type).to.equal('entry')
+      return [200, { items: [] }]
+    })
+
+    const response = await makeBulkOperation().getJobItems(jobId, params)
+    expect(response.items).to.be.an('array')
+  })
+
+  it('should fetch job items with ct (content type) filter as array', async () => {
+    const jobId = 'job_id'
+    const params = { ct: ['content_type_uid_1', 'content_type_uid_2'] }
+
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/bulk/jobs/${jobId}/items`).reply((config) => {
+      expect(config.params.ct).to.be.an('array')
+      expect(config.params.ct).to.deep.equal(['content_type_uid_1', 'content_type_uid_2'])
+      return [200, { items: [] }]
+    })
+
+    const response = await makeBulkOperation().getJobItems(jobId, params)
+    expect(response.items).to.be.an('array')
+  })
+
+  it('should fetch job items with dynamic query params', async () => {
+    const jobId = 'job_id'
+    const params = {
+      include_count: true,
+      skip: 0,
+      limit: 100,
+      include_reference: true,
+      status: 'success',
+      type: 'asset',
+      ct: ['blog_post', 'author'],
+      custom_param: 'custom_value'
+    }
+
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/bulk/jobs/${jobId}/items`).reply((config) => {
+      expect(config.params.include_count).to.equal(true)
+      expect(config.params.skip).to.equal(0)
+      expect(config.params.limit).to.equal(100)
+      expect(config.params.include_reference).to.equal(true)
+      expect(config.params.status).to.equal('success')
+      expect(config.params.type).to.equal('asset')
+      expect(config.params.ct).to.deep.equal(['blog_post', 'author'])
+      expect(config.params.custom_param).to.equal('custom_value')
+      return [200, { items: [], count: 0 }]
+    })
+
+    const response = await makeBulkOperation().getJobItems(jobId, params)
+    expect(response.items).to.be.an('array')
+    expect(response.count).to.equal(0)
+  })
+
+  it('should fetch job items with empty params object', async () => {
+    const jobId = 'job_id'
+
+    const mock = new MockAdapter(Axios)
+    mock.onGet(`/bulk/jobs/${jobId}/items`).reply((config) => {
+      expect(config.headers.api_version).to.equal('3.2')
+      expect(config.params).to.equal(undefined)
+      return [200, { items: [] }]
+    })
+
+    const response = await makeBulkOperation().getJobItems(jobId, {})
+    expect(response.items).to.be.an('array')
   })
 })
 

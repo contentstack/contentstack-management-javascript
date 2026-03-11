@@ -9,7 +9,7 @@ fileignoreconfig:
     ignore_detectors:
       - filecontent
   - filename: package-lock.json
-    checksum: 92b88ce00603ede68344bac6bd6bf76bdb76f1e5f5ba8d1d0c79da2b72c5ecc0
+    checksum: ff309d2a910e885853fb25faa6aa3d2bd2cfc2d316c84a0e984bbda79c596ae9
   - filename: test/unit/ContentstackClient-test.js
     checksum: 5d8519b5b93c715e911a62b4033614cc4fb3596eabf31c7216ecb4cc08604a73
   - filename: .husky/pre-commit
@@ -28,7 +28,7 @@ fileignoreconfig:
     checksum: 2597efae3c1ab8cc173d5bf205f1c76932211f8e0eb2a16444e055d83481976c
   # Sanity check test files - use process.env for all secrets (no hardcoded values)
   - filename: test/sanity-check/api/environment-test.js
-    checksum: 91d76e6a2c4639db04071a30a9212df32777ab5f0e3a23dc101f4d62c13609b0
+    checksum: 5c3225c9013d7f0640ed7ef0e556fda4382e52b93da1af1f155c94eededd5195
   - filename: test/sanity-check/env.example.txt
     checksum: 3339944cd20d6d72f70a92e54af3de96736250b4b7117a29577575f9b52ed611
   - filename: test/sanity-check/api/token-test.js
@@ -94,7 +94,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/contentType-test.js
     checksum: 4d5178998f9f3c27550c5bd21540e254e08f79616e8615e7256ba2175cb4c8e1
   - filename: test/sanity-check/api/bulkOperation-test.js
-    checksum: 6281e14c7a10864c586e95139f47ae2ee5bb2322a2beaec166a1f6ece830431b
+    checksum: 1721c0e0f5b79a46fba21bfbedc3a87db4715bc97cd064f2361d35ab453b890c
   - filename: test/sanity-check/api/entry-test.js
     checksum: 9dc16b404a98ff9fa2c164fad0182b291b9c338dd58558dc5ef8dd75cf18bc1f
   - filename: test/sanity-check/api/entryVariants-test.js
@@ -107,4 +107,17 @@ fileignoreconfig:
     checksum: 6c0d8f6e7c85cd2fa5f0a20e8a49e94df0dde1b2c1d7e9c39e8c9c6c8b8d5e2f1
   - filename: test/unit/concurrency-Queue-test.js
     checksum: fd5c327f4fa1b334fdb1a2d903ac0213752e7829f31f19667215aa186c3efbbf
+  # From merge / Talisman allowlist (no secrets - env vars, test patterns, lockfile hashes)
+  - filename: lib/core/pkceStorage.js
+    checksum: e060690c5ed348a6914df7ecc36de5b6b45f9a7c3a9c164c88bd2c7fad2bea08
+  - filename: lib/stack/bulkOperation/index.js
+    checksum: c2eb400c6617a860bd5c519ace03c06cde169135e1c258106cfc3263dfcfc4d1
+  - filename: test/unit/pkceStorage-test.js
+    checksum: 567f557d37e8119c22cd4c5c4014c16dd660c03be35f65e803fb340cfd4b2136
+  - filename: test/unit/oauthHandler-test.js
+    checksum: 95a968c0d72d5bbe9e1acb30ea17ab505938f6174e917d7a25dda8facfda5a49
+  - filename: types/stack/bulkOperation/index.d.ts
+    checksum: d6771a51a021977ce9f428afc289c80aee3d2fca211f4102cf782afded354ce7
+  - filename: .github/workflows/check-version-bump.yml
+    checksum: c4aff7ca93f40213f67534e5c490d7a633cbebb21bbebd4517ff9b9db37ab52a
 version: "1.0"
