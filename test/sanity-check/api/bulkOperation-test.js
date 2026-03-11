@@ -34,6 +34,12 @@ function delay (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+// Build assets array with only non-empty UIDs (never send "uid": "" — API returns 412).
+// Asset-test must not delete image/html/bufferUpload so bulk tests have valid assets (Phase 6 before Phase 21).
+function assetsWithValidUids () {
+  return [assetUid1, assetUid2].filter(uid => uid && String(uid).trim()).map(uid => ({ uid }))
+}
+
 async function waitForJobReady (jobId, maxAttempts = 10) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
@@ -110,16 +116,12 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
-  it('should publish one asset when publishDetails of an asset is passed', done => {
+  it('should publish one asset when publishDetails of an asset is passed', function (done) {
+    const assets = assetsWithValidUids()
+    expect(assets.length, 'At least one asset required from asset-test (Phase 6)').to.be.at.least(1)
     const publishDetails = {
-      assets: [
-        {
-          uid: assetUid1
-        }
-      ],
-      locales: [
-        'en-us'
-      ],
+      assets,
+      locales: ['en-us'],
       environments: [envName]
     }
     doBulkOperation()
@@ -136,28 +138,11 @@ describe('BulkOperation api test', () => {
   it('should publish multiple entries assets when publishDetails of entries and assets are passed', done => {
     const publishDetails = {
       entries: [
-        {
-          uid: entryUid1,
-          content_type: bulkCtUid1,
-          locale: 'en-us'
-        },
-        {
-          uid: entryUid2,
-          content_type: bulkCtUid2,
-          locale: 'en-us'
-        }
+        { uid: entryUid1, content_type: bulkCtUid1, locale: 'en-us' },
+        { uid: entryUid2, content_type: bulkCtUid2, locale: 'en-us' }
       ],
-      assets: [
-        {
-          uid: assetUid1
-        },
-        {
-          uid: assetUid2
-        }
-      ],
-      locales: [
-        'en-us'
-      ],
+      assets: assetsWithValidUids(),
+      locales: ['en-us'],
       environments: [envName]
     }
     doBulkOperation()
@@ -231,16 +216,12 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
-  it('should publish assets with publishAllLocalized parameter', done => {
+  it('should publish assets with publishAllLocalized parameter', function (done) {
+    const assets = assetsWithValidUids()
+    expect(assets.length, 'At least one asset required from asset-test (Phase 6)').to.be.at.least(1)
     const publishDetails = {
-      assets: [
-        {
-          uid: assetUid1
-        }
-      ],
-      locales: [
-        'en-us'
-      ],
+      assets,
+      locales: ['en-us'],
       environments: [envName]
     }
     doBulkOperation()
@@ -319,16 +300,12 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
-  it('should unpublish assets with unpublishAllLocalized parameter', done => {
+  it('should unpublish assets with unpublishAllLocalized parameter', function (done) {
+    const assets = assetsWithValidUids()
+    expect(assets.length, 'At least one asset required from asset-test (Phase 6)').to.be.at.least(1)
     const unpublishDetails = {
-      assets: [
-        {
-          uid: assetUid1
-        }
-      ],
-      locales: [
-        'en-us'
-      ],
+      assets,
+      locales: ['en-us'],
       environments: [envName]
     }
     doBulkOperation()
