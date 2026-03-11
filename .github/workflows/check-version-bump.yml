@@ -29,9 +29,10 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -e
-          # Skip version bump check when only test/docs/config files changed (no production code)
-          if [ -n "$BASE_SHA" ]; then
-            CHANGED=$(git diff --name-only "$BASE_SHA" HEAD 2>/dev/null || true)
+          # Use three-dot diff so we only see changes introduced by the PR branch (works with merge commit checkout)
+          DIFF_REF="${BASE_SHA}...HEAD"
+          if [ -n "$BASE_SHA" ] && git rev-parse --verify "$BASE_SHA" >/dev/null 2>&1; then
+            CHANGED=$(git diff --name-only "$DIFF_REF" 2>/dev/null || true)
             PROD_CHANGES=$(echo "$CHANGED" | grep -v -e '^test/' -e '^package\.json$' -e '^CHANGELOG\.md$' -e '^\.github/' -e '^README' -e '^\.' -e '^docs/' -e '^jest\.config' -e '^\.eslintrc' -e '^\.prettierrc' || true)
             PROD_CHANGES=$(echo "$PROD_CHANGES" | sed '/^$/d')
             if [ -z "$PROD_CHANGES" ]; then
@@ -39,11 +40,12 @@ jobs:
               exit 0
             fi
             # Skip when only comments changed in production files (//, /*, *, */, #)
-            if git diff "$BASE_SHA" HEAD | node -e "
-              const lines = require('fs').readFileSync(0,'utf8').split('\n').filter(l=>l.startsWith('+')||l.startsWith('-'));
-              const isComment = (s) => { const t=(s||'').slice(1).replace(/^\s+|\s+$/g,''); return !t || /^\/\//.test(t) || /^\/\*/.test(t) || /^\*\//.test(t) || /^\s*\*/.test(t) || /^#/.test(t); };
-              const hasCode = lines.some(l => !isComment(l));
-              process.exit(hasCode ? 1 : 0);
+            if git diff "$DIFF_REF" 2>/dev/null | node -e "
+              try {
+                const lines = require('fs').readFileSync(0,'utf8').split('\n').filter(l=>l.startsWith('+')||l.startsWith('-'));
+                const isComment = (s) => { const t=(s||'').slice(1).replace(/^\s+|\s+$/g,''); return !t || /^\/\//.test(t) || /^\/\*/.test(t) || /^\*\//.test(t) || /^\s*\*/.test(t) || /^#/.test(t); };
+                process.exit(lines.length > 0 && !lines.some(l => !isComment(l)) ? 0 : 1);
+              } catch(e) { process.exit(1); }
             " 2>/dev/null; then
               echo "Only comments changed in code. Skipping version bump check."
               exit 0
