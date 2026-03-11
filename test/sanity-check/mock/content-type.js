@@ -32,3 +32,36 @@ export const singlepageCT = {
   },
   prevcreate: true
 }
+
+/** Multi-page content type (for bulk operation tests from master). */
+export const multiPageCT = {
+  content_type: {
+    options: {
+      is_page: true,
+      singleton: false,
+      title: 'title',
+      sub_title: [],
+      url_pattern: '/:title'
+    },
+    title: 'Multi page',
+    uid: 'multi_page',
+    schema: [
+      {
+        display_name: 'Title',
+        uid: 'title',
+        data_type: 'text',
+        mandatory: true,
+        unique: true,
+        field_metadata: { _default: true }
+      },
+      {
+        display_name: 'URL',
+        uid: 'url',
+        data_type: 'text',
+        mandatory: false,
+        field_metadata: { _default: true }
+      }
+    ]
+  },
+  prevcreate: true
+}

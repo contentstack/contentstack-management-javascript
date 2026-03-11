@@ -362,6 +362,116 @@ describe('Entry API Tests', () => {
   })
 
   // ==========================================================================
+  // MASTER COVERAGE: asset_fields, localize, publish (cases added with feature/fix)
+  // ==========================================================================
+
+  describe('Entry asset_fields, localize and publish (master coverage)', () => {
+    before(function () {
+      if (!mediumCtReady) {
+        console.log('    Skipping: Medium content type not available')
+        this.skip()
+      }
+    })
+
+    it('should entry fetch with asset_fields parameter - single value', async function () {
+      this.timeout(15000)
+      const uid = testData.entries?.medium?.uid
+      if (!uid) this.skip()
+      const entry = await stack.contentType(mediumCtUid).entry(uid).fetch({ asset_fields: ['user_defined_fields'] })
+      trackedExpect(entry.uid, 'Entry UID').toEqual(uid)
+    })
+
+    it('should entry fetch with asset_fields parameter - multiple values', async function () {
+      this.timeout(15000)
+      const uid = testData.entries?.medium?.uid
+      if (!uid) this.skip()
+      const entry = await stack.contentType(mediumCtUid).entry(uid).fetch({ asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] })
+      trackedExpect(entry.uid, 'Entry UID').toEqual(uid)
+    })
+
+    it('should localize entry with title update', async function () {
+      this.timeout(15000)
+      const uid = testData.entries?.medium?.uid
+      if (!uid) this.skip()
+      // Use a locale that exists on the dynamic stack (create if missing)
+      const locales = await stack.locale().query().find()
+      const items = locales.items || locales.locales || []
+      const enAt = items.find(l => l.code === 'en-at')
+      if (!enAt) {
+        try {
+          await stack.locale().create({
+            locale: { code: 'en-at', name: 'English (Austria)', fallback_locale: 'en-us' }
+          })
+        } catch (e) {
+          this.skip() // locale may already exist or stack doesn't support it
+          return
+        }
+      }
+      const entry = await stack.contentType(mediumCtUid).entry(uid).fetch()
+      entry.title = 'Sample Entry in en-at'
+      const response = await entry.update({ locale: 'en-at' })
+      expect(response.title).to.equal('Sample Entry in en-at')
+      expect(response.uid).to.be.a('string')
+      expect(response.locale).to.equal('en-at')
+    })
+
+    it('should get all Entry with asset_fields parameter - single value', async function () {
+      this.timeout(15000)
+      const collection = await stack.contentType(mediumCtUid).entry().query({ include_count: true, asset_fields: ['user_defined_fields'] }).find()
+      expect(collection).to.be.an('object')
+      if (collection.count !== undefined) {
+        expect(collection.count).to.be.a('number')
+      }
+      expect(collection.items).to.be.an('array')
+      collection.items.forEach((entry) => {
+        expect(entry.uid).to.be.a('string')
+        expect(entry.content_type_uid).to.equal(mediumCtUid)
+      })
+    })
+
+    it('should get all Entry with asset_fields parameter - multiple values', async function () {
+      this.timeout(15000)
+      const collection = await stack.contentType(mediumCtUid).entry().query({ include_count: true, asset_fields: ['user_defined_fields', 'embedded', 'ai_suggested', 'visual_markups'] }).find()
+      expect(collection.items).to.be.an('array')
+      collection.items.forEach((entry) => {
+        expect(entry.uid).to.be.a('string')
+        expect(entry.content_type_uid).to.equal(mediumCtUid)
+      })
+    })
+
+    it('should get all Entry with asset_fields parameter combined with other query params', async function () {
+      this.timeout(15000)
+      const collection = await stack.contentType(mediumCtUid).entry().query({
+        include_count: true,
+        include_content_type: true,
+        asset_fields: ['user_defined_fields', 'embedded']
+      }).find()
+      expect(collection.items).to.be.an('array')
+      collection.items.forEach((entry) => {
+        expect(entry.uid).to.be.a('string')
+        expect(entry.content_type_uid).to.equal(mediumCtUid)
+      })
+    })
+
+    it('should publish Entry', async function () {
+      this.timeout(15000)
+      const uid = testData.entries?.medium?.uid
+      if (!uid) this.skip()
+      // Use environment that exists on dynamic stack
+      const envName = testData.environments?.development?.name || 'development'
+      const entry = await stack.contentType(mediumCtUid).entry(uid)
+      const response = await entry.publish({
+        publishDetails: {
+          locales: ['en-us'],
+          environments: [envName]
+        }
+      })
+      expect(response).to.be.an('object')
+      trackedExpect(response.uid ?? response.entry_uid, 'Published entry').toBeA('string')
+    })
+  })
+
+  // ==========================================================================
   // ENTRY CRUD OPERATIONS
   // ==========================================================================
 
