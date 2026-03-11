@@ -131,8 +131,8 @@ export function validateAssetResponse (response) {
   expect(response.content_type).to.be.a('string')
   expect(response.file_size).to.be.a('string')
 
-  // Validate UID format
-  expect(response.uid).to.match(/^blt[a-f0-9]+$/, 'Asset UID should have blt prefix')
+  // Validate UID format (CMA: blt prefix; AM 2.0: am prefix)
+  expect(response.uid).to.match(/^(blt|am)[a-f0-9]+$/, 'Asset UID should have blt or am prefix')
 
   // Validate timestamps
   expect(response.created_at).to.be.a('string')

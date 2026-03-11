@@ -12,7 +12,7 @@
 import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
-import { validateBranchResponse, testData, wait, shortId, trackedExpect } from '../utility/testHelpers.js'
+import { validateBranchResponse, testData, wait, shortId, trackedExpect, LONG_DELAY } from '../utility/testHelpers.js'
 
 describe('Branch API Tests', () => {
   let client
@@ -76,8 +76,8 @@ describe('Branch API Tests', () => {
         branchCreated = true
         testData.branches.development = branch
 
-        // Wait for branch to be fully ready
-        await wait(3000)
+        // Wait for branch to be fully ready (can take 10+ seconds to reflect)
+        await wait(LONG_DELAY)
       } catch (error) {
         // If branch already exists (409), try to fetch it
         if (error.status === 409 || (error.errorMessage && error.errorMessage.includes('already exists'))) {
@@ -135,20 +135,26 @@ describe('Branch API Tests', () => {
 
     before(async function () {
       this.timeout(60000)
-      // Create a branch for comparison
+      // Create a branch for comparison (uid stored for dependent tests)
       compareBranchUid = `cmp${shortId()}`
 
       try {
-        await stack.branch().create({
+        const branch = await stack.branch().create({
           branch: {
             uid: compareBranchUid,
             source: 'main'
           }
         })
-        // Wait for branch to be fully ready before compare operations
-        await wait(2000)
+        testData.branches.compare = branch
+        // Wait for branch to be fully ready (can take 10+ seconds to reflect)
+        await wait(LONG_DELAY)
       } catch (error) {
-        console.log('Branch creation failed:', error.errorMessage)
+        if (error.status === 409 || (error.errorMessage && error.errorMessage.includes('already exists'))) {
+          const existing = await stack.branch(compareBranchUid).fetch()
+          testData.branches.compare = existing
+        } else {
+          console.log('Branch creation failed:', error.message || error.errorMessage)
+        }
       }
     })
 
@@ -206,20 +212,26 @@ describe('Branch API Tests', () => {
 
     before(async function () {
       this.timeout(60000)
-      // Create a branch for merging
+      // Create a branch for merging (uid stored in testData.branches.merge for dependent tests)
       mergeBranchUid = `mrg${shortId()}`
 
       try {
-        await stack.branch().create({
+        const branch = await stack.branch().create({
           branch: {
             uid: mergeBranchUid,
             source: 'main'
           }
         })
-        // Wait for branch to be fully ready before merge operations
-        await wait(2000)
+        testData.branches.merge = branch
+        // Wait for branch to be fully ready (can take 10+ seconds to reflect)
+        await wait(LONG_DELAY)
       } catch (error) {
-        console.log('Branch creation failed:', error.errorMessage)
+        if (error.status === 409 || (error.errorMessage && error.errorMessage.includes('already exists'))) {
+          const existing = await stack.branch(mergeBranchUid).fetch()
+          testData.branches.merge = existing
+        } else {
+          console.log('Branch creation failed:', error.message || error.errorMessage)
+        }
       }
     })
 
@@ -228,30 +240,31 @@ describe('Branch API Tests', () => {
     })
 
     it('should get merge queue', async () => {
-      try {
-        const response = await stack.branch(mergeBranchUid).mergeQueue()
-
-        expect(response).to.be.an('object')
-      } catch (error) {
-        console.log('Merge queue failed:', error.errorMessage)
+      // mergeQueue() is on the branch collection, not on a branch instance
+      const response = await stack.branch().mergeQueue().find()
+      expect(response).to.be.an('object')
+      if (response.queue) {
+        expect(response.queue).to.be.an('array')
       }
     })
 
-    it('should merge branch into main (dry run conceptual)', async () => {
-      // Note: Actual merge requires changes in the branch
-      // This tests the merge API availability
-      try {
-        const response = await stack.branch(mergeBranchUid).merge({
-          base_branch: 'main',
-          compare_branch: mergeBranchUid,
-          default_merge_strategy: 'merge_prefer_base',
-          merge_comment: 'Test merge'
-        })
-
-        expect(response).to.be.an('object')
-      } catch (error) {
-        // Merge might fail if no changes or conflicts
-        console.log('Merge result:', error.errorMessage)
+    it('should merge branch into main', async () => {
+      // merge() is on the branch collection: merge(mergeObj, params)
+      // mergeObj = request body (e.g. item_merge_strategies), params = query (base_branch, compare_branch, etc.)
+      const params = {
+        base_branch: 'main',
+        compare_branch: mergeBranchUid,
+        default_merge_strategy: 'merge_prefer_base',
+        merge_comment: 'Test merge'
+      }
+      const response = await stack.branch().merge({}, params)
+      expect(response).to.be.an('object')
+      // API may return merge_details, errors, or notice depending on whether there were changes to merge
+      if (response.merge_details !== undefined) {
+        expect(response.merge_details).to.be.an('object')
+      }
+      if (response.notice) {
+        expect(response.notice).to.be.a('string')
       }
     })
   })

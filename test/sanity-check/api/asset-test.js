@@ -84,11 +84,7 @@ describe('Asset API Tests', () => {
       expect(asset.content_type).to.include('html')
 
       testData.assets.html = asset
-
-      // Cleanup
-      try {
-        await stack.asset(asset.uid).delete()
-      } catch (e) { }
+      // Do not delete: bulk operation tests depend on this asset (Phase 21)
     })
 
     it('should upload asset from buffer', async function () {
@@ -114,11 +110,7 @@ describe('Asset API Tests', () => {
       expect(asset.content_type).to.be.a('string')
 
       testData.assets.bufferUpload = asset
-
-      // Cleanup
-      try {
-        await stack.asset(asset.uid).delete()
-      } catch (e) { }
+      // Do not delete: bulk operation tests depend on this asset (Phase 21)
     })
 
     it('should fail to upload without file', async () => {
@@ -187,7 +179,7 @@ describe('Asset API Tests', () => {
       const asset = await stack.asset(assetUid).fetch()
 
       // Required fields
-      expect(asset.uid).to.be.a('string').and.match(/^blt[a-f0-9]+$/)
+      expect(asset.uid).to.be.a('string').and.match(/^(blt|am)[a-f0-9]+$/)
       expect(asset.filename).to.be.a('string')
       expect(asset.url).to.be.a('string')
       expect(asset.content_type).to.be.a('string')
