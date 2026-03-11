@@ -57,6 +57,9 @@ describe('OAuth Authentication API Tests', () => {
 
         expect(response.notice).to.equal('Login Successful.')
         expect(authtoken).to.not.equal(undefined)
+
+        // Use a client with the new authtoken so subsequent tests (getUser, OAuth flow) are authenticated
+        client = contentstackClient(authtoken)
       } catch (error) {
         console.log('Login warning:', error.message)
         this.skip()
