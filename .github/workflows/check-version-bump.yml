@@ -1,5 +1,5 @@
 # Catches when developers forget to add a version bump for their changes.
-# Code changes (e.g. lib/) require package.json + CHANGELOG.md to be updated; test-only changes skip.
+# Code changes (e.g. lib/) require package.json + CHANGELOG.md; test-only or comment-only in lib/ skip.
 name: Check Version Bump
 
 on:
@@ -20,16 +20,28 @@ jobs:
         run: |
           if git rev-parse HEAD^2 >/dev/null 2>&1; then
             FILES=$(git diff --name-only HEAD^1 HEAD^2)
+            DIFF_BASE=HEAD^1
+            DIFF_HEAD=HEAD^2
           else
             FILES=$(git diff --name-only HEAD~1 HEAD)
+            DIFF_BASE=HEAD~1
+            DIFF_HEAD=HEAD
           fi
           VERSION_FILES_CHANGED=false
           echo "$FILES" | grep -qx 'package.json' && VERSION_FILES_CHANGED=true
           echo "$FILES" | grep -qx 'CHANGELOG.md' && VERSION_FILES_CHANGED=true
           echo "version_files_changed=$VERSION_FILES_CHANGED" >> $GITHUB_OUTPUT
           CODE_CHANGED=false
-          echo "$FILES" | grep -qE '^lib/|^webpack/|^dist/' && CODE_CHANGED=true
           echo "$FILES" | grep -qx 'package.json' && CODE_CHANGED=true
+          echo "$FILES" | grep -qE '^webpack/|^dist/' && CODE_CHANGED=true
+          if echo "$FILES" | grep -q '^lib/'; then
+            LIB_DIFF=$(git diff "$DIFF_BASE" "$DIFF_HEAD" -- lib/ | grep -E '^\+|^\-' | sed 's/^[\+\-]//' || true)
+            if [ -n "$LIB_DIFF" ]; then
+              if echo "$LIB_DIFF" | grep -v -E '^[[:space:]]*$' | grep -v -E '^[[:space:]]*\/\/' | grep -v -E '^[[:space:]]*\*[[:space:]]*$' | grep -v -E '^[[:space:]]*/\*' | grep -v -E '^[[:space:]]*\*/' | grep -q .; then
+                CODE_CHANGED=true
+              fi
+            fi
+          fi
           echo "code_changed=$CODE_CHANGED" >> $GITHUB_OUTPUT
 
       - name: Skip when only test/docs/config changed
