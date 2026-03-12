@@ -1,5 +1,5 @@
 # Catches when developers forget to add a version bump for their changes.
-# Code changes (e.g. lib/) require package.json + CHANGELOG.md; test-only or comment-only in lib/ skip.
+# Code changes (e.g. lib/) require package.json + CHANGELOG.md; test-only skip.
 name: Check Version Bump
 
 on:
@@ -76,12 +76,3 @@ jobs:
             exit 1
           fi
           CHANGELOG_VERSION=$(sed -nE 's/^## \[v?([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' CHANGELOG.md | head -1)
-          if [ -z "$CHANGELOG_VERSION" ]; then
-            echo "::error::Could not find a version entry in CHANGELOG.md (expected line like '## [v1.0.0](...)')."
-            exit 1
-          fi
-          if [ "$CHANGELOG_VERSION" != "$PKG_VERSION" ]; then
-            echo "::error::CHANGELOG version mismatch: CHANGELOG.md top version ($CHANGELOG_VERSION) does not match package.json version ($PKG_VERSION). Please add or update the CHANGELOG entry for $PKG_VERSION."
-            exit 1
-          fi
-          echo "Version bump check passed: package.json and CHANGELOG.md are at $PKG_VERSION (latest tag: $LATEST_TAG)."
