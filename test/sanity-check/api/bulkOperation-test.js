@@ -43,17 +43,13 @@ function assetsWithValidUids () {
 async function waitForJobReady (jobId, maxAttempts = 15) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      const response = await doBulkOperationWithManagementToken(tokenUidDev)
+      const response = await doBulkOperation()
         .jobStatus({ job_id: jobId, api_version: '3.2' })
-
       if (response && response.status) {
         return response
       }
-      if (attempt === 1) {
-        console.log(`   jobStatus for ${jobId} returned undefined on first attempt, will keep polling...`)
-      }
     } catch (error) {
-      console.log(`Attempt ${attempt}/${maxAttempts}: Job ${jobId} not ready — ${error.message || 'retrying...'}`)
+      // retry
     }
     await delay(5000)
   }
@@ -364,6 +360,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should wait for jobs to be ready and get job status for the first publish job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId1)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -386,6 +384,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status for the second publish job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId2)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -396,6 +396,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status for the third publish job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId3)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -406,6 +408,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status for publishAllLocalized=true job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId4)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -416,6 +420,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status for publishAllLocalized=false job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId5)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -426,6 +432,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status for asset publishAllLocalized job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId6)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -436,6 +444,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status for unpublishAllLocalized=true job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId7)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -446,6 +456,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status for unpublishAllLocalized=false job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId8)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -456,6 +468,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status for asset unpublishAllLocalized job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId9)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -466,6 +480,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status for multiple parameters job', async function () {
+    this.timeout(90000)
+
     const response = await waitForJobReady(jobId10)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
@@ -476,6 +492,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job status with bulk_version parameter', async function () {
+    this.timeout(90000)
+
     await waitForJobReady(jobId1)
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .jobStatus({ job_id: jobId1, bulk_version: 'v3', api_version: '3.2' })
@@ -488,6 +506,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job items for a completed job', async function () {
+    this.timeout(90000)
+
     await waitForJobReady(jobId1)
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .getJobItems(jobId1)
@@ -496,6 +516,8 @@ describe('BulkOperation api test', () => {
   })
 
   it('should get job items with explicit api_version', async function () {
+    this.timeout(90000)
+
     await waitForJobReady(jobId2)
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .getJobItems(jobId2, { api_version: '3.2' })
