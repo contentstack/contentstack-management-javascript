@@ -40,7 +40,7 @@ function assetsWithValidUids () {
   return [assetUid1, assetUid2].filter(uid => uid && String(uid).trim()).map(uid => ({ uid }))
 }
 
-async function waitForJobReady (jobId, maxAttempts = 8) {
+async function waitForJobReady (jobId, maxAttempts = 5) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       const response = await doBulkOperation()
@@ -51,7 +51,7 @@ async function waitForJobReady (jobId, maxAttempts = 8) {
     } catch (error) {
       // retry
     }
-    await delay(3000)
+    await delay(5000)
   }
   throw new Error(`Job ${jobId} did not become ready after ${maxAttempts} attempts`)
 }
