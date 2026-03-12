@@ -172,6 +172,50 @@ describe('Contentstack Release test', () => {
       .catch(done)
   })
 
+  it('Release delete should not send Content-Type header (no body for DELETE)', done => {
+    var mock = new MockAdapter(Axios)
+    let capturedConfig = null
+    mock.onDelete('/releases/UID').reply((config) => {
+      capturedConfig = config
+      return [200, { ...noticeMock }]
+    })
+    makeRelease({
+      release: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .delete()
+      .then(() => {
+        const contentType = capturedConfig?.headers?.['Content-Type']
+        expect(contentType).to.satisfy(
+          (val) => val === null || val === undefined,
+          'Content-Type should be null or undefined for DELETE (no body)'
+        )
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Release delete with params', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onDelete('/releases/UID').reply(200, {
+      ...noticeMock
+    })
+    makeRelease({
+      release: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .delete({ someParam: 'value' })
+      .then((release) => {
+        expect(release.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
+
   it('Release deploy test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost('/releases/UID/deploy').reply(200, {

@@ -536,6 +536,26 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
+  it('should get job items for a completed job', async () => {
+    await waitForJobReady(jobId1)
+
+    const response = await doBulkOperationWithManagementToken(tokenUidDev)
+      .getJobItems(jobId1)
+
+    expect(response).to.not.equal(undefined)
+    expect(response.items).to.be.an('array')
+  })
+
+  it('should get job items with explicit api_version', async () => {
+    await waitForJobReady(jobId2)
+
+    const response = await doBulkOperationWithManagementToken(tokenUidDev)
+      .getJobItems(jobId2, { api_version: '3.2' })
+
+    expect(response).to.not.equal(undefined)
+    expect(response.items).to.be.an('array')
+  })
+
   it('should delete a Management Token', done => {
     makeManagementToken(tokenUid)
       .delete()

@@ -1,5 +1,29 @@
 # Changelog
 
+## [v1.28.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-03-02)
+-  Enh
+   - Added DAM 2.0 query support 
+
+## [v1.27.6](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-23)
+ - Fix
+   - Skip token refresh on 401 when API returns error_code 161 (environment/permission) so the actual API error is returned instead of triggering refresh and a generic "Unable to refresh token" message
+   - When token refresh fails after a 401, return the original API error (error_message, error_code) instead of the generic "Unable to refresh token" message
+
+## [v1.27.5](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.5) (2026-02-11)
+ - Fix
+   - Concurrency queue: when response errors have no `config` (e.g. after network retries exhaust in some environments, or when plugins return a new error object), the SDK now rejects with a catchable Error instead of throwing an unhandled TypeError and crashing the process
+   - Hardened `responseHandler` to safely handle errors without `config` (e.g. plugin-replaced errors) by guarding `config.onComplete` and still running queue `shift()` so rejections remain catchable
+   - Added optional chaining for `error.config` reads in the retry path and unit tests for missing-config scenarios
+
+## [v1.27.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.4) (2026-02-02)
+ - Fix
+   - Removed content-type header from the release delete method
+   - Plugin `onResponse` hook is now called for error responses; errors handled by the concurrency queue (e.g. 5xx, retries exhausted) were previously not running plugin hooks
+
+## [v1.27.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.3) (2026-01-21)
+ - Fix
+   - Skip token refresh and preserve error_code 294 when 2FA is required (error_code 294 with 401 status) to prevent error code conversion from 294 to 401
+
 ## [v1.27.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.27.2) (2026-01-12)
  - Enhancement
    - Improved error messages
