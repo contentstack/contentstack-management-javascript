@@ -1,6 +1,6 @@
 # Catches when developers forget to add a version bump for their changes.
 # Code changes (lib/, webpack/, dist/) require package.json + CHANGELOG.md.
-# Skips for: test-only, docs, .github (workflows/config), or comment-only in lib/.
+# Skips for: test-only, docs, .github (workflows/config).
 name: Check Version Bump
 
 on:
