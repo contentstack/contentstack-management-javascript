@@ -74,7 +74,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/team-test.js
     checksum: e4b7a6824b89e634981651ad29161901377f23bb37d3653a389ac3dc4e7653c7
   - filename: test/sanity-check/api/oauth-test.js
-    checksum: fd8a4fe7a644955ea6609813c655d8fca6bb3c7eeea4ae2c5ba99d30b1950172
+    checksum: 7e2d6314f120c20a491d2f8403c9aa4e0af6dfc6fab436f0acc77953cef866e2
   - filename: test/sanity-check/api/branchAlias-test.js
     checksum: 0b6cacee74d7636e84ce095198f0234d491b79ea20d3978a742a5495692bd61d
   - filename: test/sanity-check/utility/testSetup.js
