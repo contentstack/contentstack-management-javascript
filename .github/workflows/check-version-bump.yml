@@ -1,5 +1,6 @@
 # Catches when developers forget to add a version bump for their changes.
-# Code changes (e.g. lib/) require package.json + CHANGELOG.md; test-only or comment-only in lib/ skip.
+# Code changes (lib/, webpack/, dist/) require package.json + CHANGELOG.md.
+# Skips for: test-only, docs, .github (workflows/config), or comment-only in lib/.
 name: Check Version Bump
 
 on:
@@ -27,15 +28,16 @@ jobs:
           echo "$FILES" | grep -qx 'package.json' && VERSION_FILES_CHANGED=true
           echo "$FILES" | grep -qx 'CHANGELOG.md' && VERSION_FILES_CHANGED=true
           echo "version_files_changed=$VERSION_FILES_CHANGED" >> $GITHUB_OUTPUT
+          # Only lib/, webpack/, dist/, package.json count as release-affecting; .github/ and test/ do not
           CODE_CHANGED=false
           echo "$FILES" | grep -qE '^lib/|^webpack/|^dist/' && CODE_CHANGED=true
           echo "$FILES" | grep -qx 'package.json' && CODE_CHANGED=true
           echo "code_changed=$CODE_CHANGED" >> $GITHUB_OUTPUT
 
-      - name: Skip when only test/docs/config changed
+      - name: Skip when only test/docs/.github changed
         if: steps.detect.outputs.code_changed != 'true'
         run: |
-          echo "No release-affecting files changed (e.g. only test/docs). Skipping version-bump check."
+          echo "No release-affecting files changed (e.g. only test/docs/.github). Skipping version-bump check."
           exit 0
 
       - name: Fail when version bump was missed
