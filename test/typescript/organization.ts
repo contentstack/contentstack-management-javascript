@@ -27,7 +27,7 @@ export function organization(organization: Organization) {
     var stackCount = 0
     var roleUid: string
     var shareUID: string
-    var email = 'testcs@contentstack.com'
+    var email = 'test@example.com'
     describe('Organization test', () => {
         test('Fetch organization from uid', done => {
             organization
@@ -110,7 +110,7 @@ export function organization(organization: Organization) {
         })
 
         test('Remove invitation from Organization', done => {
-            organization.removeUsers(['testcs@contentstack.com'])
+            organization.removeUsers([email])
             .then((response: Response) => {
                 expect(response.notice).to.be.equal('The invitation has been deleted successfully.')
                 done()

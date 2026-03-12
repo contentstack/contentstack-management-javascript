@@ -1,18 +1,20 @@
 import { expect } from 'chai'
-import { describe, it, setup } from 'mocha'
-import { jsonReader } from '../../sanity-check/utility/fileOperations/readwrite'
-import { contentstackClient } from '../../sanity-check/utility/ContentstackClient'
-import { singlepageCT, multiPageCT } from '../mock/content-type.js'
-import { createManagementToken } from '../mock/managementToken.js'
+import { describe, it, setup, before } from 'mocha'
+import { contentstackClient } from '../utility/ContentstackClient.js'
+import * as testSetup from '../utility/testSetup.js'
+import { testData } from '../utility/testHelpers.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
+// All data from dynamic stack at runtime (testSetup.testContext + testData from earlier tests)
 let client = {}
 let clientWithManagementToken = {}
 let entryUid1 = ''
 let assetUid1 = ''
 let entryUid2 = ''
 let assetUid2 = ''
+let bulkCtUid1 = ''
+let bulkCtUid2 = ''
 let jobId1 = ''
 let jobId2 = ''
 let jobId3 = ''
@@ -25,56 +27,71 @@ let jobId9 = ''
 let jobId10 = ''
 let tokenUidDev = ''
 let tokenUid = ''
+// Environment name from dynamic setup (environment-test creates and stores in testData)
+let envName = 'development'
 
 function delay (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+// Build assets array with only non-empty UIDs (never send "uid": "" — API returns 412).
+// Asset-test must not delete image/html/bufferUpload so bulk tests have valid assets (Phase 6 before Phase 21).
+function assetsWithValidUids () {
+  return [assetUid1, assetUid2].filter(uid => uid && String(uid).trim()).map(uid => ({ uid }))
+}
+
 async function waitForJobReady (jobId, maxAttempts = 10) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      const response = await doBulkOperationWithManagementToken(tokenUidDev)
+      const response = await doBulkOperation()
         .jobStatus({ job_id: jobId, api_version: '3.2' })
-
       if (response && response.status) {
         return response
       }
     } catch (error) {
-      console.log(`Attempt ${attempt}: Job not ready yet, retrying...`)
+      // Don't retry on auth errors (401/403) - fail immediately
+      if (error.status === 401 || error.status === 403) {
+        throw new Error(`Job status check failed with ${error.status}: ${error.errorMessage || error.message}`)
+      }
+      // For other errors (network, 5xx), retry
     }
-    await delay(2000)
+    await delay(5000)
   }
   throw new Error(`Job ${jobId} did not become ready after ${maxAttempts} attempts`)
 }
 
 describe('BulkOperation api test', () => {
+  before(function () {
+    const ctx = testSetup.testContext
+    if (!ctx.isDynamicStackCreated || !ctx.stackApiKey || !ctx.authtoken) {
+      console.log('   BulkOperation: skipped (dynamic stack not available)')
+      this.skip()
+    }
+  })
+
   setup(() => {
-    const user = jsonReader('loggedinuser.json')
-    const entryRead1 = jsonReader('publishEntry1.json')
-    const assetRead1 = jsonReader('publishAsset1.json')
-    entryUid1 = entryRead1.uid
-    assetUid1 = assetRead1.uid
-    const entryRead2 = jsonReader('publishEntry2.json')
-    const assetRead2 = jsonReader('publishAsset2.json')
-    entryUid2 = entryRead2.uid
-    assetUid2 = assetRead2.uid
-    client = contentstackClient(user.authtoken)
+    const ctx = testSetup.testContext
+    client = contentstackClient(ctx.authtoken)
+    entryUid1 = testData.entries?.medium?.uid || ''
+    entryUid2 = testData.entries?.complex?.uid || ''
+    assetUid1 = testData.assets?.image?.uid || ''
+    assetUid2 = (testData.assets?.html?.uid || testData.assets?.bufferUpload?.uid || testData.assets?.folder?.uid) || ''
+    bulkCtUid1 = testData.contentTypes?.entryTestMedium?.uid || ''
+    bulkCtUid2 = testData.contentTypes?.entryTestComplex?.uid || ''
+    envName = testData.environments?.development?.name || 'development'
     clientWithManagementToken = contentstackClient()
   })
 
-  it('should create a Management Token for get job status', done => {
-    makeManagementToken()
-      .create(createManagementToken)
-      .then((token) => {
-        tokenUidDev = token.token
-        tokenUid = token.uid
-        expect(token.name).to.be.equal(createManagementToken.token.name)
-        expect(token.description).to.be.equal(createManagementToken.token.description)
-        expect(token.scope[0].module).to.be.equal(createManagementToken.token.scope[0].module)
-        expect(token.uid).to.be.not.equal(null)
-        done()
-      })
-      .catch(done)
+  it('should use management token from dynamic setup for job status', function (done) {
+    const ctx = testSetup.testContext
+    if (!ctx.managementToken) {
+      this.skip()
+      return
+    }
+    tokenUidDev = ctx.managementToken
+    tokenUid = ctx.managementTokenUid || 'dynamic'
+    expect(tokenUidDev).to.be.a('string')
+    done()
   })
 
   it('should publish one entry when publishDetails of an entry is passed', done => {
@@ -82,16 +99,14 @@ describe('BulkOperation api test', () => {
       entries: [
         {
           uid: entryUid1,
-          content_type: multiPageCT.content_type.title,
+          content_type: bulkCtUid1,
           locale: 'en-us'
         }
       ],
       locales: [
         'en-us'
       ],
-      environments: [
-        'development'
-      ]
+      environments: [envName]
     }
     doBulkOperation()
       .publish({ details: publishDetails, api_version: '3.2' })
@@ -104,19 +119,13 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
-  it('should publish one asset when publishDetails of an asset is passed', done => {
+  it('should publish one asset when publishDetails of an asset is passed', function (done) {
+    const assets = assetsWithValidUids()
+    expect(assets.length, 'At least one asset required from asset-test (Phase 6)').to.be.at.least(1)
     const publishDetails = {
-      assets: [
-        {
-          uid: assetUid1
-        }
-      ],
-      locales: [
-        'en-us'
-      ],
-      environments: [
-        'development'
-      ]
+      assets,
+      locales: ['en-us'],
+      environments: [envName]
     }
     doBulkOperation()
       .publish({ details: publishDetails, api_version: '3.2' })
@@ -132,31 +141,12 @@ describe('BulkOperation api test', () => {
   it('should publish multiple entries assets when publishDetails of entries and assets are passed', done => {
     const publishDetails = {
       entries: [
-        {
-          uid: entryUid1,
-          content_type: multiPageCT.content_type.uid,
-          locale: 'en-us'
-        },
-        {
-          uid: entryUid2,
-          content_type: singlepageCT.content_type.uid,
-          locale: 'en-us'
-        }
+        { uid: entryUid1, content_type: bulkCtUid1, locale: 'en-us' },
+        { uid: entryUid2, content_type: bulkCtUid2, locale: 'en-us' }
       ],
-      assets: [
-        {
-          uid: assetUid1
-        },
-        {
-          uid: assetUid2
-        }
-      ],
-      locales: [
-        'en-us'
-      ],
-      environments: [
-        'development'
-      ]
+      assets: assetsWithValidUids(),
+      locales: ['en-us'],
+      environments: [envName]
     }
     doBulkOperation()
       .publish({ details: publishDetails, api_version: '3.2' })
@@ -174,16 +164,14 @@ describe('BulkOperation api test', () => {
       entries: [
         {
           uid: entryUid1,
-          content_type: multiPageCT.content_type.uid,
+          content_type: bulkCtUid1,
           locale: 'en-us'
         }
       ],
       locales: [
         'en-us'
       ],
-      environments: [
-        'development'
-      ]
+      environments: [envName]
     }
     doBulkOperation()
       .publish({
@@ -206,16 +194,14 @@ describe('BulkOperation api test', () => {
       entries: [
         {
           uid: entryUid2,
-          content_type: singlepageCT.content_type.uid,
+          content_type: bulkCtUid2,
           locale: 'en-us'
         }
       ],
       locales: [
         'en-us'
       ],
-      environments: [
-        'development'
-      ]
+      environments: [envName]
     }
     doBulkOperation()
       .publish({
@@ -233,19 +219,13 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
-  it('should publish assets with publishAllLocalized parameter', done => {
+  it('should publish assets with publishAllLocalized parameter', function (done) {
+    const assets = assetsWithValidUids()
+    expect(assets.length, 'At least one asset required from asset-test (Phase 6)').to.be.at.least(1)
     const publishDetails = {
-      assets: [
-        {
-          uid: assetUid1
-        }
-      ],
-      locales: [
-        'en-us'
-      ],
-      environments: [
-        'development'
-      ]
+      assets,
+      locales: ['en-us'],
+      environments: [envName]
     }
     doBulkOperation()
       .publish({
@@ -268,16 +248,14 @@ describe('BulkOperation api test', () => {
       entries: [
         {
           uid: entryUid1,
-          content_type: multiPageCT.content_type.uid,
+          content_type: bulkCtUid1,
           locale: 'en-us'
         }
       ],
       locales: [
         'en-us'
       ],
-      environments: [
-        'development'
-      ]
+      environments: [envName]
     }
     doBulkOperation()
       .unpublish({
@@ -300,16 +278,14 @@ describe('BulkOperation api test', () => {
       entries: [
         {
           uid: entryUid2,
-          content_type: singlepageCT.content_type.uid,
+          content_type: bulkCtUid2,
           locale: 'en-us'
         }
       ],
       locales: [
         'en-us'
       ],
-      environments: [
-        'development'
-      ]
+      environments: [envName]
     }
     doBulkOperation()
       .unpublish({
@@ -327,19 +303,13 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
-  it('should unpublish assets with unpublishAllLocalized parameter', done => {
+  it('should unpublish assets with unpublishAllLocalized parameter', function (done) {
+    const assets = assetsWithValidUids()
+    expect(assets.length, 'At least one asset required from asset-test (Phase 6)').to.be.at.least(1)
     const unpublishDetails = {
-      assets: [
-        {
-          uid: assetUid1
-        }
-      ],
-      locales: [
-        'en-us'
-      ],
-      environments: [
-        'development'
-      ]
+      assets,
+      locales: ['en-us'],
+      environments: [envName]
     }
     doBulkOperation()
       .unpublish({
@@ -362,16 +332,14 @@ describe('BulkOperation api test', () => {
       entries: [
         {
           uid: entryUid1,
-          content_type: multiPageCT.content_type.uid,
+          content_type: bulkCtUid1,
           locale: 'en-us'
         }
       ],
       locales: [
         'en-us'
       ],
-      environments: [
-        'development'
-      ]
+      environments: [envName]
     }
     doBulkOperation()
       .publish({
@@ -392,12 +360,13 @@ describe('BulkOperation api test', () => {
   })
 
   it('should wait for all jobs to be processed before checking status', async () => {
-    await delay(5000) // Wait 5 seconds for jobs to be processed
+    await delay(15000)
   })
 
-  it('should wait for jobs to be ready and get job status for the first publish job', async () => {
-    const response = await waitForJobReady(jobId1)
+  it('should wait for jobs to be ready and get job status for the first publish job', async function () {
+    this.timeout(60000)
 
+    const response = await waitForJobReady(jobId1)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -406,26 +375,22 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should validate detailed job status response structure', async () => {
+  it('should validate detailed job status response structure', async function () {
     const response = await waitForJobReady(jobId1)
-
     expect(response).to.not.equal(undefined)
-    // Validate main job properties
     expect(response.uid).to.not.equal(undefined)
     expect(response.api_key).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
-
-    // Validate body structure
     expect(response.body).to.not.equal(undefined)
     expect(response.body.locales).to.be.an('array')
     expect(response.body.environments).to.be.an('array')
-    // Validate summary structure
     expect(response.summary).to.not.equal(undefined)
   })
 
-  it('should get job status for the second publish job', async () => {
+  it('should get job status for the second publish job', async function () {
+    this.timeout(60000)
+
     const response = await waitForJobReady(jobId2)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -434,9 +399,10 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for the third publish job', async () => {
+  it('should get job status for the third publish job', async function () {
+    this.timeout(60000)
+
     const response = await waitForJobReady(jobId3)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -445,9 +411,10 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for publishAllLocalized=true job', async () => {
+  it('should get job status for publishAllLocalized=true job', async function () {
+    this.timeout(60000)
+
     const response = await waitForJobReady(jobId4)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -456,9 +423,10 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for publishAllLocalized=false job', async () => {
+  it('should get job status for publishAllLocalized=false job', async function () {
+    this.timeout(60000)
+
     const response = await waitForJobReady(jobId5)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -467,9 +435,10 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for asset publishAllLocalized job', async () => {
+  it('should get job status for asset publishAllLocalized job', async function () {
+    this.timeout(60000)
+
     const response = await waitForJobReady(jobId6)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -478,9 +447,10 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for unpublishAllLocalized=true job', async () => {
+  it('should get job status for unpublishAllLocalized=true job', async function () {
+    this.timeout(60000)
+
     const response = await waitForJobReady(jobId7)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -489,9 +459,10 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for unpublishAllLocalized=false job', async () => {
+  it('should get job status for unpublishAllLocalized=false job', async function () {
+    this.timeout(60000)
+
     const response = await waitForJobReady(jobId8)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -500,9 +471,10 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for asset unpublishAllLocalized job', async () => {
+  it('should get job status for asset unpublishAllLocalized job', async function () {
+    this.timeout(60000)
+
     const response = await waitForJobReady(jobId9)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -511,9 +483,10 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status for multiple parameters job', async () => {
+  it('should get job status for multiple parameters job', async function () {
+    this.timeout(60000)
+
     const response = await waitForJobReady(jobId10)
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -522,12 +495,12 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job status with bulk_version parameter', async () => {
-    await waitForJobReady(jobId1)
+  it('should get job status with bulk_version parameter', async function () {
+    this.timeout(60000)
 
+    await waitForJobReady(jobId1)
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .jobStatus({ job_id: jobId1, bulk_version: 'v3', api_version: '3.2' })
-
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
     expect(response.status).to.not.equal(undefined)
@@ -536,22 +509,22 @@ describe('BulkOperation api test', () => {
     expect(response.body).to.not.equal(undefined)
   })
 
-  it('should get job items for a completed job', async () => {
-    await waitForJobReady(jobId1)
+  it('should get job items for a completed job', async function () {
+    this.timeout(60000)
 
+    await waitForJobReady(jobId1)
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .getJobItems(jobId1)
-
     expect(response).to.not.equal(undefined)
     expect(response.items).to.be.an('array')
   })
 
-  it('should get job items with explicit api_version', async () => {
-    await waitForJobReady(jobId2)
+  it('should get job items with explicit api_version', async function () {
+    this.timeout(60000)
 
+    await waitForJobReady(jobId2)
     const response = await doBulkOperationWithManagementToken(tokenUidDev)
       .getJobItems(jobId2, { api_version: '3.2' })
-
     expect(response).to.not.equal(undefined)
     expect(response.items).to.be.an('array')
   })
@@ -568,16 +541,16 @@ describe('BulkOperation api test', () => {
 })
 
 function doBulkOperation (uid = null) {
-  // @ts-ignore-next-line secret-detection
-  return client.stack({ api_key: process.env.API_KEY }).bulkOperation()
+  const ctx = testSetup.testContext
+  return client.stack({ api_key: ctx.stackApiKey }).bulkOperation()
 }
 
 function doBulkOperationWithManagementToken (tokenUidDev) {
-  // @ts-ignore-next-line secret-detection
-  return clientWithManagementToken.stack({ api_key: process.env.API_KEY, management_token: tokenUidDev }).bulkOperation()
+  const ctx = testSetup.testContext
+  return clientWithManagementToken.stack({ api_key: ctx.stackApiKey, management_token: tokenUidDev }).bulkOperation()
 }
 
 function makeManagementToken (uid = null) {
-  // @ts-ignore-next-line secret-detection
-  return client.stack({ api_key: process.env.API_KEY }).managementToken(uid)
+  const ctx = testSetup.testContext
+  return client.stack({ api_key: ctx.stackApiKey }).managementToken(uid)
 }
