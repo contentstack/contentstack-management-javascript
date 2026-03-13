@@ -5,6 +5,7 @@ import { MergeQueue, MergeQueues } from "./merge-queue";
 
 export interface Branch extends SystemFields, SystemFunction<Branch> {
     compare(compareBranchUid: string): Compare
+    updateSettings(payload: IBranchSettings): Promise<IBranchSettingsResponse>
 }
     
 export interface Branches extends Queryable<Branch, {branch: BranchData}> {
@@ -16,6 +17,29 @@ export interface Branches extends Queryable<Branch, {branch: BranchData}> {
 export interface BranchData extends AnyProperty {
     uid: string
     source: string
+}
+
+export interface ILinkedWorkspace {
+    uid: string
+    space_uid: string
+    is_default: boolean
+    operation?: string
+}
+
+export interface IBranchSettingsData {
+    am_v2?: {
+        linked_workspaces: ILinkedWorkspace[]
+    }
+}
+
+export interface IBranchSettings {
+    branch: {
+        settings: IBranchSettingsData
+    }
+}
+
+export interface IBranchSettingsResponse {
+    notice: string
 }
 
 export interface IMergeObj {
