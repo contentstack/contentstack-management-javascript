@@ -759,6 +759,33 @@ describe('Contentstack Taxonomy test', () => {
       })
       .catch(done)
   })
+
+  it('Taxonomy publish test with api_version', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/taxonomies/publish').reply(200, {
+      notice: 'Taxonomy publish job initiated successfully.',
+      job_id: 'job_456'
+    })
+    const publishData = {
+      locales: ['en-us', 'fr-fr'],
+      environments: ['production'],
+      scheduled_at: '2025-10-01T10:00:00.000Z',
+      items: [
+        {
+          uid: 'taxonomy_testing',
+          term_uid: 'vehicles'
+        }
+      ]
+    }
+    makeTaxonomy()
+      .publish(publishData, '3.2')
+      .then((response) => {
+        expect(response.notice).to.be.equal('Taxonomy publish job initiated successfully.')
+        expect(response.job_id).to.be.equal('job_456')
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeTaxonomy (data = {}) {
