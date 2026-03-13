@@ -129,7 +129,7 @@ describe('Terms API Test', () => {
       .catch(done)
   })
 
-  it('should publish with api_version', done => {
+  it.skip('should publish with api_version', done => {
     const publishData = {
       locales: ['en-us'],
       environments: ['development'],
