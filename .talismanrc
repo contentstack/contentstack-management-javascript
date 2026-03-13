@@ -36,8 +36,6 @@ fileignoreconfig:
     checksum: 2597efae3c1ab8cc173d5bf205f1c76932211f8e0eb2a16444e055d83481976c
   - filename: test/unit/concurrency-Queue-test.js
     checksum: 186438f9eb9ba4e7fd7f335dbea2afbae9ae969b7ae3ab1b517ec7a1633d255e
+  - filename: lib/stack/branch/index.js
+    checksum: f09b33c0a144139b7ffddcd7dc39fa6cee3bc42eadc06f11c8495c48d740341c
 version: "1.0"
-
-
-
-
