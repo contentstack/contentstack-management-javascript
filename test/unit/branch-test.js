@@ -166,6 +166,33 @@ describe('Contentstack Branch test', () => {
       .catch(done)
   })
 
+  it('Branch updateSettings test', done => {
+    var mock = new MockAdapter(axios)
+    mock.onPost('/stacks/branches/UID/settings').reply(200, { ...noticeMock })
+    makeBranch({
+      branch: {
+        ...systemUidMock
+      },
+      stackHeaders: stackHeadersMock
+    })
+      .updateSettings({
+        branch: {
+          settings: {
+            am_v2: {
+              linked_workspaces: [
+                { uid: 'branch_uid', space_uid: 'space_uid', is_default: true }
+              ]
+            }
+          }
+        }
+      })
+      .then((response) => {
+        expect(response.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
+
   it('Branch compare all test', done => {
     var mock = new MockAdapter(axios)
     mock.onGet('/stacks/branches_compare', { params: { base_branch: 'UID', compare_branch: 'dev', skip: 0, limit: 100 } }).reply(200, branchCompareAllMock)
