@@ -40,11 +40,15 @@ function assetsWithValidUids () {
   return [assetUid1, assetUid2].filter(uid => uid && String(uid).trim()).map(uid => ({ uid }))
 }
 
-async function waitForJobReady (jobId, maxAttempts = 5) {
+async function waitForJobReady (jobId, maxAttempts = 3) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      const response = await doBulkOperation()
-        .jobStatus({ job_id: jobId, api_version: '3.2' })
+      // GET /v3/bulk/jobs/{job_id} on AM2.0 requires management token auth (authtoken returns 401)
+      // Fall back to authtoken if management token not yet available
+      const bulkOp = tokenUidDev
+        ? doBulkOperationWithManagementToken(tokenUidDev)
+        : doBulkOperation()
+      const response = await bulkOp.jobStatus({ job_id: jobId, api_version: '3.2' })
       if (response && response.status) {
         return response
       }
@@ -55,7 +59,7 @@ async function waitForJobReady (jobId, maxAttempts = 5) {
       }
       // For other errors (network, 5xx), retry
     }
-    await delay(5000)
+    await delay(3000)
   }
   throw new Error(`Job ${jobId} did not become ready after ${maxAttempts} attempts`)
 }
