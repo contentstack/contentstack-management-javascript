@@ -227,9 +227,9 @@ function makeTerms (taxonomyUid, termUid = null) {
   return client.stack({ api_key: process.env.API_KEY }).taxonomy(taxonomyUid).terms(termUid)
 }
 
-function makeTaxonomy () {
-  return client.stack({ api_key: process.env.API_KEY }).taxonomy()
-}
+// function makeTaxonomy () {
+//   return client.stack({ api_key: process.env.API_KEY }).taxonomy()
+// }
 
 describe('Terms Query Parameters Sanity Tests', () => {
   beforeEach(async () => {
