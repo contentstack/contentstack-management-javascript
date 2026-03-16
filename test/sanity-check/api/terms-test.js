@@ -129,34 +129,35 @@ describe('Terms API Test', () => {
       .catch(done)
   })
 
-  it.skip('should publish with api_version', done => {
-    const publishData = {
-      locales: ['en-us'],
-      environments: ['development'],
-      items: [
-        {
-          uid: taxonomy.uid,
-          term_uid: 'term_test'
-        },
-        {
-          uid: taxonomy.uid,
-          term_uid: 'term_test_child1'
-        },
-        {
-          uid: taxonomy.uid,
-          term_uid: 'term_test_child2'
-        }
-      ]
-    }
-    makeTaxonomy()
-      .publish(publishData, '3.2')
-      .then((response) => {
-        expect(response.notice).to.not.equal(null)
-        expect(response.job_id).to.not.equal(undefined)
-        done()
-      })
-      .catch(done)
-  })
+  // TODO: This test is to be uncommented after the feature is enabled
+  // it('should publish with api_version', done => {
+  //   const publishData = {
+  //     locales: ['en-us'],
+  //     environments: ['development'],
+  //     items: [
+  //       {
+  //         uid: taxonomy.uid,
+  //         term_uid: 'term_test'
+  //       },
+  //       {
+  //         uid: taxonomy.uid,
+  //         term_uid: 'term_test_child1'
+  //       },
+  //       {
+  //         uid: taxonomy.uid,
+  //         term_uid: 'term_test_child2'
+  //       }
+  //     ]
+  //   }
+  //   makeTaxonomy()
+  //     .publish(publishData, '3.2')
+  //     .then((response) => {
+  //       expect(response.notice).to.not.equal(null)
+  //       expect(response.job_id).to.not.equal(undefined)
+  //       done()
+  //     })
+  //     .catch(done)
+  // })
 
   it('should search the term with the string passed', done => {
     makeTerms(taxonomy.uid).search(termString)
