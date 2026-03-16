@@ -80,7 +80,7 @@ fileignoreconfig:
   - filename: test/sanity-check/utility/testSetup.js
     checksum: e906e6a93953826857fa701db7094330ef88e342e719f3446e17c823576c3377
   - filename: test/sanity-check/api/branch-test.js
-    checksum: 49c8fd18c59d45e4335f766591711849722206bce34860efa8eced7172f44efa
+    checksum: cd47d784fa09da7bc5eb4d259084349a362b48d5f64b5b08e17cbc843b9a89e7
   - filename: test/sanity-check/api/stack-test.js
     checksum: abcc3b1a7a6e52a553645bd7a7a38b287402604f6b61df51a69745cd2aa8a187
   - filename: test/sanity-check/api/previewToken-test.js

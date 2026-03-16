@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import { describe, it, setup, before } from 'mocha'
+import { describe, it, setup, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import * as testSetup from '../utility/testSetup.js'
-import { testData } from '../utility/testHelpers.js'
+import { testData, shortId } from '../utility/testHelpers.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -555,15 +555,20 @@ describe('BulkOperation api test', () => {
       if (!entryUid1 || !bulkCtUid1) {
         return this.skip()
       }
-      // Create a read-only management token (no publish scope) to trigger 401+error_code 161
+      // Create a read-only management token (no write = no publish) to trigger 401+error_code 161
       try {
         const tokenData = {
           token: {
-            name: 'DX4430-Restricted-Token-' + Date.now(),
+            name: `dx_${shortId()}`,
             description: 'Read-only token for DX-4430 regression test',
             scope: [
               {
                 module: 'content_type',
+                acl: { read: true }
+              },
+              {
+                module: 'branch',
+                branches: ['main'],
                 acl: { read: true }
               }
             ],
