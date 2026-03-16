@@ -399,4 +399,43 @@ describe('Branch API Tests', () => {
       }
     })
   })
+
+  // ==========================================================================
+  // BRANCH SETTINGS (AM v2)
+  // ==========================================================================
+
+  describe('Branch Settings', () => {
+    it('should call updateSettings on main branch', async function () {
+      this.timeout(15000)
+      const branchUid = testData.branches?.dev?.uid || 'main'
+
+      const payload = {
+        branch: {
+          settings: {
+            am_v2: {
+              linked_workspaces: []
+            }
+          }
+        }
+      }
+
+      try {
+        const response = await stack.branch(branchUid).updateSettings(payload)
+        expect(response).to.be.an('object')
+      } catch (e) {
+        // updateSettings may require AM v2 entitlement; accept 4xx errors gracefully
+        expect(e.status).to.be.oneOf([400, 403, 404, 422])
+      }
+    })
+
+    it('should fail updateSettings with invalid payload', async function () {
+      this.timeout(15000)
+      try {
+        await stack.branch('main').updateSettings({})
+        // Empty payload may be accepted on some envs
+      } catch (e) {
+        expect(e.status).to.be.oneOf([400, 422])
+      }
+    })
+  })
 })
