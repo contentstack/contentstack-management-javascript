@@ -2,8 +2,19 @@ import Slack from '@slack/bolt'
 const { App } = Slack
 import dotenv from 'dotenv'
 import fs from 'fs'
+import { execSync } from 'child_process'
+import path from 'path'
 
 dotenv.config()
+
+// Marge expects meta.marge.options to be an Object; mochawesome leaves it null. Patch before marge.
+const reportJsonPath = path.join(process.cwd(), 'mochawesome-report', 'mochawesome.json')
+const json = JSON.parse(fs.readFileSync(reportJsonPath, 'utf8'))
+if (json.meta?.marge?.options == null) {
+  json.meta.marge.options = {}
+  fs.writeFileSync(reportJsonPath, JSON.stringify(json))
+}
+execSync('marge mochawesome-report/mochawesome.json -f sanity-report.html --inline', { stdio: 'inherit', cwd: process.cwd() })
 
 const mochawesomeJsonOutput = fs.readFileSync('./mochawesome-report/mochawesome.json', 'utf8')
 const mochawesomeReport = JSON.parse(mochawesomeJsonOutput)
@@ -58,7 +69,6 @@ async function publishMessage (text, report) {
     token: process.env.SLACK_BOT_TOKEN,
     channel_id: process.env.SLACK_CHANNEL_ID,
     initial_comment: '*Here is the report generated*',
-    filetype: 'html',
     filename: 'sanity-report.html',
     file: fs.createReadStream(report)
   })
