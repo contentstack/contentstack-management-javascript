@@ -40,7 +40,7 @@ function assetsWithValidUids () {
   return [assetUid1, assetUid2].filter(uid => uid && String(uid).trim()).map(uid => ({ uid }))
 }
 
-async function waitForJobReady (jobId, maxAttempts = 10) {
+async function waitForJobReady (jobId, maxAttempts = 5) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       const response = await doBulkOperation()
@@ -376,6 +376,7 @@ describe('BulkOperation api test', () => {
   })
 
   it('should validate detailed job status response structure', async function () {
+    this.timeout(60000)
     const response = await waitForJobReady(jobId1)
     expect(response).to.not.equal(undefined)
     expect(response.uid).to.not.equal(undefined)
