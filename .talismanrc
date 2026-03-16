@@ -58,7 +58,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/locale-test.js
     checksum: 91f8db01791a57c18e925c5896cc1960cdb951e6787fff886c008e17c25d5dea
   - filename: test/sanity-check/api/asset-test.js
-    checksum: 97f19206080fcd5042e3eaa25429e92eac697530de8825cb66533164b73d9164
+    checksum: eb42c34980e7d6cd48891c38ce3c367b92ce7d90aace401da32c7493fb8bde8d
   - filename: test/sanity-check/api/label-test.js
     checksum: bf11c1ec13e66d9251380ac8fe028d51a809ffa174afa9518dfb1f599372381d
   - filename: test/sanity-check/mock/webhook-import.json
@@ -74,7 +74,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/team-test.js
     checksum: e4b7a6824b89e634981651ad29161901377f23bb37d3653a389ac3dc4e7653c7
   - filename: test/sanity-check/api/oauth-test.js
-    checksum: 7e2d6314f120c20a491d2f8403c9aa4e0af6dfc6fab436f0acc77953cef866e2
+    checksum: b1e4729c0d5fdfaeaa1c5b818e20136ce2ea7c8d5f8f65be5d461d3335aa103c
   - filename: test/sanity-check/api/branchAlias-test.js
     checksum: 0b6cacee74d7636e84ce095198f0234d491b79ea20d3978a742a5495692bd61d
   - filename: test/sanity-check/utility/testSetup.js
@@ -94,7 +94,7 @@ fileignoreconfig:
   - filename: test/sanity-check/api/contentType-test.js
     checksum: 4d5178998f9f3c27550c5bd21540e254e08f79616e8615e7256ba2175cb4c8e1
   - filename: test/sanity-check/api/bulkOperation-test.js
-    checksum: 61a2f6f77f429754edf8693cd56879f6d1830173a12a3592fbdb76e73af5be47
+    checksum: 124e24535760a3c60626a893b9cb79fd8675cf4488531de9f13b6a5c1e71e0f7
   - filename: test/sanity-check/api/entry-test.js
     checksum: 9dc16b404a98ff9fa2c164fad0182b291b9c338dd58558dc5ef8dd75cf18bc1f
   - filename: test/sanity-check/api/entryVariants-test.js

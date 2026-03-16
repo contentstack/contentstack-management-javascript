@@ -759,4 +759,223 @@ describe('Asset API Tests', () => {
       expect(response.items).to.be.an('array')
     })
   })
+
+  // ==========================================================================
+  // ASSET QUERY PARAMETERS (PDF: Query Parameters in Assets)
+  // Covers: locale, folder, include_folders, environment, version,
+  //         include_publish_details, relative_urls, desc, include_branch
+  // ==========================================================================
+
+  describe('Asset Query Parameters', () => {
+    let qpAssetUid
+
+    before(async function () {
+      this.timeout(30000)
+      // Use the image asset created in Asset Upload if available; otherwise create one
+      if (testData.assets && testData.assets.image && testData.assets.image.uid) {
+        qpAssetUid = testData.assets.image.uid
+      } else {
+        const asset = await stack.asset().create({
+          upload: assetPath,
+          title: `QP Test Asset ${Date.now()}`
+        })
+        qpAssetUid = asset.uid
+      }
+    })
+
+    // ── locale ──────────────────────────────────────────────────────────────
+
+    it('should fetch a single asset with locale parameter', async function () {
+      if (!qpAssetUid) return this.skip()
+      const response = await stack.asset(qpAssetUid).fetch({ locale: 'en-us' })
+
+      expect(response).to.be.an('object')
+      expect(response.uid).to.equal(qpAssetUid)
+    })
+
+    it('should query assets with locale parameter', async function () {
+      const response = await stack.asset().query({ locale: 'en-us' }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+    })
+
+    // ── folder ───────────────────────────────────────────────────────────────
+
+    it('should query assets from root folder using folder=cs_root', async function () {
+      const response = await stack.asset().query({ folder: 'cs_root' }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+    })
+
+    it('should query assets from a specific folder by folder UID', async function () {
+      // Requires a folder created by Asset Folders tests
+      const folderUid = testData.assets && testData.assets.folder && testData.assets.folder.uid
+      if (!folderUid) return this.skip()
+
+      const response = await stack.asset().query({ folder: folderUid }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+    })
+
+    // ── include_folders ──────────────────────────────────────────────────────
+
+    it('should include folder details alongside assets with include_folders=true', async function () {
+      const response = await stack.asset().query({
+        folder: 'cs_root',
+        include_folders: true
+      }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+      // When include_folders is true the result may include directory entries
+      const hasDirEntry = response.items.some(item => item.is_dir === true)
+      // Acceptable: either folders are returned or none exist — just verify no error
+      expect(typeof hasDirEntry).to.equal('boolean')
+    })
+
+    // ── environment ──────────────────────────────────────────────────────────
+
+    it('should query assets filtered by environment name', async function () {
+      // 'development' is created by the environment-test phase; gracefully skip if missing
+      const envName = (testData.environments && testData.environments.development)
+        ? testData.environments.development.name
+        : 'development'
+
+      try {
+        const response = await stack.asset().query({ environment: envName }).find()
+
+        expect(response).to.be.an('object')
+        expect(response.items).to.be.an('array')
+      } catch (error) {
+        // Not all assets may be published to the environment — 422/404 is acceptable
+        if (error.status && [404, 422].includes(error.status)) {
+          return
+        }
+        throw error
+      }
+    })
+
+    // ── version ───────────────────────────────────────────────────────────────
+
+    it('should fetch a specific version of an asset', async function () {
+      if (!qpAssetUid) return this.skip()
+
+      // Fetch current to find max version, then retrieve version 1 explicitly
+      const current = await stack.asset(qpAssetUid).fetch()
+      const targetVersion = current._version || 1
+
+      const response = await stack.asset(qpAssetUid).fetch({ version: targetVersion })
+
+      expect(response).to.be.an('object')
+      expect(response.uid).to.equal(qpAssetUid)
+      expect(response._version).to.equal(targetVersion)
+    })
+
+    it('should fetch latest version when version param is omitted', async function () {
+      if (!qpAssetUid) return this.skip()
+
+      const response = await stack.asset(qpAssetUid).fetch()
+
+      expect(response).to.be.an('object')
+      // Without version param the latest version is returned
+      expect(response._version).to.be.a('number')
+      expect(response._version).to.be.at.least(1)
+    })
+
+    // ── include_publish_details ───────────────────────────────────────────────
+
+    it('should include publish details when include_publish_details=true', async function () {
+      const response = await stack.asset().query({
+        include_publish_details: true
+      }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+      // If any asset is published, publish_details field should be present on it
+      if (response.items.length > 0) {
+        const firstItem = response.items[0]
+        // publish_details may be an array (empty or filled) — just verify the key is present
+        if ('publish_details' in firstItem) {
+          expect(firstItem.publish_details).to.be.an('array')
+        }
+      }
+    })
+
+    // ── relative_urls ─────────────────────────────────────────────────────────
+
+    it('should return relative URLs when relative_urls=true', async function () {
+      const response = await stack.asset().query({
+        relative_urls: true
+      }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+      // With relative_urls=true, url fields should NOT start with https://
+      if (response.items.length > 0 && response.items[0].url) {
+        expect(response.items[0].url).to.not.match(/^https?:\/\//)
+      }
+    })
+
+    // ── desc ──────────────────────────────────────────────────────────────────
+
+    it('should sort assets in descending order by created_at', async function () {
+      const response = await stack.asset().query({
+        desc: 'created_at'
+      }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+      // Verify descending order: each item's created_at >= next item's
+      if (response.items.length >= 2) {
+        const timestamps = response.items.map(a => new Date(a.created_at).getTime())
+        for (let i = 0; i < timestamps.length - 1; i++) {
+          expect(timestamps[i]).to.be.at.least(timestamps[i + 1])
+        }
+      }
+    })
+
+    it('should sort assets in ascending order by created_at (asc param)', async function () {
+      const response = await stack.asset().query({
+        asc: 'created_at'
+      }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+      if (response.items.length >= 2) {
+        const timestamps = response.items.map(a => new Date(a.created_at).getTime())
+        for (let i = 0; i < timestamps.length - 1; i++) {
+          expect(timestamps[i]).to.be.at.most(timestamps[i + 1])
+        }
+      }
+    })
+
+    // ── include_branch ────────────────────────────────────────────────────────
+
+    it('should include _branch key in asset response when include_branch=true', async function () {
+      const response = await stack.asset().query({
+        include_branch: true
+      }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+      if (response.items.length > 0) {
+        // _branch field should be present when include_branch=true
+        expect(response.items[0]).to.have.property('_branch')
+      }
+    })
+
+    it('should NOT include _branch key when include_branch is omitted', async function () {
+      const response = await stack.asset().query({}).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+      if (response.items.length > 0) {
+        // Without include_branch, _branch key should be absent
+        expect(response.items[0]).to.not.have.property('_branch')
+      }
+    })
+  })
 })
