@@ -9,7 +9,7 @@ fileignoreconfig:
     ignore_detectors:
       - filecontent
   - filename: package-lock.json
-    checksum: ff309d2a910e885853fb25faa6aa3d2bd2cfc2d316c84a0e984bbda79c596ae9
+    checksum: d4d4e7c312671307a62df2845cafe7385232530c7411b65f16e12949d0a1b609
   - filename: test/unit/ContentstackClient-test.js
     checksum: 5d8519b5b93c715e911a62b4033614cc4fb3596eabf31c7216ecb4cc08604a73
   - filename: .husky/pre-commit
@@ -120,4 +120,8 @@ fileignoreconfig:
     checksum: d6771a51a021977ce9f428afc289c80aee3d2fca211f4102cf782afded354ce7
   - filename: .github/workflows/check-version-bump.yml
     checksum: c4aff7ca93f40213f67534e5c490d7a633cbebb21bbebd4517ff9b9db37ab52a
+  - filename: lib/stack/branch/index.js
+    checksum: 6d352641cbab302d6abfefbe33814fac9b210bb3f6291341c1d6b5493d4756c6
+  - filename: lib/stack/taxonomy/index.js
+    checksum: c9cd4a2d43970d530981b2257700770c2e7843786de0ff829c1ca818fc559d23
 version: "1.0"
