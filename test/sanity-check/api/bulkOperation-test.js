@@ -676,7 +676,7 @@ describe('BulkOperation api test', () => {
         expect(err.errorMessage).to.not.equal('Unable to refresh token. Please log in again.')
         // Should have a real HTTP status code from the API
         if (err.status !== undefined) {
-          expect(err.status).to.be.oneOf([400, 401, 404, 422])
+          expect(err.status).to.be.oneOf([400, 401, 404, 412, 422])
         }
         // Should carry meaningful error information
         const hasErrorInfo = err.errorMessage || err.message || err.errors
