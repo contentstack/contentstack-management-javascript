@@ -43,6 +43,7 @@ test/sanity-check/utility/dataFiles/
 report.json
 sanity-check-backup/
 .vscode/
+.claude/
 
 # TypeScript v1 declaration files
 typings/

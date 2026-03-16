@@ -539,7 +539,7 @@ describe('OAuth Authentication API Tests', () => {
     it('should retrieve organization UID via getOrganizationUID()', async function () {
       this.timeout(15000)
 
-      if (!oauthClient) {
+      if (!oauthClient || !accessToken) {
         this.skip()
       }
 
@@ -559,7 +559,7 @@ describe('OAuth Authentication API Tests', () => {
     it('should retrieve token expiry time via getTokenExpiryTime()', async function () {
       this.timeout(15000)
 
-      if (!oauthClient) {
+      if (!oauthClient || !accessToken) {
         this.skip()
       }
 
