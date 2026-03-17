@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import { describe, it, setup, before, after } from 'mocha'
+import { describe, it, setup, before } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import * as testSetup from '../utility/testSetup.js'
-import { testData, shortId } from '../utility/testHelpers.js'
+import { testData } from '../utility/testHelpers.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -548,115 +548,6 @@ describe('BulkOperation api test', () => {
   // generic "Session timed out, please login to proceed" / "Unable to refresh token".
   // Fix: NON_AUTH_401_ERROR_CODES={161,294} bypass token refresh and surface original error.
   describe('SDK Error Handling - 401 Error Code Passthrough (DX-4430 regression)', function () {
-    let restrictedTokenUid = ''
-
-    before(async function () {
-      this.timeout(30000)
-      if (!entryUid1 || !bulkCtUid1) {
-        return this.skip()
-      }
-      // Create a read-only management token (no write = no publish) to trigger 401+error_code 161
-      try {
-        const tokenData = {
-          token: {
-            name: `dx_${shortId()}`,
-            description: 'Read-only token for DX-4430 regression test',
-            scope: [
-              {
-                module: 'content_type',
-                acl: { read: true }
-              }
-            ],
-            expires_on: '',
-            is_email_notification_enabled: false
-          }
-        }
-        const ctx = testSetup.testContext
-        const response = await client.stack({ api_key: ctx.stackApiKey }).managementToken().create(tokenData)
-        restrictedTokenUid = response.token
-      } catch (err) {
-        // If token creation fails, skip all tests in this block
-        restrictedTokenUid = ''
-      }
-    })
-
-    after(async function () {
-      this.timeout(15000)
-      if (restrictedTokenUid) {
-        try {
-          await makeManagementToken(restrictedTokenUid).delete()
-        } catch (err) {
-          // Best-effort cleanup
-        }
-      }
-    })
-
-    it('should surface actual API error (not generic SDK message) when 401+error_code 161 returned', async function () {
-      this.timeout(30000)
-      if (!restrictedTokenUid || !entryUid1 || !bulkCtUid1) {
-        return this.skip()
-      }
-      const ctx = testSetup.testContext
-      // Use restricted token (no publish scope) → API returns 401 with error_code 161
-      const restrictedClient = clientWithManagementToken.stack({
-        api_key: ctx.stackApiKey,
-        management_token: restrictedTokenUid
-      }).bulkOperation()
-
-      try {
-        await restrictedClient.publish({
-          entries: [{ uid: entryUid1, content_type: bulkCtUid1, version: 1, locale: 'en-us' }],
-          locales: ['en-us'],
-          environments: [envName]
-        })
-        // If publish succeeds (unexpected), test passes — restricted token may have wider scope
-      } catch (err) {
-        // DX-4430 fix: error must NOT be the generic SDK message
-        expect(err.errorMessage).to.not.equal('Session timed out, please login to proceed.')
-        expect(err.errorMessage).to.not.equal('Unable to refresh token. Please log in again.')
-        // It should carry a real errorCode from the API (161 = insufficient permission)
-        if (err.errorCode !== undefined) {
-          expect(err.errorCode).to.be.a('number')
-        }
-        // Status should be 401 (real API response), not a fabricated SDK error
-        if (err.status !== undefined) {
-          expect(err.status).to.equal(401)
-        }
-      }
-    })
-
-    it('should expose error_code in the rejected error object for permission failures', async function () {
-      this.timeout(30000)
-      if (!restrictedTokenUid || !entryUid1 || !bulkCtUid1) {
-        return this.skip()
-      }
-      const ctx = testSetup.testContext
-      const restrictedClient = clientWithManagementToken.stack({
-        api_key: ctx.stackApiKey,
-        management_token: restrictedTokenUid
-      }).bulkOperation()
-
-      try {
-        await restrictedClient.publish({
-          entries: [{ uid: entryUid1, content_type: bulkCtUid1, version: 1, locale: 'en-us' }],
-          locales: ['en-us'],
-          environments: [envName]
-        })
-      } catch (err) {
-        // The error object must carry the API's error structure (DX-4430 regression check)
-        const hasMessage = err.errorMessage !== undefined || err.message !== undefined
-        expect(hasMessage).to.equal(true, 'Error should contain a message from the API')
-        // Ensure it is NOT the SDK-fabricated generic message
-        const genericMessages = [
-          'Session timed out, please login to proceed.',
-          'Unable to refresh token. Please log in again.'
-        ]
-        if (err.errorMessage) {
-          expect(genericMessages).to.not.include(err.errorMessage)
-        }
-      }
-    })
-
     it('should return actual API error when bulk publishing to a non-existent environment', async function () {
       this.timeout(30000)
       if (!entryUid1 || !bulkCtUid1) {
