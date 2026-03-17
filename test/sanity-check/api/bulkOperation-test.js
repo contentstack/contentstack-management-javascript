@@ -565,11 +565,6 @@ describe('BulkOperation api test', () => {
               {
                 module: 'content_type',
                 acl: { read: true }
-              },
-              {
-                module: 'branch',
-                branches: ['main'],
-                acl: { read: true }
               }
             ],
             expires_on: '',

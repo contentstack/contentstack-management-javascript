@@ -493,6 +493,47 @@ describe('OAuth Authentication API Tests', () => {
   })
 
   describe('OAuth Token Exchange', () => {
+    before(async function () {
+      this.timeout(15000)
+      // Re-generate a fresh auth code right before token exchange.
+      // Some OAuth servers (e.g. dev11 DeveloperHub) only allow one active authorization
+      // code per app+user at a time — the handleRedirect section's second authorize() call
+      // invalidates the original authCode. Regenerating here ensures a valid code.
+      if (!oauthClient || !authtoken || !clientId || !appId || !redirectUri) {
+        return
+      }
+      try {
+        const freshUrl = await oauthClient.authorize()
+        const freshParsed = new URL(freshUrl)
+        const freshChallenge = freshParsed.searchParams.get('code_challenge')
+        const freshMethod = freshParsed.searchParams.get('code_challenge_method')
+        const authorizationEndpoint = oauthClient.axiosInstance.defaults.developerHubBaseUrl
+
+        axios.defaults.headers.common.authtoken = authtoken
+        axios.defaults.headers.common.organization_uid = organizationUid
+
+        const response = await axios.post(
+          `${authorizationEndpoint}/manifests/${appId}/authorize`,
+          {
+            client_id: clientId,
+            redirect_uri: redirectUri,
+            code_challenge: freshChallenge,
+            code_challenge_method: freshMethod,
+            response_type: 'code'
+          }
+        )
+        const redirectUrl = response.data.data.redirect_url
+        const url = new URL(redirectUrl)
+        authCode = url.searchParams.get('code')
+
+        oauthClient.axiosInstance.oauth.appId = appId
+        oauthClient.axiosInstance.oauth.clientId = clientId
+        oauthClient.axiosInstance.oauth.redirectUri = redirectUri
+      } catch (e) {
+        console.log('Token Exchange: fresh auth code warning:', e.message)
+      }
+    })
+
     it('should exchange authorization code for access token', async function () {
       this.timeout(15000)
 
