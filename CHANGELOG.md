@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.29.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.29.1) (2026-03-23)
+
+- Fix
+  - DeveloperHub URL mapping for custom region
+- Enh
+  - AM 2.0 test cases updates
+
 ## [v1.29.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.28.0) (2026-03-16)
 
 - Enh
