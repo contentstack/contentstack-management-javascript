@@ -1,0 +1,61 @@
+{
+  "options": {
+    "is_page": true,
+    "singleton": false,
+    "title": "title",
+    "sub_title": [],
+    "url_pattern": "/:title"
+  },
+  "title": "Imported Content Type",
+  "uid": "imported_content_type",
+  "schema": [
+    {
+      "display_name": "Title",
+      "uid": "title",
+      "data_type": "text",
+      "mandatory": true,
+      "unique": true,
+      "field_metadata": {
+        "_default": true
+      }
+    },
+    {
+      "display_name": "URL",
+      "uid": "url",
+      "data_type": "text",
+      "mandatory": false,
+      "field_metadata": {
+        "_default": true
+      }
+    },
+    {
+      "display_name": "Description",
+      "uid": "description",
+      "data_type": "text",
+      "mandatory": false,
+      "field_metadata": {
+        "description": "Page description",
+        "multiline": true,
+        "version": 3
+      }
+    },
+    {
+      "display_name": "Publish Date",
+      "uid": "publish_date",
+      "data_type": "isodate",
+      "mandatory": false,
+      "field_metadata": {
+        "description": "Date of publication"
+      }
+    },
+    {
+      "display_name": "Is Active",
+      "uid": "is_active",
+      "data_type": "boolean",
+      "mandatory": false,
+      "field_metadata": {
+        "default_value": true
+      }
+    }
+  ]
+}
