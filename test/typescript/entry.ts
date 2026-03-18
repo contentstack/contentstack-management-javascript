@@ -104,7 +104,7 @@ export function getEntries(stack: Stack) {
         })
         
         test('Fetch Entry', done => {
-            stack.contentType('product').entry('blt7d6fae845bfc55d4')
+            stack.contentType('product').entry('blt0000000000000000')
             .fetch({include_content_type: true})
             .then((response) => {
                 expect(response.uid).to.be.not.equal(null)
