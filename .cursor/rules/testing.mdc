@@ -1,0 +1,43 @@
+---
+description: "Mocha, Jest, and sanity-check tests for this SDK"
+globs:
+  - "test/unit/**/*.js"
+  - "test/sanity-check/**/*.js"
+  - "test/typescript/**/*.ts"
+  - "test/**/index.js"
+alwaysApply: false
+---
+
+# Testing — `@contentstack/management`
+
+## Frameworks
+
+| Suite | Runner | Assertion / mocks | Notes |
+|-------|--------|-------------------|--------|
+| **Unit** | **Mocha** + `@babel/register` | **Chai**, **Sinon**, **Nock**, **axios-mock-adapter** | Entry: `test/unit/index.js`; **30s** timeout in npm script |
+| **Sanity / API** | Mocha | Chai; **live HTTP** | Entry: `test/sanity-check/sanity.js`; imports **`dist/node/contentstack-management.js`** — run **`npm run build`** first |
+| **TypeScript** | **Jest** + **ts-jest** | Jest mocks | `jest.config.js`; `npm run test:typescript` |
+
+## Naming & layout
+
+- **Unit**: `test/unit/*-test.js` (required from `test/unit/index.js`).
+- **Sanity**: `test/sanity-check/api/*-test.js` (orchestrated via `sanity.js`); shared setup in `test/sanity-check/utility/testSetup.js` and helpers.
+- **TS**: `test/typescript/**/*.test.ts` per Jest config.
+
+## Credentials & env (sanity only)
+
+- Canonical env documentation: **`test/sanity-check/utility/testSetup.js`** (see also `sanity.js`).
+- **Required for setup:** `EMAIL`, `PASSWORD`, `HOST`, `ORGANIZATION`.
+- **Suite-specific (tests skip when unset):** OAuth — `CLIENT_ID`, `APP_ID`, `REDIRECT_URI`; 2FA — `TFA_EMAIL`, `TFA_PASSWORD`; MFA — `MFA_SECRET`; team/stack share — `MEMBER_EMAIL`; DAM 2.0 — `DAM_2_0_ENABLED=true`.
+- **Optional / defaults:** `PERSONALIZE_HOST`, `DELETE_DYNAMIC_RESOURCES`. Use `HOST` for the target CMA API host / region.
+- Setup **writes** `API_KEY`, `AUTHTOKEN`, `MANAGEMENT_TOKEN`, `PERSONALIZE_PROJECT_UID` at runtime — never commit those.
+- Unit tests must **not** rely on real API keys; mock HTTP.
+
+## Coverage
+
+- **nyc** is used with `npm run test:unit` / `test:sanity-test`; exclusions are configured under `package.json` → `nyc`.
+
+## Hygiene
+
+- No committed **`only`** / **`skip`** for tests that should run in CI.
+- Prefer existing **`test/unit/mock/`** and sanity **`mock/`** patterns for fixtures.
