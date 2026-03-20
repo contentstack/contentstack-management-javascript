@@ -28,8 +28,36 @@ Always **`npm run build`** before sanity if `dist/node/contentstack-management.j
 ## Sanity tests (`test/sanity-check/`)
 
 - **Live** Contentstack CMA calls; orchestrated by `test/sanity-check/sanity.js`.
-- **Env**: required variables and optional OAuth/Personalize keys are listed at the top of **`test/sanity-check/utility/testSetup.js`** (e.g. `EMAIL`, `PASSWORD`, `HOST`, `ORGANIZATION`).
-- **Flow**: setup creates stack/management token/fixtures where applicable; teardown is handled in the same module — read it before adding destructive tests.
+- **Authoritative list:** variable names and defaults are documented in **`test/sanity-check/utility/testSetup.js`** (and mirrored in `sanity.js`); prefer that file when adding new env vars.
+
+### Environment variables
+
+**Required (core)** — setup fails or cannot run without these:
+
+- `EMAIL`, `PASSWORD`, `HOST`, `ORGANIZATION`
+
+Without them, login / stack creation / org-scoped setup does not complete.
+
+**Required for specific suites** — related tests **skip** (or degrade) when missing:
+
+| Area | Variables | Notes |
+|------|-----------|--------|
+| **OAuth** | `CLIENT_ID`, `APP_ID`, `REDIRECT_URI` | Used by `oauth-test.js` and auth flows that need app registration |
+| **2FA (TFA)** | `TFA_EMAIL`, `TFA_PASSWORD` | `user-test.js` — skip TFA scenarios when unset |
+| **MFA (TOTP)** | `MFA_SECRET` | `user-test.js` — MFA login path; optional asserts still run without it in some cases |
+| **Team / stack share** | `MEMBER_EMAIL` | `team-test.js`, `stack-test.js` — avoids mutating the admin user; share tests skip if unset |
+| **DAM 2.0** | `DAM_2_0_ENABLED=true` | `entry-test.js` — asset/DAM 2.0 block gated on this flag |
+
+**Optional / config** (defaults exist; override when needed):
+
+- `PERSONALIZE_HOST` — defaults to `personalize-api.contentstack.com` in setup  
+- `DELETE_DYNAMIC_RESOURCES` — defaults to deleting dynamic stack/Personalize resources; set to `false` to keep them for debugging  
+
+**Regions / hosts:** point `HOST` at the **API host** for the stack you are testing (e.g. regional or custom CMA host), consistent with `testSetup.js`.
+
+**Runtime (not for .env check-in):** after setup, `testSetup` assigns `process.env.API_KEY`, `AUTHTOKEN`, `MANAGEMENT_TOKEN`, `PERSONALIZE_PROJECT_UID`, etc. Do not commit those; they are produced by the harness.
+
+- **Flow**: setup creates stack, management token, and Personalize project where applicable; teardown reads `DELETE_DYNAMIC_RESOURCES`. Read **`testSetup.js`** before adding destructive or org-wide tests.
 
 ## Jest (`test/typescript/`)
 

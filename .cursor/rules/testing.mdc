@@ -26,7 +26,11 @@ alwaysApply: false
 
 ## Credentials & env (sanity only)
 
-- Sanity tests need env vars documented in **`test/sanity-check/utility/testSetup.js`** (`EMAIL`, `PASSWORD`, `HOST`, `ORGANIZATION`, optional OAuth/Personalize). **Do not** commit secrets or hardcode tokens in tests.
+- Canonical env documentation: **`test/sanity-check/utility/testSetup.js`** (see also `sanity.js`).
+- **Required for setup:** `EMAIL`, `PASSWORD`, `HOST`, `ORGANIZATION`.
+- **Suite-specific (tests skip when unset):** OAuth — `CLIENT_ID`, `APP_ID`, `REDIRECT_URI`; 2FA — `TFA_EMAIL`, `TFA_PASSWORD`; MFA — `MFA_SECRET`; team/stack share — `MEMBER_EMAIL`; DAM 2.0 — `DAM_2_0_ENABLED=true`.
+- **Optional / defaults:** `PERSONALIZE_HOST`, `DELETE_DYNAMIC_RESOURCES`. Use `HOST` for the target CMA API host / region.
+- Setup **writes** `API_KEY`, `AUTHTOKEN`, `MANAGEMENT_TOKEN`, `PERSONALIZE_PROJECT_UID` at runtime — never commit those.
 - Unit tests must **not** rely on real API keys; mock HTTP.
 
 ## Coverage
