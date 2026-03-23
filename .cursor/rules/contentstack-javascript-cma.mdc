@@ -1,0 +1,40 @@
+---
+description: "Contentstack CMA SDK patterns for lib/ (Management API client)"
+globs: ["lib/**/*.js"]
+alwaysApply: false
+---
+# Contentstack CMA SDK (`lib/`)
+
+This package implements the **Content Management API (CMA)** client, not the read-only Content Delivery API.
+
+## Client
+
+- Entry: **`contentstack.client(params)`** in `lib/contentstack.js` — wires HTTP client, region/host/endpoint, **timeout**, **retryOnError**, **retryLimit**, **retryDelay**, **maxRequests**, **early_access**, optional **proxy**, **plugins**, etc.
+- Endpoint resolution uses **`getContentstackEndpoint`** from `@contentstack/utils` where applicable (see `contentstack.js`).
+
+## Authentication & stack scoping
+
+- **User/session**: `authtoken` or `authorization` header patterns set on the axios instance after `login` (`lib/contentstackClient.js`).
+- **Stack**: `client.stack({ api_key, management_token, ... })` — management token is stack-scoped.
+- **Organization**: `client.organization()` for org-level operations.
+- **Branch**: pass branch options where the Stack/entity factory methods accept them (match existing callers in `lib/stack/`).
+
+## HTTP & errors
+
+- All requests go through the **axios** instance created in **`lib/core/contentstackHTTPClient.js`** (concurrency queue, interceptors, retries on e.g. **429** per `retryCondition`).
+- Failures should continue to use **`lib/core/contentstackError.js`** in promise rejection chains (e.g. `.then(success, error)`), producing errors with **status**, **request** metadata, and **`error_message` / `error_code`** from CMA JSON when present.
+
+## Resource modules
+
+- **Entity** helpers and collection patterns: `lib/entity.js`, `lib/contentstackCollection.js`, `lib/query/index.js`.
+- New resources should follow existing **constructor(http, data)** + **`urlPath`** + **`stackHeaders`** patterns in sibling modules under `lib/stack/`.
+
+## Callbacks vs async
+
+- Prefer **Promises** (`async`/`await` or `.then`) consistent with surrounding code; avoid introducing callback-style APIs unless matching an existing public surface.
+
+## CMA concepts
+
+This SDK targets the **Content Management API (CMA)**, not the Content Delivery API.
+
+- **Entry, Query, Asset, Content type, Taxonomy (terms, etc.), Stack, Branch, Locale, Webhooks,** and related resources — follow existing **class/module names and method names** in `lib/stack/` (and siblings) and **Management API** semantics (paths, query/body shapes, response parsing). When adding or changing CMA features, align with the official [Content Management API](https://www.contentstack.com/docs/developers/apis/content-management-api/) documentation.

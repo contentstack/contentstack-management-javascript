@@ -1,0 +1,25 @@
+{
+  "webhook": {
+    "name": "Imported Webhook",
+    "destinations": [
+      {
+        "target_url": "https://example.com/webhook-handler",
+        "http_basic_auth": "webhook_user",
+        "http_basic_password": "webhook_password",
+        "custom_header": [
+          {
+            "header_name": "X-Custom-Header",
+            "value": "custom-value"
+          }
+        ]
+      }
+    ],
+    "channels": [
+      "assets.create",
+      "assets.update",
+      "assets.delete"
+    ],
+    "retry_policy": "manual",
+    "disabled": false
+  }
+}

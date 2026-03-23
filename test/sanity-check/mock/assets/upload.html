@@ -1,0 +1,28 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://unpkg.com/@contentstack/ui-extensions-sdk@2.1.1/dist/ui-extension-sdk.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@contentstack/ui-extensions-sdk@2.1.1/dist/ui-extension-sdk.css">
+</head>
+<body>
+    <input type="color" id="html5colorpicker" onchange="colorChange()">
+    <script>
+      // initialise Field Extension 
+      window.extensionField = {};
+      // find color input element 
+      var colorPickerElement = document.getElementById("html5colorpicker");
+      ContentstackUIExtension.init().then(function(extension) {
+          // make extension object globally available
+          extensionField = extension;
+          // Get current color field value from Contentstack and update the color picker input element
+          colorPickerElement.value = extensionField.field.getData();
+      }).catch(function(error) {
+          console.log(error);
+      });
+        // On color change event, pass new value to Contentstack
+        function colorChange(){
+          extensionField.field.setData(colorPickerElement.value);      
+        }        
+    </script>
+</body>
+</html>
