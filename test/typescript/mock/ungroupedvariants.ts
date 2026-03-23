@@ -1,6 +1,6 @@
 const variant = {
-    "created_by": "blt6cdf4e0b02b1c446",
-    "updated_by": "blt303b74fa96e1082a",
+    "created_by": "blt0000000000000001",
+    "updated_by": "blt0000000000000002",
     "created_at": "2022-10-26T06:52:20.073Z",
     "updated_at": "2023-09-25T04:55:56.549Z",
     "uid": "iphone_color_white",

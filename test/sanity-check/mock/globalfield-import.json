@@ -1,0 +1,53 @@
+{
+  "title": "Imported Global Field",
+  "uid": "imported_gf",
+  "description": "Global field for import testing",
+  "schema": [
+    {
+      "display_name": "Title",
+      "uid": "title",
+      "data_type": "text",
+      "mandatory": true,
+      "field_metadata": {
+        "description": "Title field",
+        "default_value": "",
+        "version": 3
+      },
+      "format": "",
+      "error_messages": {
+        "format": ""
+      },
+      "multiple": false,
+      "non_localizable": false,
+      "unique": false
+    },
+    {
+      "display_name": "Description",
+      "uid": "description",
+      "data_type": "text",
+      "mandatory": false,
+      "field_metadata": {
+        "description": "Description field",
+        "default_value": "",
+        "multiline": true,
+        "version": 3
+      },
+      "multiple": false,
+      "non_localizable": false,
+      "unique": false
+    },
+    {
+      "display_name": "Is Active",
+      "uid": "is_active",
+      "data_type": "boolean",
+      "mandatory": false,
+      "field_metadata": {
+        "description": "Active status",
+        "default_value": true
+      },
+      "multiple": false,
+      "non_localizable": false,
+      "unique": false
+    }
+  ]
+}
