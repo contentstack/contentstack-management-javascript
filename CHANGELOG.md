@@ -1,5 +1,12 @@
 # Changelog
 
+## ## [v1.29.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.29.2) (2026-04-06)
+
+- Fix
+  - Improve default `logHandler` error formatting when the error payload is a string (prevents blank "An error occurred due to ." messages during network/socket retry failures)
+- Enh
+  - Dependency update: bump `lodash` to `4.18.1` to address reported vulnerabilities
+
 ## [v1.29.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.29.1) (2026-03-23)
 
 - Fix
