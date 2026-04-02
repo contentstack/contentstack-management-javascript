@@ -1,6 +1,6 @@
 # Changelog
 
-## ## [v1.29.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.29.2) (2026-04-06)
+## [v1.29.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.29.2) (2026-04-06)
 
 - Fix
   - Improve default `logHandler` error formatting when the error payload is a string (prevents blank "An error occurred due to ." messages during network/socket retry failures)
