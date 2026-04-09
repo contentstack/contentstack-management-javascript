@@ -480,6 +480,14 @@ describe('Global Field API Tests', () => {
   describe('Nested Global Fields (api_version 3.2)', () => {
     const baseGfUid = `base_gf_${Date.now()}`
     const nestedGfUid = `ngf_parent_${Date.now()}`
+    /** Set when API returns plan / feature not enabled (remaining examples in this block skip). */
+    let skipNestedGlobalFieldSuite = false
+
+    function isNestedGlobalFieldPlanError (e) {
+      if (!e || e.status !== 422) return false
+      const msg = `${e.errorMessage || ''} ${JSON.stringify(e.errors || {})}`
+      return /not part of your plan|Nested Global Fields/i.test(msg)
+    }
 
     after(async function () {
       this.timeout(60000)
@@ -557,23 +565,33 @@ describe('Global Field API Tests', () => {
         }
       }
 
-      const response = await stack.globalField({ api_version: '3.2' }).create(gfData)
+      try {
+        const response = await stack.globalField({ api_version: '3.2' }).create(gfData)
 
-      expect(response).to.be.an('object')
-      const gf = response.global_field || response
-      expect(gf.uid).to.equal(nestedGfUid)
+        expect(response).to.be.an('object')
+        const gf = response.global_field || response
+        expect(gf.uid).to.equal(nestedGfUid)
 
-      // Validate nested field structure
-      const nestedField = gf.schema.find(f => f.data_type === 'global_field')
-      expect(nestedField).to.exist
-      expect(nestedField.reference_to).to.equal(baseGfUid)
+        // Validate nested field structure
+        const nestedField = gf.schema.find(f => f.data_type === 'global_field')
+        expect(nestedField).to.exist
+        expect(nestedField.reference_to).to.equal(baseGfUid)
 
-      testData.globalFields.nestedParent = gf
-      await wait(2000)
+        testData.globalFields.nestedParent = gf
+        await wait(2000)
+      } catch (e) {
+        if (isNestedGlobalFieldPlanError(e)) {
+          console.log('  Nested global fields not enabled on stack plan — skipping nested GF examples')
+          skipNestedGlobalFieldSuite = true
+          this.skip()
+        }
+        throw e
+      }
     })
 
     it('should fetch nested global field with api_version 3.2', async function () {
       this.timeout(15000)
+      if (skipNestedGlobalFieldSuite) this.skip()
 
       const response = await stack.globalField(nestedGfUid, { api_version: '3.2' }).fetch()
 
@@ -598,6 +616,7 @@ describe('Global Field API Tests', () => {
 
     it('should update nested global field', async function () {
       this.timeout(30000)
+      if (skipNestedGlobalFieldSuite) this.skip()
 
       const gf = await stack.globalField(nestedGfUid, { api_version: '3.2' }).fetch()
       const newTitle = `Updated Nested ${Date.now()}`
@@ -610,6 +629,7 @@ describe('Global Field API Tests', () => {
 
     it('should validate nested global field schema structure', async function () {
       this.timeout(15000)
+      if (skipNestedGlobalFieldSuite) this.skip()
 
       const gf = await stack.globalField(nestedGfUid, { api_version: '3.2' }).fetch()
 
