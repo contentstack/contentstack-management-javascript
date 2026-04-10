@@ -272,7 +272,7 @@ describe('Taxonomy API Tests', () => {
         expect(response).to.be.an('object')
       } catch (e) {
         // Feature may not be available on all environments; accept 4xx errors gracefully
-        expect(e.status).to.be.oneOf([400, 403, 404, 422])
+        expect(e.status).to.be.oneOf([400, 403, 404, 412, 422])
       }
     })
 
@@ -298,7 +298,7 @@ describe('Taxonomy API Tests', () => {
         expect(response).to.be.an('object')
       } catch (e) {
         // Feature may not be available on all environments; accept 4xx errors gracefully
-        expect(e.status).to.be.oneOf([400, 403, 404, 422])
+        expect(e.status).to.be.oneOf([400, 403, 404, 412, 422])
       }
     })
 

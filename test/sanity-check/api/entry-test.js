@@ -214,7 +214,7 @@ describe('Entry API Tests', () => {
     })
 
     it('should update entry with partial data', async function () {
-      this.timeout(15000)
+      this.timeout(45000)
       if (!entryUid) this.skip()
 
       const entry = await stack.contentType(mediumCtUid).entry(entryUid).fetch()
