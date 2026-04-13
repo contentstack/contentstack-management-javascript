@@ -136,6 +136,9 @@ import './api/bulkOperation-test.js'
 // Phase 22: Audit Log (runs after most operations for logs)
 import './api/auditlog-test.js'
 
+// Phase 22b: Module header injection (addHeader / addHeaderDict) — uses request capture
+import './api/moduleHeaderInjection-test.js'
+
 // Phase 23: OAuth Authentication
 import './api/oauth-test.js'
 dotenv.config()
