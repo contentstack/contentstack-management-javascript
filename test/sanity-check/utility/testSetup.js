@@ -27,6 +27,9 @@
  * - API_KEY: Generated when test stack is created
  * - MANAGEMENT_TOKEN: Generated for the test stack
  * - PERSONALIZE_PROJECT_UID: Generated when personalize project is created
+ *
+ * Module header injection sanity tests (api/moduleHeaderInjection-test.js) use the same
+ * env and assert on captured request headers from the SDK plugin — no extra variables.
  */
 
 // Import from dist (built package) - tests the exact artifact customers use

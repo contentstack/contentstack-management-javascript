@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.30.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.30.0) (2026-04-13)
+
+- Enh
+  - Per-module CMA headers: `addHeader`, `addHeaderDict`, and `removeHeader` on stack resources and query builders (stack shares one map; other modules copy-on-write). Backward compatible if unused.
+- Test
+  - Unit + sanity coverage for header APIs; minor sanity robustness (taxonomy 412, nested GF plan skip, entry update timeout).
+
 ## [v1.29.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.29.2) (2026-04-06)
 
 - Fix
