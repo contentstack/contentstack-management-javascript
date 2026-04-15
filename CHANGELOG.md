@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.30.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.30.1) (2026-04-14)
+
+- Enh
+  - Dependency updates: `@contentstack/utils` to `^1.9.1`, `axios` to `^1.15.0`, `qs` to `^6.15.1`; dev dependency updates (Babel, webpack, test tooling, and related packages).
+
 ## [v1.30.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.30.0) (2026-04-13)
 
 - Enh
