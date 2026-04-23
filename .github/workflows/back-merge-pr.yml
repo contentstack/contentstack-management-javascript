@@ -1,0 +1,63 @@
+# Opens a PR from master → development after changes land on master (back-merge).
+#
+# Permissions: default GITHUB_TOKEN needs repo Settings → Actions → General →
+# "Workflow permissions" = read and write (to create pull requests). If your org
+# restricts this, create a fine-grained PAT with contents:read + pull-requests:write,
+# store it as repo secret GH_TOKEN, and set GH_TOKEN on the "Open back-merge PR" step to:
+#   env:
+#     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+name: Back-merge master to development
+
+on:
+  push:
+    branches: [test/workflow]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  open-back-merge-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Open back-merge PR if needed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch origin development test/workflow
+
+          MASTER_SHA=$(git rev-parse origin/test/workflow)
+          DEV_SHA=$(git rev-parse origin/development)
+
+          if [ "$MASTER_SHA" = "$DEV_SHA" ]; then
+            echo "test/workflow and development are at the same commit; nothing to back-merge."
+            exit 0
+          fi
+
+          EXISTING=$(gh pr list --repo "${{ github.repository }}" \
+            --base development \
+            --head test/workflow \
+            --state open \
+            --json number \
+            --jq 'length')
+
+          if [ "$EXISTING" -gt 0 ]; then
+            echo "An open PR from test/workflow to development already exists; skipping."
+            exit 0
+          fi
+
+          gh pr create --repo "${{ github.repository }}" \
+            --base development \
+            --head test/workflow \
+            --title "chore: back-merge test/workflow into development" \
+            --body "Automated back-merge after changes landed on \`test/workflow\`. Review and merge to keep \`development\` in sync."
+
+          echo "Created back-merge PR test/workflow → development."
