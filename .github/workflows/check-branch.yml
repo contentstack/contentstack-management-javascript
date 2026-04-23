@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Comment PR
-        if: github.base_ref == 'master' && github.head_ref != 'developement'
+        if: github.base_ref == 'master' && github.head_ref != 'development'
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
