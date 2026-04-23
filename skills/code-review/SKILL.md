@@ -3,15 +3,12 @@ name: code-review
 description: Use when reviewing PRs or before opening a PR — API design, null-safety, errors, backward compatibility, dependencies, security, and test quality.
 ---
 
-# Code review — Contentstack Management JavaScript SDK
-
-Use this skill when performing or preparing a pull request review for **`@contentstack/management`** (CMA — Content Management API client, not the Java CDA SDK).
+# Code review – Contentstack Management JavaScript SDK
 
 ## When to use
 
-- Reviewing someone else’s PR.
-- Self-reviewing your own PR before submission.
-- Checking that changes meet project standards (API, errors, compatibility, tests, security).
+- Reviewing someone else’s PR or self-review before submission.
+- Verifying API surface, errors, compatibility, dependencies, security, and tests.
 
 ## Instructions
 
@@ -19,44 +16,37 @@ Work through the checklist below. Optionally tag items with severity: **Blocker*
 
 ### 1. API design and stability
 
-- [ ] **Public API:** New or changed public exports are necessary and documented with **JSDoc** (purpose, `@param` / `@returns`, `@example` where helpful), consistent with `lib/contentstack.js` and `lib/contentstackClient.js`.
-- [ ] **TypeScript surface:** **`types/**`** updated when consumers would see new or changed signatures or exports.
-- [ ] **Backward compatibility:** No breaking changes to public function signatures, option objects, defaults, or export shape unless explicitly agreed (e.g. major version). Deprecations should note alternatives when used in this codebase.
-- [ ] **Naming:** Consistent with existing modules and **CMA** terminology (e.g. stack, entry, content type, asset, taxonomy) and paths under `lib/stack/`.
+- [ ] **Public API:** New or changed public exports documented with **JSDoc**, consistent with **`lib/contentstack.js`** and **`lib/contentstackClient.js`**.
+- [ ] **TypeScript surface:** **`types/**`** updated when signatures or exports change.
+- [ ] **Backward compatibility:** No breaking changes without explicit agreement (e.g. major version).
+- [ ] **Naming:** **CMA** terminology and **`lib/stack/`** patterns.
 
-**Severity:** Breaking public API without approval = **Blocker**. Missing JSDoc or types on new public API = **Major**.
+**Severity:** Breaking public API without approval = **Blocker**. Missing JSDoc/types on new public API = **Major**.
 
 ### 2. Error handling and robustness
 
-- [ ] **Errors:** HTTP failures flow through **`lib/core/contentstackError.js`** (or the same promise-rejection pattern used by neighboring code), preserving **status** and safe **request** metadata.
-- [ ] **Null safety:** No unsafe assumptions on optional fields; guard or default where API responses can omit nested objects.
-- [ ] **Secrets:** Do not log or stringify full **authtoken**, **authorization**, or **management_token**; follow redaction patterns in **`contentstackError.js`**.
+- [ ] **Errors:** Flow through **`lib/core/contentstackError.js`** (or equivalent), preserving **status** and safe **request** metadata.
+- [ ] **Null safety:** No unsafe assumptions on optional API fields.
+- [ ] **Secrets:** No logging of full **authtoken**, **authorization**, or **management_token**.
 
-**Severity:** Wrong or missing error handling on new/changed paths = **Major**.
+**Severity:** Wrong or missing error handling in new code = **Major**.
 
 ### 3. Dependencies and security
 
-- [ ] **Dependencies:** New or upgraded npm dependencies are justified; prefer existing **`lodash` / `axios`** patterns where possible. **Lockfile** / **`package.json`** bumps are intentional and reviewable.
-- [ ] **SCA:** Security findings (e.g. Snyk, Dependabot) in the change set are addressed or explicitly deferred with a tracked follow-up.
+- [ ] **Dependencies:** New or upgraded deps justified; prefer **`lodash` / `axios`** patterns.
+- [ ] **SCA:** Snyk / Dependabot findings addressed or deferred with a ticket.
 
-**Severity:** New critical/high vulnerability or unfixed blocker finding in scope = **Blocker**.
+**Severity:** Critical/high vulnerability unfixed in scope = **Blocker**.
 
 ### 4. Testing
 
-- [ ] **Unit:** New or modified **`lib/`** behavior has tests under **`test/unit/`** with HTTP **mocked** (Nock, axios-mock-adapter, Sinon, etc.); register suites in **`test/unit/index.js`** when adding files.
-- [ ] **Sanity / API:** When behavior is integration-sensitive, update or add **`test/sanity-check/api/*-test.js`** and ensure **`test/sanity-check/sanity.js`** includes it; run against **`dist/node/contentstack-management.js`** after **`npm run build`**. Document new env vars in **`test/sanity-check/utility/testSetup.js`** header only — no committed secrets.
-- [ ] **Quality:** Tests are readable, deterministic (no flaky timing or live-network dependence in unit tests), and assert meaningful behavior.
+- [ ] **Unit:** Coverage under **`test/unit/`** with HTTP mocked; register in **`test/unit/index.js`**.
+- [ ] **Sanity:** When needed, update **`test/sanity-check/api/*-test.js`** and **`sanity.js`**; **`npm run build`** first; env per **`testSetup.js`** — no secrets in repo.
 
-**Severity:** No tests for new behavior = **Blocker**. Flaky or weak tests = **Major**.
+**Severity:** No tests for new behavior = **Blocker**. Flaky tests = **Major**.
 
-### 5. Optional severity summary
+### 5. Severity summary
 
-- **Blocker:** Must fix before merge (e.g. breaking API without approval, security issue, no tests for new code).
-- **Major:** Should fix (e.g. inconsistent error handling, missing JSDoc on new public API, flaky tests).
-- **Minor:** Nice to fix (e.g. style, minor docs, redundant code).
-
-## References
-
-- Project rule: `.cursor/rules/code-review.mdc`
-- Workflow (lint, tests, version bump): `.cursor/rules/dev-workflow.md`
-- Testing detail: `skills/testing/SKILL.md`
+- **Blocker:** Must fix before merge (breaking API, security, no tests for new code).
+- **Major:** Should fix (error handling, missing docs, flaky tests).
+- **Minor:** Nice to fix (style, minor docs).
