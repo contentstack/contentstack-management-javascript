@@ -10,7 +10,8 @@ export interface Taxonomy extends SystemFields, SystemFunction<Taxonomy> {
 
 export interface Taxonomies extends Creatable<Taxonomy, {taxonomy: TaxonomyData}>, Queryable<Taxonomy, {taxonomy: TaxonomyData}> {
     import(data: TaxonomyData, params?: any): Promise<Taxonomy>
-    publish(data: TaxonomyPublishData, api_version?: string): Promise<TaxonomyPublishResponse>
+    publish(data: TaxonomyPublishData, api_version?: string, params?: any): Promise<TaxonomyPublishResponse>
+    unpublish(data: TaxonomyPublishData, api_version?: string, params?: any): Promise<TaxonomyPublishResponse>
 }
 
 export interface TaxonomyData extends AnyProperty {
