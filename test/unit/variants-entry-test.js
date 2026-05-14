@@ -238,6 +238,155 @@ describe('Contentstack Variants entry test', () => {
       })
       .catch(done)
   })
+
+  it('Variants entry publish posts to entry publish URL with optional headers and params', (done) => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/content_type_uid/entries/entry_uid/publish').reply((config) => {
+      const body = typeof config.data === 'string' ? JSON.parse(config.data) : config.data
+      expect(body.entry).to.be.an('object')
+      expect(body.entry.variants).to.be.an('array')
+      expect(body.entry.variants[0].uid).to.equal('variant_uid')
+      expect(body.locale).to.equal('en-us')
+      expect(config.headers['x-custom']).to.equal('1')
+      expect(config.params.t).to.equal('1')
+      return [200, { notice: 'Entry sent for publishing.', job_id: 'jid' }]
+    })
+    makeEntryVariants({
+      content_type_uid: 'content_type_uid',
+      entry_uid: 'entry_uid',
+      variants_uid: 'variant_uid',
+      stackHeaders: { api_key: 'k' }
+    })
+      .publish({
+        publishDetails: {
+          environments: ['development'],
+          locales: ['en-us'],
+          variants: [{ uid: 'variant_uid', version: 1 }],
+          variant_rules: { publish_latest_base_conditionally: true }
+        },
+        locale: 'en-us',
+        headers: { 'x-custom': '1' },
+        params: { t: '1' }
+      })
+      .then((res) => {
+        expect(res.notice).to.include('publish')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Variants entry unpublish posts to entry unpublish URL with optional headers and params', (done) => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/content_types/content_type_uid/entries/entry_uid/unpublish').reply((config) => {
+      const body = typeof config.data === 'string' ? JSON.parse(config.data) : config.data
+      expect(body.entry).to.be.an('object')
+      expect(body.entry.variants).to.be.an('array')
+      expect(body.locale).to.equal('en-us')
+      expect(config.headers['x-unpub']).to.equal('y')
+      expect(config.params.q).to.equal('2')
+      return [200, { notice: 'Entry sent for unpublishing.' }]
+    })
+    makeEntryVariants({
+      content_type_uid: 'content_type_uid',
+      entry_uid: 'entry_uid',
+      variants_uid: 'variant_uid',
+      stackHeaders: { api_key: 'k' }
+    })
+      .unpublish({
+        publishDetails: {
+          environments: ['development'],
+          locales: ['en-us'],
+          variants: [{ uid: 'variant_uid', version: 1 }]
+        },
+        locale: 'en-us',
+        headers: { 'x-unpub': 'y' },
+        params: { q: '2' }
+      })
+      .then((res) => {
+        expect(res.notice).to.include('unpublish')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry variants fetch sends optional branch header', (done) => {
+    const mock = new MockAdapter(Axios)
+    mock
+      .onGet('/content_types/content_type_uid/entries/UID/variants/v1')
+      .reply((config) => {
+        expect(config.headers.branch).to.equal('feature_branch')
+        return [200, {
+          entry: {
+            ...varinatsEntryMock
+          }
+        }]
+      })
+    makeEntry({
+      entry: { ...systemUidMock },
+      stackHeaders: { api_key: 'test_key' }
+    })
+      .variants('v1', 'feature_branch')
+      .fetch()
+      .then((entry) => {
+        checkEntry(entry.entry)
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry variants multiple UIDs and branch on update', (done) => {
+    const mock = new MockAdapter(Axios)
+    mock
+      .onPut('/content_types/content_type_uid/entries/entry_uid/variants/u1,u2')
+      .reply((config) => {
+        expect(config.headers.branch).to.equal('devel')
+        return [200, {
+          entry: {
+            title: 'ok',
+            uid: 'variant_uid',
+            content_type: 'content_type_uid',
+            locale: 'en-us',
+            _version: 1,
+            _in_progress: false
+          }
+        }]
+      })
+    makeEntry({
+      entry: { ...systemUidMock, uid: 'entry_uid' },
+      stackHeaders: { api_key: 'k' }
+    })
+      .variants(['u1', 'u2'], 'devel')
+      .update({ entry: { title: 'x' } })
+      .then((response) => {
+        expect(response.entry.title).to.be.equal('ok')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Entry variants query mode with branch only', (done) => {
+    const mock = new MockAdapter(Axios)
+    mock
+      .onGet('/content_types/content_type_uid/entries/UID/variants')
+      .reply((config) => {
+        expect(config.headers.branch).to.equal('staging')
+        return [200, {
+          entries: [varinatsEntryMock]
+        }]
+      })
+    makeEntry({
+      entry: { ...systemUidMock },
+      stackHeaders: { api_key: 'k' }
+    })
+      .variants(null, 'staging')
+      .query()
+      .find()
+      .then((collection) => {
+        checkEntry(collection.items[0].variants)
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeEntryVariants (data) {
