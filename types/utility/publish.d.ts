@@ -11,6 +11,10 @@ export interface PublishConfig {
     locale?: string
     version?: number
     scheduledAt?: string
+    /** Extra HTTP headers merged with stack headers (publish / unpublish). */
+    headers?: Record<string, string>
+    /** Query string parameters (publish / unpublish). */
+    params?: Record<string, unknown>
 }
 
 export interface Publishable {

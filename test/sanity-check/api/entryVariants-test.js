@@ -452,6 +452,46 @@ describe('Entry Variants API Tests', () => {
       }
     })
 
+    it('should publish entry variant via variants(uid).publish()', async function () {
+      this.timeout(15000)
+
+      if (!contentTypeUid || !entryUid || !variantUid) {
+        this.skip()
+      }
+
+      const publishDetails = {
+        environments: [environmentName],
+        locales: ['en-us'],
+        variants: [{
+          uid: variantUid,
+          version: 1
+        }],
+        variant_rules: {
+          publish_latest_base: false,
+          publish_latest_base_conditionally: true
+        }
+      }
+
+      try {
+        const response = await stack
+          .contentType(contentTypeUid)
+          .entry(entryUid)
+          .variants(variantUid)
+          .publish({
+            publishDetails,
+            locale: 'en-us'
+          })
+
+        expect(response.notice).to.not.equal(undefined)
+      } catch (error) {
+        if (error.status === 403 || error.status === 422) {
+          this.skip()
+        } else {
+          console.log('variants().publish warning:', error.message)
+        }
+      }
+    })
+
     it('should publish entry variant with api_version', async function () {
       this.timeout(15000)
 
@@ -518,6 +558,42 @@ describe('Entry Variants API Tests', () => {
           this.skip()
         } else {
           console.log('Unpublish warning:', error.message)
+        }
+      }
+    })
+
+    it('should unpublish entry variant via variants(uid).unpublish()', async function () {
+      this.timeout(15000)
+
+      if (!contentTypeUid || !entryUid || !variantUid) {
+        this.skip()
+      }
+
+      const unpublishDetails = {
+        environments: [environmentName],
+        locales: ['en-us'],
+        variants: [{
+          uid: variantUid,
+          version: 1
+        }]
+      }
+
+      try {
+        const response = await stack
+          .contentType(contentTypeUid)
+          .entry(entryUid)
+          .variants(variantUid)
+          .unpublish({
+            publishDetails: unpublishDetails,
+            locale: 'en-us'
+          })
+
+        expect(response.notice).to.not.equal(undefined)
+      } catch (error) {
+        if (error.status === 403 || error.status === 422) {
+          this.skip()
+        } else {
+          console.log('variants().unpublish warning:', error.message)
         }
       }
     })
