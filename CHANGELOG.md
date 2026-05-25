@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.30.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.30.2) (2026-04-22)
+
+- Update dependencies
+
 ## [v1.30.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.30.2) (2026-04-22)
 
 - Update dependencies
