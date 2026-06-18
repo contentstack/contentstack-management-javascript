@@ -356,6 +356,63 @@ describe('Contentstack BulkOperation test', () => {
     const response = await makeBulkOperation().getJobItems(jobId, {})
     expect(response.items).to.be.an('array')
   })
+  it('should send api_version 3.2 header when publishing in bulk', async () => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/bulk/publish').reply((config) => {
+      expect(config.headers.api_version).to.equal('3.2')
+      return [200, { notice: 'Your publish request is in progress.', job_id: 'job_id' }]
+    })
+    const response = await makeBulkOperation().publish({
+      details: { entries: [], locales: ['en'], environments: ['env_uid'] }
+    })
+    expect(response.notice).to.equal('Your publish request is in progress.')
+  })
+
+  it('should allow overriding api_version on publish', async () => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/bulk/publish').reply((config) => {
+      expect(config.headers.api_version).to.equal('3.0')
+      return [200, { notice: 'ok', job_id: 'job_id' }]
+    })
+    await makeBulkOperation().publish({
+      details: { entries: [], locales: ['en'], environments: ['env'] },
+      api_version: '3.0'
+    })
+  })
+
+  it('should send api_version 3.2 header when unpublishing in bulk', async () => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/bulk/unpublish').reply((config) => {
+      expect(config.headers.api_version).to.equal('3.2')
+      return [200, { notice: 'Your unpublish request is in progress.', job_id: 'job_id' }]
+    })
+    const response = await makeBulkOperation().unpublish({
+      details: { entries: [], locales: ['en'], environments: ['env_uid'] }
+    })
+    expect(response.notice).to.equal('Your unpublish request is in progress.')
+  })
+
+  it('should allow overriding api_version on unpublish', async () => {
+    const mock = new MockAdapter(Axios)
+    mock.onPost('/bulk/unpublish').reply((config) => {
+      expect(config.headers.api_version).to.equal('3.0')
+      return [200, { notice: 'ok', job_id: 'job_id' }]
+    })
+    await makeBulkOperation().unpublish({
+      details: { entries: [], locales: ['en'], environments: ['env'] },
+      api_version: '3.0'
+    })
+  })
+
+  it('should send api_version 3.2 header on jobStatus', async () => {
+    const mock = new MockAdapter(Axios)
+    mock.onGet('/bulk/jobs/job_id').reply((config) => {
+      expect(config.headers.api_version).to.equal('3.2')
+      return [200, { notice: 'ok', status: 'completed' }]
+    })
+    const response = await makeBulkOperation().jobStatus({ job_id: 'job_id' })
+    expect(response.status).to.equal('completed')
+  })
 })
 
 function makeBulkOperation (data) {

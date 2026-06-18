@@ -1,5 +1,19 @@
 # Changelog
 
+## [v2.0.0-beta.1](https://github.com/contentstack/contentstack-management-javascript/tree/v2.0.0-beta.1) (2026-06-18)
+
+- Enh
+  - Centralized API version management via `lib/core/serviceVersion.js` — single source of truth for per-service API version strings (`bulk_publish`, `bulk_unpublish`, `bulk_job_status`, `bulk_job_items`, `global_field`, `release` all default to `3.2`; fallback to `3.0`)
+  - `bulkOperation`: `publish`, `unpublish`, `jobStatus`, `getJobItems` now use `getServiceVersion()` instead of hardcoded strings; caller can still override via `api_version` param
+  - `globalField`: `api_version` header always set (defaults to `3.2` via `getServiceVersion`); removes conditional spread that could omit the header
+  - `release`: `deploy` now always sends `api_version: 3.2` header via `getServiceVersion`
+- Types
+  - Added `types/core/serviceVersion.d.ts` — exports `ServiceVersionKey`, `SERVICE_VERSIONS`, `DEFAULT_API_VERSION`, and `getServiceVersion`
+- Test
+  - Unit: `test/unit/serviceVersion-test.js` — covers all registered keys, fallback, and `DEFAULT_API_VERSION`
+  - Unit: header assertion tests added to `bulkOperation-test.js` (publish/unpublish/jobStatus default + override) and `release-test.js` (deploy default header)
+  - Sanity: API version management describe blocks added to `bulkOperation-test.js` and `release-test.js` — validate default `api_version` behavior end-to-end without explicit override
+
 ## [v1.30.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.30.2) (2026-04-22)
 
 - Update dependencies

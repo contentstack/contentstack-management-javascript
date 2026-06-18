@@ -25,6 +25,9 @@ let jobId7 = ''
 let jobId8 = ''
 let jobId9 = ''
 let jobId10 = ''
+// Job IDs for default api_version tests (no explicit api_version passed — relies on getServiceVersion)
+let jobIdDefaultPublish = ''
+let jobIdDefaultUnpublish = ''
 let tokenUidDev = ''
 let tokenUid = ''
 // Environment name from dynamic setup (environment-test creates and stores in testData)
@@ -542,6 +545,93 @@ describe('BulkOperation api test', () => {
         done()
       })
       .catch(done)
+  })
+
+  // ==========================================================================
+  // API VERSION MANAGEMENT (serviceVersion centralization)
+  // Verifies that publish/unpublish/jobStatus/getJobItems work correctly
+  // WITHOUT passing api_version explicitly — the SDK must default to '3.2'
+  // via getServiceVersion() in lib/core/serviceVersion.js
+  // ==========================================================================
+
+  describe('API Version Management - default api_version from serviceVersion', function () {
+    it('should publish entries using default api_version (no explicit api_version passed)', function (done) {
+      if (!entryUid1 || !bulkCtUid1) {
+        this.skip()
+        return
+      }
+      const publishDetails = {
+        entries: [{ uid: entryUid1, content_type: bulkCtUid1, locale: 'en-us' }],
+        locales: ['en-us'],
+        environments: [envName]
+      }
+      // Intentionally NO api_version — SDK must default to '3.2' via getServiceVersion('bulk_publish')
+      doBulkOperation()
+        .publish({ details: publishDetails })
+        .then((response) => {
+          expect(response.notice).to.not.equal(undefined)
+          expect(response.job_id).to.not.equal(undefined)
+          jobIdDefaultPublish = response.job_id
+          done()
+        })
+        .catch(done)
+    })
+
+    it('should unpublish entries using default api_version (no explicit api_version passed)', function (done) {
+      if (!entryUid1 || !bulkCtUid1) {
+        this.skip()
+        return
+      }
+      const unpublishDetails = {
+        entries: [{ uid: entryUid1, content_type: bulkCtUid1, locale: 'en-us' }],
+        locales: ['en-us'],
+        environments: [envName]
+      }
+      // Intentionally NO api_version — SDK must default to '3.2' via getServiceVersion('bulk_unpublish')
+      doBulkOperation()
+        .unpublish({ details: unpublishDetails })
+        .then((response) => {
+          expect(response.notice).to.not.equal(undefined)
+          expect(response.job_id).to.not.equal(undefined)
+          jobIdDefaultUnpublish = response.job_id
+          done()
+        })
+        .catch(done)
+    })
+
+    it('should wait for default api_version jobs to settle', async function () {
+      this.timeout(30000)
+      await delay(15000)
+    })
+
+    it('should get jobStatus using default api_version (no explicit api_version passed)', async function () {
+      this.timeout(60000)
+      if (!jobIdDefaultPublish) {
+        this.skip()
+        return
+      }
+      // Intentionally NO api_version — SDK must default to '3.2' via getServiceVersion('bulk_job_status')
+      const bulkOp = tokenUidDev
+        ? doBulkOperationWithManagementToken(tokenUidDev)
+        : doBulkOperation()
+      const response = await bulkOp.jobStatus({ job_id: jobIdDefaultPublish })
+      expect(response).to.not.equal(undefined)
+      expect(response.uid).to.not.equal(undefined)
+      expect(response.status).to.not.equal(undefined)
+    })
+
+    it('should get job items using default api_version (no explicit api_version passed)', async function () {
+      this.timeout(60000)
+      if (!jobIdDefaultPublish) {
+        this.skip()
+        return
+      }
+      // Intentionally NO api_version in params — SDK must default to '3.2' via getServiceVersion('bulk_job_items')
+      const response = await doBulkOperationWithManagementToken(tokenUidDev)
+        .getJobItems(jobIdDefaultPublish)
+      expect(response).to.not.equal(undefined)
+      expect(response.items).to.be.an('array')
+    })
   })
 
   // DX-4430 regression: SDK was masking real API errors (401+error_code 161/294) with
