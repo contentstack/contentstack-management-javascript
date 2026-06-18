@@ -244,6 +244,26 @@ describe('Contentstack Release test', () => {
       .catch(done)
   })
 
+  it('Release deploy should send api_version 3.2 in request header', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/releases/UID/deploy').reply((config) => {
+      expect(config.headers.api_version).to.equal('3.2')
+      return [200, { ...noticeMock }]
+    })
+    makeRelease({ release: { ...systemUidMock }, stackHeaders: stackHeadersMock })
+      .deploy({
+        environments: ['production'],
+        locales: ['en-us'],
+        scheduledAt: '2018-12-12T13:13:13:122Z',
+        action: 'publish'
+      })
+      .then((response) => {
+        expect(response.notice).to.be.equal(noticeMock.notice)
+        done()
+      })
+      .catch(done)
+  })
+
   it('Release clone test', done => {
     var mock = new MockAdapter(Axios)
     mock.onPost('/releases/UID/clone').reply(200, {

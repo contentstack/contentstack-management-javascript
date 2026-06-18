@@ -10,7 +10,7 @@ describe('Contentstack GlobalField test', () => {
   it('GlobalField test without uid', (done) => {
     const globalField = makeGlobalField()
     expect(globalField.urlPath).to.be.equal('/global_fields')
-    expect(globalField.stackHeaders).to.deep.equal({})
+    expect(globalField.stackHeaders).to.deep.equal({ api_version: '3.2' })
     expect(globalField.update).to.be.equal(undefined)
     expect(globalField.delete).to.be.equal(undefined)
     expect(globalField.fetch).to.be.equal(undefined)
@@ -27,7 +27,7 @@ describe('Contentstack GlobalField test', () => {
     })
 
     expect(globalField.urlPath).to.be.equal(`/global_fields/${systemUidMock.uid}`)
-    expect(globalField.stackHeaders).to.deep.equal({})
+    expect(globalField.stackHeaders).to.deep.equal({ api_version: '3.2' })
     expect(globalField.update).to.not.equal(undefined)
     expect(globalField.delete).to.not.equal(undefined)
     expect(globalField.fetch).to.not.equal(undefined)
