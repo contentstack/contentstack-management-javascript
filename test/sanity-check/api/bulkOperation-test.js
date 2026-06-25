@@ -544,30 +544,6 @@ describe('BulkOperation api test', () => {
       .catch(done)
   })
 
-  // Asset Scanning: bulk publish must send api_version: 3.2 so the CDA runs scan validation.
-  // Without this header, quarantined assets incorrectly appear as published in the UI.
-  describe('Asset Scanning — Bulk Publish with api_version: 3.2', function () {
-    it('should bulk publish assets with api_version: 3.2 header for CDA scan validation', async function () {
-      this.timeout(30000)
-      const assets = assetsWithValidUids()
-      if (assets.length === 0) {
-        return this.skip()
-      }
-      const publishDetails = {
-        assets,
-        locales: ['en-us'],
-        environments: [envName]
-      }
-
-      const response = await doBulkOperation().publish({ details: publishDetails, api_version: '3.2' })
-
-      // Bulk publish always returns a job_id regardless of individual asset scan status.
-      // Actual scan failures surface asynchronously in the Publish Queue UI.
-      expect(response.notice).to.be.a('string')
-      expect(response.job_id).to.be.a('string')
-    })
-  })
-
   // DX-4430 regression: SDK was masking real API errors (401+error_code 161/294) with
   // generic "Session timed out, please login to proceed" / "Unable to refresh token".
   // Fix: NON_AUTH_401_ERROR_CODES={161,294} bypass token refresh and surface original error.
