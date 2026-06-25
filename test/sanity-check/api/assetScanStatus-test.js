@@ -498,6 +498,7 @@ describe('Asset Scan Status – Publish Is Always Async (§ 3.4)', () => {
   let stack
   let publishAssetUid
   let publishEnvironment
+  let createdEnvironmentName = null  // track if we created it so we can delete it
 
   before(function () {
     const apiKey = process.env.API_KEY
@@ -507,17 +508,38 @@ describe('Asset Scan Status – Publish Is Always Async (§ 3.4)', () => {
 
   before(async function () {
     this.timeout(60000)
-    // Get environment from testData
+
+    // Prefer an environment already created by prior test phases
     publishEnvironment = (testData.environments && testData.environments.development)
       ? testData.environments.development.name
       : null
+
+    // Try querying for an existing one
     if (!publishEnvironment) {
       try {
         const envResp = await stack.environment().query().find()
         if (envResp.items && envResp.items.length > 0) {
           publishEnvironment = envResp.items[0].name
         }
-      } catch (e) { /* skip if no environment */ }
+      } catch (e) { /* ignore */ }
+    }
+
+    // Nothing found — create a temporary environment for this test
+    if (!publishEnvironment) {
+      try {
+        const envName = `scan-publish-env-${Math.random().toString(36).substring(2, 7)}`
+        await stack.environment().create({
+          environment: {
+            name: envName,
+            urls: [{ locale: 'en-us', url: 'http://localhost' }]
+          }
+        })
+        publishEnvironment = envName
+        createdEnvironmentName = envName
+        console.log(`  [scan-test] Created temporary publish environment: ${envName}`)
+      } catch (e) {
+        console.log('  [scan-test] Could not create environment:', e.errorMessage || e.message)
+      }
     }
 
     // Upload a fresh asset for publish tests
@@ -536,6 +558,9 @@ describe('Asset Scan Status – Publish Is Always Async (§ 3.4)', () => {
   after(async function () {
     if (publishAssetUid) {
       try { await stack.asset(publishAssetUid).delete() } catch (e) { /* ignore */ }
+    }
+    if (createdEnvironmentName) {
+      try { await stack.environment(createdEnvironmentName).delete() } catch (e) { /* ignore */ }
     }
   })
 
