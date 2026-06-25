@@ -81,6 +81,10 @@ import './api/environment-test.js'
 // Phase 6: Assets (needed for entries with file fields)
 import './api/asset-test.js'
 
+// Phase 6.5: Asset Scan Status - comprehensive tests for include_asset_scan_status param
+// Covers both ORGANIZATION stack (non-AM, scan enabled) and AM_ORG_UID stack (AM_API_KEY, scan enabled)
+import './api/assetScanStatus-test.js'
+
 // Phase 7: Taxonomies (needed for content types with taxonomy fields)
 import './api/taxonomy-test.js'
 import './api/terms-test.js'
