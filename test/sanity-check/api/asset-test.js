@@ -981,4 +981,71 @@ describe('Asset API Tests', () => {
       }
     })
   })
+
+  // ==========================================================================
+  // ASSET SCAN STATUS
+  // ==========================================================================
+
+  describe('Asset Scan Status', () => {
+    let scanAssetUid
+
+    before(async function () {
+      this.timeout(30000)
+      // Reuse the image asset uploaded earlier — avoids a redundant upload
+      if (testData.assets && testData.assets.image && testData.assets.image.uid) {
+        scanAssetUid = testData.assets.image.uid
+        return
+      }
+      // Fallback: create a fresh asset if the upload block didn't run
+      try {
+        const asset = await stack.asset().create({
+          upload: assetPath,
+          title: `Scan Status Asset ${Date.now()}`,
+          description: 'Fallback asset for scan-status tests'
+        })
+        scanAssetUid = asset.uid
+      } catch (err) {
+        // Individual tests will self-skip when scanAssetUid is unset
+      }
+    })
+
+    it('should accept include_asset_scan_status param on single asset fetch', async function () {
+      this.timeout(15000)
+      if (!scanAssetUid) return this.skip()
+
+      const asset = await stack.asset(scanAssetUid).fetch({ include_asset_scan_status: true })
+
+      expect(asset).to.be.an('object')
+      expect(asset.uid).to.equal(scanAssetUid)
+      // _asset_scan_status is opt-in: present only when asset scanning is enabled for the stack.
+      // Possible values: 'pending' | 'clean' | 'quarantined' | 'not_scanned'
+      if ('_asset_scan_status' in asset) {
+        expect(asset._asset_scan_status).to.be.a('string')
+        expect(['pending', 'clean', 'quarantined', 'not_scanned']).to.include(asset._asset_scan_status)
+      }
+    })
+
+    it('should accept include_asset_scan_status param on asset list query', async function () {
+      this.timeout(15000)
+
+      const response = await stack.asset().query({ include_asset_scan_status: true }).find()
+
+      expect(response).to.be.an('object')
+      expect(response.items).to.be.an('array')
+      if (response.items.length > 0 && '_asset_scan_status' in response.items[0]) {
+        expect(response.items[0]._asset_scan_status).to.be.a('string')
+        expect(['pending', 'clean', 'quarantined', 'not_scanned']).to.include(response.items[0]._asset_scan_status)
+      }
+    })
+
+    it('should NOT return _asset_scan_status when param is omitted', async function () {
+      this.timeout(15000)
+      if (!scanAssetUid) return this.skip()
+
+      const asset = await stack.asset(scanAssetUid).fetch()
+
+      expect(asset).to.be.an('object')
+      expect(asset).to.not.have.property('_asset_scan_status')
+    })
+  })
 })
