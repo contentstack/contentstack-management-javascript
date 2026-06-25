@@ -10,8 +10,9 @@
  *   Uses process.env.API_KEY set at runtime.
  *
  * Part 2 – AM Org (AM_ORG_UID, DAM / Contentstack Assets + scan enabled)
- *   Requires process.env.AM_API_KEY (a stack API key inside AM_ORG_UID).
- *   All tests in Part 2 are skipped when AM_API_KEY is not set.
+ *   A stack is created dynamically inside AM_ORG_UID using the same authtoken
+ *   obtained during main setup. No static AM_API_KEY required.
+ *   All tests in Part 2 are skipped when AM_ORG_UID is not set.
  *
  * Bug surface these tests cover (per design doc):
  *  § 3.1  - Scan status missing/leaking on fetch and list
@@ -714,33 +715,103 @@ describe('Asset Scan Status – api_version Header Isolation (§ 4.2)', () => {
 
 // ============================================================================
 // Part 2 – AM Org (AM_ORG_UID – DAM / Contentstack Assets + scan enabled)
+//
+// The AM org stack is created dynamically using the same authtoken that the
+// main test suite already obtained — no static AM_API_KEY needed in .env.
+// The stack is deleted in the after() hook.
 // ============================================================================
 
 describe('Asset Scan Status – AM Org (AM_ORG_UID, DAM + scan enabled)', function () {
   let amStack
   let amFreshAssetUid
   let amReplaceAssetUid
+  let amStackApiKey = null
+  let amStackName = null
 
-  before(function () {
-    if (!process.env.AM_API_KEY) {
-      console.log('  [scan-test] AM_API_KEY not set — skipping AM Org suite. ' +
-        'Add AM_API_KEY=<stack key from AM_ORG_UID> to .env to enable.')
-      this.skip()
-    }
-    amStack = buildStack(process.env.AM_API_KEY)
-  })
-
+  // Step 1: Create a stack dynamically inside AM_ORG_UID
   before(async function () {
     this.timeout(60000)
+
+    const amOrgUid = process.env.AM_ORG_UID
+    if (!amOrgUid) {
+      console.log('  [scan-test] AM_ORG_UID not set — skipping AM Org suite.')
+      return this.skip()
+    }
+
+    const authtoken = testSetup.testContext && testSetup.testContext.authtoken
+    if (!authtoken) {
+      console.log('  [scan-test] No authtoken in testContext — skipping AM Org suite.')
+      return this.skip()
+    }
+
+    const host = process.env.HOST || 'api.contentstack.io'
+    const axios = (await import('axios')).default
+    const stackName = `SDK_ScanAM_${Math.random().toString(36).substring(2, 7)}`
+
+    console.log(`  [scan-test] Creating AM org test stack: ${stackName}...`)
+
+    try {
+      const response = await axios.post(`https://${host}/v3/stacks`, {
+        stack: {
+          name: stackName,
+          description: 'AM org asset scan status integration test stack',
+          master_locale: 'en-us'
+        }
+      }, {
+        headers: {
+          authtoken,
+          organization_uid: amOrgUid,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      amStackApiKey = response.data.stack.api_key
+      amStackName = response.data.stack.name || stackName
+      console.log(`  [scan-test] AM stack created: ${amStackName} (${amStackApiKey})`)
+
+      // Wait for stack provisioning (same delay as main setup)
+      await wait(5000)
+
+      amStack = buildStack(amStackApiKey)
+    } catch (err) {
+      const msg = (err.response && err.response.data && err.response.data.error_message) || err.message
+      console.log(`  [scan-test] AM stack creation failed: ${msg} — skipping AM Org suite.`)
+      return this.skip()
+    }
+  })
+
+  // Step 2: Upload assets for tests (only runs if step 1 succeeded)
+  before(async function () {
+    this.timeout(60000)
+    if (!amStack) return
     amFreshAssetUid = await uploadScanAsset(amStack, 'am-main')
     amReplaceAssetUid = await uploadScanAsset(amStack, 'am-replace')
     console.log(`  [scan-test] AM freshAssetUid=${amFreshAssetUid} replaceAssetUid=${amReplaceAssetUid}`)
   })
 
+  // Cleanup: delete assets, then delete the dynamically created AM stack
   after(async function () {
+    this.timeout(30000)
+
     for (const uid of [amFreshAssetUid, amReplaceAssetUid]) {
-      if (uid) {
+      if (uid && amStack) {
         try { await amStack.asset(uid).delete() } catch (e) { /* ignore */ }
+      }
+    }
+
+    if (amStackApiKey) {
+      try {
+        const authtoken = testSetup.testContext && testSetup.testContext.authtoken
+        if (authtoken) {
+          const host = process.env.HOST || 'api.contentstack.io'
+          const axios = (await import('axios')).default
+          await axios.delete(`https://${host}/v3/stacks`, {
+            headers: { api_key: amStackApiKey, authtoken }
+          })
+          console.log(`  [scan-test] Deleted AM stack: ${amStackName}`)
+        }
+      } catch (e) {
+        console.log(`  [scan-test] AM stack deletion failed: ${e.message}`)
       }
     }
   })
