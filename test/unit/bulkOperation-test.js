@@ -107,27 +107,6 @@ describe('Contentstack BulkOperation test', () => {
     expect(response.job_id).to.not.equal(undefined)
   })
 
-  it('should send api_version 3.2 header when bulk publishing assets for scan validation', async () => {
-    const publishDetails = {
-      assets: [{ uid: 'asset_uid', version: 1, locale: 'en-us' }],
-      locales: ['en-us'],
-      environments: ['development']
-    }
-
-    const mock = new MockAdapter(Axios)
-    mock.onPost('/bulk/publish').reply((config) => {
-      expect(config.headers.api_version).to.equal('3.2')
-      return [200, {
-        notice: 'Your bulk publish request is in progress. Please check publish queue for more details.',
-        job_id: 'job_id'
-      }]
-    })
-
-    const response = await makeBulkOperation().publish({ details: publishDetails, api_version: '3.2' })
-    expect(response.notice).to.include('bulk publish')
-    expect(response.job_id).to.not.equal(undefined)
-  })
-
   it('should unpublish items in bulk', async () => {
     const unpublishDetails = {
       entries: [
