@@ -164,8 +164,7 @@ describe('Asset Scan Status – Non-AM Org (ORGANIZATION)', () => {
     const asset = await stack.asset(freshAssetUid).fetch()
 
     expect(asset).to.be.an('object')
-    expect(asset).to.not.have.property('_asset_scan_status',
-      '_asset_scan_status must be absent when include_asset_scan_status is not passed')
+    expect(asset).to.not.have.property('_asset_scan_status')
   })
 
   // --------------------------------------------------------------------------
@@ -205,8 +204,7 @@ describe('Asset Scan Status – Non-AM Org (ORGANIZATION)', () => {
     expect(response.items).to.be.an('array')
 
     response.items.filter(i => !i.is_dir).forEach(item => {
-      expect(item).to.not.have.property('_asset_scan_status',
-        `Asset ${item.uid} should not have _asset_scan_status without param`)
+      expect(item).to.not.have.property('_asset_scan_status')
     })
   })
 
@@ -309,8 +307,7 @@ describe('Asset Scan Status – Non-AM Org (ORGANIZATION)', () => {
 
     folders.forEach(folder => {
       // Folders should NOT have a scan status — they're containers, not content files
-      expect(folder).to.not.have.property('_asset_scan_status',
-        `Folder ${folder.uid} should not have _asset_scan_status`)
+      expect(folder).to.not.have.property('_asset_scan_status')
     })
   })
 
@@ -337,8 +334,7 @@ describe('Asset Scan Status – Non-AM Org (ORGANIZATION)', () => {
     if (!hasField) return // Feature not active — skip silently
 
     allItems.forEach(item => {
-      expect(item).to.have.property('_asset_scan_status',
-        `Page item ${item.uid} is missing _asset_scan_status`)
+      expect(item, `Page item ${item.uid} is missing _asset_scan_status`).to.have.property('_asset_scan_status')
       // § 3.6: null is valid for legacy assets
       expect(isValidScanStatusOrLegacy(item._asset_scan_status)).to.equal(true,
         `Page item ${item.uid} has invalid scan status: ${JSON.stringify(item._asset_scan_status)}`)
@@ -355,8 +351,7 @@ describe('Asset Scan Status – Non-AM Org (ORGANIZATION)', () => {
     const asset = await stack.asset(freshAssetUid).fetch({ include_asset_scan_status: false })
 
     expect(asset).to.be.an('object')
-    expect(asset).to.not.have.property('_asset_scan_status',
-      '_asset_scan_status must be absent when param is explicitly set to false')
+    expect(asset).to.not.have.property('_asset_scan_status')
   })
 })
 
@@ -412,8 +407,7 @@ describe('Asset Scan Status – Upload Response (§ 3.2)', () => {
     })
 
     expect(asset).to.be.an('object')
-    expect(asset).to.not.have.property('_asset_scan_status',
-      'Upload response must not include _asset_scan_status unless the param is explicitly requested')
+    expect(asset).to.not.have.property('_asset_scan_status')
 
     try { await stack.asset(asset.uid).delete() } catch (e) { /* ignore */ }
   })
@@ -692,8 +686,7 @@ describe('Asset Scan Status – api_version Header Isolation (§ 4.2)', () => {
 
       const lastReq = ctx.capturedRequests[ctx.capturedRequests.length - 1]
       if (lastReq && lastReq.headers) {
-        expect(lastReq.headers).to.not.have.property('api_version',
-          'api_version header must not bleed from bulkOperation.publish() into subsequent asset fetches')
+        expect(lastReq.headers).to.not.have.property('api_version')
       }
     }
 
