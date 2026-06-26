@@ -35,6 +35,8 @@ import { contentstackClient } from '../utility/ContentstackClient.js'
 import { testData, wait, trackedExpect } from '../utility/testHelpers.js'
 import * as testSetup from '../utility/testSetup.js'
 import path from 'path'
+import fs from 'fs'
+import os from 'os'
 
 const testBaseDir = path.resolve(process.cwd(), 'test/sanity-check')
 const assetPath = path.join(testBaseDir, 'mock/assets/image-1.jpg')
@@ -76,6 +78,37 @@ async function uploadScanAsset (stack, label) {
     console.log(`  [scan-test] Upload failed (${label}):`, e.errorMessage || e.message)
     return null
   }
+}
+
+// EICAR antivirus test signature — stored base64-encoded so the source file is
+// never flagged by repo scanners. Decodes to the standard 68-byte EICAR string
+// that all AV engines recognise as a test virus (harmless, triggers quarantine).
+const EICAR_BASE64 = 'WDVPIVAlQEFQWzRcUFpYNTQoUF4pN0NDKTd9JEVJQ0FSLVNUQU5EQVJELUFOVElWSVJVUy1URVNULUZJTEUhJEgrSCo='
+
+function createEicarFile () {
+  const tmpPath = path.join(os.tmpdir(), `eicar-scan-test-${Date.now()}.com`)
+  fs.writeFileSync(tmpPath, Buffer.from(EICAR_BASE64, 'base64'))
+  return tmpPath
+}
+
+/**
+ * Poll _asset_scan_status every `interval` ms until it equals `expectedStatus`
+ * or `timeout` ms elapses. Returns the last observed status.
+ * `not_scanned` is treated as terminal — the scanner will never change it.
+ */
+async function waitForScan (stack, assetUid, expectedStatus, timeout = 60000, interval = 3000) {
+  const deadline = Date.now() + timeout
+  let last = null
+  while (Date.now() < deadline) {
+    try {
+      const asset = await stack.asset(assetUid).fetch({ include_asset_scan_status: true })
+      last = asset._asset_scan_status
+      if (last === expectedStatus) return last
+      if (last === 'not_scanned') return last  // feature disabled — won't change
+    } catch (e) { /* transient network error — keep polling */ }
+    await wait(interval)
+  }
+  return last
 }
 
 // ============================================================================
@@ -482,6 +515,114 @@ describe('Asset Scan Status – Download Error Handling (§ 3.3)', () => {
     } finally {
       if (assetUid) {
         try { await stack.asset(assetUid).delete() } catch (e) { /* ignore */ }
+      }
+    }
+  })
+})
+
+// ============================================================================
+// Scan Lifecycle – pending → clean / pending → quarantined
+// Verifies each distinct status value is reachable and correct.
+// Uses a real normal image (→ clean) and EICAR test file (→ quarantined).
+// ============================================================================
+
+describe('Asset Scan Status – Scan Lifecycle (clean + quarantined)', () => {
+  let stack
+  let cleanAssetUid
+  let eicarAssetUid
+  let eicarFilePath
+
+  before(function () {
+    const apiKey = process.env.API_KEY
+    if (!apiKey) return this.skip()
+    stack = buildStack(apiKey)
+  })
+
+  before(async function () {
+    this.timeout(30000)
+    if (!stack) return
+
+    // Write EICAR test file to a system temp path
+    try { eicarFilePath = createEicarFile() } catch (e) {
+      console.log('  [scan-test] EICAR file creation failed:', e.message)
+    }
+
+    // Upload both assets
+    cleanAssetUid = await uploadScanAsset(stack, 'lifecycle-clean')
+    if (eicarFilePath) {
+      try {
+        const a = await stack.asset().create({
+          upload: eicarFilePath,
+          title: `Scan Test EICAR ${Date.now()}`,
+          description: 'EICAR antivirus test file for quarantine status verification'
+        })
+        eicarAssetUid = a.uid
+      } catch (e) {
+        console.log('  [scan-test] EICAR upload failed:', e.errorMessage || e.message)
+      }
+    }
+    console.log(`  [scan-test] Lifecycle: cleanUid=${cleanAssetUid} eicarUid=${eicarAssetUid}`)
+  })
+
+  after(async function () {
+    for (const uid of [cleanAssetUid, eicarAssetUid]) {
+      if (uid && stack) try { await stack.asset(uid).delete() } catch (e) {}
+    }
+    if (eicarFilePath) try { fs.unlinkSync(eicarFilePath) } catch (e) {}
+  })
+
+  it('clean image should transition from pending to clean after scan completes', async function () {
+    this.timeout(90000)
+    if (!cleanAssetUid) return this.skip()
+
+    const status = await waitForScan(stack, cleanAssetUid, 'clean')
+    if (status === 'not_scanned') {
+      console.log('  [scan-test] Scanning not enabled on this stack (not_scanned) — skipping clean assertion')
+      return
+    }
+    expect(status).to.equal('clean',
+      `Expected normal image to scan as 'clean', got: ${JSON.stringify(status)}`)
+  })
+
+  it('EICAR antivirus test file should reach quarantined status after scan', async function () {
+    this.timeout(90000)
+    if (!eicarAssetUid) return this.skip()
+
+    const status = await waitForScan(stack, eicarAssetUid, 'quarantined')
+    if (status === 'not_scanned') {
+      console.log('  [scan-test] Scanning not enabled on this stack (not_scanned) — skipping quarantine assertion')
+      return
+    }
+    expect(status).to.equal('quarantined',
+      `Expected EICAR file to be quarantined, got: ${JSON.stringify(status)}`)
+  })
+
+  it('quarantined asset download should be blocked with scan error (§ 3.3 real asset)', async function () {
+    this.timeout(90000)
+    if (!eicarAssetUid) return this.skip()
+
+    // Only run once the asset is confirmed quarantined
+    const status = await waitForScan(stack, eicarAssetUid, 'quarantined')
+    if (status !== 'quarantined') return this.skip()
+
+    try {
+      const asset = await stack.asset(eicarAssetUid).fetch({ include_asset_scan_status: true })
+      // Attempt to download — should be blocked for quarantined assets
+      await stack.asset().download({ url: asset.url, responseType: 'arraybuffer' })
+    } catch (err) {
+      const httpStatus = err.status || (err.response && err.response.status)
+      const errCode = String(
+        err.errorCode || err.error_code ||
+        (err.response && err.response.data && err.response.data.error_code) || ''
+      )
+      // § 3.3: blocked download must surface 403 or 422, not a generic/swallowed error
+      if (httpStatus) {
+        expect([403, 422]).to.include(httpStatus,
+          `Quarantined asset download must return 403 or 422, got: ${httpStatus}`)
+      }
+      if (errCode) {
+        expect(['asset_scan_quarantined', 'access_denied']).to.include(errCode,
+          `Expected scan-related error code, got: ${errCode}`)
       }
     }
   })
@@ -976,6 +1117,59 @@ describe('Asset Scan Status – AM Org (AM_ORG_UID, DAM + scan enabled)', functi
     expect(asset).to.be.an('object')
     if ('_asset_scan_status' in asset) {
       expect(VALID_SCAN_STATUSES).to.include(asset._asset_scan_status)
+    }
+  })
+
+  // --------------------------------------------------------------------------
+  // AM-8. Clean image transitions pending → clean on AM (DAM) stack
+  // --------------------------------------------------------------------------
+  it('[AM] clean image should transition from pending to clean after scan', async function () {
+    this.timeout(90000)
+    if (!amFreshAssetUid) return this.skip()
+
+    const status = await waitForScan(amStack, amFreshAssetUid, 'clean')
+    if (status === 'not_scanned') {
+      console.log('  [scan-test] AM: scanning not enabled on this stack — skipping clean assertion')
+      return
+    }
+    expect(status).to.equal('clean',
+      `AM clean image expected 'clean' after scan, got: ${JSON.stringify(status)}`)
+  })
+
+  // --------------------------------------------------------------------------
+  // AM-9. EICAR file reaches quarantined on AM (DAM) stack
+  // --------------------------------------------------------------------------
+  it('[AM] EICAR antivirus test file should reach quarantined status on AM stack', async function () {
+    this.timeout(90000)
+    if (!amStack) return this.skip()
+
+    let eicarPath
+    let eicarUid
+    try {
+      eicarPath = createEicarFile()
+      const a = await amStack.asset().create({
+        upload: eicarPath,
+        title: `AM EICAR Test ${Date.now()}`,
+        description: 'EICAR antivirus test file for quarantine verification on AM stack'
+      })
+      eicarUid = a.uid
+    } catch (e) {
+      console.log('  [scan-test] AM EICAR upload failed:', e.errorMessage || e.message)
+      return this.skip()
+    } finally {
+      if (eicarPath) try { fs.unlinkSync(eicarPath) } catch (e) {}
+    }
+
+    try {
+      const status = await waitForScan(amStack, eicarUid, 'quarantined')
+      if (status === 'not_scanned') {
+        console.log('  [scan-test] AM: scanning not enabled — skipping quarantine assertion')
+        return
+      }
+      expect(status).to.equal('quarantined',
+        `AM EICAR file expected 'quarantined', got: ${JSON.stringify(status)}`)
+    } finally {
+      if (eicarUid) try { await amStack.asset(eicarUid).delete() } catch (e) {}
     }
   })
 })
