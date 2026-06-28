@@ -104,7 +104,7 @@ async function waitForScan (stack, assetUid, expectedStatus, timeout = 60000, in
       const asset = await stack.asset(assetUid).fetch({ include_asset_scan_status: true })
       last = asset._asset_scan_status
       if (last === expectedStatus) return last
-      if (last === 'not_scanned') return last  // feature disabled — won't change
+      if (last === 'not_scanned') return last // feature disabled — won't change
     } catch (e) { /* transient network error — keep polling */ }
     await wait(interval)
   }
@@ -117,7 +117,7 @@ async function waitForScan (stack, assetUid, expectedStatus, timeout = 60000, in
 
 describe('Asset Scan Status – Non-AM Org (ORGANIZATION)', () => {
   let stack
-  let freshAssetUid   // uploaded at the start of this suite for scan-specific assertions
+  let freshAssetUid // uploaded at the start of this suite for scan-specific assertions
   let replaceAssetUid // separate asset used for the replace-then-check test
 
   before(function () {
@@ -639,7 +639,7 @@ describe('Asset Scan Status – Publish Is Always Async (§ 3.4)', () => {
   let stack
   let publishAssetUid
   let publishEnvironment
-  let createdEnvironmentName = null  // track if we created it so we can delete it
+  let createdEnvironmentName = null // track if we created it so we can delete it
 
   before(function () {
     const apiKey = process.env.API_KEY
