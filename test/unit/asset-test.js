@@ -463,6 +463,92 @@ describe('Contentstack Asset test', () => {
       })
       .catch(done)
   })
+
+  // Asset Scanning tests
+  it('Asset fetch sends include_asset_scan_status as query param and returns _asset_scan_status', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/assets/UID').reply((config) => {
+      expect(config.params.include_asset_scan_status).to.equal(true)
+      return [200, {
+        asset: {
+          ...assetMock,
+          _asset_scan_status: 'clean'
+        }
+      }]
+    })
+    makeAsset({
+      asset: { ...systemUidMock },
+      stackHeaders: stackHeadersMock
+    })
+      .fetch({ include_asset_scan_status: true })
+      .then((asset) => {
+        checkAsset(asset)
+        expect(asset._asset_scan_status).to.equal('clean')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Asset query sends include_asset_scan_status as query param and returns _asset_scan_status', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/assets').reply((config) => {
+      expect(config.params.include_asset_scan_status).to.equal(true)
+      return [200, {
+        assets: [{
+          ...assetMock,
+          _asset_scan_status: 'clean'
+        }]
+      }]
+    })
+    makeAsset()
+      .query({ include_asset_scan_status: true })
+      .find()
+      .then((collection) => {
+        expect(collection.items[0]._asset_scan_status).to.equal('clean')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Asset create sends include_asset_scan_status as query param and returns pending scan status', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onPost('/assets').reply((config) => {
+      expect(config.params.include_asset_scan_status).to.equal(true)
+      return [200, {
+        asset: {
+          ...assetMock,
+          _asset_scan_status: 'pending'
+        }
+      }]
+    })
+    makeAsset()
+      .create(
+        { upload: path.join(__dirname, '../sanity-check/mock/customUpload.html') },
+        { include_asset_scan_status: true }
+      )
+      .then((asset) => {
+        expect(asset._asset_scan_status).to.equal('pending')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('Asset fetch without include_asset_scan_status does not return _asset_scan_status', done => {
+    var mock = new MockAdapter(Axios)
+    mock.onGet('/assets/UID').reply(200, {
+      asset: { ...assetMock }
+    })
+    makeAsset({
+      asset: { ...systemUidMock },
+      stackHeaders: stackHeadersMock
+    })
+      .fetch()
+      .then((asset) => {
+        expect(asset._asset_scan_status).to.equal(undefined)
+        done()
+      })
+      .catch(done)
+  })
 })
 
 function makeAsset (data) {
