@@ -87,7 +87,8 @@ describe('Teams API Tests', () => {
       trackedExpect(response.uid, 'Team UID').toExist()
       trackedExpect(response.uid, 'Team UID type').toBeA('string')
       trackedExpect(response.name, 'Team name').toEqual(teamData.name)
-      trackedExpect(response.organizationRole, 'Team organizationRole').toExist()
+      const orgRole = response.organizationRole || response.organizationRoles
+      trackedExpect(orgRole, 'Team organizationRole/organizationRoles').toExist()
 
       // Wait for team to be fully created
       await wait(2000)
