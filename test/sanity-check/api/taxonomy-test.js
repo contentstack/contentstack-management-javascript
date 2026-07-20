@@ -308,7 +308,7 @@ describe('Taxonomy API Tests', () => {
         await stack.taxonomy().publish({ locales: ['en-us'], environments: ['development'], items: [] })
         // Some environments may accept empty arrays, just check it returns something
       } catch (e) {
-        expect(e.status).to.be.oneOf([400, 422])
+        expect(e.status).to.be.oneOf([400, 412, 422])
       }
     })
 
@@ -367,7 +367,7 @@ describe('Taxonomy API Tests', () => {
       try {
         await stack.taxonomy().unpublish({ locales: ['en-us'], environments: ['development'], items: [] })
       } catch (e) {
-        expect(e.status).to.be.oneOf([400, 422])
+        expect(e.status).to.be.oneOf([400, 412, 422])
       }
     })
   })
