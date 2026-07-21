@@ -1,4 +1,6 @@
 fileignoreconfig:
 - filename: package-lock.json
   checksum: 80c8eb5270a1c4a0fa244d0f001d15867449d44954eb4d3f1ab7fa68c6f5446d
-version: ""
+- filename: test/sanity-check/api/assetScanStatus-test.js
+  checksum: e3b1857fbe321e7125b55613acd58c3c0b2fd2462e7a14e48279ad35db4169e7
+version: "1.0"
