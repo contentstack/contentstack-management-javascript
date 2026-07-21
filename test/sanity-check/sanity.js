@@ -81,6 +81,10 @@ import './api/environment-test.js'
 // Phase 6: Assets (needed for entries with file fields)
 import './api/asset-test.js'
 
+// Phase 6.5: Asset Scan Status - comprehensive tests for include_asset_scan_status param
+// Covers both ORGANIZATION stack (non-AM, scan enabled) and AM_ORG_UID stack (dynamically created, no static key needed)
+import './api/assetScanStatus-test.js'
+
 // Phase 7: Taxonomies (needed for content types with taxonomy fields)
 import './api/taxonomy-test.js'
 import './api/terms-test.js'
@@ -238,8 +242,17 @@ before(async function () {
 // GLOBAL CURL CAPTURE FOR ALL TESTS (PASSED AND FAILED)
 // ============================================================================
 
-// Clear request log and assertion tracker before each test
-beforeEach(function () {
+// Clear request log and assertion tracker before each test.
+// When a test has this.retries(N) and is being retried, waits 7 seconds first
+// so the server has time to recover from slowness before the next attempt.
+beforeEach(async function () {
+  const retryNum = (typeof this.currentRetry === 'function') ? this.currentRetry() : 0
+  if (retryNum > 0) {
+    const testTitle = (this.currentTest && this.currentTest.title) || 'unknown'
+    console.log(`  [retry] attempt ${retryNum + 1} for "${testTitle}" — waiting 7s for server recovery...`)
+    await new Promise(resolve => setTimeout(resolve, 7000))
+  }
+
   // Clear SDK plugin request capture
   testSetup.clearCapturedRequests()
 
