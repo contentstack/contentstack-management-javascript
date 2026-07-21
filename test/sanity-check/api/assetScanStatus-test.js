@@ -473,15 +473,21 @@ describe('Asset Scan Status – Download Error Handling (§ 3.3)', () => {
     // NOT replace it with "Session timed out" or a generic SDK message.
 
     // Use an invalid URL to trigger a predictable SDK error and verify propagation
+    let errorThrown = false
     try {
-      await stack.asset().download({ url: 'https://invalid-host.example.com/nonexistent-asset', responseType: 'blob' })
+      await stack.asset().download({ url: 'https://invalid-host.example.com/nonexistent-asset', responseType: 'arraybuffer' })
     } catch (err) {
+      errorThrown = true
       // Must expose the real error — not hide it behind a generic wrapper
       expect(err.message || err.errorMessage || err.code).to.not.equal(undefined,
         'SDK must surface download errors — error message must not be empty')
-      expect(err.message).to.not.include('Session timed out',
-        'SDK must not replace real download errors with generic session timeout message')
+      if (err.message) {
+        expect(err.message).to.not.include('Session timed out',
+          'SDK must not replace real download errors with generic session timeout message')
+      }
     }
+    expect(errorThrown).to.equal(true,
+      'download() must throw for an invalid host URL — SDK must not silently succeed')
   })
 
   it('SDK asset.download() must propagate 422 status for scan-blocked downloads', async function () {
@@ -493,6 +499,7 @@ describe('Asset Scan Status – Download Error Handling (§ 3.3)', () => {
     // Fetch a real asset then attempt to call download with an injected bad URL
     // to confirm the SDK propagates the error with a proper status code.
     let assetUid
+    let errorWasThrown = false
     try {
       const uploadResp = await stack.asset().create({
         upload: assetPath,
@@ -504,6 +511,7 @@ describe('Asset Scan Status – Download Error Handling (§ 3.3)', () => {
       const assetObj = await stack.asset(assetUid).fetch()
       await assetObj.download({ url: assetObj.url + '?__scan_error_test=1', responseType: 'arraybuffer' })
     } catch (err) {
+      errorWasThrown = true
       // SDK must not swallow the status code
       if (err.status !== undefined) {
         expect(err.status).to.be.a('number',
@@ -517,6 +525,9 @@ describe('Asset Scan Status – Download Error Handling (§ 3.3)', () => {
         try { await stack.asset(assetUid).delete() } catch (e) { /* ignore */ }
       }
     }
+    // CDN may serve the asset despite the injected query param — explicitly skip
+    // rather than silently pass so the 422-propagation contract is clearly not exercised.
+    if (!errorWasThrown) this.skip()
   })
 })
 
@@ -535,6 +546,12 @@ describe('Asset Scan Status – Scan Lifecycle (clean + quarantined)', () => {
   before(function () {
     const apiKey = process.env.API_KEY
     if (!apiKey) return this.skip()
+    // Gate behind explicit opt-in: EICAR upload can trigger AV controls in CI environments.
+    // Set SCAN_LIFECYCLE_TESTS_ENABLED=true in the pipeline/env to enable this suite.
+    if (!process.env.SCAN_LIFECYCLE_TESTS_ENABLED) {
+      console.log('  [scan-test] Lifecycle tests skipped — set SCAN_LIFECYCLE_TESTS_ENABLED=true to enable')
+      return this.skip()
+    }
     stack = buildStack(apiKey)
   })
 
