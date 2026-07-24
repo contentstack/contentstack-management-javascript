@@ -1,5 +1,14 @@
 # Changelog
 
+## [v1.31.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.31.0) (2026-07-27)
+
+- Enh
+  - Entry variants: `contentType(...).entry(...).variants(variantUidOrUids, branchName?)` — optional second argument sets the CMA `branch` header for that variants scope (branch UID or alias). First argument accepts a variant UID string or an array of UIDs (comma-separated in the request path). Omitting `branchName` preserves previous behavior.
+  - Entry variants: added `variants(uid).publish()` and `variants(uid).unpublish()`, calling the entry publish/unpublish endpoints with the variant payload nested under `entry`.
+  - `publish()`/`unpublish()` (entry and entry variants) accept optional `headers` and `params`, merged into the underlying HTTP request.
+- Test
+  - Unit tests and sanity API tests for entry variants with an explicit branch, and for the new variant `publish()`/`unpublish()` methods.
+
 ## [v1.30.4](https://github.com/contentstack/contentstack-management-javascript/tree/v1.30.4) (2026-06-29)
 
 - Update dependencies
