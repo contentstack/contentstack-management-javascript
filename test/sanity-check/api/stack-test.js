@@ -77,6 +77,7 @@ describe('Stack API Tests', () => {
     })
 
     it('should fail to fetch with invalid API key', async () => {
+      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
       const invalidStack = client.stack({ api_key: 'invalid_api_key_12345' })
 
       try {
@@ -336,6 +337,7 @@ describe('Stack API Tests', () => {
     })
 
     it('should return proper error structure', async () => {
+      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
       const invalidStack = client.stack({ api_key: 'invalid_key' })
 
       try {
