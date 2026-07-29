@@ -259,6 +259,159 @@ describe('Entry Variants API Tests', () => {
     })
   })
 
+  /**
+   * SDK: .variants(variantUidOrUids, branchName?) — optional branch sent as the `branch` header
+   * for this variants scope (stack default branch when omitted).
+   * Uses `main` when the Branch API is available; skips if branches are not enabled on the stack.
+   */
+  describe('Entry Variants with explicit branch (second argument)', () => {
+    let branchForVariants = null
+
+    before(async function () {
+      this.timeout(30000)
+      try {
+        const mainBranch = await stack.branch('main').fetch()
+        if (mainBranch && mainBranch.uid) {
+          branchForVariants = mainBranch.uid
+        }
+      } catch (e) {
+        console.log('  Entry Variants branch tests: could not resolve main branch —', e.errorMessage || e.message)
+        branchForVariants = null
+      }
+    })
+
+    it('should fetch entry variant with variants(uid, branch)', async function () {
+      this.timeout(20000)
+
+      if (!branchForVariants || !contentTypeUid || !entryUid || !variantUid) {
+        this.skip()
+      }
+
+      try {
+        const response = await stack
+          .contentType(contentTypeUid)
+          .entry(entryUid)
+          .variants(variantUid, branchForVariants)
+          .fetch()
+
+        trackedExpect(response, 'Entry variant fetch (with branch)').toBeAn('object')
+        trackedExpect(response.entry, 'Entry variant entry').toExist()
+        trackedExpect(response.entry._variant, 'Entry variant _variant').toExist()
+      } catch (error) {
+        if (error.status === 403 || error.status === 404 || error.status === 422) {
+          this.skip()
+        }
+        throw error
+      }
+    })
+
+    it('should update entry variant with variants(uid, branch)', async function () {
+      this.timeout(20000)
+
+      if (!branchForVariants || !contentTypeUid || !entryUid || !variantUid) {
+        this.skip()
+      }
+
+      const variantEntryData = {
+        entry: {
+          title: `Branch arg variant ${generateUniqueId()}`,
+          _variant: {
+            _change_set: ['title']
+          }
+        }
+      }
+
+      try {
+        const response = await stack
+          .contentType(contentTypeUid)
+          .entry(entryUid)
+          .variants(variantUid, branchForVariants)
+          .update(variantEntryData)
+
+        trackedExpect(response, 'Entry variant update (with branch)').toBeAn('object')
+        trackedExpect(response.entry, 'Entry variant entry').toExist()
+        trackedExpect(response.entry.title, 'Entry variant title').toExist()
+      } catch (error) {
+        if (error.status === 403 || error.status === 422 || error.status === 412) {
+          this.skip()
+        }
+        throw error
+      }
+    })
+
+    it('should list entry variants with variants(null, branch).query().find()', async function () {
+      this.timeout(20000)
+
+      if (!branchForVariants || !contentTypeUid || !entryUid) {
+        this.skip()
+      }
+
+      try {
+        const response = await stack
+          .contentType(contentTypeUid)
+          .entry(entryUid)
+          .variants(null, branchForVariants)
+          .query({})
+          .find()
+
+        expect(response.items).to.be.an('array')
+      } catch (error) {
+        if (error.status === 403 || error.status === 404) {
+          this.skip()
+        }
+        throw error
+      }
+    })
+
+    it('should fetch variant versions with variants(uid, branch).versions()', async function () {
+      this.timeout(20000)
+
+      if (!branchForVariants || !contentTypeUid || !entryUid || !variantUid) {
+        this.skip()
+      }
+
+      try {
+        const response = await stack
+          .contentType(contentTypeUid)
+          .entry(entryUid)
+          .variants(variantUid, branchForVariants)
+          .versions()
+
+        expect(response).to.be.an('object')
+        expect(response.versions).to.be.an('array')
+      } catch (error) {
+        if (error.status === 403 || error.status === 404 || error.status === 422) {
+          this.skip()
+        }
+        throw error
+      }
+    })
+
+    it('should fetch entry variant with variants([uid], branch) (single-element array)', async function () {
+      this.timeout(20000)
+
+      if (!branchForVariants || !contentTypeUid || !entryUid || !variantUid) {
+        this.skip()
+      }
+
+      try {
+        const response = await stack
+          .contentType(contentTypeUid)
+          .entry(entryUid)
+          .variants([variantUid], branchForVariants)
+          .fetch()
+
+        trackedExpect(response.entry, 'Entry variant entry (array uid)').toExist()
+        trackedExpect(response.entry._variant, 'Entry variant _variant').toExist()
+      } catch (error) {
+        if (error.status === 403 || error.status === 404 || error.status === 422) {
+          this.skip()
+        }
+        throw error
+      }
+    })
+  })
+
   describe('Entry Variant Publishing', () => {
     it('should publish entry variant', async function () {
       this.timeout(15000)
@@ -295,6 +448,46 @@ describe('Entry Variants API Tests', () => {
           this.skip()
         } else {
           console.log('Publish entry variant warning:', error.message)
+        }
+      }
+    })
+
+    it('should publish entry variant via variants(uid).publish()', async function () {
+      this.timeout(15000)
+
+      if (!contentTypeUid || !entryUid || !variantUid) {
+        this.skip()
+      }
+
+      const publishDetails = {
+        environments: [environmentName],
+        locales: ['en-us'],
+        variants: [{
+          uid: variantUid,
+          version: 1
+        }],
+        variant_rules: {
+          publish_latest_base: false,
+          publish_latest_base_conditionally: true
+        }
+      }
+
+      try {
+        const response = await stack
+          .contentType(contentTypeUid)
+          .entry(entryUid)
+          .variants(variantUid)
+          .publish({
+            publishDetails,
+            locale: 'en-us'
+          })
+
+        expect(response.notice).to.not.equal(undefined)
+      } catch (error) {
+        if (error.status === 403 || error.status === 422) {
+          this.skip()
+        } else {
+          console.log('variants().publish warning:', error.message)
         }
       }
     })
@@ -365,6 +558,42 @@ describe('Entry Variants API Tests', () => {
           this.skip()
         } else {
           console.log('Unpublish warning:', error.message)
+        }
+      }
+    })
+
+    it('should unpublish entry variant via variants(uid).unpublish()', async function () {
+      this.timeout(15000)
+
+      if (!contentTypeUid || !entryUid || !variantUid) {
+        this.skip()
+      }
+
+      const unpublishDetails = {
+        environments: [environmentName],
+        locales: ['en-us'],
+        variants: [{
+          uid: variantUid,
+          version: 1
+        }]
+      }
+
+      try {
+        const response = await stack
+          .contentType(contentTypeUid)
+          .entry(entryUid)
+          .variants(variantUid)
+          .unpublish({
+            publishDetails: unpublishDetails,
+            locale: 'en-us'
+          })
+
+        expect(response.notice).to.not.equal(undefined)
+      } catch (error) {
+        if (error.status === 403 || error.status === 422) {
+          this.skip()
+        } else {
+          console.log('variants().unpublish warning:', error.message)
         }
       }
     })

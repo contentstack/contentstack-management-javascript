@@ -8,7 +8,7 @@ import { Variants, Variant } from "./variants";
 
 export interface Entry extends Publishable, Unpublishable, SystemFields, SystemFunction<Entry> {
     variants(): Variants
-    variants(uid: string): Variant
+    variants(variantUidOrUids: string | string[], branchName?: string): Variant
     setWorkflowStage(data: { workflow_stage: WorkflowStage, locale?:string}): Promise<Response>
     locales(): Promise<Locales>
     references(param: object): Promise<References>
