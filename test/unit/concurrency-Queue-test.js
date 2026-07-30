@@ -65,6 +65,7 @@ var unauthorized = false
 var token = 'Bearer <token_value_new>'
 describe('Concurrency queue test', () => {
   before(() => {
+    // deepcode ignore HttpToHttps: local in-memory test server only, not real network traffic
     server = http.createServer((req, res) => {
       if (req.url === '/user-session') {
         res.writeHead(200, { 'Content-Type': 'application/json' })

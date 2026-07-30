@@ -54,6 +54,7 @@ describe('OAuthHandler', () => {
   })
 
   it('should exchange code for token', async () => {
+    // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
     const tokenData = { access_token: 'accessToken', refresh_token: 'refreshToken', expires_in: 3600 }
     sandbox.stub(axiosInstance, 'post').resolves({ data: tokenData })
 
@@ -419,6 +420,7 @@ describe('OAuthHandler', () => {
         'http://localhost:8184',
         null
       )
+      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
       const tokenData = { access_token: 'accessToken', refresh_token: 'refreshToken', expires_in: 3600 }
       sandbox.stub(axiosInstance, 'post').resolves({ data: tokenData })
 

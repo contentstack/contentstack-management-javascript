@@ -323,6 +323,7 @@ describe('Contentstack Variants entry test', () => {
       })
     makeEntry({
       entry: { ...systemUidMock },
+      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
       stackHeaders: { api_key: 'test_key' }
     })
       .variants('v1', 'feature_branch')

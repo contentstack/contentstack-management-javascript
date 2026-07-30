@@ -47,6 +47,7 @@ describe('Contentstack Team Stack Role Mapping test', () => {
   it('should update stack role mapping when stack api key and updateData are passed', done => {
     const updateStackRoleMappingMock = {
       stackRoleMapping: {
+        // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
         stackApiKey: 'STACKAPIKEY',
         roles: [
           'role_uid1',
@@ -62,6 +63,7 @@ describe('Contentstack Team Stack Role Mapping test', () => {
         'role_uid2'
       ]
     }
+    // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
     makeStackRoleMapping({ stackApiKey: 'STACKAPIKEY' }).update(stackRoleMappings)
       .then((response) => {
         expect(response.stackRoleMapping).not.to.be.equal(undefined)
@@ -74,6 +76,7 @@ describe('Contentstack Team Stack Role Mapping test', () => {
   it('should delete stack role mapping when stack api key is passed', done => {
     var mock = new MockAdapter(Axios)
     mock.onDelete(`/organizations/organization_uid/teams/team_uid/stack_role_mappings/STACKAPIKEY`).reply(200, { status: 204 })
+    // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
     makeStackRoleMapping({ stackApiKey: 'STACKAPIKEY' }).delete()
       .then((response) => {
         expect(response.status).to.be.equal(204)
