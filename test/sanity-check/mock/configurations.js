@@ -538,6 +538,7 @@ export const widgetExtension = {
     type: 'widget',
     src: 'https://example.com/analytics-widget.html',
     config: {
+      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
       api_key: 'analytics-key'
     },
     tags: ['analytics', 'dashboard']
