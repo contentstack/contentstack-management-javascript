@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.31.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.31.1) (2026-07-30)
+
+- Snyk fixes
+
 ## [v1.31.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.31.0) (2026-07-27)
 
 - Enh
