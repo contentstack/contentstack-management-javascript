@@ -28,6 +28,6 @@ jobs:
           path: report.json           # Path to test results
           reporter: mocha-json        # Format of test results
       - name: Coverage report 
-        uses: lucassabreu/comment-coverage-clover@main
+        uses: lucassabreu/comment-coverage-clover@e55478876793efb0ee8d298797e31c99bd1937e7
         with: 
           file: coverage/clover.xml       
