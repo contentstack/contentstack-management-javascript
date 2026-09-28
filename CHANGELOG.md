@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.31.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.31.2) (2026-09-22)
+
+- Resolved security vulnerabilities in dependencies
+
 ## [v1.31.1](https://github.com/contentstack/contentstack-management-javascript/tree/v1.31.1) (2026-07-30)
 
 - Snyk fixes
