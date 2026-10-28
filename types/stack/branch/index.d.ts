@@ -17,6 +17,17 @@ export interface Branches extends Queryable<Branch, {branch: BranchData}> {
 export interface BranchData extends AnyProperty {
     uid: string
     source: string
+    /** Optional. Names (not UIDs) of the environments the new branch clones. Omit to clone all. */
+    publish_config?: IBranchPublishConfig
+}
+
+/**
+ * Publish configuration on branch create. Distinct from the entry/asset `PublishConfig`
+ * (utility/publish), which describes a publish request, not a branch clone.
+ */
+export interface IBranchPublishConfig {
+    /** Environment names to clone into the branch. `[]` clones none; omitted clones all. */
+    environments?: string[]
 }
 
 export interface ILinkedWorkspace {

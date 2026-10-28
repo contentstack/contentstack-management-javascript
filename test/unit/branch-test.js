@@ -317,6 +317,123 @@ describe('Contentstack Branch test', () => {
   })
 })
 
+describe('Branch create with publish_config.environments', () => {
+  const createdBranch = (environments) => ({
+    branch: {
+      name: 'dev',
+      source: 'main',
+      ...(environments === undefined ? {} : { publish_config: environments })
+    }
+  })
+
+  it('TC-1 sends two environment names in publish_config.environments as given', async () => {
+    const mock = new MockAdapter(axios)
+    let sent
+    mock.onPost('/stacks/branches').reply((config) => {
+      sent = JSON.parse(config.data)
+      return [200, { branch: { ...branchMock } }]
+    })
+    const body = createdBranch({ environments: ['development', 'staging'] })
+    await makeBranch().create(body)
+    expect(sent).to.eql(body)
+    expect(sent.branch.publish_config.environments).to.eql(['development', 'staging'])
+  })
+
+  it('TC-1 sends an empty list as [] (present, not dropped and not null)', async () => {
+    const mock = new MockAdapter(axios)
+    let sent
+    mock.onPost('/stacks/branches').reply((config) => {
+      sent = JSON.parse(config.data)
+      return [200, { branch: { ...branchMock } }]
+    })
+    await makeBranch().create(createdBranch({ environments: [] }))
+    expect(sent.branch.publish_config).to.have.property('environments')
+    expect(sent.branch.publish_config.environments).to.eql([])
+  })
+
+  it('TC-1 passes duplicates, a 150-name list and mixed case or spaces through unchanged', async () => {
+    const mock = new MockAdapter(axios)
+    let sent
+    mock.onPost('/stacks/branches').reply((config) => {
+      sent = JSON.parse(config.data)
+      return [200, { branch: { ...branchMock } }]
+    })
+    const many = Array.from({ length: 150 }, (_, i) => `env_${i}`)
+    const cases = [
+      ['development', 'development'],
+      many,
+      ['Development', ' staging ', 'PRODUCTION']
+    ]
+    for (const environments of cases) {
+      await makeBranch().create(createdBranch({ environments }))
+      expect(sent.branch.publish_config.environments).to.eql(environments)
+    }
+  })
+
+  it('TC-2 sends today\'s body unchanged when no list is given', async () => {
+    const mock = new MockAdapter(axios)
+    let sent
+    mock.onPost('/stacks/branches').reply((config) => {
+      sent = JSON.parse(config.data)
+      return [200, { branch: { ...branchMock } }]
+    })
+    const body = createdBranch()
+    await makeBranch().create(body)
+    expect(sent).to.eql({ branch: { name: 'dev', source: 'main' } })
+    expect(sent.branch).to.not.have.property('publish_config')
+  })
+
+  it('TC-2 sends publish_config: {} as {}', async () => {
+    const mock = new MockAdapter(axios)
+    let sent
+    mock.onPost('/stacks/branches').reply((config) => {
+      sent = JSON.parse(config.data)
+      return [200, { branch: { ...branchMock } }]
+    })
+    await makeBranch().create(createdBranch({}))
+    expect(sent.branch.publish_config).to.eql({})
+  })
+
+  it('TC-3 rejects a 422 for a request carrying the list with errorMessage, errorCode and errors unchanged', async () => {
+    const mock = new MockAdapter(axios)
+    const apiError = {
+      error_message: 'Environment not found.',
+      error_code: 422,
+      errors: { 'publish_config.environments': ['staging_typo'] }
+    }
+    mock.onPost('/stacks/branches').reply(422, apiError)
+    let caught
+    try {
+      await makeBranch().create(createdBranch({ environments: ['development', 'staging_typo'] }))
+    } catch (e) {
+      caught = e
+    }
+    expect(caught).to.not.equal(undefined)
+    expect(caught.status).to.be.equal(422)
+    expect(caught.errorMessage).to.be.equal(apiError.error_message)
+    expect(caught.errorCode).to.be.equal(apiError.error_code)
+    expect(caught.errors).to.eql(apiError.errors)
+  })
+
+  it('TC-4 keeps every field of the API body on a fetched branch, including publish_config', async () => {
+    const mock = new MockAdapter(axios)
+    const fetched = {
+      ...branchMock,
+      publish_config: { environments: ['development', 'staging'] },
+      future_field: { nested: true }
+    }
+    mock.onGet('/stacks/branches/UID').reply(200, { branch: fetched })
+    const response = await makeBranch({
+      branch: { ...systemUidMock },
+      stackHeaders: stackHeadersMock
+    }).fetch()
+    Object.keys(fetched).forEach((key) => {
+      expect(response[key], key).to.eql(fetched[key])
+    })
+    expect(response.publish_config.environments).to.eql(['development', 'staging'])
+  })
+})
+
 function makeBranch (data) {
   return new Branch(axios, data)
 }
