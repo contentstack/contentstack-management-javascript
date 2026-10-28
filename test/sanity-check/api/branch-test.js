@@ -396,6 +396,170 @@ describe('Branch API Tests', () => {
   })
 
   // ==========================================================================
+  // BRANCH CREATE WITH ENVIRONMENT LIST (publish_config.environments)
+  // ==========================================================================
+
+  describe('Branch create with publish_config.environments', () => {
+    // Three environments of this run, so a list of two is a strict subset (TC-5)
+    const envNames = [`pce${shortId()}`, `pce${shortId()}`, `pce${shortId()}`]
+    let notFound
+
+    const createWithEnvironments = (uid, environments) => stack.branch().create({
+      branch: { uid, source: 'main', publish_config: { environments } }
+    })
+
+    async function fetchWhenReady (uid, maxAttempts = 15) {
+      for (let i = 0; i < maxAttempts; i++) {
+        try {
+          const branch = await stack.branch(uid).fetch()
+          if (branch && branch.uid) return branch
+        } catch (e) {
+          // Branch not ready yet
+        }
+        await wait(2000)
+      }
+      throw new Error(`Branch ${uid} not ready after ${maxAttempts} attempts`)
+    }
+
+    // Stacks cap the number of branches: every branch created here is deleted
+    async function deleteBranch (uid) {
+      for (let i = 0; i < 10; i++) {
+        try {
+          await stack.branch(uid).delete({ force: true })
+          return
+        } catch (e) {
+          if (e.status === notFound.status && e.errorCode === notFound.errorCode) return
+          await wait(3000)
+        }
+      }
+    }
+
+    // A fetch of a uid that does not exist; a rejected create must give the same response
+    async function fetchError (uid) {
+      try {
+        await stack.branch(uid).fetch()
+      } catch (e) {
+        return { status: e.status, errorCode: e.errorCode }
+      }
+      return null
+    }
+
+    async function expectRejected (uid, environments) {
+      let caught
+      try {
+        await createWithEnvironments(uid, environments)
+      } catch (e) {
+        caught = e
+      }
+      if (!caught) {
+        await deleteBranch(uid)
+        expect.fail('expected the create to reject')
+      }
+      expect(caught.status).to.equal(422)
+      expect(caught.errorMessage).to.be.a('string')
+      expect(caught.errorCode).to.be.a('number')
+      expect(caught.errors).to.have.property('publish_config.environments')
+
+      const fetched = await fetchError(uid)
+      if (!fetched) await deleteBranch(uid)
+      expect(fetched, 'a rejected create must leave no branch behind').to.eql(notFound)
+    }
+
+    before(async function () {
+      this.timeout(60000)
+      for (const name of envNames) {
+        await stack.environment().create({
+          environment: { name, urls: [{ locale: 'en-us', url: 'https://example.com' }] }
+        })
+      }
+      notFound = await fetchError(`nob${shortId()}`)
+      expect(notFound, 'a nonexistent branch must not be found').to.not.equal(null)
+    })
+
+    after(async function () {
+      this.timeout(60000)
+      for (const name of envNames) {
+        try {
+          await stack.environment(name).delete()
+        } catch (e) {
+          // Already gone
+        }
+      }
+    })
+
+    it('should create a branch with two environment names and clone only those', async function () {
+      this.timeout(90000)
+      const uid = `pcn${shortId()}`
+      const wanted = [envNames[0], envNames[1]]
+      try {
+        const created = await createWithEnvironments(uid, wanted)
+        expect(created.uid).to.equal(uid)
+        expect(created.publish_config.environments).to.have.members(wanted)
+
+        const fetched = await fetchWhenReady(uid)
+        expect(fetched.publish_config.environments).to.have.members(wanted)
+        expect(fetched.publish_config.environments).to.not.include(envNames[2])
+      } finally {
+        await deleteBranch(uid)
+      }
+    })
+
+    it('should create a branch with one environment name and read back that one', async function () {
+      this.timeout(90000)
+      const uid = `pco${shortId()}`
+      try {
+        await createWithEnvironments(uid, [envNames[0]])
+        const fetched = await fetchWhenReady(uid)
+        expect(fetched.publish_config.environments).to.eql([envNames[0]])
+      } finally {
+        await deleteBranch(uid)
+      }
+    })
+
+    it('should create a branch with an empty list and read back []', async function () {
+      this.timeout(90000)
+      const uid = `pce${shortId()}`
+      try {
+        const created = await createWithEnvironments(uid, [])
+        expect(created.publish_config.environments).to.eql([])
+
+        const fetched = await fetchWhenReady(uid)
+        expect(fetched).to.have.property('publish_config')
+        expect(fetched.publish_config.environments).to.eql([])
+      } finally {
+        await deleteBranch(uid)
+      }
+    })
+
+    it('should create a branch without a list and read back no publish_config, as today', async function () {
+      this.timeout(90000)
+      const uid = `pcd${shortId()}`
+      try {
+        await stack.branch().create({ branch: { uid, source: 'main' } })
+        const fetched = await fetchWhenReady(uid)
+        expect(fetched).to.not.have.property('publish_config')
+      } finally {
+        await deleteBranch(uid)
+      }
+    })
+
+    it('should reject an unknown environment name with the API 422 and create no branch', async function () {
+      this.timeout(60000)
+      await expectRejected(`pcu${shortId()}`, [`nos${shortId()}`])
+    })
+
+    it('should reject a real environment name in another case with the API 422', async function () {
+      this.timeout(60000)
+      await expectRejected(`pcc${shortId()}`, [envNames[0].toUpperCase()])
+    })
+
+    it('should reject a mix of valid and unknown names and create no branch', async function () {
+      this.timeout(60000)
+      await expectRejected(`pcm${shortId()}`, [envNames[0], `nos${shortId()}`])
+    })
+  })
+
+  // ==========================================================================
   // BRANCH SETTINGS (AM v2)
   // ==========================================================================
 
