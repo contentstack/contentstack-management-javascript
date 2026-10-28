@@ -77,3 +77,6 @@ docs/
 # Snyk Security Extension - AI Rules (auto-generated)
 .cursor/rules/snyk_rules.mdc
 .vscode/settings.json
+
+# Added by ggshield
+.cache_ggshield
