@@ -396,6 +396,106 @@ describe('Branch API Tests', () => {
   })
 
   // ==========================================================================
+  // BRANCH CREATE WITH ENVIRONMENT LIST (publish_config.environments)
+  // ==========================================================================
+
+  describe('Branch create with publish_config.environments', () => {
+    // Environment names come from the stack, so the test does not hardcode them
+    let envNames = []
+
+    before(async function () {
+      this.timeout(30000)
+      const response = await stack.environment().query().find()
+      envNames = (response.items || []).map((env) => env.name)
+    })
+
+    const createWithEnvironments = (uid, environments) => stack.branch().create({
+      branch: {
+        uid,
+        source: 'main',
+        publish_config: { environments }
+      }
+    })
+
+    it('should create a branch with two environment names and clone only those', async function () {
+      this.timeout(60000)
+      if (envNames.length < 2) {
+        console.log('  Skipping - stack has fewer than two environments')
+        this.skip()
+        return
+      }
+      const uid = `pcn${shortId()}`
+      const wanted = [envNames[0], envNames[1]]
+      const created = await createWithEnvironments(uid, wanted)
+      expect(created.uid).to.equal(uid)
+      expect(created.publish_config.environments).to.eql(wanted)
+
+      await wait(LONG_DELAY)
+      const fetched = await stack.branch(uid).fetch()
+      expect(fetched.publish_config.environments).to.eql(wanted)
+    })
+
+    it('should create a branch with an empty list and read back []', async function () {
+      this.timeout(60000)
+      const uid = `pce${shortId()}`
+      const created = await createWithEnvironments(uid, [])
+      expect(created.uid).to.equal(uid)
+      expect(created.publish_config.environments).to.eql([])
+
+      await wait(LONG_DELAY)
+      const fetched = await stack.branch(uid).fetch()
+      expect(fetched.publish_config.environments).to.be.an('array').that.is.empty
+    })
+
+    it('should reject an unknown environment name with the API 422 and create no branch', async function () {
+      this.timeout(60000)
+      const uid = `pcu${shortId()}`
+      let caught
+      try {
+        await createWithEnvironments(uid, ['no_such_env_for_sanity'])
+      } catch (e) {
+        caught = e
+      }
+      expect(caught, 'expected the create to reject').to.not.equal(undefined)
+      expect(caught.status).to.equal(422)
+      expect(caught.errors).to.have.property('publish_config.environments')
+
+      try {
+        await stack.branch(uid).fetch()
+        expect.fail('branch should not exist')
+      } catch (e) {
+        expect(e.status).to.equal(404)
+      }
+    })
+
+    it('should reject a mix of valid and unknown names and create no branch', async function () {
+      this.timeout(60000)
+      if (envNames.length < 1) {
+        console.log('  Skipping - stack has no environments')
+        this.skip()
+        return
+      }
+      const uid = `pcm${shortId()}`
+      let caught
+      try {
+        await createWithEnvironments(uid, [envNames[0], 'no_such_env_for_sanity'])
+      } catch (e) {
+        caught = e
+      }
+      expect(caught, 'expected the create to reject').to.not.equal(undefined)
+      expect(caught.status).to.equal(422)
+      expect(caught.errors).to.have.property('publish_config.environments')
+
+      try {
+        await stack.branch(uid).fetch()
+        expect.fail('branch should not exist')
+      } catch (e) {
+        expect(e.status).to.equal(404)
+      }
+    })
+  })
+
+  // ==========================================================================
   // BRANCH SETTINGS (AM v2)
   // ==========================================================================
 

@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { Stack } from "../../types/stack";
+import { BranchData } from "../../types/stack/branch";
 
 const branch =  {
     uid: 'staging',
@@ -39,6 +40,32 @@ export function createBranch(stack: Stack) {
             .catch(done)
         })
     })
+}
+
+/**
+ * Compile-time checks for the optional publish_config.environments list on branch create.
+ * ts-jest type-checks this file, so a failing expectation fails the suite before any test runs.
+ * Never called at runtime (no live API call).
+ */
+export function branchPublishConfigTypes(stack: Stack) {
+    const withList: { branch: BranchData } = {
+        branch: { uid: 'dev', source: 'main', publish_config: { environments: ['development', 'staging'] } }
+    }
+    const withEmptyList: { branch: BranchData } = {
+        branch: { uid: 'dev', source: 'main', publish_config: { environments: [] } }
+    }
+    const withoutList: { branch: BranchData } = {
+        branch: { uid: 'dev', source: 'main' }
+    }
+    const notAList: { branch: BranchData } = {
+        branch: {
+            uid: 'dev',
+            source: 'main',
+            // @ts-expect-error environments is a string list, a bare string must be rejected
+            publish_config: { environments: 'development' }
+        }
+    }
+    return [stack.branch().create(withList), stack.branch().create(withEmptyList), stack.branch().create(withoutList), notAList]
 }
 
 export function queryBranch(stack: Stack) {
