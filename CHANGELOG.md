@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.31.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.31.3) (2026-11-02)
+
+- Resolved security vulnerabilities in dependencies
+  - `qs` updated to `~6.16.2` (SNYK-JS-QS-20943482, SNYK-JS-QS-21755395)
+  - `follow-redirects` (via `axios`) updated to 1.16.2 (SNYK-JS-FOLLOWREDIRECTS-21249784, SNYK-JS-FOLLOWREDIRECTS-21280747, SNYK-JS-FOLLOWREDIRECTS-21762031)
+- Tests: replaced hardcoded passwords, emails, API keys, tokens and MFA secrets with per-run generated values to resolve Snyk Code findings. No change to the published package.
+
 ## [v1.31.2](https://github.com/contentstack/contentstack-management-javascript/tree/v1.31.2) (2026-09-22)
 
 - Resolved security vulnerabilities in dependencies

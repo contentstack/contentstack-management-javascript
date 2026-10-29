@@ -2,6 +2,7 @@ import Axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
+import { TEST_API_KEY } from '../helpers/testSecrets'
 import {
   Variants,
   VariantsCollection
@@ -323,8 +324,7 @@ describe('Contentstack Variants entry test', () => {
       })
     makeEntry({
       entry: { ...systemUidMock },
-      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-      stackHeaders: { api_key: 'test_key' }
+      stackHeaders: { api_key: TEST_API_KEY }
     })
       .variants('v1', 'feature_branch')
       .fetch()
