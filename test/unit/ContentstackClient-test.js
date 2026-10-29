@@ -3,6 +3,7 @@ import ContentstackClient from '../../lib/contentstackClient'
 import { expect } from 'chai'
 import { describe, it, beforeEach } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
+import { TEST_PASSWORD, TEST_EMAIL, TEST_MFA_SECRET } from '../helpers/testSecrets'
 
 var host = 'http://localhost/'
 
@@ -212,66 +213,59 @@ describe('Contentstack Client', () => {
       mock.onPost('/user-session').reply(config => {
         const data = JSON.parse(config.data)
         expect(data.user).to.deep.equal({
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
           tfa_token: '123456'
         })
         return [200, {
           user: {
             authtoken: 'Test Auth With TFA',
-            email: 'test@example.com'
+            email: TEST_EMAIL
           }
         }]
       })
 
       ContentstackClient({ http: axios })
         .login({
-          // deepcode ignore NoHardcodedCredentials: false positive - method signature/parameter names, no actual hardcoded credential
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
           tfa_token: '123456'
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth With TFA')
-          expect(response.user.email).to.equal('test@example.com')
+          expect(response.user.email).to.equal(TEST_EMAIL)
           done()
         })
         .catch(done)
     })
 
     it('should handle login with TOTP secret', done => {
-      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-      const mfaSecret = 'MFASECRET'
+      const mfaSecret = TEST_MFA_SECRET
 
       mock.onPost('/user-session').reply(config => {
         const data = JSON.parse(config.data)
-        expect(data.user.email).to.equal('test@example.com')
-        expect(data.user.password).to.equal('password123')
+        expect(data.user.email).to.equal(TEST_EMAIL)
+        expect(data.user.password).to.equal(TEST_PASSWORD)
         expect(data.user.tfa_token).to.have.lengthOf(6)
         expect(data.user.tfa_token).to.match(/^\d{6}$/)
         expect(data.user.mfaSecret).to.equal(undefined)
         return [200, {
           user: {
             authtoken: 'Test Auth With TOTP',
-            email: 'test@example.com'
+            email: TEST_EMAIL
           }
         }]
       })
 
       ContentstackClient({ http: axios })
         .login({
-          // deepcode ignore NoHardcodedCredentials: false positive - method signature/parameter names, no actual hardcoded credential
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
-          // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
           mfaSecret: mfaSecret
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth With TOTP')
-          expect(response.user.email).to.equal('test@example.com')
+          expect(response.user.email).to.equal(TEST_EMAIL)
           done()
         })
         .catch(done)
@@ -281,32 +275,28 @@ describe('Contentstack Client', () => {
       mock.onPost('/user-session').reply(config => {
         const data = JSON.parse(config.data)
         expect(data.user).to.deep.equal({
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
           tfa_token: '123456'
         })
         return [200, {
           user: {
             authtoken: 'Test Auth Direct TFA',
-            email: 'test@example.com'
+            email: TEST_EMAIL
           }
         }]
       })
 
       ContentstackClient({ http: axios })
         .login({
-          // deepcode ignore NoHardcodedCredentials: false positive - method signature/parameter names, no actual hardcoded credential
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
           tfa_token: '123456',
-          // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-          mfaSecret: 'MFASECRET'
+          mfaSecret: TEST_MFA_SECRET
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth Direct TFA')
-          expect(response.user.email).to.equal('test@example.com')
+          expect(response.user.email).to.equal(TEST_EMAIL)
           done()
         })
         .catch(done)
@@ -316,9 +306,8 @@ describe('Contentstack Client', () => {
       mock.onPost('/user-session').reply(function (config) {
         const data = JSON.parse(config.data)
         expect(data.user).to.deep.equal({
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123'
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD
         })
         return [422, {
           error_message: 'Please login using the Two-Factor verification Token',
@@ -330,10 +319,8 @@ describe('Contentstack Client', () => {
 
       ContentstackClient({ http: axios })
         .login({
-          // deepcode ignore NoHardcodedCredentials: false positive - method signature/parameter names, no actual hardcoded credential
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123'
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD
         })
         .then(() => {
           done(new Error('Expected 2FA error was not thrown'))
@@ -365,10 +352,8 @@ describe('Contentstack Client', () => {
 
       ContentstackClient({ http: axios })
         .login({
-          // deepcode ignore NoHardcodedCredentials: false positive - method signature/parameter names, no actual hardcoded credential
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
           tfa_token: '111111'
         })
         .then(() => {
@@ -386,32 +371,28 @@ describe('Contentstack Client', () => {
       mock.onPost('/user-session').reply(config => {
         const data = JSON.parse(config.data)
         expect(data.user).to.deep.equal({
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
           tfa_token: '123456'
         })
         return [200, {
           user: {
             authtoken: 'Test Auth',
-            email: 'test@example.com'
+            email: TEST_EMAIL
           }
         }]
       })
 
       ContentstackClient({ http: axios })
         .login({
-          // deepcode ignore NoHardcodedCredentials: false positive - method signature/parameter names, no actual hardcoded credential
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
           tfa_token: '123456',
-          // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-          mfaSecret: 'MFASECRET'
+          mfaSecret: TEST_MFA_SECRET
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth')
-          expect(response.user.email).to.equal('test@example.com')
+          expect(response.user.email).to.equal(TEST_EMAIL)
           done()
         })
         .catch(done)
@@ -420,30 +401,27 @@ describe('Contentstack Client', () => {
     it('should generate tfa_token from mfaSecret when no tfa_token provided', done => {
       mock.onPost('/user-session').reply(config => {
         const data = JSON.parse(config.data)
-        expect(data.user.email).to.equal('test@example.com')
-        expect(data.user.password).to.equal('password123')
+        expect(data.user.email).to.equal(TEST_EMAIL)
+        expect(data.user.password).to.equal(TEST_PASSWORD)
         expect(data.user.tfa_token).to.match(/^\d{6}$/)
         expect(data.user.mfaSecret).to.equal(undefined)
         return [200, {
           user: {
             authtoken: 'Test Auth',
-            email: 'test@example.com'
+            email: TEST_EMAIL
           }
         }]
       })
 
       ContentstackClient({ http: axios })
         .login({
-          // deepcode ignore NoHardcodedCredentials: false positive - method signature/parameter names, no actual hardcoded credential
-          email: 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
-          // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-          mfaSecret: 'MFASECRET'
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
+          mfaSecret: TEST_MFA_SECRET
         })
         .then(response => {
           expect(response.user.authtoken).to.equal('Test Auth')
-          expect(response.user.email).to.equal('test@example.com')
+          expect(response.user.email).to.equal(TEST_EMAIL)
           done()
         })
         .catch(done)

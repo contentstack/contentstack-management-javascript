@@ -4,6 +4,7 @@ import { describe, it } from 'mocha'
 import MockAdapter from 'axios-mock-adapter'
 import { StackRoleMappings } from '../../lib/organization/teams/stackRoleMappings'
 import { stackRoleMappingMock } from './mock/objects'
+import { TEST_API_KEY as STACK_API_KEY } from '../helpers/testSecrets'
 
 describe('Contentstack Team Stack Role Mapping test', () => {
   it('should fetch all the roles', done => {
@@ -47,8 +48,7 @@ describe('Contentstack Team Stack Role Mapping test', () => {
   it('should update stack role mapping when stack api key and updateData are passed', done => {
     const updateStackRoleMappingMock = {
       stackRoleMapping: {
-        // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-        stackApiKey: 'STACKAPIKEY',
+        stackApiKey: STACK_API_KEY,
         roles: [
           'role_uid1',
           'role_uid2'
@@ -56,28 +56,26 @@ describe('Contentstack Team Stack Role Mapping test', () => {
       }
     }
     var mock = new MockAdapter(Axios)
-    mock.onPut(`/organizations/organization_uid/teams/team_uid/stack_role_mappings/STACKAPIKEY`).reply(200, updateStackRoleMappingMock)
+    mock.onPut(`/organizations/organization_uid/teams/team_uid/stack_role_mappings/${STACK_API_KEY}`).reply(200, updateStackRoleMappingMock)
     const stackRoleMappings = {
       roles: [
         'role_uid1',
         'role_uid2'
       ]
     }
-    // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-    makeStackRoleMapping({ stackApiKey: 'STACKAPIKEY' }).update(stackRoleMappings)
+    makeStackRoleMapping({ stackApiKey: STACK_API_KEY }).update(stackRoleMappings)
       .then((response) => {
         expect(response.stackRoleMapping).not.to.be.equal(undefined)
         expect(response.stackRoleMapping.roles[0]).to.be.equal(stackRoleMappings.roles[0])
-        expect(response.stackRoleMapping.stackApiKey).to.be.equal('STACKAPIKEY')
+        expect(response.stackRoleMapping.stackApiKey).to.be.equal(STACK_API_KEY)
         done()
       })
       .catch(done)
   })
   it('should delete stack role mapping when stack api key is passed', done => {
     var mock = new MockAdapter(Axios)
-    mock.onDelete(`/organizations/organization_uid/teams/team_uid/stack_role_mappings/STACKAPIKEY`).reply(200, { status: 204 })
-    // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-    makeStackRoleMapping({ stackApiKey: 'STACKAPIKEY' }).delete()
+    mock.onDelete(`/organizations/organization_uid/teams/team_uid/stack_role_mappings/${STACK_API_KEY}`).reply(200, { status: 204 })
+    makeStackRoleMapping({ stackApiKey: STACK_API_KEY }).delete()
       .then((response) => {
         expect(response.status).to.be.equal(204)
         done()
