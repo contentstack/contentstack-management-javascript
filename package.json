@@ -41,6 +41,7 @@
     "lint": "eslint lib test",
     "format": "eslint --fix lib test",
     "prepare": "npm run build",
+    "postpack": "ggshield secret scan archive ./*.tgz",
     "pretest": "rimraf coverage && npm run lint",
     "pre-commit": "npm run lint && husky install && husky && chmod +x .husky/pre-commit && ./.husky/pre-commit",
     "prepush": "npm run test:unit",

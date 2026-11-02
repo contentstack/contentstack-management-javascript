@@ -22,8 +22,12 @@ jobs:
       - run: npm ci
       - name: Update npm
         run: npm install -g npm@latest
+      - name: Install ggshield
+        run: pipx install ggshield
       - name: Release
         run: npm publish --access public --tag ${{ github.event.release.prerelease && 'beta' || 'latest' }}
+        env:
+          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
 
   publish-github:
     runs-on: ubuntu-latest
@@ -43,7 +47,10 @@ jobs:
       - run: npm ci
       - name: Update npm
         run: npm install -g npm@latest
+      - name: Install ggshield
+        run: pipx install ggshield
       - name: Release
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ github.token }}
+          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
