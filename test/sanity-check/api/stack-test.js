@@ -13,6 +13,7 @@ import { expect } from 'chai'
 import { describe, it, before, after } from 'mocha'
 import { contentstackClient } from '../utility/ContentstackClient.js'
 import { testData, trackedExpect } from '../utility/testHelpers.js'
+import { INVALID_API_KEY } from '../../helpers/testSecrets'
 
 describe('Stack API Tests', () => {
   let client
@@ -77,8 +78,7 @@ describe('Stack API Tests', () => {
     })
 
     it('should fail to fetch with invalid API key', async () => {
-      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-      const invalidStack = client.stack({ api_key: 'invalid_api_key_12345' })
+      const invalidStack = client.stack({ api_key: INVALID_API_KEY })
 
       try {
         await invalidStack.fetch()
@@ -337,8 +337,7 @@ describe('Stack API Tests', () => {
     })
 
     it('should return proper error structure', async () => {
-      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-      const invalidStack = client.stack({ api_key: 'invalid_key' })
+      const invalidStack = client.stack({ api_key: INVALID_API_KEY })
 
       try {
         await invalidStack.fetch()
