@@ -3,6 +3,7 @@ import sinon from 'sinon'
 import axios from 'axios'
 import OAuthHandler from '../../lib/core/oauthHandler'
 import { describe, it, beforeEach, afterEach } from 'mocha'
+import { TEST_ACCESS_TOKEN, TEST_REFRESH_TOKEN } from '../helpers/testSecrets'
 
 describe('OAuthHandler', () => {
   let axiosInstance
@@ -54,8 +55,7 @@ describe('OAuthHandler', () => {
   })
 
   it('should exchange code for token', async () => {
-    // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-    const tokenData = { access_token: 'accessToken', refresh_token: 'refreshToken', expires_in: 3600 }
+    const tokenData = { access_token: TEST_ACCESS_TOKEN, refresh_token: TEST_REFRESH_TOKEN, expires_in: 3600 }
     sandbox.stub(axiosInstance, 'post').resolves({ data: tokenData })
 
     const result = await oauthHandler.exchangeCodeForToken('authorization_code')
@@ -67,7 +67,7 @@ describe('OAuthHandler', () => {
     const tokenData = { access_token: 'NAT', refresh_token: 'newRefreshToken', expires_in: 3600 }
     sandbox.stub(axiosInstance, 'post').resolves({ data: tokenData })
 
-    const result = await oauthHandler.refreshAccessToken('refreshToken')
+    const result = await oauthHandler.refreshAccessToken(TEST_REFRESH_TOKEN)
     expect(result).to.deep.equal(tokenData)
   })
 
@@ -88,15 +88,15 @@ describe('OAuthHandler', () => {
   })
 
   it('should get access token', () => {
-    oauthHandler.axiosInstance.oauth = { accessToken: 'accessToken' }
+    oauthHandler.axiosInstance.oauth = { accessToken: TEST_ACCESS_TOKEN }
     const accessToken = oauthHandler.getAccessToken()
-    expect(accessToken).to.equal('accessToken')
+    expect(accessToken).to.equal(TEST_ACCESS_TOKEN)
   })
 
   it('should get refresh token', () => {
-    oauthHandler.axiosInstance.oauth = { refreshToken: 'refreshToken' }
+    oauthHandler.axiosInstance.oauth = { refreshToken: TEST_REFRESH_TOKEN }
     const refreshToken = oauthHandler.getRefreshToken()
-    expect(refreshToken).to.equal('refreshToken')
+    expect(refreshToken).to.equal(TEST_REFRESH_TOKEN)
   })
 
   it('should get organization UID', () => {
@@ -420,8 +420,7 @@ describe('OAuthHandler', () => {
         'http://localhost:8184',
         null
       )
-      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-      const tokenData = { access_token: 'accessToken', refresh_token: 'refreshToken', expires_in: 3600 }
+      const tokenData = { access_token: TEST_ACCESS_TOKEN, refresh_token: TEST_REFRESH_TOKEN, expires_in: 3600 }
       sandbox.stub(axiosInstance, 'post').resolves({ data: tokenData })
 
       await handler.exchangeCodeForToken('authorization_code')
