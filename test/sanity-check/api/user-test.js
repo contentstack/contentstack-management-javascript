@@ -20,6 +20,7 @@ import { contentstackClient, getTestContext } from '../utility/ContentstackClien
 import { testData, trackedExpect, wait } from '../utility/testHelpers.js'
 // Import from dist (built version) to avoid ESM module resolution issues
 import * as contentstack from '../../../dist/node/contentstack-management.js'
+import { TEST_PASSWORD, WRONG_PASSWORD, TEST_EMAIL, TFA_TEST_EMAIL, WRONG_EMAIL, INVALID_EMAIL, INVALID_API_KEY, TEST_MFA_SECRET } from '../../helpers/testSecrets'
 
 describe('User & Authentication API Tests', () => {
   let client
@@ -116,8 +117,7 @@ describe('User & Authentication API Tests', () => {
       this.timeout(15000)
 
       try {
-        // deepcode ignore NoHardcodedCredentials,NoHardcodedPasswords: false positive - method signature/parameter names, not a real secret
-        await client.login({ email: 'invalid-email', password: 'password123' })
+        await client.login({ email: INVALID_EMAIL, password: TEST_PASSWORD })
         expect.fail('Should have thrown an error')
       } catch (error) {
         expect(error).to.exist
@@ -130,10 +130,8 @@ describe('User & Authentication API Tests', () => {
 
       try {
         await client.login({
-          // deepcode ignore NoHardcodedCredentials: false positive - method signature/parameter names, no actual hardcoded credential
-          email: process.env.EMAIL || 'test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'wrong_password_12345'
+          email: process.env.EMAIL || TEST_EMAIL,
+          password: WRONG_PASSWORD
         })
         expect.fail('Should have thrown an error')
       } catch (error) {
@@ -149,8 +147,7 @@ describe('User & Authentication API Tests', () => {
       try {
         await client.login({
           email: 'nonexistent_user_' + Date.now() + '@test-invalid.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123'
+          password: TEST_PASSWORD
         })
         expect.fail('Should have thrown an error')
       } catch (error) {
@@ -163,8 +160,7 @@ describe('User & Authentication API Tests', () => {
       this.timeout(15000)
 
       try {
-        // deepcode ignore NoHardcodedCredentials,NoHardcodedPasswords: false positive - method signature/parameter names, not a real secret
-        await client.login({ email: 'test@test.com', password: 'wrongpassword' })
+        await client.login({ email: WRONG_EMAIL, password: WRONG_PASSWORD })
         expect.fail('Should have thrown an error')
       } catch (error) {
         // Validate error structure
@@ -266,8 +262,7 @@ describe('User & Authentication API Tests', () => {
       }
 
       const authClient = contentstackClient()
-      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-      const stack = authClient.stack({ api_key: 'invalid_api_key_12345' })
+      const stack = authClient.stack({ api_key: INVALID_API_KEY })
 
       try {
         await stack.fetch()
@@ -402,10 +397,8 @@ describe('User & Authentication API Tests', () => {
 
       try {
         await client.login({
-          // deepcode ignore NoHardcodedCredentials: false positive - method signature/parameter names, no actual hardcoded credential
-          email: process.env.TFA_EMAIL || 'tfa_test@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: process.env.TFA_PASSWORD || 'password123'
+          email: process.env.TFA_EMAIL || TFA_TEST_EMAIL,
+          password: process.env.TFA_PASSWORD || TEST_PASSWORD
         })
         // If 2FA is not enabled, login succeeds
         expect(true).to.equal(true)
@@ -479,8 +472,7 @@ describe('User & Authentication API Tests', () => {
           await client.login({
             email: process.env.EMAIL,
             password: process.env.PASSWORD,
-            // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-            mfaSecret: 'JBSWY3DPEHPK3PXP' // Test secret (won't work but validates SDK accepts it)
+            mfaSecret: TEST_MFA_SECRET // Generated secret (won't work but validates SDK accepts it)
           })
           // If account doesn't have 2FA, this might succeed
         } catch (error) {
@@ -497,8 +489,7 @@ describe('User & Authentication API Tests', () => {
       try {
         await client.login({
           email: 'tfa_test_' + Date.now() + '@example.com',
-          // deepcode ignore NoHardcodedPasswords: test fixture value, not a real secret
-          password: 'password123',
+          password: TEST_PASSWORD,
           tfa_token: '123456'
         })
         // Non-existent user will fail regardless of tfa_token

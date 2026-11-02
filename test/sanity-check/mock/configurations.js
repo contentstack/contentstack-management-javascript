@@ -18,6 +18,8 @@
 // ENVIRONMENTS
 // ============================================================================
 
+import { TEST_API_KEY } from '../../helpers/testSecrets'
+
 export const developmentEnvironment = {
   environment: {
     name: 'development',
@@ -538,8 +540,7 @@ export const widgetExtension = {
     type: 'widget',
     src: 'https://example.com/analytics-widget.html',
     config: {
-      // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
-      api_key: 'analytics-key'
+      api_key: TEST_API_KEY
     },
     tags: ['analytics', 'dashboard']
   }
