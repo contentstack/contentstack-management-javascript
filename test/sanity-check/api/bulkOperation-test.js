@@ -49,7 +49,8 @@ async function waitForJobReady (jobId, maxAttempts = 15) {
         ? doBulkOperationWithManagementToken(tokenUidDev)
         : doBulkOperation()
       const response = await bulkOp.jobStatus({ job_id: jobId, api_version: '3.2' })
-      if (response && response.status) {
+      // `summary` exists only once the job has left the queue; returning on inqueue / in progress failed the asserts
+      if (response && response.status && !['inqueue', 'in progress'].includes(response.status)) {
         return response
       }
     } catch (error) {
