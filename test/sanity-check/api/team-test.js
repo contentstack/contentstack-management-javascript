@@ -25,8 +25,12 @@ describe('Teams API Tests', () => {
   })
 
   after(async function () {
-    // NOTE: Deletion removed - teams persist for other tests
-    // Team Deletion tests will handle cleanup
+    // Delete the shared teams: left in place, every run added two until the org hit its team limit.
+    // Nothing outside this file reads them.
+    this.timeout(30000)
+    for (const uid of [teamUid1, teamUid2].filter(Boolean)) {
+      await client.organization(organizationUid).teams(uid).delete().catch(() => {})
+    }
   })
 
   describe('Team CRUD Operations', () => {
