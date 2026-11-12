@@ -1,6 +1,6 @@
 # Changelog
 
-## [v1.32.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.32.0) (2026-10-28)
+## [v1.32.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.32.0) (2026-11-12)
 
 - Enh
   - Branch create: optional `branch.publish_config.environments` (environment names) clones only the listed environments. `[]` clones none; omitting `publish_config` clones all environments, as before. The list is sent unchanged; an unknown name rejects with the API's 422 error object and no branch is created.
