@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.32.0](https://github.com/contentstack/contentstack-management-javascript/tree/v1.32.0) (2026-11-12)
+
+- Enh
+  - Branch create: optional `branch.publish_config.environments` (environment names) clones only the listed environments. `[]` clones none; omitting `publish_config` clones all environments, as before. The list is sent unchanged; an unknown name rejects with the API's 422 error object and no branch is created.
+  - New type `IBranchPublishConfig` for the branch create payload (distinct from the entry/asset `PublishConfig`).
+- Test
+  - Unit tests for the branch create body with and without the environment list, a mocked 422 rejection and fetched branch fields. Type check for the optional field. Sanity API tests for create with two names, `[]`, an unknown name and a mix.
+
 ## [v1.31.3](https://github.com/contentstack/contentstack-management-javascript/tree/v1.31.3) (2026-11-02)
 
 - Resolved security vulnerabilities in dependencies
